@@ -28,7 +28,7 @@ public class AppUtils {
     /**
      * 获取渠道来源的key
      */
-    public static final String KEY_DOWNLOAD_CHANNEL = "UMENG_APPKEY";
+    public static final String KEY_DOWNLOAD_CHANNEL = "UMENG_CHANNEL";
     /**
      * 平台类型
      */
@@ -96,7 +96,7 @@ public class AppUtils {
             ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
             PackageManager pm = mContext.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(mContext.getPackageName(), 0);
-            mAppStatus.downSource = appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
+            mAppStatus.downSource = appInfo.metaData == null ? "" : appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
             mAppStatus.packageName = pi.packageName;
             mAppStatus.platformType = PLATFORM_TYPE;
             mAppStatus.versionCode = pi.versionCode;
