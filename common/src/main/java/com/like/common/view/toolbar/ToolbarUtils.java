@@ -1,0 +1,278 @@
+package com.like.common.view.toolbar;
+
+import android.app.Activity;
+import android.databinding.DataBindingUtil;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.MenuRes;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.like.common.R;
+import com.like.common.databinding.ToolbarBinding;
+
+/**
+ * Toolbar相关工具类
+ */
+public class ToolbarUtils {
+    private Activity mActivity;
+    private ToolbarBinding mBinding;
+
+    public ToolbarUtils(Activity activity, ViewGroup toolbarContainer) {
+        mActivity = activity;
+        if (activity != null && toolbarContainer != null) {
+            mBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.toolbar, toolbarContainer, true);
+            mBinding.toolbar.setTitle("");// 屏蔽掉原来的标题
+        }
+    }
+
+    /**
+     * 显示标题栏底部的分割线，默认是显示的
+     *
+     * @return
+     */
+    public ToolbarUtils showDivider() {
+        mBinding.divider.setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    /**
+     * 隐藏标题栏底部的分割线
+     *
+     * @return
+     */
+    public ToolbarUtils hideDivider() {
+        mBinding.divider.setVisibility(View.GONE);
+        return this;
+    }
+
+    /**
+     * 设置标题栏底部的分割线的颜色
+     *
+     * @param corlor
+     * @return
+     */
+    public ToolbarUtils setDividerColor(@ColorInt int corlor) {
+        mBinding.divider.setBackgroundColor(corlor);
+        return this;
+    }
+
+    /**
+     * 设置标题栏背景颜色
+     *
+     * @return
+     */
+    public ToolbarUtils setBackgroundByColor(@ColorInt int color) {
+        mBinding.toolbar.setBackgroundColor(color);
+        return this;
+    }
+
+    /**
+     * 设置标题栏背景颜色
+     *
+     * @return
+     */
+    public ToolbarUtils setBackgroundByColorResId(@ColorRes int colorResId) {
+        mBinding.toolbar.setBackgroundColor(mActivity.getResources().getColor(colorResId));
+        return this;
+    }
+
+    /**
+     * 设置返回按钮
+     *
+     * @return
+     */
+    public ToolbarUtils showBackButton() {
+        mBinding.toolbar.setNavigationOnClickListener(view -> mActivity.finish());
+        return this;
+    }
+
+    /**
+     * 设置返回按钮
+     *
+     * @param iconResId
+     * @return
+     */
+    public ToolbarUtils showBackButton(@DrawableRes int iconResId) {
+        if (iconResId > 0)
+            mBinding.toolbar.setNavigationIcon(iconResId);
+        mBinding.toolbar.setNavigationOnClickListener(view -> mActivity.finish());
+        return this;
+    }
+
+    /**
+     * 设置导航按钮
+     *
+     * @param navigationIconResId 导航按钮图片资源id
+     * @param listener            导航按钮单击事件
+     * @return
+     */
+    public ToolbarUtils showNavigationButton(@DrawableRes int navigationIconResId, View.OnClickListener listener) {
+        if (navigationIconResId > 0)
+            mBinding.toolbar.setNavigationIcon(navigationIconResId);
+        if (listener != null)
+            mBinding.toolbar.setNavigationOnClickListener(listener);
+        return this;
+    }
+
+
+    /**
+     * 屏蔽掉navigation按钮
+     *
+     * @return
+     */
+    public ToolbarUtils hideNavigationBotton() {
+        mBinding.toolbar.setNavigationIcon(null);
+        return this;
+    }
+
+    /**
+     * 设置标题
+     *
+     * @param title
+     * @param colorResId 文本颜色
+     * @return
+     */
+    public ToolbarUtils showTitle(String title, @ColorRes int colorResId) {
+        mBinding.tvTitle.setTextColor(mActivity.getResources().getColor(colorResId));
+        mBinding.tvTitle.setText(title);
+        return this;
+    }
+
+    /**
+     * 设置Toolbar右侧(标题右侧)的几个菜单按钮
+     *
+     * @param menuResId
+     * @param listener
+     * @return
+     */
+    public ToolbarUtils setRightMenu(@MenuRes int menuResId, Toolbar.OnMenuItemClickListener listener) {
+        if (menuResId > 0)
+            mBinding.toolbar.inflateMenu(menuResId);
+        if (listener != null)
+            mBinding.toolbar.setOnMenuItemClickListener(listener);
+        return this;
+    }
+
+    /**
+     * 替换menu为自定义的视图
+     *
+     * @param menuId
+     * @param iconResId     <=0即不显示图片
+     * @param name          为empty时即不显示名称
+     * @param clickListener
+     * @return
+     */
+    public ToolbarUtils replaceMenuWithCustomView(int menuId, @DrawableRes int iconResId, String name, View.OnClickListener clickListener) {
+        return replaceMenuWithCustomView(menuId, iconResId, name, true, clickListener);
+    }
+
+    /**
+     * 替换menu为自定义的视图。并设置是否隐藏
+     *
+     * @param menuId
+     * @param iconResId     <=0即不显示图片
+     * @param name          为empty时即不显示名称
+     * @param isShow        是否立即显示
+     * @param clickListener
+     * @return
+     */
+    public ToolbarUtils replaceMenuWithCustomView(int menuId, @DrawableRes int iconResId, String name, boolean isShow, View.OnClickListener clickListener) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.reset();
+            customActionProvider.setOnClickListener(clickListener);
+            if (!TextUtils.isEmpty(name))
+                customActionProvider.setName(name);
+            if (iconResId > 0)
+                customActionProvider.setIcon(iconResId);
+            if (isShow) {
+                customActionProvider.show();
+            } else {
+                customActionProvider.hide();
+            }
+        }
+        return this;
+    }
+
+    public ToolbarUtils setMessageCount(int menuId, int messageCount) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.setMessageCount(messageCount);
+        }
+        return this;
+    }
+
+    public ToolbarUtils setRightMenuTextColor(int menuId, @ColorInt int color) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.setTextColor(color);
+        }
+        return this;
+    }
+
+    /**
+     * @param menuId
+     * @param size   单位sp
+     * @return
+     */
+    public ToolbarUtils setRightMenuTextSize(int menuId, float size) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.setTextSize(size);
+        }
+        return this;
+    }
+
+    public ToolbarUtils setRightMenuName(int menuId, String name) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            if (!TextUtils.isEmpty(name))
+                customActionProvider.setName(name);
+        }
+        return this;
+    }
+
+    public String getRightMenuName(int menuId) {
+        String name = "";
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            name = customActionProvider.getName();
+        }
+        return name;
+    }
+
+    public void hideRightMenu(int menuId) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.hide();
+        }
+    }
+
+    public void showRightMenu(int menuId) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.show();
+        }
+    }
+
+    /**
+     * 获取控制message视图相关功能的Provider
+     *
+     * @param menuId
+     * @return
+     */
+    private CustomActionProvider getCustomActionProvider(int menuId) {
+        MenuItem item = mBinding.toolbar.getMenu().findItem(menuId);
+        CustomActionProvider customActionProvider = (CustomActionProvider) MenuItemCompat.getActionProvider(item);
+        return customActionProvider;
+    }
+
+
+}
