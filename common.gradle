@@ -11,9 +11,9 @@ ext {
             recyclerview            : "com.android.support:recyclerview-v7:${compileSdkVersion}.+",
             design                  : "com.android.support:design:${compileSdkVersion}.+",
 
-            objectbox_android       : "io.objectbox:objectbox-android:0.9.12",
-
             junit                   : "junit:junit:4.12",
+
+            objectbox_android       : "io.objectbox:objectbox-android:0.9.12",
 
             rxjava                  : "io.reactivex.rxjava2:rxjava:2.0.8",
             rxandroid               : "io.reactivex.rxjava2:rxandroid:2.0.1",
@@ -43,7 +43,7 @@ ext {
             umeng                   : "com.umeng.analytics:analytics:latest.integration",// 友盟统计
 
             // 自己写的库
-            Common                  : "com.github.like5188:Common:1.0.0",
+            Common                  : "com.github.like5188:Common:1.0.1",
             Logger                  : "com.github.like5188:Logger:1.0.0",
             Toast                   : "com.github.like5188:Toast:1.0.0",
             Base                    : "com.github.like5188:Base:1.0.0",
