@@ -155,10 +155,10 @@ public class TakePhotoUtils {
         intent.putExtra("scale", true);
         intent.putExtra("scaleUpIfNeeded", true);
         // aspectX aspectY 是宽高的比例，根据自己情况修改
-        intent.putExtra("aspectX", 3);
+        intent.putExtra("aspectX", 2);
         intent.putExtra("aspectY", 2);
         // outputX outputY 是裁剪图片宽高像素
-        intent.putExtra("outputX", 600);
+        intent.putExtra("outputX", 400);
         intent.putExtra("outputY", 400);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         //取消人脸识别功能
