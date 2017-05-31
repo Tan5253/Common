@@ -69,6 +69,12 @@ public class TakePhotoUtils {
         }
     }
 
+    /**
+     * 是否裁剪
+     *
+     * @param crop
+     * @return
+     */
     public TakePhotoUtils setCrop(boolean crop) {
         isCrop = crop;
         return sInstance;
@@ -96,6 +102,12 @@ public class TakePhotoUtils {
         return sInstance;
     }
 
+    /**
+     * 是否使用方形裁剪框
+     *
+     * @param squareCropBox
+     * @return
+     */
     public TakePhotoUtils setSquareCropBox(boolean squareCropBox) {
         isSquareCropBox = squareCropBox;
         return sInstance;
