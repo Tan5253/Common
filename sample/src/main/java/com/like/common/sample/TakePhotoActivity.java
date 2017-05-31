@@ -24,14 +24,14 @@ public class TakePhotoActivity extends BasePermissionActivity {
     @Override
     protected BaseViewModel getViewModel() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_take_photo);
-        mBinding.ivTakePhoto.setOnClickListener(v -> TakePhotoUtils.getInstance(TakePhotoActivity.this).openCamera(1));
+        mBinding.ivTakePhoto.setOnClickListener(v -> TakePhotoUtils.getInstance(TakePhotoActivity.this).takePhoto(1));
         return null;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        TakePhotoUtils.getInstance(this).handleTakePhotoResult(requestCode, resultCode, data);
+        TakePhotoUtils.getInstance(this).handleResult(requestCode, resultCode, data);
     }
 
     @RxBusSubscribe(RxBusTag.TAG_TAKE_PHOTO_SUCCESS)
