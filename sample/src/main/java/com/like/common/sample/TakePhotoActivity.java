@@ -46,7 +46,7 @@ public class TakePhotoActivity extends BasePermissionActivity {
     }
 
     // 照相成功、从相册选择图片成功、裁剪成功
-    @RxBusSubscribe(value = {RxBusTag.TAG_TAKE_PHOTO_SUCCESS, RxBusTag.TAG_PICK_PHOTO_SUCCESS, RxBusTag.TAG_CROP_PHOTO_SUCCESS})
+    @RxBusSubscribe(RxBusTag.TAG_CROP_PHOTO_SUCCESS)
     public void onTakePhotoSuccess(TakePhotoUtils.PhotoResult takePhotoResult) {
         mBinding.ivTakePhoto.setImageBitmap(takePhotoResult.bitmap);
     }
