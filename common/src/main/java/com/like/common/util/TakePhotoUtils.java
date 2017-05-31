@@ -40,6 +40,8 @@ public class TakePhotoUtils {
     private boolean isCrop;
     // 是否正方形裁剪框
     private boolean isSquareCropBox;
+    private int cropWidth;
+    private int cropHeight;
 
     private Activity activity;
     private volatile static TakePhotoUtils sInstance = null;
@@ -67,12 +69,36 @@ public class TakePhotoUtils {
         }
     }
 
-    public void setCrop(boolean crop) {
+    public TakePhotoUtils setCrop(boolean crop) {
         isCrop = crop;
+        return sInstance;
     }
 
-    public void setSquareCropBox(boolean squareCropBox) {
+    /**
+     * 设置裁剪框宽度
+     *
+     * @param cropWidth 默认400px
+     * @return
+     */
+    public TakePhotoUtils setCropWidth(int cropWidth) {
+        this.cropWidth = cropWidth;
+        return sInstance;
+    }
+
+    /**
+     * 设置裁剪框高度
+     *
+     * @param cropHeight 默认600px
+     * @return
+     */
+    public TakePhotoUtils setCropHeight(int cropHeight) {
+        this.cropHeight = cropHeight;
+        return sInstance;
+    }
+
+    public TakePhotoUtils setSquareCropBox(boolean squareCropBox) {
         isSquareCropBox = squareCropBox;
+        return sInstance;
     }
 
     /***
@@ -166,15 +192,31 @@ public class TakePhotoUtils {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             // outputX outputY 是裁剪图片宽高像素
-            intent.putExtra("outputX", 400);
-            intent.putExtra("outputY", 400);
+            int width = 400;
+            if (cropWidth > 0 && cropHeight > 0) {
+                width = Math.min(cropWidth, cropHeight);
+            } else if (cropWidth > 0) {
+                width = cropWidth;
+            } else if (cropHeight > 0) {
+                width = cropHeight;
+            }
+            intent.putExtra("outputX", width);
+            intent.putExtra("outputY", width);
         } else {
+            int width = 600;
+            int height = 400;
+            if (cropWidth > 0) {
+                width = cropWidth;
+            }
+            if (cropHeight > 0) {
+                height = cropHeight;
+            }
             // aspectX aspectY 是宽高的比例，根据自己情况修改
-            intent.putExtra("aspectX", 3);
-            intent.putExtra("aspectY", 2);
+            intent.putExtra("aspectX", width);
+            intent.putExtra("aspectY", height);
             // outputX outputY 是裁剪图片宽高像素
-            intent.putExtra("outputX", 600);
-            intent.putExtra("outputY", 400);
+            intent.putExtra("outputX", width);
+            intent.putExtra("outputY", height);
         }
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         //取消人脸识别功能
