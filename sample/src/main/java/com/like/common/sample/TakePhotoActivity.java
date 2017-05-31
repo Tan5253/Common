@@ -3,6 +3,7 @@ package com.like.common.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.view.View;
 
 import com.like.base.context.BasePermissionActivity;
@@ -48,8 +49,8 @@ public class TakePhotoActivity extends BasePermissionActivity {
 
     // 照相成功、从相册选择图片成功、裁剪成功
     @RxBusSubscribe(RxBusTag.TAG_CROP_PHOTO_SUCCESS)
-    public void onTakePhotoSuccess(TakePhotoUtils.PhotoResult takePhotoResult) {
-        mBinding.ivTakePhoto.setImageBitmap(takePhotoResult.bitmap);
+    public void onTakePhotoSuccess(Bitmap photo) {
+        mBinding.ivTakePhoto.setImageBitmap(photo);
     }
 
     @Override

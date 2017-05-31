@@ -1,10 +1,8 @@
 package com.like.common.util;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,6 +11,9 @@ import android.view.Display;
 
 import com.like.rxbus.RxBus;
 import com.like.toast.ToastUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 照相相关工具类
@@ -32,6 +33,7 @@ public class TakePhotoUtils {
     private static final int CODE_CROP_PHOTO = 3;
 
     private Uri mPhotoUri;
+    private File cropFile;// 单独存放裁剪后的图片，避免把相册中选择的原图片裁剪了。
 
     private boolean isCrop;
     // 是否正方形裁剪框
@@ -53,6 +55,14 @@ public class TakePhotoUtils {
 
     private TakePhotoUtils(Activity activity) {
         this.activity = activity;
+        cropFile = new File(StorageUtils.ExternalStorageHelper.getPrivateCacheDir(activity), "photo_temp.jpg");
+        if (!cropFile.exists()) {
+            try {
+                cropFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setCrop(boolean crop) {
@@ -99,13 +109,13 @@ public class TakePhotoUtils {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CODE_TAKE_PHOTO:
-                    handleTakePhotoResult(requestCode, resultCode, data);
+                    handleTakePhotoResult();
                     break;
                 case CODE_PICK_PHOTO:
-                    handlePickPhotoResult(requestCode, resultCode, data);
+                    handlePickPhotoResult(data);
                     break;
                 case CODE_CROP_PHOTO:
-                    handleCropPhotoResult(requestCode, resultCode, data);
+                    handleCropPhotoResult();
                     break;
             }
         }
@@ -113,33 +123,22 @@ public class TakePhotoUtils {
 
     /**
      * 处理裁剪返回的结果
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
-    private void handleCropPhotoResult(int requestCode, int resultCode, Intent data) {
-        if (mPhotoUri != null) {
-            RxBus.post(RxBusTag.TAG_CROP_PHOTO_SUCCESS, getPhotoResult(requestCode, resultCode, data));
-            mPhotoUri = null;
-        }
+    private void handleCropPhotoResult() {
+        RxBus.post(RxBusTag.TAG_CROP_PHOTO_SUCCESS, BitmapFactory.decodeFile(cropFile.getAbsolutePath()));
     }
 
     /**
      * 处理相册返回的结果
      *
-     * @param requestCode
-     * @param resultCode
      * @param data
      */
-    private void handlePickPhotoResult(int requestCode, int resultCode, Intent data) {
+    private void handlePickPhotoResult(Intent data) {
         if (null != data && null != data.getData()) {
-            mPhotoUri = data.getData();
-            RxBus.post(RxBusTag.TAG_PICK_PHOTO_SUCCESS, getPhotoResult(requestCode, resultCode, data));
+            Uri uri = data.getData();
+            RxBus.post(RxBusTag.TAG_PICK_PHOTO_SUCCESS, getBitmapFromUri(uri));
             if (isCrop) {
-                startPhotoZoom(mPhotoUri, CODE_CROP_PHOTO);
-            } else {
-                mPhotoUri = null;
+                startPhotoZoom(uri, CODE_CROP_PHOTO);
             }
         } else {
             ToastUtils.showShortCenter(activity, "图片选择失败");
@@ -179,7 +178,7 @@ public class TakePhotoUtils {
         //取消人脸识别功能
         intent.putExtra("noFaceDetection", true);
         //设置返回的uri
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cropFile));
         //设置为不返回数据
         intent.putExtra("return-data", false);
         activity.startActivityForResult(intent, REQUE_CODE_CROP);
@@ -188,13 +187,9 @@ public class TakePhotoUtils {
 
     /**
      * 处理照相返回的结果
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
-    private void handleTakePhotoResult(int requestCode, int resultCode, Intent data) {
-        RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, getPhotoResult(requestCode, resultCode, data));
+    private void handleTakePhotoResult() {
+        RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, getBitmapFromUri(mPhotoUri));
         if (isCrop) {
             startPhotoZoom(mPhotoUri, CODE_CROP_PHOTO);
         } else {
@@ -202,30 +197,17 @@ public class TakePhotoUtils {
         }
     }
 
-    private PhotoResult getPhotoResult(int requestCode, int resultCode, Intent data) {
-        if (mPhotoUri == null)
+    private Bitmap getBitmapFromUri(Uri uri) {
+        if (uri == null)
             return null;
 
-        PhotoResult takePhotoResult = null;
-
-        ContentResolver cr = activity.getContentResolver();
-        //按 刚刚指定 的那个文件名，查询数据库，获得更多的 照片信息，比如 图片的物理绝对路径
-        Cursor cursor = cr.query(mPhotoUri, null, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToNext()) {
-                String path = cursor.getString(1);
-                //获得图片
-                Bitmap bitmap = getBitMapFromPath(path);
-                takePhotoResult = new PhotoResult();
-                takePhotoResult.requestCode = requestCode;
-                takePhotoResult.resultCode = resultCode;
-                takePhotoResult.data = data;
-                takePhotoResult.photoUri = mPhotoUri;
-                takePhotoResult.bitmap = bitmap;
-            }
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        CloseableUtils.close(cursor);
-        return takePhotoResult;
+        return bitmap;
     }
 
     /* 获得图片，并进行适当的 缩放。 图片太大的话，是无法展示的。 */
@@ -255,14 +237,6 @@ public class TakePhotoUtils {
         bmpFactoryOptions.inJustDecodeBounds = false;
         bmp = BitmapFactory.decodeFile(imageFilePath, bmpFactoryOptions);
         return bmp;
-    }
-
-    public class PhotoResult {
-        public int requestCode;
-        public int resultCode;
-        public Intent data;
-        public Uri photoUri;
-        public Bitmap bitmap;
     }
 
 }
