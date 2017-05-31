@@ -1,8 +1,10 @@
 package com.like.common.util;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -201,11 +203,17 @@ public class TakePhotoUtils {
             return null;
 
         Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
-        } catch (IOException e) {
-            e.printStackTrace();
+        ContentResolver cr = activity.getContentResolver();
+        //按 刚刚指定 的那个文件名，查询数据库，获得更多的 照片信息，比如 图片的物理绝对路径
+        Cursor cursor = cr.query(uri, null, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToNext()) {
+                String path = cursor.getString(1);
+                //获得图片
+                bitmap = getBitMapFromPath(path);
+            }
         }
+        CloseableUtils.close(cursor);
         return bitmap;
     }
 
