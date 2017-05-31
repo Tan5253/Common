@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * 照相相关工具类
+ * 照相相关工具类，可以照相、从相册获取图片、裁剪。
  * <p>
  * {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}
  *
