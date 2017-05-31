@@ -28,6 +28,7 @@ public class TakePhotoActivity extends BasePermissionActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_take_photo);
         mTakePhotoUtils = TakePhotoUtils.getInstance(this);
         mTakePhotoUtils.setCrop(true);
+        mTakePhotoUtils.setSquareCropBox(true);
         return null;
     }
 

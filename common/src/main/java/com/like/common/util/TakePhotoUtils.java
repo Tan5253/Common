@@ -34,6 +34,8 @@ public class TakePhotoUtils {
     private Uri mPhotoUri;
 
     private boolean isCrop;
+    // 是否正方形裁剪框
+    private boolean isSquareCropBox;
 
     private Activity activity;
     private volatile static TakePhotoUtils sInstance = null;
@@ -55,6 +57,10 @@ public class TakePhotoUtils {
 
     public void setCrop(boolean crop) {
         isCrop = crop;
+    }
+
+    public void setSquareCropBox(boolean squareCropBox) {
+        isSquareCropBox = squareCropBox;
     }
 
     /***
@@ -154,12 +160,21 @@ public class TakePhotoUtils {
         // 去黑边
         intent.putExtra("scale", true);
         intent.putExtra("scaleUpIfNeeded", true);
-        // aspectX aspectY 是宽高的比例，根据自己情况修改
-        intent.putExtra("aspectX", 2);
-        intent.putExtra("aspectY", 2);
-        // outputX outputY 是裁剪图片宽高像素
-        intent.putExtra("outputX", 400);
-        intent.putExtra("outputY", 400);
+        if (isSquareCropBox) {
+            // aspectX aspectY 是宽高的比例，根据自己情况修改
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            // outputX outputY 是裁剪图片宽高像素
+            intent.putExtra("outputX", 400);
+            intent.putExtra("outputY", 400);
+        } else {
+            // aspectX aspectY 是宽高的比例，根据自己情况修改
+            intent.putExtra("aspectX", 3);
+            intent.putExtra("aspectY", 2);
+            // outputX outputY 是裁剪图片宽高像素
+            intent.putExtra("outputX", 600);
+            intent.putExtra("outputY", 400);
+        }
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         //取消人脸识别功能
         intent.putExtra("noFaceDetection", true);
