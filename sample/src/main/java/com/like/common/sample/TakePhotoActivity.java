@@ -3,6 +3,7 @@ package com.like.common.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.view.View;
 
 import com.like.base.context.BasePermissionActivity;
 import com.like.base.viewmodel.BaseViewModel;
@@ -20,22 +21,33 @@ import com.like.rxbus.annotations.RxBusSubscribe;
  */
 public class TakePhotoActivity extends BasePermissionActivity {
     private ActivityTakePhotoBinding mBinding;
+    private TakePhotoUtils mTakePhotoUtils;
 
     @Override
     protected BaseViewModel getViewModel() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_take_photo);
-        mBinding.ivTakePhoto.setOnClickListener(v -> TakePhotoUtils.getInstance(TakePhotoActivity.this).takePhoto(1));
+        mTakePhotoUtils = TakePhotoUtils.getInstance(this);
+        mTakePhotoUtils.setCrop(true);
         return null;
+    }
+
+    public void takePhoto(View view) {
+        mTakePhotoUtils.takePhoto();
+    }
+
+    public void pickPhoto(View view) {
+        mTakePhotoUtils.pickPhoto();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        TakePhotoUtils.getInstance(this).handleResult(requestCode, resultCode, data);
+        mTakePhotoUtils.handleResult(requestCode, resultCode, data);
     }
 
-    @RxBusSubscribe(RxBusTag.TAG_TAKE_PHOTO_SUCCESS)
-    public void onTakePhotoSuccess(TakePhotoUtils.TakePhotoResult takePhotoResult) {
+    // 照相成功、从相册选择图片成功、裁剪成功
+    @RxBusSubscribe(value = {RxBusTag.TAG_TAKE_PHOTO_SUCCESS, RxBusTag.TAG_PICK_PHOTO_SUCCESS, RxBusTag.TAG_CROP_PHOTO_SUCCESS})
+    public void onTakePhotoSuccess(TakePhotoUtils.PhotoResult takePhotoResult) {
         mBinding.ivTakePhoto.setImageBitmap(takePhotoResult.bitmap);
     }
 

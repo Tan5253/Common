@@ -6,4 +6,6 @@ package com.like.common.util;
 
 public class RxBusTag {
     public static final String TAG_TAKE_PHOTO_SUCCESS = "TAG_TAKE_PHOTO_SUCCESS";// 通知照相返回成功
+    public static final String TAG_PICK_PHOTO_SUCCESS = "TAG_PICK_PHOTO_SUCCESS";// 通知从相册选择图片返回成功
+    public static final String TAG_CROP_PHOTO_SUCCESS = "TAG_CROP_PHOTO_SUCCESS";// 通知裁剪返回成功
 }

@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.view.Display;
 
 import com.like.rxbus.RxBus;
+import com.like.toast.ToastUtils;
 
 /**
  * 照相相关工具类
@@ -32,6 +33,8 @@ public class TakePhotoUtils {
 
     private Uri mPhotoUri;
 
+    private boolean isCrop;
+
     private Activity activity;
     private volatile static TakePhotoUtils sInstance = null;
 
@@ -50,10 +53,14 @@ public class TakePhotoUtils {
         this.activity = activity;
     }
 
+    public void setCrop(boolean crop) {
+        isCrop = crop;
+    }
+
     /***
      * 从相册中取图片
      */
-    private void pickPhoto() {
+    public void pickPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         activity.startActivityForResult(intent, CODE_PICK_PHOTO);
@@ -106,7 +113,10 @@ public class TakePhotoUtils {
      * @param data
      */
     private void handleCropPhotoResult(int requestCode, int resultCode, Intent data) {
-
+        if (mPhotoUri != null) {
+            RxBus.post(RxBusTag.TAG_CROP_PHOTO_SUCCESS, getPhotoResult(requestCode, resultCode, data));
+            mPhotoUri = null;
+        }
     }
 
     /**
@@ -117,8 +127,49 @@ public class TakePhotoUtils {
      * @param data
      */
     private void handlePickPhotoResult(int requestCode, int resultCode, Intent data) {
-
+        if (null != data && null != data.getData()) {
+            mPhotoUri = data.getData();
+            RxBus.post(RxBusTag.TAG_PICK_PHOTO_SUCCESS, getPhotoResult(requestCode, resultCode, data));
+            if (isCrop) {
+                startPhotoZoom(mPhotoUri, CODE_CROP_PHOTO);
+            } else {
+                mPhotoUri = null;
+            }
+        } else {
+            ToastUtils.showShortCenter(activity, "图片选择失败");
+        }
     }
+
+    /**
+     * @param
+     * @description 裁剪图片
+     * @author ldm
+     * @time 2016/11/30 15:19
+     */
+    private void startPhotoZoom(Uri uri, int REQUE_CODE_CROP) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        // 去黑边
+        intent.putExtra("scale", true);
+        intent.putExtra("scaleUpIfNeeded", true);
+        // aspectX aspectY 是宽高的比例，根据自己情况修改
+        intent.putExtra("aspectX", 3);
+        intent.putExtra("aspectY", 2);
+        // outputX outputY 是裁剪图片宽高像素
+        intent.putExtra("outputX", 600);
+        intent.putExtra("outputY", 400);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        //取消人脸识别功能
+        intent.putExtra("noFaceDetection", true);
+        //设置返回的uri
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        //设置为不返回数据
+        intent.putExtra("return-data", false);
+        activity.startActivityForResult(intent, REQUE_CODE_CROP);
+    }
+
 
     /**
      * 处理照相返回的结果
@@ -128,8 +179,20 @@ public class TakePhotoUtils {
      * @param data
      */
     private void handleTakePhotoResult(int requestCode, int resultCode, Intent data) {
+        RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, getPhotoResult(requestCode, resultCode, data));
+        if (isCrop) {
+            startPhotoZoom(mPhotoUri, CODE_CROP_PHOTO);
+        } else {
+            mPhotoUri = null;
+        }
+    }
+
+    private PhotoResult getPhotoResult(int requestCode, int resultCode, Intent data) {
         if (mPhotoUri == null)
-            return;
+            return null;
+
+        PhotoResult takePhotoResult = null;
+
         ContentResolver cr = activity.getContentResolver();
         //按 刚刚指定 的那个文件名，查询数据库，获得更多的 照片信息，比如 图片的物理绝对路径
         Cursor cursor = cr.query(mPhotoUri, null, null, null, null);
@@ -138,17 +201,16 @@ public class TakePhotoUtils {
                 String path = cursor.getString(1);
                 //获得图片
                 Bitmap bitmap = getBitMapFromPath(path);
-                TakePhotoResult takePhotoResult = new TakePhotoResult();
+                takePhotoResult = new PhotoResult();
                 takePhotoResult.requestCode = requestCode;
                 takePhotoResult.resultCode = resultCode;
                 takePhotoResult.data = data;
                 takePhotoResult.photoUri = mPhotoUri;
                 takePhotoResult.bitmap = bitmap;
-                RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, takePhotoResult);
             }
         }
         CloseableUtils.close(cursor);
-        mPhotoUri = null;
+        return takePhotoResult;
     }
 
     /* 获得图片，并进行适当的 缩放。 图片太大的话，是无法展示的。 */
@@ -180,7 +242,7 @@ public class TakePhotoUtils {
         return bmp;
     }
 
-    public class TakePhotoResult {
+    public class PhotoResult {
         public int requestCode;
         public int resultCode;
         public Intent data;
