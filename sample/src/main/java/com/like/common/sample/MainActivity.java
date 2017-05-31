@@ -143,6 +143,10 @@ public class MainActivity extends BasePermissionActivity {
         startActivity(new Intent(this, ObjectBoxActivity.class));
     }
 
+    public void clickTakePhoto(View view) {
+        startActivity(new Intent(this, TakePhotoActivity.class));
+    }
+
     private Disposable subscribe;
 
     public void clickRxJavaUtils(View view) {
