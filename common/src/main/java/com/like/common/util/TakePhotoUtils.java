@@ -192,9 +192,8 @@ public class TakePhotoUtils {
         RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, getBitmapFromUri(mPhotoUri));
         if (isCrop) {
             startPhotoZoom(mPhotoUri, CODE_CROP_PHOTO);
-        } else {
-            mPhotoUri = null;
         }
+        mPhotoUri = null;
     }
 
     private Bitmap getBitmapFromUri(Uri uri) {
