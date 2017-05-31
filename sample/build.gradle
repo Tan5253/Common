@@ -42,6 +42,8 @@ dependencies {
     // ObjectBox数据库
     compile rootProject.ext.deps.objectbox_android
 
+    compile rootProject.ext.deps.circleimageview
+
     compile project(':common')
 
     // Error:Conflict with dependency 'com.google.code.findbugs:jsr305' in project ':app'. Resolved versions for app (3.0.1) and test app (2.0.1) differ. See http://g.co/androidstudio/app-test-app-conflict for details.

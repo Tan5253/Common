@@ -42,6 +42,8 @@ ext {
 
             umeng                   : "com.umeng.analytics:analytics:latest.integration",// 友盟统计
 
+            circleimageview         : "de.hdodenhof:circleimageview:2.1.0",
+
             // 自己写的库
             Common                  : "com.github.like5188:Common:1.0.1",
             Logger                  : "com.github.like5188:Logger:1.0.0",
