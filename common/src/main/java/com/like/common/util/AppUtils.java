@@ -28,7 +28,7 @@ public class AppUtils {
     /**
      * 获取渠道来源的key
      */
-    public static final String KEY_DOWNLOAD_CHANNEL = "UMENG_CHANNEL";
+    public static final String KEY_DOWNLOAD_CHANNEL = "CHANNEL";
     /**
      * 平台类型
      */
