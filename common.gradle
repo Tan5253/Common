@@ -43,18 +43,17 @@ ext {
             umeng                   : "com.umeng.analytics:analytics:latest.integration",// 友盟统计
 
             // 自己写的库
-            Common                  : "com.github.like5188:Common:1.0.1",
-            Logger                  : "com.github.like5188:Logger:1.0.0",
+            Common                  : "com.github.like5188:Common:1.0.3",
+            Logger                  : "com.github.like5188:Logger:1.0.1",
+            Base                    : "com.github.like5188:Base:1.0.1",
+            Jpush                   : "com.github.like5188:Jpush:1.0.1",
+            RecyclerView            : "com.github.like5188:RecyclerView:1.0.1",
             Toast                   : "com.github.like5188:Toast:1.0.0",
-            Base                    : "com.github.like5188:Base:1.0.0",
             Retrofit                : "com.github.like5188:Retrofit:1.0.0",
-            RecyclerView            : "com.github.like5188:RecyclerView:1.0.0",
             SwipMenuLayout          : "com.github.like5188:SwipMenuLayout:1.0.0",
-            WebView                 : "com.github.like5188:WebView:1.0.0",
-            Jpush                   : "com.github.like5188:Jpush:1.0.0",
             AliPay                  : "com.github.like5188:AliPay:1.0.0",
-            WxPay                   : "com.github.like5188:WxPay:1.0.0",
-            Location                : "com.github.like5188:Location:1.0.0",
+            Update                  : "com.github.like5188:Update:1.0.0",
+            Location                : "com.github.like5188:Location:1.0.1",
             rxbus                   : "com.github.like5188.RxBus:rxbus:1.0.0",
             rxbus_compiler          : "com.github.like5188.RxBus:rxbus-compiler:1.0.0",
     ]
