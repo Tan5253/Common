@@ -39,14 +39,18 @@ public class DialogFragmentUtils {
             }
             // 先移除，再添加并显示
             FragmentManager fm = host.getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            Fragment preFragment = fm.findFragmentByTag(dialogFragmentClass.getSimpleName());
-            if (preFragment != null) {
-                ft.remove(preFragment);
-            }
-            if (dialogFragment != null) {
-                ft.add(dialogFragment, dialogFragmentClass.getSimpleName());
-                ft.commitAllowingStateLoss();
+            if (fm != null) {
+                FragmentTransaction ft = fm.beginTransaction();
+                if (ft != null) {
+                    Fragment preFragment = fm.findFragmentByTag(dialogFragmentClass.getSimpleName());
+                    if (preFragment != null) {
+                        ft.remove(preFragment);
+                    }
+                    if (dialogFragment != null) {
+                        ft.add(dialogFragment, dialogFragmentClass.getSimpleName());
+                        ft.commitAllowingStateLoss();
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,9 +69,11 @@ public class DialogFragmentUtils {
             return;
         }
         FragmentManager fm = host.getFragmentManager();
-        Fragment dialog = fm.findFragmentByTag(dialogFragmentClass.getSimpleName());
-        if (dialog != null && !dialog.isHidden()) {
-            ((DialogFragment) dialog).dismissAllowingStateLoss();
+        if (fm != null) {
+            Fragment dialog = fm.findFragmentByTag(dialogFragmentClass.getSimpleName());
+            if (dialog != null && !dialog.isHidden()) {
+                ((DialogFragment) dialog).dismissAllowingStateLoss();
+            }
         }
     }
 
