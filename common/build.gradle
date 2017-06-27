@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -51,6 +52,8 @@ dependencies {
     compile rootProject.ext.deps.Toast
     compile rootProject.ext.deps.Logger
     compile rootProject.ext.deps.rxbus
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 apply from: rootProject.file('./gradle-mvn-push.gradle')

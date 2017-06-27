@@ -18,7 +18,7 @@
 在Module的gradle中加入：
 ```groovy
     dependencies {
-        compile 'com.github.like5188:Common:1.0.3'
+        compile 'com.github.like5188:Common:1.0.4'
     }
 ```
 2、包含的工具类
@@ -54,7 +54,7 @@
     RxBusTag
     RxJavaUtils
     SenserUtils
-    SPUtils
+    SPUtils                         // kotlin，支持属性委托
     StatusBarUtils
     StorageUtils
     TakePhotoUtils
@@ -97,6 +97,7 @@
     compile rootProject.ext.deps.Toast
     compile rootProject.ext.deps.Logger
     compile rootProject.ext.deps.rxbus
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 ```
 # License
 ```xml
