@@ -31,7 +31,7 @@ class DialogFragmentActivity : BaseActivity() {
         bundle.putString(OneButtonNoTitleDialog.KEY_BUTTON_NAME, buttonName)
         Thread {
             showDialogFragment<OneButtonNoTitleDialog>(bundle)
-            SystemClock.sleep(1000)
+            SystemClock.sleep(5000)
             hideDialogFragment<OneButtonNoTitleDialog>()
         }.start()
     }

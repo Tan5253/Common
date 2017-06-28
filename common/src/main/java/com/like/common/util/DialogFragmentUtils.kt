@@ -1,11 +1,21 @@
 package com.like.common.util
 
+import android.databinding.DataBindingUtil
+import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.like.base.context.BaseActivity
 import com.like.base.context.BaseFragment
 import com.like.base.entity.Host
+
+/**
+ * 设置没有原始的标题
+ */
+fun DialogFragment.noTitleBar() = setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Translucent_NoTitleBar)
 
 /**
  * 显示DialogFragment对话框
@@ -89,4 +99,29 @@ object DialogFragmentUtils {
     } else {
         null
     }
+}
+
+abstract class BaseDialogFragment<in T : ViewDataBinding> : DialogFragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Translucent_NoTitleBar)
+        isCancelable = cancelable()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding = DataBindingUtil.inflate<T>(inflater, getDialogFragmentLayoutResId(), container, false) ?: return null
+        initView(binding, arguments)
+        return binding.root
+    }
+
+    fun hide() {
+        this.dismissAllowingStateLoss()
+    }
+
+    open fun cancelable() = false
+
+    abstract fun getDialogFragmentLayoutResId(): Int
+
+    abstract fun initView(binding: T, arguments: Bundle?)
 }
