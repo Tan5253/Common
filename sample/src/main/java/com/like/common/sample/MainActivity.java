@@ -147,6 +147,10 @@ public class MainActivity extends BasePermissionActivity {
         startActivity(new Intent(this, TakePhotoActivity.class));
     }
 
+    public void clickDialogFragment(View view) {
+        startActivity(new Intent(this, DialogFragmentActivity.class));
+    }
+
     private Disposable subscribe;
 
     public void clickRxJavaUtils(View view) {

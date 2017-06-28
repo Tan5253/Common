@@ -37,6 +37,10 @@
             android:name="com.like.common.sample.TakePhotoActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.like.common.sample.DialogFragmentActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

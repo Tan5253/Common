@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'io.objectbox'// objectbox配置
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -43,6 +45,9 @@ dependencies {
     compile rootProject.ext.deps.objectbox_android
 
     compile project(':common')
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    kapt 'com.android.databinding:compiler:2.3.3'
 
     // Error:Conflict with dependency 'com.google.code.findbugs:jsr305' in project ':app'. Resolved versions for app (3.0.1) and test app (2.0.1) differ. See http://g.co/androidstudio/app-test-app-conflict for details.
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.2'
