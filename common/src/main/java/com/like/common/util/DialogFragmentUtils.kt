@@ -13,11 +13,6 @@ import com.like.base.context.BaseFragment
 import com.like.base.entity.Host
 
 /**
- * 设置没有原始的标题
- */
-fun DialogFragment.noTitleBar() = setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Translucent_NoTitleBar)
-
-/**
  * 显示DialogFragment对话框
  *
  * @param T         目标DialogFragment
