@@ -33,7 +33,7 @@
     CrashHandler
     CsvUtils
     DateUtils
-    DialogFragmentUtils
+    DialogFragmentUtils             // kotlin，支持BaseActivity和BaseFragment扩展方法，并封装了BaseDialogFragment
     DimensionUtils
     FileUtils
     HexUtil
