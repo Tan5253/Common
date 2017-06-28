@@ -25,7 +25,7 @@ class DialogFragmentActivity : BaseActivity() {
         showOneButtonNoTitleDialog()
     }
 
-    fun showOneButtonNoTitleDialog(message: String = "升级成功!", buttonName: String = "完成") {
+    fun showOneButtonNoTitleDialog(message: String = "升级成功aaaaaa!", buttonName: String = "完成") {
         val bundle = Bundle()
         bundle.putString(OneButtonNoTitleDialog.KEY_MESSAGE, message)
         bundle.putString(OneButtonNoTitleDialog.KEY_BUTTON_NAME, buttonName)

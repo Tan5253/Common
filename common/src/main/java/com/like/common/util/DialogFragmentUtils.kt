@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager
 import com.like.base.context.BaseActivity
 import com.like.base.context.BaseFragment
 import com.like.base.entity.Host
-import java.lang.reflect.Method
 
 /**
  * 显示DialogFragment对话框
@@ -48,14 +47,12 @@ object DialogFragmentUtils {
      */
     @JvmStatic @JvmOverloads fun showDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>, bundle: Bundle? = null): DialogFragment? {
         val fm = getFragmentManager(host) ?: return null
-        var method: Method? = null
-        val dialogFragment: DialogFragment = if (bundle != null) {
-            method = dialogFragmentClass.getMethod("newInstance", Bundle::class.java) ?: throw IllegalArgumentException("DialogFragment 必须由newInstance()来创建")
-            method.invoke(null, bundle) as DialogFragment
-        } else {
-            method = dialogFragmentClass.getMethod("newInstance") ?: throw IllegalArgumentException("DialogFragment 必须由newInstance()来创建")
-            method.invoke(null) as DialogFragment
+
+        val dialogFragment = dialogFragmentClass.newInstance()
+        if (bundle != null) {
+            dialogFragment.arguments = bundle
         }
+
         // 先移除，再添加并显示
         val ft = fm.beginTransaction()
         if (ft != null) {
