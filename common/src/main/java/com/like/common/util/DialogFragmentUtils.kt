@@ -11,17 +11,17 @@ import com.like.base.entity.Host
  * 显示DialogFragment对话框
  *
  * @param T         目标DialogFragment
- * @param bundle    参数列表
+ * @param args      参数列表
  */
-inline fun <reified T : DialogFragment> BaseActivity.showDialogFragment(bundle: Bundle? = null): DialogFragment? = DialogFragmentUtils.showDialog(this, T::class.java, bundle)
+inline fun <reified T : DialogFragment> BaseActivity.showDialogFragment(args: Bundle? = null): DialogFragment? = DialogFragmentUtils.showDialog(this, T::class.java, args)
 
 /**
  * 显示DialogFragment对话框
  *
  * @param T         目标DialogFragment
- * @param bundle    参数列表
+ * @param args      参数列表
  */
-inline fun <reified T : DialogFragment> BaseFragment.showDialogFragment(bundle: Bundle? = null): DialogFragment? = DialogFragmentUtils.showDialog(this, T::class.java, bundle)
+inline fun <reified T : DialogFragment> BaseFragment.showDialogFragment(args: Bundle? = null): DialogFragment? = DialogFragmentUtils.showDialog(this, T::class.java, args)
 
 /**
  * 隐藏DialogFragment对话框
@@ -43,14 +43,14 @@ object DialogFragmentUtils {
      *
      * @param host                  [BaseActivity]或者[BaseFragment]或者[Host]
      * @param dialogFragmentClass   目标DialogFragment
-     * @param bundle                参数列表
+     * @param args                  参数列表
      */
-    @JvmStatic @JvmOverloads fun showDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>, bundle: Bundle? = null): DialogFragment? {
+    @JvmStatic @JvmOverloads fun showDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>, args: Bundle? = null): DialogFragment? {
         val fm = getFragmentManager(host) ?: return null
-
-        val dialogFragment = dialogFragmentClass.newInstance()
-        if (bundle != null) {
-            dialogFragment.arguments = bundle
+        val dialogFragment = dialogFragmentClass.newInstance() ?: return null
+        // 放入参数
+        if (args != null) {
+            dialogFragment.arguments = args
         }
 
         // 先移除，再添加并显示
