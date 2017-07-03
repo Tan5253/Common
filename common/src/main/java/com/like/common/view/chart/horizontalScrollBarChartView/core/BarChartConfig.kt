@@ -1,12 +1,15 @@
 package com.like.common.view.chart.horizontalScrollBarChartView.core
 
+import android.content.Context
+import android.graphics.Paint
 import android.graphics.RectF
+import com.like.common.util.DimensionUtils
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 
 /**
  * 尺寸，常量
  */
-class BarChartConfig(val barDataList: List<BarData>) {
+class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     companion object {
         val DEFAULT_TEXT_BG_COLOR = 0xffff0000.toInt()// 文本区域背景颜色
         val DEFAULT_MONTH_TEXT_COLOR = 0xffffffff.toInt()// 月份数据文本颜色
@@ -22,7 +25,6 @@ class BarChartConfig(val barDataList: List<BarData>) {
         )
         val DEFAULT_EACH_BAR_WIDTH: Float = 35f// 每个柱形图的宽度
         val DEFAULT_TOTAL_BAR_HEIGHT: Float = 500f// 柱形图高度
-        val DEFAULT_TOTAL_TEXT_HEIGHT: Int = 110// 文本区域总高度
         val DEFAULT_SPACING_BETWEEN_TWO_BARS: Float = 100f// 两个柱形图之间的间隔
         val DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM: Float = 20f// 文本区域上下留白
         val DEFAULT_TEXT_SPACING: Float = 20f// 月份数据和电量数据之间的间隙
@@ -32,10 +34,57 @@ class BarChartConfig(val barDataList: List<BarData>) {
     val totalWidth = (DEFAULT_EACH_BAR_WIDTH * barDataList.size + DEFAULT_SPACING_BETWEEN_TWO_BARS * (barDataList.size - 1)).toInt()
     // 所有柱形图的Rect
     val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, DEFAULT_EACH_BAR_WIDTH, DEFAULT_TOTAL_BAR_HEIGHT, DEFAULT_SPACING_BETWEEN_TWO_BARS)
+    // 月份数据文本字体大小
+    val monthTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // 电量数据文本字体大小
+    val electricityTextSize = DimensionUtils.sp2px(context, 16f).toFloat()
+    // 月份数据文本绘制的起点Y坐标
+    val monthTextStartY: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = monthTextSize
+        BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT + getFontY(paint)
+    }
+    // 电量数据文本绘制的起点Y坐标
+    val electricityTextStartY: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = monthTextSize
+        val electricityTextTop = BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT + getFontHeight(paint)
+        paint.textSize = electricityTextSize
+        electricityTextTop + getFontY(paint)
+    }
+    // 文本区域总高度
+    val totalTextHeight: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = monthTextSize
+        val monthTextHeight = getFontHeight(paint)
+        paint.textSize = electricityTextSize
+        val electricityTextHeight = getFontHeight(paint)
+        DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM * 2 + DEFAULT_TEXT_SPACING + monthTextHeight + electricityTextHeight
+    }
     // 视图总高度
-    val totalHeight = (DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_TOTAL_TEXT_HEIGHT).toInt()
+    val totalHeight = (DEFAULT_TOTAL_BAR_HEIGHT + totalTextHeight).toInt()
     // 柱形图的圆角半径
     val barRadius = DEFAULT_EACH_BAR_WIDTH / 3
     // 已出数据的文本区域背景Rect
-    val textBgRect = RectF(0f, DEFAULT_TOTAL_BAR_HEIGHT, totalWidth.toFloat(), DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_TOTAL_TEXT_HEIGHT)
+    val textBgRect = RectF(0f, DEFAULT_TOTAL_BAR_HEIGHT, totalWidth.toFloat(), totalHeight.toFloat())
+
+    /**
+     * @return 返回指定笔和指定字符串的长度
+     */
+    fun getFontlength(paint: Paint, str: String) = paint.measureText(str)
+
+    /**
+     * 获取绘制文本的起点Y坐标
+     */
+    fun getFontY(paint: Paint) = getFontHeight(paint) / 2 + getFontLeading(paint)
+
+    /**
+     * @return 返回指定笔的文字高度
+     */
+    fun getFontHeight(paint: Paint) = paint.fontMetrics.descent - paint.fontMetrics.ascent
+
+    /**
+     * @return 返回指定笔离文字顶部的基准距离
+     */
+    fun getFontLeading(paint: Paint) = paint.fontMetrics.leading - paint.fontMetrics.ascent
 }
