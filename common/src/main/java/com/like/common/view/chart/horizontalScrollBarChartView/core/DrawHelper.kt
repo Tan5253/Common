@@ -4,9 +4,13 @@ import android.graphics.Canvas
 import android.graphics.Paint
 
 class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
+    // 1个柱形图+1个间隔的总宽度
     val barAndSpacingWidth = BarChartConfig.DEFAULT_EACH_BAR_WIDTH + BarChartConfig.DEFAULT_SPACING_BETWEEN_TWO_BARS
+    // 月份数据文本的顶部
     val monthTextTop = BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT + BarChartConfig.DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM
+    // 电量数据文本的顶部
     var electricityTextTop = 0f
+    // 月份数据文本的高度
     var monthTextHeight = 0f
 
     fun drawBar(barIndex: Int, paint: Paint) {

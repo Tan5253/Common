@@ -28,9 +28,14 @@ class BarChartConfig(val barDataList: List<BarData>) {
         val DEFAULT_TEXT_SPACING: Float = 20f// 月份数据和电量数据之间的间隙
     }
 
-    val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, DEFAULT_EACH_BAR_WIDTH, DEFAULT_TOTAL_BAR_HEIGHT, DEFAULT_SPACING_BETWEEN_TWO_BARS)
+    // 视图总宽度
     val totalWidth = (DEFAULT_EACH_BAR_WIDTH * barDataList.size + DEFAULT_SPACING_BETWEEN_TWO_BARS * (barDataList.size - 1)).toInt()
+    // 所有柱形图的Rect
+    val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, DEFAULT_EACH_BAR_WIDTH, DEFAULT_TOTAL_BAR_HEIGHT, DEFAULT_SPACING_BETWEEN_TWO_BARS)
+    // 视图总高度
     val totalHeight = (DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_TOTAL_TEXT_HEIGHT).toInt()
+    // 柱形图的圆角半径
     val barRadius = DEFAULT_EACH_BAR_WIDTH / 3
+    // 已出数据的文本区域背景Rect
     val textBgRect = RectF(0f, DEFAULT_TOTAL_BAR_HEIGHT, totalWidth.toFloat(), DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_TOTAL_TEXT_HEIGHT)
 }
