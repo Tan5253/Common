@@ -3,7 +3,7 @@ package com.like.common.util;
 import android.view.Gravity;
 import android.view.View;
 
-import com.like.toast.ToastUtils;
+import com.like.toast.ToastUtilsKt;
 
 /**
  * 点击事件相关的工具类
@@ -47,7 +47,7 @@ public class ClickUtils {
                 // 延迟，用于判断用户的点击操作是否结束
                 firstTime = secondTime;
                 if (count <= clickTimes) {
-                    ToastUtils.show(view.getContext(), "连续点击次数：" + count, 1000, Gravity.BOTTOM, 0);
+                    ToastUtilsKt.toast(view.getContext(), "连续点击次数：" + count, 1000, Gravity.BOTTOM);
                 }
                 if (count == clickTimes) {
                     clickListener.onClick(view);

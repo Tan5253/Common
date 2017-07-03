@@ -1,4 +1,4 @@
-package com.like.common.view.horizontalScrollLineChatView.core;
+package com.like.common.view.chart.horizontalScrollLineChartView.core;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,15 +6,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.like.common.view.horizontalScrollLineChatView.entity.Axis;
-import com.like.common.view.horizontalScrollLineChatView.entity.DataLine;
-import com.like.common.view.horizontalScrollLineChatView.entity.OtherLine;
-import com.like.common.view.horizontalScrollLineChatView.entity.OtherText;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.Axis;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.DataLine;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.OtherLine;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.OtherText;
 
 /**
  * 折线图，必须调用init()方法
  */
-public class LineChatView extends View {
+public class LineChartView extends View {
     private LineChartConfig lineChartConfig;
     private Axis xAxis;
     private Axis yAxis;
@@ -22,35 +22,35 @@ public class LineChatView extends View {
     private OtherLine[] otherLines;
     private OtherText[] otherTexts;
 
-    public LineChatView(Context context) {
+    public LineChartView(Context context) {
         super(context);
     }
 
-    public LineChatView(Context context, AttributeSet attrs) {
+    public LineChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     /**
      * 必须初始化才能使用
      *
-     * @param lineChatHelper
+     * @param lineChartHelper
      * @param showNumber     一屏显示的数据数量
      * @param showWidth      图表视图显示在屏幕上面的宽度
      * @param showHeight     图表视图显示在屏幕上面的高度
      */
-    public void init(LineChatHelper lineChatHelper, int showNumber, float showWidth, float showHeight) {
+    public void init(LineChartHelper lineChartHelper, int showNumber, float showWidth, float showHeight) {
 //        Log.e("TAG", "LineChatView init()");
-        if (lineChatHelper == null) {
+        if (lineChartHelper == null) {
             Log.e("TAG", "LineChatView init() lineChatHelper参数错误");
             return;
         }
-        lineChartConfig = lineChatHelper.getLineChartConfig();
+        lineChartConfig = lineChartHelper.getLineChartConfig();
         lineChartConfig.init(showNumber, showWidth, showHeight);
-        xAxis = lineChatHelper.getxAxis();
-        yAxis = lineChatHelper.getyAxis();
-        dataLines = lineChatHelper.getDataLines();
-        otherLines = lineChatHelper.getOtherLines();
-        otherTexts = lineChatHelper.getOtherTexts();
+        xAxis = lineChartHelper.getxAxis();
+        yAxis = lineChartHelper.getyAxis();
+        dataLines = lineChartHelper.getDataLines();
+        otherLines = lineChartHelper.getOtherLines();
+        otherTexts = lineChartHelper.getOtherTexts();
     }
 
     @Override

@@ -12,7 +12,7 @@ import android.provider.MediaStore;
 import android.view.Display;
 
 import com.like.rxbus.RxBus;
-import com.like.toast.ToastUtils;
+import com.like.toast.ToastUtilsKt;
 
 import java.io.File;
 import java.io.IOException;
@@ -181,7 +181,7 @@ public class TakePhotoUtils {
                 startPhotoZoom(uri, CODE_CROP_PHOTO);
             }
         } else {
-            ToastUtils.showShortCenter(activity, "图片选择失败");
+            ToastUtilsKt.shortToastCenter(activity, "图片选择失败");
         }
     }
 

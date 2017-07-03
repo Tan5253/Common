@@ -10,7 +10,7 @@ import com.like.common.sample.R;
 import com.like.common.sample.databinding.ActivityCsvBinding;
 import com.like.common.util.CsvUtils;
 import com.like.common.view.toolbar.ToolbarUtils;
-import com.like.toast.ToastUtils;
+import com.like.toast.ToastUtilsKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class CsvActivity extends BaseActivity {
         }
         CsvUtils.getInstance(this).write(aBoolean -> {
             if (aBoolean)
-                ToastUtils.showShortCenter(this, "写入成功");
+                ToastUtilsKt.shortToastCenter(this, "写入成功");
         }, "test", list);
 //        CsvUtils.getInstance(this).write(null, "test", "内容1内容1内容1~~内容1内容1@#@%$!@", "lsadkfl322l3rk2");
     }

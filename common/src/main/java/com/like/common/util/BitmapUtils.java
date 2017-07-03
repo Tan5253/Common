@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.like.logger.Logger;
-import com.like.toast.ToastUtils;
+import com.like.toast.ToastUtilsKt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,17 +35,17 @@ public class BitmapUtils {
         Context applicationContext = context.getApplicationContext();
         File file = new File(imagePath);
         if (!file.exists()) {
-            ToastUtils.showShortCenter(applicationContext, "图片不存在");
+            ToastUtilsKt.shortToastCenter(applicationContext, "图片不存在");
             return null;
         }
         Bitmap thumbnail = BitmapUtils.getNormalDegreeThumbnail(imagePath);
         if (thumbnail == null) {
-            ToastUtils.showShortCenter(applicationContext, "压缩图片大小失败");
+            ToastUtilsKt.shortToastCenter(applicationContext, "压缩图片大小失败");
             return null;
         }
         String targetPath = applicationContext.getExternalCacheDir() + file.getName();
         if (!BitmapUtils.compressBmpToFile(thumbnail, targetPath, targetSize)) {
-            ToastUtils.showShortCenter(applicationContext, "压缩图片质量失败");
+            ToastUtilsKt.shortToastCenter(applicationContext, "压缩图片质量失败");
             return null;
         }
         return targetPath;

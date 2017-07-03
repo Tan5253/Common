@@ -1,4 +1,4 @@
-package com.like.common.view.horizontalScrollLineChatView.core;
+package com.like.common.view.chart.horizontalScrollLineChartView.core;
 
 import android.graphics.PointF;
 import android.util.Log;

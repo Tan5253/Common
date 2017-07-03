@@ -1,4 +1,4 @@
-package com.like.common.view.horizontalScrollLineChatView.entity;
+package com.like.common.view.chart.horizontalScrollLineChartView.entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;

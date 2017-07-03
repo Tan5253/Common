@@ -1,4 +1,4 @@
-package com.like.common.view.horizontalScrollLineChatView.core;
+package com.like.common.view.chart.horizontalScrollLineChartView.core;
 
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
@@ -8,10 +8,10 @@ import android.graphics.PathEffect;
 import android.graphics.PointF;
 
 import com.like.common.util.MoneyFormatUtils;
-import com.like.common.view.horizontalScrollLineChatView.entity.Axis;
-import com.like.common.view.horizontalScrollLineChatView.entity.DataLine;
-import com.like.common.view.horizontalScrollLineChatView.entity.OtherLine;
-import com.like.common.view.horizontalScrollLineChatView.entity.OtherText;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.Axis;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.DataLine;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.OtherLine;
+import com.like.common.view.chart.horizontalScrollLineChartView.entity.OtherText;
 
 /**
  * 画图工具类
