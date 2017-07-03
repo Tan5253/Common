@@ -17,6 +17,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         val DEFAULT_MONTH_TEXT_COLOR = 0xcc000000.toInt()// 月份数据文本颜色，预测数据
         val DEFAULT_ELECTRICITY_TEXT_COLOR_REAL = 0xffffffff.toInt()// 电量数据文本颜色，真实数据
         val DEFAULT_ELECTRICITY_TEXT_COLOR = 0xff000000.toInt()// 电量数据文本颜色，预测数据
+        val DEFAULT_OTHER_TEXT_COLOR = 0xffffffff.toInt()// "预测"文本
         val DEFAULT_COLORS_REAL = intArrayOf(// 柱形图颜色数组，真实数据
                 0xff02bbff.toInt(),
                 0xffa845e7.toInt(),
@@ -38,6 +39,8 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val totalWidth = (DEFAULT_EACH_BAR_WIDTH * barDataList.size + DEFAULT_SPACING_BETWEEN_TWO_BARS * (barDataList.size - 1)).toInt()
     // 所有柱形图的Rect
     val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, DEFAULT_EACH_BAR_WIDTH, DEFAULT_TOTAL_BAR_HEIGHT, DEFAULT_SPACING_BETWEEN_TWO_BARS)
+    // "预测"两个字的字体大小
+    val otherTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
     // 月份数据文本字体大小
     val monthTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
     // 电量数据文本字体大小

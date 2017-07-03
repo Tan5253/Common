@@ -5,6 +5,7 @@ import android.graphics.*
 import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.getSimulatedData
+import com.like.logger.Logger
 
 class BarChartView(context: Context) : View(context) {
     private val mBarDataList: List<BarData> = getSimulatedData()
@@ -19,6 +20,8 @@ class BarChartView(context: Context) : View(context) {
     private val mElectricityTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val mTextBgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private val mOtherTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         setBackgroundColor(Color.BLACK)
@@ -35,6 +38,9 @@ class BarChartView(context: Context) : View(context) {
         mElectricityTextPaint.textSize = mBarChartConfig.electricityTextSize
 
         mTextBgPaint.style = Paint.Style.FILL
+
+        mOtherTextPaint.color = BarChartConfig.DEFAULT_OTHER_TEXT_COLOR
+        mOtherTextPaint.textSize = mBarChartConfig.otherTextSize
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -51,13 +57,16 @@ class BarChartView(context: Context) : View(context) {
                 mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR_REAL
             } else {
                 mDrawHelper.drawBar(index, mBarPaint)
+                mDrawHelper.drawOtherText(index, mOtherTextPaint)
+                Logger.w("month=${mBarDataList[index].month} index=$index top=${mBarChartConfig.barRectList[index].top}")
                 mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_BG_COLOR
                 mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR
                 mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR
             }
-            mDrawHelper.drawTextBg(index, mTextBgPaint)
+            mDrawHelper.drawXAxisTextBg(index, mTextBgPaint)
             mDrawHelper.drawMonth(index, mMonthTextPaint)
             mDrawHelper.drawElectricity(index, mElectricityTextPaint)
+            canvas.drawLine(0f, 290.07635f, 10000f, 290.07635f, mBarPaint)
         }
     }
 }

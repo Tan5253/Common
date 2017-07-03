@@ -2,6 +2,7 @@ package com.like.common.view.chart.horizontalScrollBarChartView.core
 
 import android.graphics.RectF
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
+import com.like.logger.Logger
 
 object BarChartHelper {
     /**
@@ -23,6 +24,7 @@ object BarChartHelper {
                 rect.top = totalBarHeight - barData.electricity * eachElectricityHeight
                 rect.right = rect.left + eachBarWidth
                 rect.bottom = totalBarHeight
+                Logger.i("month=${barData.month} index=$index top=${rect.top}")
                 result.add(rect)
             }
         }

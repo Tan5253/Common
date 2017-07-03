@@ -15,6 +15,13 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
             paint
     )
 
+    inline fun drawOtherText(barIndex: Int, paint: Paint) = canvas.drawText(
+            "(预测)",
+            barIndex * barAndSpacingWidth,
+            barChartConfig.barRectList[barIndex].top,
+            paint
+    )
+
     inline fun drawMonth(barIndex: Int, paint: Paint) = canvas.drawText(
             barChartConfig.barDataList[barIndex].month.toString(),
             barIndex * barAndSpacingWidth,
@@ -29,7 +36,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
             paint
     )
 
-    inline fun drawTextBg(barIndex: Int, paint: Paint) {
+    inline fun drawXAxisTextBg(barIndex: Int, paint: Paint) {
         barChartConfig.textBgRect.left = barIndex * barAndSpacingWidth
         barChartConfig.textBgRect.right = barChartConfig.textBgRect.left + barAndSpacingWidth
         canvas.drawRect(
