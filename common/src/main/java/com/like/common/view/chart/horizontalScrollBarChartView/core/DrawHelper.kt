@@ -29,9 +29,13 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
             paint
     )
 
-    inline fun drawTextBg(paint: Paint) = canvas.drawRect(
-            barChartConfig.textBgRect,
-            paint
-    )
+    inline fun drawTextBg(barIndex: Int, paint: Paint) {
+        barChartConfig.textBgRect.left = barIndex * barAndSpacingWidth
+        barChartConfig.textBgRect.right = barChartConfig.textBgRect.left + barAndSpacingWidth
+        canvas.drawRect(
+                barChartConfig.textBgRect,
+                paint
+        )
+    }
 
 }

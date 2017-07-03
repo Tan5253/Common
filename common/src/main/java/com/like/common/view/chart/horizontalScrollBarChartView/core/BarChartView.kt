@@ -11,7 +11,8 @@ class BarChartView(context: Context) : View(context) {
     private val mBarChartConfig: BarChartConfig = BarChartConfig(context, mBarDataList)
     private lateinit var mDrawHelper: DrawHelper
 
-    private val mBarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mBarPaintReal = Paint(Paint.ANTI_ALIAS_FLAG)// 柱形图，真实数据
+    private val mBarPaint = Paint(Paint.ANTI_ALIAS_FLAG)// 柱形图，预测数据
 
     private val mMonthTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
@@ -21,19 +22,19 @@ class BarChartView(context: Context) : View(context) {
 
     init {
         setBackgroundColor(Color.BLACK)
+        mBarPaintReal.style = Paint.Style.FILL
+        mBarPaintReal.shader = LinearGradient(0f, BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+
         mBarPaint.style = Paint.Style.FILL
-        mBarPaint.shader = LinearGradient(0f, BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT, 0f, 0f, BarChartConfig.DEFAULT_COLORS, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+        mBarPaint.color = BarChartConfig.DEFAULT_COLOR
 
         mMonthTextPaint.style = Paint.Style.STROKE
         mMonthTextPaint.textSize = mBarChartConfig.monthTextSize
-        mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR
 
         mElectricityTextPaint.style = Paint.Style.STROKE
         mElectricityTextPaint.textSize = mBarChartConfig.electricityTextSize
-        mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR
 
         mTextBgPaint.style = Paint.Style.FILL
-        mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_BG_COLOR
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -42,9 +43,19 @@ class BarChartView(context: Context) : View(context) {
 
     override fun onDraw(canvas: Canvas) {
         mDrawHelper = DrawHelper(canvas, mBarChartConfig)
-        mDrawHelper.drawTextBg(mTextBgPaint)
-        for (index in 0 until mBarDataList.size) {
-            mDrawHelper.drawBar(index, mBarPaint)
+        for ((index, barData) in mBarDataList.withIndex()) {
+            if (barData.isRealData) {
+                mDrawHelper.drawBar(index, mBarPaintReal)
+                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_BG_COLOR_REAL
+                mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR_REAL
+                mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR_REAL
+            } else {
+                mDrawHelper.drawBar(index, mBarPaint)
+                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_BG_COLOR
+                mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR
+                mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR
+            }
+            mDrawHelper.drawTextBg(index, mTextBgPaint)
             mDrawHelper.drawMonth(index, mMonthTextPaint)
             mDrawHelper.drawElectricity(index, mElectricityTextPaint)
         }

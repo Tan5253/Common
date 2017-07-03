@@ -11,15 +11,19 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
  */
 class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     companion object {
-        val DEFAULT_TEXT_BG_COLOR = 0xffff0000.toInt()// 文本区域背景颜色
-        val DEFAULT_MONTH_TEXT_COLOR = 0xffffffff.toInt()// 月份数据文本颜色
-        val DEFAULT_ELECTRICITY_TEXT_COLOR = 0xffffffff.toInt()// 电量数据文本颜色
-        val DEFAULT_COLORS = intArrayOf(// 颜色数组
+        val DEFAULT_TEXT_BG_COLOR_REAL = 0xffff0000.toInt()// 文本区域背景颜色，真实数据
+        val DEFAULT_TEXT_BG_COLOR = 0xffff00ff.toInt()// 文本区域背景颜色，预测数据
+        val DEFAULT_MONTH_TEXT_COLOR_REAL = 0xffffffff.toInt()// 月份数据文本颜色，真实数据
+        val DEFAULT_MONTH_TEXT_COLOR = 0xcc000000.toInt()// 月份数据文本颜色，预测数据
+        val DEFAULT_ELECTRICITY_TEXT_COLOR_REAL = 0xffffffff.toInt()// 电量数据文本颜色，真实数据
+        val DEFAULT_ELECTRICITY_TEXT_COLOR = 0xff000000.toInt()// 电量数据文本颜色，预测数据
+        val DEFAULT_COLORS_REAL = intArrayOf(// 柱形图颜色数组，真实数据
                 0xff02bbff.toInt(),
                 0xffa845e7.toInt(),
                 0xffed4b90.toInt(),
                 0xfff84330.toInt()
         )
+        val DEFAULT_COLOR = 0xffff00ff.toInt()// 柱形图颜色，预测数据
         val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 颜色对应的终点位置的数组
                 0.4f, 0.7f, 0.9f, 1.0f
         )
