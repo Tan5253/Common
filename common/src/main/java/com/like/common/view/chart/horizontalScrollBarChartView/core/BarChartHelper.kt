@@ -28,4 +28,5 @@ object BarChartHelper {
         }
         return result
     }
+
 }
