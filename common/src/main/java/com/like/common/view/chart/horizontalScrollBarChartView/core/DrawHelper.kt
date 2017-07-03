@@ -16,3 +16,7 @@ fun View.drawMonth(canvas: Canvas, text: String, barIndex: Int, eachBarWidth: Fl
 fun View.drawElectricity(canvas: Canvas, text: String, barIndex: Int, eachBarWidth: Float, totalBarHeight: Float, spacingBetweenTwoBars: Float, paint: Paint) {
     canvas.drawText("${text}度", barIndex * (eachBarWidth + spacingBetweenTwoBars), totalBarHeight + 90, paint)
 }
+
+fun View.drawTextBg(canvas: Canvas, rect: RectF, paint: Paint) {
+    canvas.drawRect(rect, paint)
+}

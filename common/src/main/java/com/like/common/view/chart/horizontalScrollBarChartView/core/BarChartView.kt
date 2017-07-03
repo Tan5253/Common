@@ -8,9 +8,9 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.getSimulatedData
 
 class BarChartView(context: Context) : View(context) {
-    private val DEFAULT_TEXT_BG_COLOR = 0xfff0000.toInt()
+    private val DEFAULT_TEXT_BG_COLOR = 0xffff0000.toInt()
     private val DEFAULT_MONTH_TEXT_COLOR = 0xffffffff.toInt()
-    private val DEFAULT_ELECTRICITY_TEXT_COLOR = 0xffffff00.toInt()
+    private val DEFAULT_ELECTRICITY_TEXT_COLOR = 0xffffffff.toInt()
     private val DEFAULT_COLORS = intArrayOf(// 颜色数组
             0xff02bbff.toInt(),
             0xffa845e7.toInt(),
@@ -32,6 +32,7 @@ class BarChartView(context: Context) : View(context) {
     private val mElectricityTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mElectricityTextSize = DimensionUtils.sp2px(context, 16f).toFloat()
     private val mTextBgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mTextBgRect = RectF()
     private val mTotalWidth = DEFAULT_EACH_BARWIDTH * mBarDataList.size + DEFAULT_SPACING_BETWEEN_TWOBARS * (mBarDataList.size - 1)
     private val mRoundRectRadius = DEFAULT_EACH_BARWIDTH / 3
 
@@ -50,6 +51,11 @@ class BarChartView(context: Context) : View(context) {
 
         mTextBgPaint.style = Paint.Style.FILL
         mTextBgPaint.color = DEFAULT_TEXT_BG_COLOR
+
+        mTextBgRect.left = 0f
+        mTextBgRect.top = DEFAULT_TOTAL_BARHEIGHT
+        mTextBgRect.right = mTotalWidth
+        mTextBgRect.bottom = DEFAULT_TOTAL_BARHEIGHT + DEFAULT_TOTAL_TEXT_HEIGHT
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -57,6 +63,7 @@ class BarChartView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
+        drawTextBg(canvas, mTextBgRect, mTextBgPaint)
         for ((index, value) in mBarDataList.withIndex()) {
             drawBar(canvas, mRectList[index], mRoundRectRadius, mBarPaint)
             drawMonth(canvas, value.month.toString(), index, DEFAULT_EACH_BARWIDTH, DEFAULT_TOTAL_BARHEIGHT, DEFAULT_SPACING_BETWEEN_TWOBARS, mMonthTextPaint)
