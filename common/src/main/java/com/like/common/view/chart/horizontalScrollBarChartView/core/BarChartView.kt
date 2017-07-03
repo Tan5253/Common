@@ -46,7 +46,7 @@ class BarChartView(context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         mDrawHelper = DrawHelper(canvas, mBarChartConfig)
         mDrawHelper.drawTextBg(mTextBgPaint)
-        for ((index, _) in mBarDataList.withIndex()) {
+        for (index in 0 until mBarDataList.size) {
             mDrawHelper.drawBar(index, mBarPaint)
             mDrawHelper.drawMonth(index, mMonthTextPaint)
             mDrawHelper.drawElectricity(index, mElectricityTextPaint)
