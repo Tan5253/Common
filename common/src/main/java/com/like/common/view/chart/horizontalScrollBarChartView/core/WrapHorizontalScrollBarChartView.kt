@@ -11,7 +11,9 @@ import android.widget.HorizontalScrollView
 class WrapHorizontalScrollBarChartView(context: Context, attrs: AttributeSet) : HorizontalScrollView(context, attrs) {
 
     init {
-        val barChartView = BarChartView(context, attrs)
+        isVerticalScrollBarEnabled = false
+        isHorizontalScrollBarEnabled = false
+        val barChartView = BarChartView(context)
         val layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
         barChartView.layoutParams = layoutParams
         addView(barChartView)
