@@ -23,11 +23,11 @@ fun getSimulatedData(): List<BarData> {
             BarData(16, 4.4f),
             BarData(17, 5.5f),
             BarData(18, 6.6f),
-            BarData(19, 7.7f, false),
+            BarData(19, 12.1f, false),
             BarData(20, 8.8f, false),
             BarData(21, 9.9f, false),
             BarData(22, 11.0f, false),
-            BarData(23, 12.1f, false)
+            BarData(23, 13.1f, false)
 
     )
 }

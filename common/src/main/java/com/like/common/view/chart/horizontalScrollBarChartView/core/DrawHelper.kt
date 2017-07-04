@@ -17,7 +17,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
 
     inline fun drawOtherText(barIndex: Int, paint: Paint) = canvas.drawText(
             "(预测)",
-            barIndex * barAndSpacingWidth + BarChartConfig.DEFAULT_SPACING_BETWEEN_TWO_BARS / 2 - 30,
+            barIndex * barAndSpacingWidth + BarChartConfig.DEFAULT_SPACING_BETWEEN_TWO_BARS / 2 - 26,
             barChartConfig.barRectList[barIndex].top - 10,
             paint
     )
