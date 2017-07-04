@@ -28,9 +28,9 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 颜色对应的终点位置的数组
                 0.4f, 0.7f, 0.9f, 1.0f
         )
-        val DEFAULT_EACH_BAR_WIDTH: Float = 35f// 每个柱形图的宽度
+        val DEFAULT_EACH_BAR_WIDTH: Float = 40f// 每个柱形图的宽度
         val DEFAULT_TOTAL_BAR_HEIGHT: Float = 500f// 柱形图高度
-        val DEFAULT_SPACING_BETWEEN_TWO_BARS: Float = 80f// 两个柱形图之间的间隔
+        val DEFAULT_SPACING_BETWEEN_TWO_BARS: Float = 90f// 两个柱形图之间的间隔
         val DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM: Float = 20f// 文本区域上下留白
         val DEFAULT_TEXT_SPACING: Float = 20f// 月份数据和电量数据之间的间隙
     }
@@ -40,11 +40,11 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 所有柱形图的Rect
     val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, DEFAULT_EACH_BAR_WIDTH, DEFAULT_TOTAL_BAR_HEIGHT, DEFAULT_SPACING_BETWEEN_TWO_BARS)
     // "预测"两个字的字体大小
-    val otherTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    val otherTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
     // 月份数据文本字体大小
-    val monthTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    val monthTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
     // 电量数据文本字体大小
-    val electricityTextSize = DimensionUtils.sp2px(context, 16f).toFloat()
+    val electricityTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
     // 月份数据文本绘制的起点Y坐标
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()

@@ -22,19 +22,25 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
             paint
     )
 
-    inline fun drawMonth(barIndex: Int, paint: Paint) = canvas.drawText(
-            barChartConfig.barDataList[barIndex].month.toString(),
-            barIndex * barAndSpacingWidth,
-            barChartConfig.monthTextStartY,
-            paint
-    )
+    inline fun drawMonth(barIndex: Int, paint: Paint) {
+        val text = barChartConfig.barDataList[barIndex].month.toString()
+        canvas.drawText(
+                text,
+                barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getFontlength(paint, text) / 2,
+                barChartConfig.monthTextStartY,
+                paint
+        )
+    }
 
-    inline fun drawElectricity(barIndex: Int, paint: Paint) = canvas.drawText(
-            barChartConfig.barDataList[barIndex].electricity.toString(),
-            barIndex * barAndSpacingWidth,
-            barChartConfig.electricityTextStartY,
-            paint
-    )
+    inline fun drawElectricity(barIndex: Int, paint: Paint) {
+        val text = barChartConfig.barDataList[barIndex].electricity.toString()
+        canvas.drawText(
+                text,
+                barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getFontlength(paint, text) / 2,
+                barChartConfig.electricityTextStartY,
+                paint
+        )
+    }
 
     inline fun drawXAxisTextBg(barIndex: Int, paint: Paint) {
         barChartConfig.textBgRect.left = barIndex * barAndSpacingWidth
