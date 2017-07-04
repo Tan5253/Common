@@ -31,6 +31,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         val DEFAULT_EACH_BAR_WIDTH: Float = 40f// 每个柱形图的宽度
         val DEFAULT_TOTAL_BAR_HEIGHT: Float = 500f// 柱形图高度
         val DEFAULT_SPACING_BETWEEN_TWO_BARS: Float = 90f// 两个柱形图之间的间隔
+        val DEFAULT_SPACING_BETWEEN_BAR_AND_TEXT: Float = 50f// 柱形图和文本区域之间的间隔
         val DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM: Float = 20f// 文本区域上下留白
         val DEFAULT_TEXT_SPACING: Float = 20f// 月份数据和电量数据之间的间隙
     }
@@ -49,13 +50,13 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT + getFontY(paint)
+        DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_SPACING_BETWEEN_BAR_AND_TEXT + getFontY(paint)
     }
     // 电量数据文本绘制的起点Y坐标
     val electricityTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        val electricityTextTop = BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT + getFontHeight(paint)
+        val electricityTextTop = DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_SPACING_BETWEEN_BAR_AND_TEXT + getFontHeight(paint)
         paint.textSize = electricityTextSize
         electricityTextTop + getFontY(paint)
     }
@@ -69,11 +70,11 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM * 2 + DEFAULT_TEXT_SPACING + monthTextHeight + electricityTextHeight
     }
     // 视图总高度
-    val totalHeight = (DEFAULT_TOTAL_BAR_HEIGHT + totalTextHeight).toInt()
+    val totalHeight = (DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_SPACING_BETWEEN_BAR_AND_TEXT + totalTextHeight).toInt()
     // 柱形图的圆角半径
     val barRadius = DEFAULT_EACH_BAR_WIDTH / 3
     // 已出数据的文本区域背景Rect
-    val textBgRect = RectF(0f, DEFAULT_TOTAL_BAR_HEIGHT, totalWidth.toFloat(), totalHeight.toFloat())
+    val textBgRect = RectF(0f, DEFAULT_TOTAL_BAR_HEIGHT + DEFAULT_SPACING_BETWEEN_BAR_AND_TEXT, totalWidth.toFloat(), totalHeight.toFloat())
 
     /**
      * @return 返回指定笔和指定字符串的长度
