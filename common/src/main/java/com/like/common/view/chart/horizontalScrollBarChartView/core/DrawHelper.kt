@@ -30,7 +30,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
     )
 
     inline fun drawElectricity(barIndex: Int, paint: Paint) = canvas.drawText(
-            "${barChartConfig.barDataList[barIndex].electricity}度",
+            barChartConfig.barDataList[barIndex].electricity.toString(),
             barIndex * barAndSpacingWidth,
             barChartConfig.electricityTextStartY,
             paint
@@ -39,10 +39,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
     inline fun drawXAxisTextBg(barIndex: Int, paint: Paint) {
         barChartConfig.textBgRect.left = barIndex * barAndSpacingWidth
         barChartConfig.textBgRect.right = barChartConfig.textBgRect.left + barAndSpacingWidth
-        canvas.drawRect(
-                barChartConfig.textBgRect,
-                paint
-        )
+        canvas.drawRect(barChartConfig.textBgRect, paint)
     }
 
 }
