@@ -20,7 +20,7 @@ object BarChartHelper {
             val eachElectricityHeight = totalBarHeight / maxElectricity
             for ((index, barData) in barDataList.withIndex()) {
                 val rect = RectF()
-                rect.left = index * (eachBarWidth + spacingBetweenTwoBars)
+                rect.left = index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
                 rect.top = totalBarHeight - barData.electricity * eachElectricityHeight
                 rect.right = rect.left + eachBarWidth
                 rect.bottom = totalBarHeight

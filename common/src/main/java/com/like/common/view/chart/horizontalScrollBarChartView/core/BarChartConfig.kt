@@ -30,13 +30,13 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         )
         val DEFAULT_EACH_BAR_WIDTH: Float = 35f// 每个柱形图的宽度
         val DEFAULT_TOTAL_BAR_HEIGHT: Float = 500f// 柱形图高度
-        val DEFAULT_SPACING_BETWEEN_TWO_BARS: Float = 50f// 两个柱形图之间的间隔
+        val DEFAULT_SPACING_BETWEEN_TWO_BARS: Float = 80f// 两个柱形图之间的间隔
         val DEFAULT_SPACING_ON_TEXT_TOP_OR_BOTTOM: Float = 20f// 文本区域上下留白
         val DEFAULT_TEXT_SPACING: Float = 20f// 月份数据和电量数据之间的间隙
     }
 
     // 视图总宽度
-    val totalWidth = (DEFAULT_EACH_BAR_WIDTH * barDataList.size + DEFAULT_SPACING_BETWEEN_TWO_BARS * (barDataList.size - 1)).toInt()
+    val totalWidth = (DEFAULT_EACH_BAR_WIDTH * barDataList.size + DEFAULT_SPACING_BETWEEN_TWO_BARS * barDataList.size).toInt()
     // 所有柱形图的Rect
     val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, DEFAULT_EACH_BAR_WIDTH, DEFAULT_TOTAL_BAR_HEIGHT, DEFAULT_SPACING_BETWEEN_TWO_BARS)
     // "预测"两个字的字体大小
