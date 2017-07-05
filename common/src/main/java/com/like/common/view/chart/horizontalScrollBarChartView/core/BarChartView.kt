@@ -65,7 +65,5 @@ class BarChartView(context: Context) : View(context) {
             mDrawHelper.drawMonth(index, mMonthTextPaint)
             mDrawHelper.drawElectricity(index, mElectricityTextPaint)
         }
-        mBarPaint.color = Color.BLACK
-        canvas.drawRect(mBarChartConfig.textAreaBgRect, mBarPaint)
     }
 }
