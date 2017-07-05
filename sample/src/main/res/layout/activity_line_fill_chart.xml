@@ -7,7 +7,7 @@
         android:orientation="vertical">
 
         <com.like.common.view.chart.horizontalScrollLineFillChartView.core.WrapHorizontalScrollLineFillChartView
-            android:id="@+id/barView"
+            android:id="@+id/lineFillView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/common_text_white_0" />

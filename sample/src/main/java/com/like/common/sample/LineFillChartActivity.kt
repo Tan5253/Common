@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityLineFillChartBinding
+import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
 class LineFillChartActivity : BaseActivity() {
     private val mBinding: ActivityLineFillChartBinding by lazy {
@@ -11,8 +12,13 @@ class LineFillChartActivity : BaseActivity() {
     }
 
     override fun getViewModel(): BaseViewModel? {
-        mBinding.root
+        mBinding.lineFillView.setData(getSimulatedData())
         return null
     }
 
+    fun getSimulatedData(): List<LineData> {
+        return listOf(
+                LineData(1, 300f)
+        )
+    }
 }

@@ -4,9 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.core.BarChartConfig
+import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
+import com.like.logger.Logger
 
 
 class LineFillChartView(context: Context) : View(context) {
+    private val mLineDataList: MutableList<LineData> = arrayListOf()
+    private val mLineFillChartConfig: LineFillChartConfig = LineFillChartConfig(context)
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
@@ -17,16 +21,21 @@ class LineFillChartView(context: Context) : View(context) {
         mLinePaint.shader = LinearGradient(0f, 500f, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
     }
 
+    fun setData(lineDataList: List<LineData>) {
+        mLineDataList.clear()
+        mLineDataList.addAll(lineDataList)
+
+        mLineFillChartConfig.setData(lineDataList)
+
+        requestLayout()
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(500, 500)
+        setMeasuredDimension(mLineFillChartConfig.totalWidth, mLineFillChartConfig.totalHeight)
     }
 
     override fun onDraw(canvas: Canvas) {
-        val path = Path()
-        path.moveTo(0f, 0f)
-        path.lineTo(50f, 50f)
-        path.lineTo(50f, 500f)
-        path.lineTo(0f, 500f)
-        canvas.drawPath(path, mLinePaint)
+        Logger.wtf(mLineFillChartConfig.pathList[0])
+        canvas.drawPath(mLineFillChartConfig.pathList[0], mLinePaint)
     }
 }
