@@ -35,7 +35,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 两个柱形图之间的间隔
     val spacingBetweenTwoBars: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 柱形图高度
-    val totalBarHeight: Float = DimensionUtils.dp2px(context, 180f).toFloat()
+    val totalBarHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 柱形图和文本区域之间的间隔
     val spacingBarBottom: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 柱形图距离顶部的间隔
