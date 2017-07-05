@@ -43,7 +43,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 柱形图距离顶部的间隔
     val spacingBarTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 文本区域上下留白
-    val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
+    val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 8f).toFloat()
     // 月份数据和电量数据之间的间隙
     val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 3f).toFloat()
     // "预测"两个字的字体大小
