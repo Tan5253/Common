@@ -45,9 +45,9 @@ class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: B
     }
 
     inline fun drawXAxisTextBg(barIndex: Int, paint: Paint) {
-        barChartConfig.textBgRect.left = barIndex * barAndSpacingWidth
-        barChartConfig.textBgRect.right = barChartConfig.textBgRect.left + barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2
-        canvas.drawRect(barChartConfig.textBgRect, paint)
+        barChartConfig.textAreaBgRect.left = barIndex * barAndSpacingWidth
+        barChartConfig.textAreaBgRect.right = barChartConfig.textAreaBgRect.left + barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2
+        canvas.drawRect(barChartConfig.textAreaBgRect, paint)
     }
 
 }

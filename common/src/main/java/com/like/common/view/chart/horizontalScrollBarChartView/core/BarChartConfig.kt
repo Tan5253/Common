@@ -11,8 +11,8 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
  */
 class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     companion object {
-        val DEFAULT_TEXT_BG_COLOR_REAL = 0xff28c4ff.toInt()// 文本区域背景颜色，真实数据
-        val DEFAULT_TEXT_BG_COLOR = 0xffe5f8ff.toInt()// 文本区域背景颜色，预测数据
+        val DEFAULT_TEXT_AREA_BG_COLOR_REAL = 0xff28c4ff.toInt()// 文本区域背景颜色，真实数据
+        val DEFAULT_TEXT_AREA_BG_COLOR = 0xffe5f8ff.toInt()// 文本区域背景颜色，预测数据
         val DEFAULT_MONTH_TEXT_COLOR_REAL = 0xffbde9ff.toInt()// 月份数据文本颜色，真实数据
         val DEFAULT_MONTH_TEXT_COLOR = 0xff9c9c9c.toInt()// 月份数据文本颜色，预测数据
         val DEFAULT_ELECTRICITY_TEXT_COLOR_REAL = 0xffffffff.toInt()// 电量数据文本颜色，真实数据
@@ -41,9 +41,9 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 柱形图距离顶部的间隔
     val spacingBarTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 文本区域上下留白
-    val spacingOnTextTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
+    val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
     // 月份数据和电量数据之间的间隙
-    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 10f).toFloat()
+    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 5f).toFloat()
     // "预测"两个字的字体大小
     val otherTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
     // 月份数据文本字体大小
@@ -51,39 +51,39 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 电量数据文本字体大小
     val electricityTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
 
-
-    // 月份数据文本绘制的起点Y坐标
-    val monthTextStartY: Float by lazy {
-        val paint: Paint = Paint()
-        paint.textSize = monthTextSize
-        spacingBarTop + totalBarHeight + spacingBarBottom + getFontY(paint)
-    }
-    // 电量数据文本绘制的起点Y坐标
-    val electricityTextStartY: Float by lazy {
-        val paint: Paint = Paint()
-        paint.textSize = monthTextSize
-        val electricityTextTop = spacingBarTop + totalBarHeight + spacingBarBottom + getFontHeight(paint)
-        paint.textSize = electricityTextSize
-        electricityTextTop + getFontY(paint)
-    }
     // 文本区域总高度
-    val totalTextHeight: Float by lazy {
+    val totalTextAreaHeight: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
         val monthTextHeight = getFontHeight(paint)
         paint.textSize = electricityTextSize
         val electricityTextHeight = getFontHeight(paint)
-        spacingOnTextTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
+        spacingOnTextAreaTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
     }
-
+    // 文本区域的顶部y坐标
+    val textAreaTop: Float = spacingBarTop + totalBarHeight + spacingBarBottom
+    // 月份数据文本绘制的起点Y坐标
+    val monthTextStartY: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = monthTextSize
+        textAreaTop + spacingOnTextAreaTopOrBottom + getFontY(paint)
+    }
+    // 电量数据文本绘制的起点Y坐标
+    val electricityTextStartY: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = monthTextSize
+        val electricityTextTop = textAreaTop + spacingOnTextAreaTopOrBottom + getFontHeight(paint) + spacingBetweenTwoText
+        paint.textSize = electricityTextSize
+        electricityTextTop + getFontY(paint)
+    }
     // 视图总宽度
     val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
     // 视图总高度
-    val totalHeight = (spacingBarTop + totalBarHeight + spacingBarBottom + totalTextHeight).toInt()
+    val totalHeight = (spacingBarTop + totalBarHeight + spacingBarBottom + totalTextAreaHeight).toInt()
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
     // 已出数据的文本区域背景Rect
-    val textBgRect = RectF(0f, spacingBarTop + totalBarHeight + spacingBarBottom, totalWidth.toFloat(), totalHeight.toFloat())
+    val textAreaBgRect = RectF(0f, textAreaTop, totalWidth.toFloat(), totalHeight.toFloat())
     // 所有柱形图的Rect
     val barRectList: List<RectF> by lazy {
         val result: MutableList<RectF> = mutableListOf()

@@ -51,13 +51,13 @@ class BarChartView(context: Context) : View(context) {
         for ((index, barData) in mBarDataList.withIndex()) {
             if (barData.isRealData) {
                 mDrawHelper.drawBar(index, mBarPaintReal)
-                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_BG_COLOR_REAL
+                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR_REAL
                 mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR_REAL
                 mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR_REAL
             } else {
                 mDrawHelper.drawBar(index, mBarPaint)
                 mDrawHelper.drawOtherText(index, mOtherTextPaint)
-                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_BG_COLOR
+                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR
                 mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR
                 mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR
             }
@@ -65,5 +65,6 @@ class BarChartView(context: Context) : View(context) {
             mDrawHelper.drawMonth(index, mMonthTextPaint)
             mDrawHelper.drawElectricity(index, mElectricityTextPaint)
         }
+        canvas.drawLine(0f, mBarChartConfig.textAreaTop, 1000f, mBarChartConfig.textAreaTop, mBarPaint)
     }
 }
