@@ -31,7 +31,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     }
 
     // 每个柱形图的宽度
-    val eachBarWidth: Float = DimensionUtils.dp2px(context, 17f).toFloat()
+    val eachBarWidth: Float = DimensionUtils.dp2px(context, 15f).toFloat()
     // 两个柱形图之间的间隔
     val spacingBetweenTwoBars: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 柱形图高度
