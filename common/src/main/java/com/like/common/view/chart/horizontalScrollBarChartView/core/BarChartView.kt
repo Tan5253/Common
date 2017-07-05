@@ -8,9 +8,7 @@ import com.like.logger.Logger
 
 class BarChartView(context: Context) : View(context) {
     private val mBarDataList: MutableList<BarData> = arrayListOf()
-    private val mBarChartConfig: BarChartConfig by lazy {
-        BarChartConfig(context, mBarDataList)
-    }
+    private val mBarChartConfig: BarChartConfig = BarChartConfig(context)
     private lateinit var mDrawHelper: DrawHelper
 
     private val mBarPaintReal = Paint(Paint.ANTI_ALIAS_FLAG)// 柱形图，真实数据
@@ -31,7 +29,11 @@ class BarChartView(context: Context) : View(context) {
     }
 
     fun setData(barDataList: List<BarData>) {
+        mBarDataList.clear()
         mBarDataList.addAll(barDataList)
+
+        mBarChartConfig.setData(barDataList)
+
         mBarPaintReal.style = Paint.Style.FILL
         mBarPaintReal.shader = LinearGradient(0f, mBarChartConfig.totalBarHeight, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
 
@@ -52,16 +54,17 @@ class BarChartView(context: Context) : View(context) {
 
         mOtherTextPaint.color = BarChartConfig.DEFAULT_OTHER_TEXT_COLOR
         mOtherTextPaint.textSize = mBarChartConfig.otherTextSize
-        invalidate()
+        requestLayout()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        Logger.wtf("BarChartView onMeasure")
         setMeasuredDimension(mBarChartConfig.totalWidth, mBarChartConfig.totalHeight)
     }
 
     override fun onDraw(canvas: Canvas) {
         if (mBarDataList.isNotEmpty()) {
-            Logger.i("BarChartView onDraw")
+            Logger.wtf("BarChartView onDraw")
             mDrawHelper = DrawHelper(canvas, mBarChartConfig)
             // 画单位
             mTextBgPaint.color = BarChartConfig.DEFAULT_UNIT_BG_COLOR

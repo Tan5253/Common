@@ -9,7 +9,7 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 /**
  * 尺寸，常量
  */
-class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
+class BarChartConfig(val context: Context) {
     companion object {
         val DEFAULT_UNIT_TEXT_COLOR = 0xffffffff.toInt()// 文本区域最左边单位的文字颜色
         val DEFAULT_UNIT_BG_COLOR = 0xff3d86b5.toInt()// 文本区域最左边单位区域的背景颜色
@@ -80,16 +80,34 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         paint.textSize = electricityTextSize
         electricityTextTop + getTextBaseLine(paint)
     }
-    // 视图总宽度
-    val totalWidth = (spacingBetweenTwoBars + eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
-    // 视图总高度
-    val totalHeight = (textAreaTop + totalTextAreaHeight).toInt()
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
+    // 视图总高度
+    val totalHeight = (textAreaTop + totalTextAreaHeight).toInt()
+
+    // 视图总宽度
+    var totalWidth = 0
     // 已出数据的文本区域背景Rect
-    val textAreaBgRect = RectF(0f, textAreaTop, totalWidth.toFloat(), totalHeight.toFloat())
+    val textAreaBgRect = RectF()
     // 所有柱形图的Rect
-    val barRectList: List<RectF> by lazy {
+    val barRectList: MutableList<RectF> = arrayListOf()
+    val barDataList: MutableList<BarData> = arrayListOf()
+    fun setData(barDataList: List<BarData>) {
+        this.barDataList.clear()
+        this.barDataList.addAll(barDataList)
+
+        totalWidth = (spacingBetweenTwoBars + eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
+
+        textAreaBgRect.left = 0f
+        textAreaBgRect.top = textAreaTop
+        textAreaBgRect.right = totalWidth.toFloat()
+        textAreaBgRect.bottom = totalHeight.toFloat()
+
+        barRectList.clear()
+        barRectList.addAll(getAllBarRect())
+    }
+
+    fun getAllBarRect(): List<RectF> {
         val result: MutableList<RectF> = mutableListOf()
         if (barDataList.isNotEmpty()) {
             val maxElectricity = barDataList.maxBy { it.electricity }!!.electricity
@@ -103,7 +121,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
                 result.add(rect)
             }
         }
-        result
+        return result
     }
 
     /**
