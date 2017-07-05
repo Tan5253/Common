@@ -47,23 +47,25 @@ class BarChartView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
-        mDrawHelper = DrawHelper(canvas, mBarChartConfig)
-        for ((index, barData) in mBarDataList.withIndex()) {
-            if (barData.isRealData) {
-                mDrawHelper.drawBar(index, mBarPaintReal)
-                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR_REAL
-                mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR_REAL
-                mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR_REAL
-            } else {
-                mDrawHelper.drawBar(index, mBarPaint)
-                mDrawHelper.drawOtherText(index, mOtherTextPaint)
-                mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR
-                mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR
-                mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR
+        if (mBarDataList.isNotEmpty()) {
+            mDrawHelper = DrawHelper(canvas, mBarChartConfig)
+            for ((index, barData) in mBarDataList.withIndex()) {
+                if (barData.isRealData) {
+                    mDrawHelper.drawBar(index, mBarPaintReal)
+                    mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR_REAL
+                    mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR_REAL
+                    mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR_REAL
+                } else {
+                    mDrawHelper.drawBar(index, mBarPaint)
+                    mDrawHelper.drawOtherText(index, mOtherTextPaint)
+                    mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR
+                    mMonthTextPaint.color = BarChartConfig.DEFAULT_MONTH_TEXT_COLOR
+                    mElectricityTextPaint.color = BarChartConfig.DEFAULT_ELECTRICITY_TEXT_COLOR
+                }
+                mDrawHelper.drawXAxisTextBg(index, mTextBgPaint)
+                mDrawHelper.drawMonth(index, mMonthTextPaint)
+                mDrawHelper.drawElectricity(index, mElectricityTextPaint)
             }
-            mDrawHelper.drawXAxisTextBg(index, mTextBgPaint)
-            mDrawHelper.drawMonth(index, mMonthTextPaint)
-            mDrawHelper.drawElectricity(index, mElectricityTextPaint)
         }
     }
 }
