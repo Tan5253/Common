@@ -9,17 +9,17 @@ object BarChartHelper {
      *
      * @param barDataList           柱形图需要的数据
      */
-    fun getBarRectList(barDataList: List<BarData>): List<RectF> {
+    fun getBarRectList(barDataList: List<BarData>, barChartConfig: BarChartConfig): List<RectF> {
         val result: MutableList<RectF> = mutableListOf()
         if (barDataList.isNotEmpty()) {
             val maxElectricity = barDataList.maxBy { it.electricity }!!.electricity
-            val eachElectricityHeight = BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT / maxElectricity
+            val eachElectricityHeight = barChartConfig.totalBarHeight / maxElectricity
             for ((index, barData) in barDataList.withIndex()) {
                 val rect = RectF()
-                rect.left = index * (BarChartConfig.DEFAULT_EACH_BAR_WIDTH + BarChartConfig.DEFAULT_SPACING_BETWEEN_TWO_BARS) + BarChartConfig.DEFAULT_SPACING_BETWEEN_TWO_BARS / 2
-                rect.top = BarChartConfig.DEFAULT_SPACING_BAR_TOP + BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT - barData.electricity * eachElectricityHeight
-                rect.right = rect.left + BarChartConfig.DEFAULT_EACH_BAR_WIDTH
-                rect.bottom = BarChartConfig.DEFAULT_SPACING_BAR_TOP + BarChartConfig.DEFAULT_TOTAL_BAR_HEIGHT
+                rect.left = index * (barChartConfig.eachBarWidth + barChartConfig.spacingBetweenTwoBars) + barChartConfig.spacingBetweenTwoBars / 2
+                rect.top = barChartConfig.spacingBarTop + barChartConfig.totalBarHeight - barData.electricity * eachElectricityHeight
+                rect.right = rect.left + barChartConfig.eachBarWidth
+                rect.bottom = barChartConfig.spacingBarTop + barChartConfig.totalBarHeight
                 result.add(rect)
             }
         }
