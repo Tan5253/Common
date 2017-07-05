@@ -44,21 +44,23 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val screenWidth: Int = displayMetrics.widthPixels
     // 屏幕高度
     val screenHeight: Int = displayMetrics.heightPixels
-
-
-    val eachBarWidth: Float = 40f// 每个柱形图的宽度
-    val totalBarHeight: Float = 500f// 柱形图高度
-    val spacingBetweenTwoBars: Float = 90f// 两个柱形图之间的间隔
-    val spacingBetweenBarAndTextArea: Float = 50f// 柱形图和文本区域之间的间隔
-    val spacingBarTop: Float = 50f// 柱形图距离顶部的间隔
-    val spacingOnTextTopOrBottom: Float = 20f// 文本区域上下留白
-    val spacingBetweenTwoText: Float = 20f// 月份数据和电量数据之间的间隙
-
+    // 每个柱形图的宽度
+    val eachBarWidth: Float = (screenWidth / DEFAULT_BAR_COUNT_IN_SCREEN) * (1 / 3).toFloat()
+    // 两个柱形图之间的间隔
+    val spacingBetweenTwoBars: Float = (screenWidth / DEFAULT_BAR_COUNT_IN_SCREEN) * (2 / 3).toFloat()
+    // 柱形图高度
+    val totalBarHeight: Float = screenHeight / 3.toFloat()
+    // 柱形图和文本区域之间的间隔
+    val spacingBarBottom: Float = totalBarHeight / 6
+    // 柱形图距离顶部的间隔
+    val spacingBarTop: Float = totalBarHeight / 6
+    // 文本区域上下留白
+    val spacingOnTextTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
+    // 月份数据和电量数据之间的间隙
+    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 5f).toFloat()
 
     // 视图总宽度
     val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
-    // 所有柱形图的Rect
-    val barRectList: List<RectF> = BarChartHelper.getBarRectList(barDataList, this)
     // "预测"两个字的字体大小
     val otherTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
     // 月份数据文本字体大小
@@ -69,13 +71,13 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        spacingBarTop + totalBarHeight + spacingBetweenBarAndTextArea + getFontY(paint)
+        spacingBarTop + totalBarHeight + spacingBarBottom + getFontY(paint)
     }
     // 电量数据文本绘制的起点Y坐标
     val electricityTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        val electricityTextTop = spacingBarTop + totalBarHeight + spacingBetweenBarAndTextArea + getFontHeight(paint)
+        val electricityTextTop = spacingBarTop + totalBarHeight + spacingBarBottom + getFontHeight(paint)
         paint.textSize = electricityTextSize
         electricityTextTop + getFontY(paint)
     }
@@ -89,11 +91,28 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         spacingOnTextTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
     }
     // 视图总高度
-    val totalHeight = (spacingBarTop + totalBarHeight + spacingBetweenBarAndTextArea + totalTextHeight).toInt()
+    val totalHeight = (spacingBarTop + totalBarHeight + spacingBarBottom + totalTextHeight).toInt()
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
     // 已出数据的文本区域背景Rect
-    val textBgRect = RectF(0f, spacingBarTop + totalBarHeight + spacingBetweenBarAndTextArea, totalWidth.toFloat(), totalHeight.toFloat())
+    val textBgRect = RectF(0f, spacingBarTop + totalBarHeight + spacingBarBottom, totalWidth.toFloat(), totalHeight.toFloat())
+    // 所有柱形图的Rect
+    val barRectList: List<RectF> by lazy {
+        val result: MutableList<RectF> = mutableListOf()
+        if (barDataList.isNotEmpty()) {
+            val maxElectricity = barDataList.maxBy { it.electricity }!!.electricity
+            val eachElectricityHeight = totalBarHeight / maxElectricity
+            for ((index, barData) in barDataList.withIndex()) {
+                val rect = RectF()
+                rect.left = index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
+                rect.top = spacingBarTop + totalBarHeight - barData.electricity * eachElectricityHeight
+                rect.right = rect.left + eachBarWidth
+                rect.bottom = spacingBarTop + totalBarHeight
+                result.add(rect)
+            }
+        }
+        result
+    }
 
     /**
      * @return 返回指定笔和指定字符串的长度
