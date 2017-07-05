@@ -45,8 +45,6 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 月份数据和电量数据之间的间隙
     val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 10f).toFloat()
 
-    // 视图总宽度
-    val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
     // "预测"两个字的字体大小
     val otherTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
     // 月份数据文本字体大小
@@ -76,6 +74,9 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         val electricityTextHeight = getFontHeight(paint)
         spacingOnTextTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
     }
+
+    // 视图总宽度
+    val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
     // 视图总高度
     val totalHeight = (spacingBarTop + totalBarHeight + spacingBarBottom + totalTextHeight).toInt()
     // 柱形图的圆角半径
