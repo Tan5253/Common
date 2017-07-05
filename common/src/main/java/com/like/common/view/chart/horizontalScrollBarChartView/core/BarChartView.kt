@@ -18,6 +18,8 @@ class BarChartView(context: Context) : View(context) {
 
     private val mElectricityTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    private val mUnitTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
     private val mTextBgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val mOtherTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -36,6 +38,10 @@ class BarChartView(context: Context) : View(context) {
         mElectricityTextPaint.style = Paint.Style.STROKE
         mElectricityTextPaint.textSize = mBarChartConfig.electricityTextSize
 
+        mUnitTextPaint.style = Paint.Style.STROKE
+        mUnitTextPaint.textSize = mBarChartConfig.unitTextSize
+        mUnitTextPaint.color = BarChartConfig.DEFAULT_UNIT_TEXT_COLOR
+
         mTextBgPaint.style = Paint.Style.FILL
 
         mOtherTextPaint.color = BarChartConfig.DEFAULT_OTHER_TEXT_COLOR
@@ -49,6 +55,11 @@ class BarChartView(context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         if (mBarDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mBarChartConfig)
+            // 画单位
+            mTextBgPaint.color = BarChartConfig.DEFAULT_UNIT_BG_COLOR
+            mDrawHelper.drawUnitBg(mTextBgPaint)
+            mDrawHelper.drawUnitText(mUnitTextPaint)
+
             for ((index, barData) in mBarDataList.withIndex()) {
                 if (barData.isRealData) {
                     mDrawHelper.drawBar(index, mBarPaintReal)

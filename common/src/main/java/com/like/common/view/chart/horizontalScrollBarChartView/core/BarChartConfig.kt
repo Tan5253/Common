@@ -11,6 +11,8 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
  */
 class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     companion object {
+        val DEFAULT_UNIT_TEXT_COLOR = 0xffffffff.toInt()// 文本区域最左边单位的文字颜色
+        val DEFAULT_UNIT_BG_COLOR = 0xff3d86b5.toInt()// 文本区域最左边单位区域的背景颜色
         val DEFAULT_TEXT_AREA_BG_COLOR_REAL = 0xff28c4ff.toInt()// 文本区域背景颜色，真实数据
         val DEFAULT_TEXT_AREA_BG_COLOR = 0xffe5f8ff.toInt()// 文本区域背景颜色，预测数据
         val DEFAULT_MONTH_TEXT_COLOR_REAL = 0xffbde9ff.toInt()// 月份数据文本颜色，真实数据
@@ -45,11 +47,13 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 月份数据和电量数据之间的间隙
     val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 3f).toFloat()
     // "预测"两个字的字体大小
-    val otherTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
+    val otherTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
     // 月份数据文本字体大小
-    val monthTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
+    val monthTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
     // 电量数据文本字体大小
     val electricityTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // 最左边的单位文本字体大小
+    val unitTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
 
     // 文本区域总高度
     val totalTextAreaHeight: Float by lazy {
@@ -77,7 +81,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         electricityTextTop + getTextBaseLine(paint)
     }
     // 视图总宽度
-    val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
+    val totalWidth = (spacingBetweenTwoBars + eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
     // 视图总高度
     val totalHeight = (textAreaTop + totalTextAreaHeight).toInt()
     // 柱形图的圆角半径
@@ -92,7 +96,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
             val eachElectricityHeight = totalBarHeight / maxElectricity
             for ((index, barData) in barDataList.withIndex()) {
                 val rect = RectF()
-                rect.left = index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
+                rect.left = spacingBetweenTwoBars + index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
                 rect.top = spacingBarTop + totalBarHeight - barData.electricity * eachElectricityHeight
                 rect.right = rect.left + eachBarWidth
                 rect.bottom = spacingBarTop + totalBarHeight
