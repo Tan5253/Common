@@ -4,11 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
-import com.like.common.view.chart.horizontalScrollBarChartView.entity.getSimulatedData
+import com.like.logger.Logger
 
 class BarChartView(context: Context) : View(context) {
-    private val mBarDataList: List<BarData> = getSimulatedData()
-    private val mBarChartConfig: BarChartConfig = BarChartConfig(context, mBarDataList)
+    private val mBarDataList: MutableList<BarData> = arrayListOf()
+    private val mBarChartConfig: BarChartConfig by lazy {
+        BarChartConfig(context, mBarDataList)
+    }
     private lateinit var mDrawHelper: DrawHelper
 
     private val mBarPaintReal = Paint(Paint.ANTI_ALIAS_FLAG)// 柱形图，真实数据
@@ -26,6 +28,10 @@ class BarChartView(context: Context) : View(context) {
 
     init {
         setBackgroundColor(Color.WHITE)
+    }
+
+    fun setData(barDataList: List<BarData>) {
+        mBarDataList.addAll(barDataList)
         mBarPaintReal.style = Paint.Style.FILL
         mBarPaintReal.shader = LinearGradient(0f, mBarChartConfig.totalBarHeight, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
 
@@ -46,6 +52,7 @@ class BarChartView(context: Context) : View(context) {
 
         mOtherTextPaint.color = BarChartConfig.DEFAULT_OTHER_TEXT_COLOR
         mOtherTextPaint.textSize = mBarChartConfig.otherTextSize
+        invalidate()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -54,6 +61,7 @@ class BarChartView(context: Context) : View(context) {
 
     override fun onDraw(canvas: Canvas) {
         if (mBarDataList.isNotEmpty()) {
+            Logger.i("BarChartView onDraw")
             mDrawHelper = DrawHelper(canvas, mBarChartConfig)
             // 画单位
             mTextBgPaint.color = BarChartConfig.DEFAULT_UNIT_BG_COLOR
