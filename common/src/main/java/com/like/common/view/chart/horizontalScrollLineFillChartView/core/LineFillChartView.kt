@@ -5,8 +5,6 @@ import android.graphics.*
 import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.core.BarChartConfig
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
-import com.like.logger.Logger
-
 
 class LineFillChartView(context: Context) : View(context) {
     private val mLineDataList: MutableList<LineData> = arrayListOf()
@@ -35,7 +33,8 @@ class LineFillChartView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
-        Logger.wtf(mLineFillChartConfig.pathList[0])
-        canvas.drawPath(mLineFillChartConfig.pathList[0], mLinePaint)
+        for (path in mLineFillChartConfig.pathList) {
+            canvas.drawPath(path, mLinePaint)
+        }
     }
 }

@@ -58,6 +58,16 @@ class LineFillChartConfig(val context: Context) {
                     path.lineTo(0f, totalHeight.toFloat())
                     path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight - barData.electricity * eachElectricityHeight)
                     path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
+                } else if (index == lineDataList.size - 1) {
+                    path.moveTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
+                    path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight - barData.electricity * eachElectricityHeight)
+                    path.lineTo(totalWidth.toFloat(), totalHeight.toFloat())
+                    path.lineTo(totalWidth.toFloat(), totalHeight.toFloat())
+                } else {
+                    path.moveTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
+                    path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight - barData.electricity * eachElectricityHeight)
+                    path.lineTo((index + 2) * spacingBetweenTwoBars, totalHeight - lineDataList[index + 1].electricity * eachElectricityHeight)
+                    path.lineTo((index + 2) * spacingBetweenTwoBars, totalHeight.toFloat())
                 }
                 result.add(path)
             }
