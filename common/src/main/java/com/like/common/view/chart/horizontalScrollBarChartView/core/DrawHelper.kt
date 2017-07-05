@@ -28,7 +28,7 @@ class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: B
         val text = barChartConfig.barDataList[barIndex].month.toString()
         canvas.drawText(
                 text,
-                barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getFontlength(paint, text) / 2,
+                barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getTextlength(paint, text) / 2,
                 barChartConfig.monthTextStartY,
                 paint
         )
@@ -38,7 +38,7 @@ class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: B
         val text = barChartConfig.barDataList[barIndex].electricity.toString()
         canvas.drawText(
                 text,
-                barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getFontlength(paint, text) / 2,
+                barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getTextlength(paint, text) / 2,
                 barChartConfig.electricityTextStartY,
                 paint
         )

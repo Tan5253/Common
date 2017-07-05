@@ -43,7 +43,7 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     // 文本区域上下留白
     val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
     // 月份数据和电量数据之间的间隙
-    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 5f).toFloat()
+    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 3f).toFloat()
     // "预测"两个字的字体大小
     val otherTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
     // 月份数据文本字体大小
@@ -55,9 +55,9 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val totalTextAreaHeight: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        val monthTextHeight = getFontHeight(paint)
+        val monthTextHeight = getTextHeight(paint)
         paint.textSize = electricityTextSize
-        val electricityTextHeight = getFontHeight(paint)
+        val electricityTextHeight = getTextHeight(paint)
         spacingOnTextAreaTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
     }
     // 文本区域的顶部y坐标
@@ -66,20 +66,20 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        textAreaTop + spacingOnTextAreaTopOrBottom + getFontY(paint)
+        textAreaTop + spacingOnTextAreaTopOrBottom + getTextBaseLine(paint)
     }
     // 电量数据文本绘制的起点Y坐标
     val electricityTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        val electricityTextTop = textAreaTop + spacingOnTextAreaTopOrBottom + getFontHeight(paint) + spacingBetweenTwoText
+        val electricityTextTop = textAreaTop + spacingOnTextAreaTopOrBottom + getTextHeight(paint) + spacingBetweenTwoText
         paint.textSize = electricityTextSize
-        electricityTextTop + getFontY(paint)
+        electricityTextTop + getTextBaseLine(paint)
     }
     // 视图总宽度
     val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
     // 视图总高度
-    val totalHeight = (spacingBarTop + totalBarHeight + spacingBarBottom + totalTextAreaHeight).toInt()
+    val totalHeight = (textAreaTop + totalTextAreaHeight).toInt()
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
     // 已出数据的文本区域背景Rect
@@ -105,21 +105,16 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     /**
      * @return 返回指定笔和指定字符串的长度
      */
-    fun getFontlength(paint: Paint, str: String) = paint.measureText(str)
+    fun getTextlength(paint: Paint, text: String) = paint.measureText(text)
 
     /**
      * 获取绘制文本的起点Y坐标
      */
-    fun getFontY(paint: Paint) = getFontHeight(paint) / 2 + getFontLeading(paint)
+    fun getTextBaseLine(paint: Paint) = (getTextHeight(paint) - paint.fontMetrics.descent - paint.fontMetrics.ascent) / 2
 
     /**
      * @return 返回指定笔的文字高度
      */
-    fun getFontHeight(paint: Paint) = paint.fontMetrics.descent - paint.fontMetrics.ascent
-
-    /**
-     * @return 返回指定笔离文字顶部的基准距离
-     */
-    fun getFontLeading(paint: Paint) = paint.fontMetrics.leading - paint.fontMetrics.ascent
+    fun getTextHeight(paint: Paint) = paint.fontMetrics.bottom - paint.fontMetrics.top
 
 }
