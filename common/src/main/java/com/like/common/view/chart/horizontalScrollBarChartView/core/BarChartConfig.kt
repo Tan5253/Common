@@ -3,8 +3,6 @@ package com.like.common.view.chart.horizontalScrollBarChartView.core
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.RectF
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import com.like.common.util.DimensionUtils
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 
@@ -30,34 +28,22 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
         val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 颜色对应的终点位置的数组
                 0.4f, 0.7f, 0.9f, 1.0f
         )
-
-        val DEFAULT_BAR_COUNT_IN_SCREEN = 10// 一屏幕显示几个柱形图
     }
 
-    val displayMetrics: DisplayMetrics by lazy {
-        val metric = DisplayMetrics()
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        wm.defaultDisplay.getMetrics(metric)
-        metric
-    }
-    // 屏幕宽度
-    val screenWidth: Int = displayMetrics.widthPixels
-    // 屏幕高度
-    val screenHeight: Int = displayMetrics.heightPixels
     // 每个柱形图的宽度
-    val eachBarWidth: Float = (screenWidth / DEFAULT_BAR_COUNT_IN_SCREEN) * (1 / 3).toFloat()
+    val eachBarWidth: Float = DimensionUtils.dp2px(context, 15f).toFloat()
     // 两个柱形图之间的间隔
-    val spacingBetweenTwoBars: Float = (screenWidth / DEFAULT_BAR_COUNT_IN_SCREEN) * (2 / 3).toFloat()
+    val spacingBetweenTwoBars: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 柱形图高度
-    val totalBarHeight: Float = screenHeight / 3.toFloat()
+    val totalBarHeight: Float = DimensionUtils.dp2px(context, 150f).toFloat()
     // 柱形图和文本区域之间的间隔
-    val spacingBarBottom: Float = totalBarHeight / 6
+    val spacingBarBottom: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 柱形图距离顶部的间隔
-    val spacingBarTop: Float = totalBarHeight / 6
+    val spacingBarTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 文本区域上下留白
     val spacingOnTextTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
     // 月份数据和电量数据之间的间隙
-    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 5f).toFloat()
+    val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 10f).toFloat()
 
     // 视图总宽度
     val totalWidth = (eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
