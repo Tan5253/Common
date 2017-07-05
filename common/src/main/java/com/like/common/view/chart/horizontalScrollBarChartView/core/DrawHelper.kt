@@ -1,11 +1,10 @@
 package com.like.common.view.chart.horizontalScrollBarChartView.core
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 
 @Suppress("NOTHING_TO_INLINE")
-class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: BarChartConfig) {
+class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
     // 1个柱形图+1个间隔的总宽度
     val barAndSpacingWidth = barChartConfig.eachBarWidth + barChartConfig.spacingBetweenTwoBars
 
@@ -16,12 +15,15 @@ class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: B
             paint
     )
 
-    inline fun drawOtherText(barIndex: Int, paint: Paint) = canvas.drawText(
-            "(预测)",
-            barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 + barChartConfig.eachBarWidth / 2 - paint.measureText("(预测)") / 2,
-            barChartConfig.barRectList[barIndex].top - barChartConfig.getTextHeight(paint) + barChartConfig.getTextBaseLine(paint),
-            paint
-    )
+    inline fun drawOtherText(barIndex: Int, paint: Paint) {
+        val text = "(预测)"
+        canvas.drawText(
+                text,
+                barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 + barChartConfig.eachBarWidth / 2 - paint.measureText(text) / 2,
+                barChartConfig.barRectList[barIndex].top - barChartConfig.getTextHeight(paint) + barChartConfig.getTextBaseLine(paint),
+                paint
+        )
+    }
 
     inline fun drawMonth(barIndex: Int, paint: Paint) {
         val text = barChartConfig.barDataList[barIndex].month.toString()
