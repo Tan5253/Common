@@ -4,14 +4,14 @@ data class BarData(val month: Int, val electricity: Float, val isRealData: Boole
 
 fun getSimulatedData(): List<BarData> {
     return listOf(
-            BarData(0, 0.5f),
-            BarData(1, 1.1f),
+            BarData(0, 7.5f),
+            BarData(1, 13.1f),
             BarData(2, 2.2f),
             BarData(3, 3.3f),
-            BarData(4, 4.4f),
+            BarData(4, 8.4f),
             BarData(5, 5.5f),
             BarData(6, 6.6f),
-            BarData(7, 7.7f),
+            BarData(7, 0.5f),
             BarData(8, 8.8f),
             BarData(9, 9.9f),
             BarData(10, 11.0f),
@@ -28,6 +28,5 @@ fun getSimulatedData(): List<BarData> {
             BarData(21, 9.9f, false),
             BarData(22, 6.0f, false),
             BarData(23, 13.1f, false)
-
     )
 }
