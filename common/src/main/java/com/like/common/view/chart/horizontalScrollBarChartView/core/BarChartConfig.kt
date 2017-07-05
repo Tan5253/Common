@@ -44,13 +44,14 @@ class BarChartConfig(val context: Context, val barDataList: List<BarData>) {
     val spacingOnTextTopOrBottom: Float = DimensionUtils.dp2px(context, 10f).toFloat()
     // 月份数据和电量数据之间的间隙
     val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 10f).toFloat()
-
     // "预测"两个字的字体大小
     val otherTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
     // 月份数据文本字体大小
     val monthTextSize = DimensionUtils.sp2px(context, 9f).toFloat()
     // 电量数据文本字体大小
     val electricityTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+
+
     // 月份数据文本绘制的起点Y坐标
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()
