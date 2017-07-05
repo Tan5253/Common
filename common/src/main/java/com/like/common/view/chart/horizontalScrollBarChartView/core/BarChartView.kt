@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
-import com.like.logger.Logger
 
 class BarChartView(context: Context) : View(context) {
     private val mBarDataList: MutableList<BarData> = arrayListOf()
@@ -26,13 +25,6 @@ class BarChartView(context: Context) : View(context) {
 
     init {
         setBackgroundColor(Color.WHITE)
-    }
-
-    fun setData(barDataList: List<BarData>) {
-        mBarDataList.clear()
-        mBarDataList.addAll(barDataList)
-
-        mBarChartConfig.setData(barDataList)
 
         mBarPaintReal.style = Paint.Style.FILL
         mBarPaintReal.shader = LinearGradient(0f, mBarChartConfig.totalBarHeight, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
@@ -54,17 +46,23 @@ class BarChartView(context: Context) : View(context) {
 
         mOtherTextPaint.color = BarChartConfig.DEFAULT_OTHER_TEXT_COLOR
         mOtherTextPaint.textSize = mBarChartConfig.otherTextSize
+    }
+
+    fun setData(barDataList: List<BarData>) {
+        mBarDataList.clear()
+        mBarDataList.addAll(barDataList)
+
+        mBarChartConfig.setData(barDataList)
+
         requestLayout()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        Logger.wtf("BarChartView onMeasure")
         setMeasuredDimension(mBarChartConfig.totalWidth, mBarChartConfig.totalHeight)
     }
 
     override fun onDraw(canvas: Canvas) {
         if (mBarDataList.isNotEmpty()) {
-            Logger.wtf("BarChartView onDraw")
             mDrawHelper = DrawHelper(canvas, mBarChartConfig)
             // 画单位
             mTextBgPaint.color = BarChartConfig.DEFAULT_UNIT_BG_COLOR
