@@ -3,7 +3,6 @@ package com.like.common.view.chart.horizontalScrollBarChartView.core
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.like.common.util.DimensionUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: BarChartConfig) {
@@ -19,8 +18,8 @@ class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: B
 
     inline fun drawOtherText(barIndex: Int, paint: Paint) = canvas.drawText(
             "(预测)",
-            barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 - DimensionUtils.dp2px(context, 5f),
-            barChartConfig.barRectList[barIndex].top - DimensionUtils.dp2px(context, 5f),
+            barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 + barChartConfig.eachBarWidth / 2 - paint.measureText("(预测)") / 2,
+            barChartConfig.barRectList[barIndex].top - barChartConfig.getTextHeight(paint) + barChartConfig.getTextBaseLine(paint),
             paint
     )
 
