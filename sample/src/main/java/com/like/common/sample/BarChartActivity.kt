@@ -4,12 +4,12 @@ import android.databinding.DataBindingUtil
 import android.view.View
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
-import com.like.common.sample.databinding.ActivityChartBinding
+import com.like.common.sample.databinding.ActivityBarChartBinding
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 
-class ChartActivity : BaseActivity() {
-    private val mBinding: ActivityChartBinding by lazy {
-        DataBindingUtil.setContentView<ActivityChartBinding>(this, R.layout.activity_chart)
+class BarChartActivity : BaseActivity() {
+    private val mBinding: ActivityBarChartBinding by lazy {
+        DataBindingUtil.setContentView<ActivityBarChartBinding>(this, R.layout.activity_bar_chart)
     }
 
     override fun getViewModel(): BaseViewModel? {
