@@ -47,7 +47,7 @@ class BarChartView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
-        mDrawHelper = DrawHelper(canvas, mBarChartConfig)
+        mDrawHelper = DrawHelper(context, canvas, mBarChartConfig)
         for ((index, barData) in mBarDataList.withIndex()) {
             if (barData.isRealData) {
                 mDrawHelper.drawBar(index, mBarPaintReal)

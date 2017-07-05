@@ -1,10 +1,12 @@
 package com.like.common.view.chart.horizontalScrollBarChartView.core
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.like.common.util.DimensionUtils
 
 @Suppress("NOTHING_TO_INLINE")
-class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
+class DrawHelper(val context: Context, val canvas: Canvas, val barChartConfig: BarChartConfig) {
     // 1个柱形图+1个间隔的总宽度
     val barAndSpacingWidth = barChartConfig.eachBarWidth + barChartConfig.spacingBetweenTwoBars
 
@@ -17,8 +19,8 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
 
     inline fun drawOtherText(barIndex: Int, paint: Paint) = canvas.drawText(
             "(预测)",
-            barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 - 26,
-            barChartConfig.barRectList[barIndex].top - 10,
+            barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 - DimensionUtils.dp2px(context, 5f),
+            barChartConfig.barRectList[barIndex].top - DimensionUtils.dp2px(context, 5f),
             paint
     )
 
