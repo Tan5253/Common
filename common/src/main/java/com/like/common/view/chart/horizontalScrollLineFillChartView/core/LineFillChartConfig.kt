@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import com.like.common.util.DimensionUtils
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
@@ -26,13 +28,12 @@ class LineFillChartConfig(val context: Context) {
         val DEFAULT_POINT_BORDER_COLOR = 0xff000000.toInt()
         val MAX_ELECTRICITY_OF_DAY_ON_GRADIENT = 40f // (每天)渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
         val MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT = MAX_ELECTRICITY_OF_DAY_ON_GRADIENT * 30// (每月)，渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
+        val DEFAULT_SHOW_POINT_COUNT = 3// 一屏幕显示的最多点数量
     }
 
     val pointBorderWidth: Float = DimensionUtils.dp2px(context, 2f).toFloat()
     // 点圆的半径
     val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
-    // 两点之间的间隔
-    val spacingBetweenTwoPoints: Float = DimensionUtils.dp2px(context, 50f).toFloat()
     // 渐变色块最高点的高度
     val maxGradientHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 渐变色块距离顶部的间隔
@@ -44,12 +45,29 @@ class LineFillChartConfig(val context: Context) {
     val totalGradientAndSpacingTopHeight = spacingGradientTop + maxGradientHeight
     // 视图总高度
     val totalHeight = totalGradientAndSpacingTopHeight + spacingGradientBottom
-    // 视图总宽度
-    var totalWidth = 0f
-    // 所有点的形成的封闭路径
-    val pathList: MutableList<Path> = arrayListOf()
+
+    // 所有数据
     val lineDataList: MutableList<LineData> = arrayListOf()
+    // 所有点
     val pointList: MutableList<PointF> = arrayListOf()
+    // 所有点的封闭路径
+    val pathList: MutableList<Path> = arrayListOf()
+    // 视图总宽度
+    val totalWidth: Float by lazy {
+        val metric = DisplayMetrics()
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(metric)
+        if (lineDataList.size > DEFAULT_SHOW_POINT_COUNT) {
+            val eachSpacing = metric.widthPixels / (DEFAULT_SHOW_POINT_COUNT + 1)
+            metric.widthPixels.toFloat() + eachSpacing * (lineDataList.size - DEFAULT_SHOW_POINT_COUNT)
+        } else {
+            metric.widthPixels.toFloat()
+        }
+    }
+    // 两点之间的间隔
+    val spacingBetweenTwoPoints: Float by lazy {
+        totalWidth / (lineDataList.size + 1)
+    }
     // 每度电量对应的高度
     val eachElectricityHeight: Float by lazy {
         if (lineDataList.isNotEmpty()) {
@@ -75,8 +93,6 @@ class LineFillChartConfig(val context: Context) {
     fun setData(barDataList: List<LineData>) {
         this.lineDataList.clear()
         this.lineDataList.addAll(barDataList)
-
-        totalWidth = spacingBetweenTwoPoints + spacingBetweenTwoPoints * barDataList.size
 
         pathList.clear()
         pathList.addAll(getAllPath())
