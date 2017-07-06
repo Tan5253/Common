@@ -29,6 +29,28 @@ class BarChartActivity : BaseActivity() {
         mBinding.barView.setData(getSimulatedData3())
     }
 
+    fun getSimulatedData1(): List<BarData> {
+        return listOf(
+                BarData(0, 40f),
+                BarData(1, 80f),
+                BarData(2, 30f),
+                BarData(9, 9.9f, false),
+                BarData(10, 11.0f, false),
+                BarData(11, 12.1f, false)
+        )
+    }
+
+    fun getSimulatedData2(): List<BarData> {
+        return listOf(
+                BarData(0, 7.5f),
+                BarData(1, 13.1f),
+                BarData(2, 40f),
+                BarData(3, 9.9f, false),
+                BarData(4, 11.0f, false),
+                BarData(5, 12.1f, false)
+        )
+    }
+
     fun getSimulatedData3(): List<BarData> {
         return listOf(
                 BarData(0, 7.5f),
@@ -55,34 +77,6 @@ class BarChartActivity : BaseActivity() {
                 BarData(21, 9.9f, false),
                 BarData(22, 6.0f, false),
                 BarData(23, 13.1f, false)
-        )
-    }
-
-    fun getSimulatedData1(): List<BarData> {
-        return listOf(
-                BarData(0, 7.5f),
-                BarData(1, 13.1f),
-                BarData(2, 2.2f),
-                BarData(3, 3.3f),
-                BarData(4, 8.4f),
-                BarData(5, 5.5f),
-                BarData(6, 6.6f),
-                BarData(7, 0.5f),
-                BarData(8, 8.8f),
-                BarData(9, 9.9f, false),
-                BarData(10, 11.0f, false),
-                BarData(11, 12.1f, false)
-        )
-    }
-
-    fun getSimulatedData2(): List<BarData> {
-        return listOf(
-                BarData(0, 7.5f),
-                BarData(1, 13.1f),
-                BarData(2, 2.2f),
-                BarData(3, 9.9f, false),
-                BarData(4, 11.0f, false),
-                BarData(5, 12.1f, false)
         )
     }
 }

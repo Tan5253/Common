@@ -57,7 +57,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
     }
 
     inline fun drawUnitText(paint: Paint) {
-        canvas.drawText("小时", (barChartConfig.spacingBetweenTwoBars - paint.measureText("小时")) / 2, barChartConfig.monthTextStartY, paint)
+        canvas.drawText("日", (barChartConfig.spacingBetweenTwoBars - paint.measureText("日")) / 2, barChartConfig.monthTextStartY, paint)
         canvas.drawText("度", (barChartConfig.spacingBetweenTwoBars - paint.measureText("度")) / 2, barChartConfig.electricityTextStartY, paint)
     }
 

@@ -27,7 +27,6 @@ class BarChartView(context: Context) : View(context) {
         setBackgroundColor(Color.WHITE)
 
         mBarPaintReal.style = Paint.Style.FILL
-        mBarPaintReal.shader = LinearGradient(0f, mBarChartConfig.maxBarHeight, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
 
         mBarPaint.style = Paint.Style.FILL
         mBarPaint.color = BarChartConfig.DEFAULT_COLOR
@@ -64,6 +63,9 @@ class BarChartView(context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         if (mBarDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mBarChartConfig)
+
+            mBarPaintReal.shader = LinearGradient(0f, mBarChartConfig.maxBarHeight + mBarChartConfig.spacingBarTop, 0f, mBarChartConfig.linearGradientY1, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+
             // 画单位
             mTextBgPaint.color = BarChartConfig.DEFAULT_UNIT_BG_COLOR
             mDrawHelper.drawUnitBg(mTextBgPaint)

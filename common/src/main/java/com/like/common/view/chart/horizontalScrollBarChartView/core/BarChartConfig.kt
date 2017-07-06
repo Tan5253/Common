@@ -12,6 +12,16 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
  */
 class BarChartConfig(val context: Context) {
     companion object {
+        val DEFAULT_COLORS_REAL = intArrayOf(// 柱形图颜色数组
+                0xff02bbff.toInt(),
+                0xff9f50fb.toInt(),
+                0xffee35d6.toInt(),
+                0xffff3627.toInt()
+        )
+        val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 柱形图颜色对应的终点位置的数组，用于按比例显示渐变
+                0f, 0.33f, 0.66f, 1f
+        )
+        val MAX_ELECTRICITY_OF_DAY_ON_GRADIENT = 40f // (每天)渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
         val DEFAULT_UNIT_TEXT_COLOR = 0xffffffff.toInt()// 文本区域最左边单位的文字颜色
         val DEFAULT_UNIT_BG_COLOR = 0xff3d86b5.toInt()// 文本区域最左边单位区域的背景颜色
         val DEFAULT_TEXT_AREA_BG_COLOR_REAL = 0xff28c4ff.toInt()// 文本区域背景颜色，真实数据
@@ -22,15 +32,6 @@ class BarChartConfig(val context: Context) {
         val DEFAULT_ELECTRICITY_TEXT_COLOR = 0xff303030.toInt()// 电量数据文本颜色，预测数据
         val DEFAULT_OTHER_TEXT_COLOR = 0xff9c9c9c.toInt()// "预测"文本
         val DEFAULT_COLOR = 0xff9c9c9c.toInt()// 柱形图颜色，预测数据
-        val DEFAULT_COLORS_REAL = intArrayOf(// 柱形图颜色数组，真实数据
-                0xff02bbff.toInt(),
-                0xffa845e7.toInt(),
-                0xffed4b90.toInt(),
-                0xfff84330.toInt()
-        )
-        val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 颜色对应的终点位置的数组，用于按比例显示渐变
-                0.4f, 0.7f, 0.9f, 1.0f
-        )
     }
 
     // 每个柱形图的宽度
@@ -42,7 +43,7 @@ class BarChartConfig(val context: Context) {
     // 柱形图和文本区域之间的间隔
     val spacingBarBottom: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 最高的柱形图距离顶部的间隔
-    val spacingBarTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
+    val spacingBarTop: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 文本区域上下留白
     val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 8f).toFloat()
     // 月份数据和电量数据之间的间隙
@@ -81,6 +82,23 @@ class BarChartConfig(val context: Context) {
         paint.textSize = electricityTextSize
         electricityTextTop + DrawTextUtils.getTextBaseLine(paint)
     }
+    // 每度电量对应的高度
+    val eachElectricityHeight: Float by lazy {
+        if (barDataList.isNotEmpty()) {
+            maxBarHeight / barDataList.maxBy { it.electricity }!!.electricity
+        } else {
+            0f
+        }
+    }
+    // LinearGradient的y1值
+    val linearGradientY1: Float by lazy {
+        if (barDataList.isNotEmpty()) {
+            val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_DAY_ON_GRADIENT// 柱形图的高度
+            maxBarHeight - gradientblockHeight + spacingBarTop
+        } else {
+            spacingBarTop
+        }
+    }
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
     // 视图总高度
@@ -111,8 +129,6 @@ class BarChartConfig(val context: Context) {
     fun getAllBarRect(): List<RectF> {
         val result: MutableList<RectF> = mutableListOf()
         if (barDataList.isNotEmpty()) {
-            val maxElectricity = barDataList.maxBy { it.electricity }!!.electricity
-            val eachElectricityHeight = maxBarHeight / maxElectricity
             for ((index, barData) in barDataList.withIndex()) {
                 val rect = RectF()
                 rect.left = spacingBetweenTwoBars + index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
