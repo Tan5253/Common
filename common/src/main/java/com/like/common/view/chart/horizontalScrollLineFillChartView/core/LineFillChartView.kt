@@ -12,7 +12,7 @@ class LineFillChartView(context: Context) : View(context) {
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
-        setBackgroundColor(Color.WHITE)
+        setBackgroundColor(Color.BLACK)
 
         mLinePaint.style = Paint.Style.FILL
         mLinePaint.color = Color.BLACK
