@@ -8,6 +8,8 @@ import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineD
 class LineFillChartView(context: Context) : View(context) {
     private val mLineDataList: MutableList<LineData> = arrayListOf()
     private val mLineFillChartConfig: LineFillChartConfig = LineFillChartConfig(context)
+    private lateinit var mDrawHelper: DrawHelper
+
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
@@ -32,8 +34,11 @@ class LineFillChartView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
-        for (path in mLineFillChartConfig.pathList) {
-            canvas.drawPath(path, mLinePaint)
+        if (mLineDataList.isNotEmpty()) {
+            mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
+            for (index in 0 until mLineFillChartConfig.pathList.size) {
+                mDrawHelper.drawPath(index, mLinePaint)
+            }
         }
     }
 }
