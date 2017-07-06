@@ -1,6 +1,7 @@
 package com.like.common.sample
 
 import android.databinding.DataBindingUtil
+import android.view.View
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityLineFillChartBinding
@@ -12,16 +13,48 @@ class LineFillChartActivity : BaseActivity() {
     }
 
     override fun getViewModel(): BaseViewModel? {
-        mBinding.lineFillView.setData(getSimulatedData())
+        mBinding.root
         return null
     }
 
-    fun getSimulatedData(): List<LineData> {
+    fun changeData1(view: View) {
+        mBinding.lineFillView.setData(getSimulatedData1())
+    }
+
+    fun changeData2(view: View) {
+        mBinding.lineFillView.setData(getSimulatedData2())
+    }
+
+    fun changeData3(view: View) {
+        mBinding.lineFillView.setData(getSimulatedData3())
+    }
+
+    fun clearData(view: View) {
+        mBinding.lineFillView.setData(emptyList())
+    }
+
+    fun getSimulatedData1(): List<LineData> {
         return listOf(
                 LineData(1, 1000f),
-                LineData(2, 1200f),
+                LineData(2, 1200f)
+        )
+    }
+
+    fun getSimulatedData2(): List<LineData> {
+        return listOf(
+                LineData(1, 1000f),
+                LineData(2, 2400f),
                 LineData(3, 900f),
-                LineData(4, 100f)
+                LineData(4, 100f),
+                LineData(5, 800f)
+        )
+    }
+
+    fun getSimulatedData3(): List<LineData> {
+        return listOf(
+                LineData(1, 100f),
+                LineData(2, 300f),
+                LineData(3, 90f)
         )
     }
 }

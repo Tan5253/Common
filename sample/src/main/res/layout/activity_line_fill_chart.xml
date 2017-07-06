@@ -12,6 +12,29 @@
             android:layout_height="wrap_content"
             android:background="@color/common_text_white_0" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeData1"
+            android:text="改变数据1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeData2"
+            android:text="改变数据2" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeData3"
+            android:text="改变数据3" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="clearData"
+            android:text="清空数据" />
     </LinearLayout>
 
 </layout>

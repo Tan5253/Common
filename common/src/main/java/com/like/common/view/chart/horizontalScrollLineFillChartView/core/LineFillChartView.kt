@@ -42,10 +42,10 @@ class LineFillChartView(context: Context) : View(context) {
 
     fun setData(lineDataList: List<LineData>) {
         mLineDataList.clear()
-        mLineDataList.addAll(lineDataList)
-
-        mLineFillChartConfig.setData(lineDataList)
-
+        if (lineDataList.isNotEmpty()) {
+            mLineDataList.addAll(lineDataList)
+            mLineFillChartConfig.setData(lineDataList)
+        }
         requestLayout()
     }
 

@@ -89,46 +89,41 @@ class LineFillChartConfig(val context: Context) {
     // 所有点的封闭路径
     val pathList: MutableList<Path> = arrayListOf()
     // 视图总宽度
-    val totalWidth: Float by lazy {
+    var totalWidth: Float = 0f
+    // 两点之间的间隔
+    var spacingBetweenTwoPoints: Float = 0f
+    // 每度电量对应的高度
+    var eachElectricityHeight: Float = 0f
+    // LinearGradient的y1值
+    var linearGradientY1: Float = spacingGradientTop
+    // 渐变色块以下间隔的纯色背景
+    val gradientBottomRect: RectF = RectF()
+
+    fun setData(barDataList: List<LineData>) {
+        this.lineDataList.clear()
+        this.lineDataList.addAll(barDataList)
+
         val metric = DisplayMetrics()
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         wm.defaultDisplay.getMetrics(metric)
-        if (lineDataList.size > DEFAULT_SHOW_POINT_COUNT) {
+        totalWidth = if (lineDataList.size > DEFAULT_SHOW_POINT_COUNT) {
             val eachSpacing = metric.widthPixels / (DEFAULT_SHOW_POINT_COUNT + 1)
             metric.widthPixels.toFloat() + eachSpacing * (lineDataList.size - DEFAULT_SHOW_POINT_COUNT)
         } else {
             metric.widthPixels.toFloat()
         }
-    }
-    // 两点之间的间隔
-    val spacingBetweenTwoPoints: Float by lazy {
-        totalWidth / (lineDataList.size + 1)
-    }
-    // 每度电量对应的高度
-    val eachElectricityHeight: Float by lazy {
-        if (lineDataList.isNotEmpty()) {
-            maxGradientHeight / lineDataList.maxBy { it.electricity }!!.electricity
-        } else {
-            0f
-        }
-    }
-    // LinearGradient的y1值
-    val linearGradientY1: Float by lazy {
-        if (lineDataList.isNotEmpty()) {
-            val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
-            maxGradientHeight - gradientblockHeight + spacingGradientTop
-        } else {
-            spacingGradientTop
-        }
-    }
-    // 渐变色块以下间隔的纯色背景
-    val gradientBottomRect: RectF by lazy {
-        RectF(0f, totalGradientAndSpacingTopHeight, totalWidth, totalHeight)
-    }
 
-    fun setData(barDataList: List<LineData>) {
-        this.lineDataList.clear()
-        this.lineDataList.addAll(barDataList)
+        spacingBetweenTwoPoints = totalWidth / (lineDataList.size + 1)
+
+        eachElectricityHeight = maxGradientHeight / lineDataList.maxBy { it.electricity }!!.electricity
+
+        val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
+        linearGradientY1 = maxGradientHeight - gradientblockHeight + spacingGradientTop
+
+        gradientBottomRect.left = 0f
+        gradientBottomRect.top = totalGradientAndSpacingTopHeight
+        gradientBottomRect.right = totalWidth
+        gradientBottomRect.bottom = totalHeight
 
         pathList.clear()
         pathList.addAll(getAllPath())
