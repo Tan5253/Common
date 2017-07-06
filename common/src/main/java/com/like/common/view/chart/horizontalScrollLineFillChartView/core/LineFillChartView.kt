@@ -20,7 +20,6 @@ class LineFillChartView(context: Context) : View(context) {
 
         mLinePaint.style = Paint.Style.FILL
         mLinePaint.color = Color.BLACK
-        mLinePaint.shader = LinearGradient(0f, 500f, 0f, 0f, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
 
         mPointPaint.style = Paint.Style.STROKE
         mPointPaint.color = Color.BLACK
@@ -47,14 +46,17 @@ class LineFillChartView(context: Context) : View(context) {
         if (mLineDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
 
-            for (index in 0 until mLineFillChartConfig.pathList.size) {
-                mDrawHelper.drawPath(index, mLinePaint)
-            }
+            mLinePaint.shader = LinearGradient(0f, mLineFillChartConfig.gradientblockRect.bottom, 0f, mLineFillChartConfig.gradientblockRect.top, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+            canvas.drawRect(mLineFillChartConfig.gradientblockRect, mLinePaint)
 
-            for (index in 0 until mLineFillChartConfig.pointList.size) {
-                mDrawHelper.drawPoint(index, mPointFillPaint)
-                mDrawHelper.drawPoint(index, mPointPaint)
-            }
+//            for (index in 0 until mLineFillChartConfig.pathList.size) {
+//                mDrawHelper.drawPath(index, mLinePaint)
+//            }
+//
+//            for (index in 0 until mLineFillChartConfig.pointList.size) {
+//                mDrawHelper.drawPoint(index, mPointFillPaint)
+//                mDrawHelper.drawPoint(index, mPointPaint)
+//            }
         }
     }
 }
