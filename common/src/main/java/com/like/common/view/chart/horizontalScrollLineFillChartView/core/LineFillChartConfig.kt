@@ -25,7 +25,7 @@ class LineFillChartConfig(val context: Context) {
     }
 
     // 点圆的半径
-    val pointCircleRadius: Float = DimensionUtils.dp2px(context, 3f).toFloat()
+    val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
     // 两点之间的间隔
     val spacingBetweenTwoPoints: Float = DimensionUtils.dp2px(context, 50f).toFloat()
     // 最高的点的高度
