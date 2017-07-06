@@ -10,4 +10,5 @@ class DrawHelper(val canvas: Canvas, val lineFillChartConfig: LineFillChartConfi
 
     inline fun drawPoint(index: Int, paint: Paint) = canvas.drawCircle(lineFillChartConfig.pointList[index].x, lineFillChartConfig.pointList[index].y, lineFillChartConfig.pointCircleRadius, paint)
 
+    inline fun drawGradientBottomRect(paint: Paint) = canvas.drawRect(lineFillChartConfig.gradientBottomRect, paint)
 }

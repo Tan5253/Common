@@ -10,22 +10,27 @@ class LineFillChartView(context: Context) : View(context) {
     private val mLineFillChartConfig: LineFillChartConfig = LineFillChartConfig(context)
     private lateinit var mDrawHelper: DrawHelper
 
-    private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mGradientPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val mPointPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPointFillPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    private val mGradientBottomPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
     init {
         setBackgroundColor(Color.WHITE)
 
-        mLinePaint.style = Paint.Style.FILL
+        mGradientPaint.style = Paint.Style.FILL
 
         mPointPaint.style = Paint.Style.STROKE
-        mPointPaint.color = Color.BLACK
-        mPointPaint.strokeWidth = 4f
+        mPointPaint.color = LineFillChartConfig.DEFAULT_POINT_BORDER_COLOR
+        mPointPaint.strokeWidth = mLineFillChartConfig.pointBorderWidth
 
         mPointFillPaint.style = Paint.Style.FILL
-        mPointFillPaint.color = Color.WHITE
+        mPointFillPaint.color = LineFillChartConfig.DEFAULT_POINT_FILL_COLOR
+
+        mGradientBottomPaint.style = Paint.Style.FILL
+        mGradientBottomPaint.color = LineFillChartConfig.DEFAULT_GRADIENT_BOTTOM_BG_COLOR
     }
 
     fun setData(lineDataList: List<LineData>) {
@@ -38,22 +43,24 @@ class LineFillChartView(context: Context) : View(context) {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(mLineFillChartConfig.totalWidth, mLineFillChartConfig.totalHeight)
+        setMeasuredDimension(mLineFillChartConfig.totalWidth.toInt(), mLineFillChartConfig.totalHeight.toInt())
     }
 
     override fun onDraw(canvas: Canvas) {
         if (mLineDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
-            mLinePaint.shader = LinearGradient(0f, mLineFillChartConfig.totalHeight.toFloat(), 0f, mLineFillChartConfig.linearGradientY1, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+            mGradientPaint.shader = LinearGradient(0f, mLineFillChartConfig.totalGradientAndSpacingTopHeight.toFloat(), 0f, mLineFillChartConfig.linearGradientY1, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
             // 画折线图，并填充
             for (index in 0 until mLineFillChartConfig.pathList.size) {
-                mDrawHelper.drawPath(index, mLinePaint)
+                mDrawHelper.drawPath(index, mGradientPaint)
             }
             // 画点圆
             for (index in 0 until mLineFillChartConfig.pointList.size) {
                 mDrawHelper.drawPoint(index, mPointFillPaint)
                 mDrawHelper.drawPoint(index, mPointPaint)
             }
+
+            mDrawHelper.drawGradientBottomRect(mGradientBottomPaint)
         }
     }
 }
