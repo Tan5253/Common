@@ -18,7 +18,8 @@ class LineFillChartView(context: Context) : View(context) {
     private val mGradientBottomPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val mXAxisPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val mXAxisTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         setBackgroundColor(Color.WHITE)
@@ -38,8 +39,8 @@ class LineFillChartView(context: Context) : View(context) {
         mXAxisPaint.style = Paint.Style.STROKE
         mXAxisPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_BORDER_COLOR
 
-        mXAxisTextPaint.textSize = mLineFillChartConfig.xAxisTextSize
-        mXAxisTextPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_TEXT_COLOR
+        mTextPaint.textSize = mLineFillChartConfig.xAxisTextSize
+        mTextPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_TEXT_COLOR
     }
 
     fun setData(lineDataList: List<LineData>) {
@@ -80,8 +81,13 @@ class LineFillChartView(context: Context) : View(context) {
                 // 画x轴刻度线
                 mDrawHelper.drawXAxisScale(index, mXAxisPaint)
                 // 画x轴文本
-                mDrawHelper.drawXAxisText(index, mXAxisTextPaint)
+                mDrawHelper.drawXAxisText(index, mTextPaint)
             }
+
+            // 画x轴下面的单位文本
+            mTextPaint.textSize = mLineFillChartConfig.unitTextSize
+            mTextPaint.color = LineFillChartConfig.DEFAULT_UNIT_TEXT_COLOR
+            mDrawHelper.drawUnitText(mTextPaint)
         }
     }
 }

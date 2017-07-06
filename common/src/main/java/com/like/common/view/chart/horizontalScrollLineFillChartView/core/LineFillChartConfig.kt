@@ -31,6 +31,7 @@ class LineFillChartConfig(val context: Context) {
         val DEFAULT_X_AXIS_BORDER_COLOR = 0xffffffff.toInt()// x轴线颜色
         val DEFAULT_X_AXIS_SCALE_COLOR = 0xff000000.toInt()// x轴刻度线颜色
         val DEFAULT_X_AXIS_TEXT_COLOR = 0xffffffff.toInt()// x轴文本颜色
+        val DEFAULT_POINT_TEXT_COLOR = 0xff000000.toInt()// 点的数值文本颜色
         val DEFAULT_UNIT_TEXT_COLOR = 0xffffffff.toInt()// x轴下面的单位文本颜色
         val MAX_ELECTRICITY_OF_DAY_ON_GRADIENT = 40f // (每天)渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
         val MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT = MAX_ELECTRICITY_OF_DAY_ON_GRADIENT * 30// (每月)，渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
@@ -51,6 +52,14 @@ class LineFillChartConfig(val context: Context) {
     val spacingGradientBottom: Float = DimensionUtils.dp2px(context, 47f).toFloat()
     // x轴文本字体大小
     val xAxisTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // 点的数值文本字体大小
+    val pointTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // x轴下面的单位文本字体大小
+    val unitTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // x轴下面的单位上边的间隔
+    val spacingUnitTextTop = DimensionUtils.sp2px(context, 10f).toFloat()
+    // x轴下面的单位左边的间隔
+    val spacingUnitTextLeft = DimensionUtils.sp2px(context, 12f).toFloat()
 
     // 渐变色块及其顶部间隔的总高度
     val totalGradientAndSpacingTopHeight = spacingGradientTop + maxGradientHeight
@@ -62,6 +71,14 @@ class LineFillChartConfig(val context: Context) {
         val paint: Paint = Paint()
         paint.textSize = xAxisTextSize
         totalGradientAndSpacingTopHeight + DrawTextUtils.getTextBaseLine(paint)
+    }
+    // x轴下面的单位文本绘制的起点Y坐标
+    val unitTextStartY: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = xAxisTextSize
+        val top = totalGradientAndSpacingTopHeight + DrawTextUtils.getTextHeight(paint)
+        paint.textSize = unitTextSize
+        top + spacingUnitTextTop + DrawTextUtils.getTextBaseLine(paint)
     }
     // 所有数据
     val lineDataList: MutableList<LineData> = arrayListOf()
