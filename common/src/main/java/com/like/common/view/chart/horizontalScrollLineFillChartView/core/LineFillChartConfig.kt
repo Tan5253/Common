@@ -44,6 +44,8 @@ class LineFillChartConfig(val context: Context) {
     val pointList: MutableList<PointF> = arrayListOf()
     // 渐变色块背景
     val gradientblockRect = RectF(0f, 0f, 0f, 0f)
+    // LinearGradient的y1值
+    var linearGradientY1 = 0f
 
     fun setData(barDataList: List<LineData>) {
         this.lineDataList.clear()
@@ -57,6 +59,8 @@ class LineFillChartConfig(val context: Context) {
         pointList.clear()
         pointList.addAll(getAllPoint())
 
+        gradientblockRect.left = 0f
+        gradientblockRect.top = 0f
         gradientblockRect.right = totalWidth.toFloat()
         gradientblockRect.bottom = totalHeight.toFloat()
         calcGradientblockRect()
@@ -67,9 +71,8 @@ class LineFillChartConfig(val context: Context) {
             val maxElectricity = lineDataList.maxBy { it.electricity }!!.electricity
             val eachElectricityHeight = maxPointHeight / maxElectricity
             val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
+            linearGradientY1 = maxPointHeight - gradientblockHeight
             if (maxElectricity > MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT) {
-                gradientblockRect.top = maxPointHeight - gradientblockHeight
-            } else if (maxElectricity < MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT) {
                 gradientblockRect.top = maxPointHeight - gradientblockHeight
             }
         }

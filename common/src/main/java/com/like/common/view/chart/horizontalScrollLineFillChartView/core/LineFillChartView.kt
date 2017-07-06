@@ -46,7 +46,7 @@ class LineFillChartView(context: Context) : View(context) {
         if (mLineDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
 
-            mLinePaint.shader = LinearGradient(0f, mLineFillChartConfig.gradientblockRect.bottom, 0f, mLineFillChartConfig.gradientblockRect.top, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+            mLinePaint.shader = LinearGradient(0f, mLineFillChartConfig.totalHeight.toFloat(), 0f, mLineFillChartConfig.linearGradientY1, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
             canvas.drawRect(mLineFillChartConfig.gradientblockRect, mLinePaint)
 
 //            for (index in 0 until mLineFillChartConfig.pathList.size) {
