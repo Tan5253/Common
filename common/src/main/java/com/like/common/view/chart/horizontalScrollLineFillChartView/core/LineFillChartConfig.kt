@@ -27,7 +27,7 @@ class LineFillChartConfig(val context: Context) {
     // 点圆的半径
     val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2f).toFloat()
     // 两点之间的间隔
-    val spacingBetweenTwoPoints: Float = DimensionUtils.dp2px(context, 30f).toFloat()
+    val spacingBetweenTwoPoints: Float = DimensionUtils.dp2px(context, 50f).toFloat()
     // 最高的点的高度
     val maxPointHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 最高的点距离顶部的间隔
@@ -52,9 +52,9 @@ class LineFillChartConfig(val context: Context) {
     val linearGradientY1: Float by lazy {
         if (lineDataList.isNotEmpty()) {
             val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
-            maxPointHeight - gradientblockHeight
+            maxPointHeight - gradientblockHeight + spacingPointTop
         } else {
-            0f
+            spacingPointTop
         }
     }
 
