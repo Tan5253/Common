@@ -36,11 +36,11 @@ class BarChartConfig(val context: Context) {
     val eachBarWidth: Float = DimensionUtils.dp2px(context, 15f).toFloat()
     // 两个柱形图之间的间隔
     val spacingBetweenTwoBars: Float = DimensionUtils.dp2px(context, 30f).toFloat()
-    // 柱形图高度
-    val totalBarHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
+    // 最高的柱形图的高度
+    val maxBarHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 柱形图和文本区域之间的间隔
     val spacingBarBottom: Float = DimensionUtils.dp2px(context, 20f).toFloat()
-    // 柱形图距离顶部的间隔
+    // 最高的柱形图距离顶部的间隔
     val spacingBarTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 文本区域上下留白
     val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 8f).toFloat()
@@ -65,7 +65,7 @@ class BarChartConfig(val context: Context) {
         spacingOnTextAreaTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
     }
     // 文本区域的顶部y坐标
-    val textAreaTop: Float = spacingBarTop + totalBarHeight + spacingBarBottom
+    val textAreaTop: Float = spacingBarTop + maxBarHeight + spacingBarBottom
     // 月份数据文本绘制的起点Y坐标
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()
@@ -111,13 +111,13 @@ class BarChartConfig(val context: Context) {
         val result: MutableList<RectF> = mutableListOf()
         if (barDataList.isNotEmpty()) {
             val maxElectricity = barDataList.maxBy { it.electricity }!!.electricity
-            val eachElectricityHeight = totalBarHeight / maxElectricity
+            val eachElectricityHeight = maxBarHeight / maxElectricity
             for ((index, barData) in barDataList.withIndex()) {
                 val rect = RectF()
                 rect.left = spacingBetweenTwoBars + index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
-                rect.top = spacingBarTop + totalBarHeight - barData.electricity * eachElectricityHeight
+                rect.top = spacingBarTop + maxBarHeight - barData.electricity * eachElectricityHeight
                 rect.right = rect.left + eachBarWidth
-                rect.bottom = spacingBarTop + totalBarHeight
+                rect.bottom = spacingBarTop + maxBarHeight
                 result.add(rect)
             }
         }
