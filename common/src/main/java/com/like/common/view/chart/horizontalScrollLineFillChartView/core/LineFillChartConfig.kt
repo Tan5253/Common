@@ -2,6 +2,7 @@ package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 
 import android.content.Context
 import android.graphics.Path
+import android.graphics.PointF
 import com.like.common.util.DimensionUtils
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
@@ -21,6 +22,8 @@ class LineFillChartConfig(val context: Context) {
         )
     }
 
+    // 点圆的半径
+    val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2f).toFloat()
     // 两点之间的间隔
     val spacingBetweenTwoPoints: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 最高的点的高度
@@ -36,6 +39,7 @@ class LineFillChartConfig(val context: Context) {
     // 所有点的形成的封闭路径
     val pathList: MutableList<Path> = arrayListOf()
     val lineDataList: MutableList<LineData> = arrayListOf()
+    val pointList: MutableList<PointF> = arrayListOf()
     fun setData(barDataList: List<LineData>) {
         this.lineDataList.clear()
         this.lineDataList.addAll(barDataList)
@@ -44,6 +48,25 @@ class LineFillChartConfig(val context: Context) {
 
         pathList.clear()
         pathList.addAll(getAllPath())
+
+        pointList.clear()
+        pointList.addAll(getAllPoint())
+
+    }
+
+    fun getAllPoint(): List<PointF> {
+        val result: MutableList<PointF> = mutableListOf()
+        if (lineDataList.isNotEmpty()) {
+            val maxElectricity = lineDataList.maxBy { it.electricity }!!.electricity
+            val eachElectricityHeight = maxPointHeight / maxElectricity
+            for (index in 0..lineDataList.size - 1) {
+                val p: PointF = PointF()
+                p.x = (index + 1) * spacingBetweenTwoPoints
+                p.y = totalHeight - lineDataList[index].electricity * eachElectricityHeight
+                result.add(p)
+            }
+        }
+        return result
     }
 
     fun getAllPath(): List<Path> {
