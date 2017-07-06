@@ -10,13 +10,13 @@ import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineD
  */
 class LineFillChartConfig(val context: Context) {
     companion object {
-        val DEFAULT_COLORS_REAL = intArrayOf(// 柱形图颜色数组，真实数据
+        val DEFAULT_COLORS = intArrayOf(// 填充颜色数组
                 0xff02bbff.toInt(),
                 0xffa845e7.toInt(),
                 0xffed4b90.toInt(),
                 0xfff84330.toInt()
         )
-        val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 颜色对应的终点位置的数组
+        val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 填充颜色对应的终点位置的数组，用于按比例显示渐变
                 0.4f, 0.7f, 0.9f, 1.0f
         )
     }

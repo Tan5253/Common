@@ -3,7 +3,6 @@ package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 import android.content.Context
 import android.graphics.*
 import android.view.View
-import com.like.common.view.chart.horizontalScrollBarChartView.core.BarChartConfig
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
 class LineFillChartView(context: Context) : View(context) {
@@ -16,7 +15,7 @@ class LineFillChartView(context: Context) : View(context) {
 
         mLinePaint.style = Paint.Style.FILL
         mLinePaint.color = Color.BLACK
-        mLinePaint.shader = LinearGradient(0f, 500f, 0f, 0f, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+        mLinePaint.shader = LinearGradient(0f, 500f, 0f, 0f, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
     }
 
     fun setData(lineDataList: List<LineData>) {
