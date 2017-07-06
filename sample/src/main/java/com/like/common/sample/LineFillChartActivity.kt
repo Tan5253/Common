@@ -18,7 +18,7 @@ class LineFillChartActivity : BaseActivity() {
 
     fun getSimulatedData(): List<LineData> {
         return listOf(
-                LineData(1, 600f)
+                LineData(1, 2400f)
         )
     }
 }

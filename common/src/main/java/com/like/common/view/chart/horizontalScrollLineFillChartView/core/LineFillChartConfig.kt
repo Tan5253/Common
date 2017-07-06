@@ -3,7 +3,6 @@ package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 import android.content.Context
 import android.graphics.Path
 import android.graphics.PointF
-import android.graphics.RectF
 import com.like.common.util.DimensionUtils
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
@@ -32,20 +31,31 @@ class LineFillChartConfig(val context: Context) {
     val maxPointHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 最高的点距离顶部的间隔
     val spacingPointTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
-
     // 视图总高度
     val totalHeight = (spacingPointTop + maxPointHeight).toInt()
-
     // 视图总宽度
     var totalWidth = 0
     // 所有点的形成的封闭路径
     val pathList: MutableList<Path> = arrayListOf()
     val lineDataList: MutableList<LineData> = arrayListOf()
     val pointList: MutableList<PointF> = arrayListOf()
-    // 渐变色块背景
-    val gradientblockRect = RectF(0f, 0f, 0f, 0f)
+    // 每度电量对应的高度
+    val eachElectricityHeight: Float by lazy {
+        if (lineDataList.isNotEmpty()) {
+            maxPointHeight / lineDataList.maxBy { it.electricity }!!.electricity
+        } else {
+            0f
+        }
+    }
     // LinearGradient的y1值
-    var linearGradientY1 = 0f
+    val linearGradientY1: Float by lazy {
+        if (lineDataList.isNotEmpty()) {
+            val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
+            maxPointHeight - gradientblockHeight
+        } else {
+            0f
+        }
+    }
 
     fun setData(barDataList: List<LineData>) {
         this.lineDataList.clear()
@@ -58,31 +68,11 @@ class LineFillChartConfig(val context: Context) {
 
         pointList.clear()
         pointList.addAll(getAllPoint())
-
-        gradientblockRect.left = 0f
-        gradientblockRect.top = 0f
-        gradientblockRect.right = totalWidth.toFloat()
-        gradientblockRect.bottom = totalHeight.toFloat()
-        calcGradientblockRect()
-    }
-
-    fun calcGradientblockRect() {
-        if (lineDataList.isNotEmpty()) {
-            val maxElectricity = lineDataList.maxBy { it.electricity }!!.electricity
-            val eachElectricityHeight = maxPointHeight / maxElectricity
-            val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
-            linearGradientY1 = maxPointHeight - gradientblockHeight
-            if (maxElectricity > MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT) {
-                gradientblockRect.top = maxPointHeight - gradientblockHeight
-            }
-        }
     }
 
     fun getAllPoint(): List<PointF> {
         val result: MutableList<PointF> = mutableListOf()
         if (lineDataList.isNotEmpty()) {
-            val maxElectricity = lineDataList.maxBy { it.electricity }!!.electricity
-            val eachElectricityHeight = maxPointHeight / maxElectricity
             for (index in 0..lineDataList.size - 1) {
                 val p: PointF = PointF()
                 p.x = (index + 1) * spacingBetweenTwoPoints
@@ -96,9 +86,6 @@ class LineFillChartConfig(val context: Context) {
     fun getAllPath(): List<Path> {
         val result: MutableList<Path> = mutableListOf()
         if (lineDataList.isNotEmpty()) {
-            val maxElectricity = lineDataList.maxBy { it.electricity }!!.electricity
-            val eachElectricityHeight = maxPointHeight / maxElectricity
-
             // 添加多余的开始，为了封闭开始
             val startPath = Path()
             startPath.moveTo(0f, totalHeight.toFloat())
@@ -124,5 +111,4 @@ class LineFillChartConfig(val context: Context) {
         }
         return result
     }
-
 }

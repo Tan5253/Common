@@ -19,7 +19,6 @@ class LineFillChartView(context: Context) : View(context) {
         setBackgroundColor(Color.WHITE)
 
         mLinePaint.style = Paint.Style.FILL
-        mLinePaint.color = Color.BLACK
 
         mPointPaint.style = Paint.Style.STROKE
         mPointPaint.color = Color.BLACK
@@ -45,14 +44,12 @@ class LineFillChartView(context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         if (mLineDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
-
             mLinePaint.shader = LinearGradient(0f, mLineFillChartConfig.totalHeight.toFloat(), 0f, mLineFillChartConfig.linearGradientY1, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
-//            canvas.drawRect(mLineFillChartConfig.gradientblockRect, mLinePaint)
-
+            // 画折线图，并填充
             for (index in 0 until mLineFillChartConfig.pathList.size) {
                 mDrawHelper.drawPath(index, mLinePaint)
             }
-
+            // 画点圆
             for (index in 0 until mLineFillChartConfig.pointList.size) {
                 mDrawHelper.drawPoint(index, mPointFillPaint)
                 mDrawHelper.drawPoint(index, mPointPaint)
