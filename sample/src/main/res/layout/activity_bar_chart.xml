@@ -29,6 +29,12 @@
             android:layout_height="wrap_content"
             android:onClick="changeData3"
             android:text="改变数据3" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="clearData"
+            android:text="清空数据" />
     </LinearLayout>
 
 </layout>

@@ -29,6 +29,10 @@ class BarChartActivity : BaseActivity() {
         mBinding.barView.setData(getSimulatedData3())
     }
 
+    fun clearData(view: View) {
+        mBinding.barView.setData(emptyList())
+    }
+
     fun getSimulatedData1(): List<BarData> {
         return listOf(
                 BarData(0, 40f),

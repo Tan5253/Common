@@ -83,22 +83,9 @@ class BarChartConfig(val context: Context) {
         electricityTextTop + DrawTextUtils.getTextBaseLine(paint)
     }
     // 每度电量对应的高度
-    val eachElectricityHeight: Float by lazy {
-        if (barDataList.isNotEmpty()) {
-            maxBarHeight / barDataList.maxBy { it.electricity }!!.electricity
-        } else {
-            0f
-        }
-    }
+    var eachElectricityHeight: Float = 0f
     // LinearGradient的y1值
-    val linearGradientY1: Float by lazy {
-        if (barDataList.isNotEmpty()) {
-            val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_DAY_ON_GRADIENT// 柱形图的高度
-            maxBarHeight - gradientblockHeight + spacingBarTop
-        } else {
-            spacingBarTop
-        }
-    }
+    var linearGradientY1: Float = spacingBarTop
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
     // 视图总高度
@@ -117,6 +104,11 @@ class BarChartConfig(val context: Context) {
 
         totalWidth = (spacingBetweenTwoBars + eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
 
+        eachElectricityHeight = maxBarHeight / barDataList.maxBy { it.electricity }!!.electricity
+
+        val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_DAY_ON_GRADIENT// 柱形图的高度
+        linearGradientY1 = maxBarHeight - gradientblockHeight + spacingBarTop
+
         textAreaBgRect.left = 0f
         textAreaBgRect.top = textAreaTop
         textAreaBgRect.right = totalWidth.toFloat()
@@ -124,19 +116,18 @@ class BarChartConfig(val context: Context) {
 
         barRectList.clear()
         barRectList.addAll(getAllBarRect())
+
     }
 
     fun getAllBarRect(): List<RectF> {
         val result: MutableList<RectF> = mutableListOf()
-        if (barDataList.isNotEmpty()) {
-            for ((index, barData) in barDataList.withIndex()) {
-                val rect = RectF()
-                rect.left = spacingBetweenTwoBars + index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
-                rect.top = spacingBarTop + maxBarHeight - barData.electricity * eachElectricityHeight
-                rect.right = rect.left + eachBarWidth
-                rect.bottom = spacingBarTop + maxBarHeight
-                result.add(rect)
-            }
+        for ((index, barData) in barDataList.withIndex()) {
+            val rect = RectF()
+            rect.left = spacingBetweenTwoBars + index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
+            rect.top = spacingBarTop + maxBarHeight - barData.electricity * eachElectricityHeight
+            rect.right = rect.left + eachBarWidth
+            rect.bottom = spacingBarTop + maxBarHeight
+            result.add(rect)
         }
         return result
     }

@@ -49,10 +49,10 @@ class BarChartView(context: Context) : View(context) {
 
     fun setData(barDataList: List<BarData>) {
         mBarDataList.clear()
-        mBarDataList.addAll(barDataList)
-
-        mBarChartConfig.setData(barDataList)
-
+        if (barDataList.isNotEmpty()) {
+            mBarDataList.addAll(barDataList)
+            mBarChartConfig.setData(barDataList)
+        }
         requestLayout()
     }
 
