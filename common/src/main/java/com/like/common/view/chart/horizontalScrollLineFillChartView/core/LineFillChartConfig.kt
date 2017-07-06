@@ -51,25 +51,29 @@ class LineFillChartConfig(val context: Context) {
         if (lineDataList.isNotEmpty()) {
             val maxElectricity = lineDataList.maxBy { it.electricity }!!.electricity
             val eachElectricityHeight = totalBarHeight / maxElectricity
-            for ((index, barData) in lineDataList.withIndex()) {
-                val pointY = totalHeight - barData.electricity * eachElectricityHeight
+
+            // 添加多余的开始，为了封闭开始
+            val startPath = Path()
+            startPath.moveTo(0f, totalHeight.toFloat())
+            startPath.lineTo(spacingBetweenTwoBars, totalHeight - lineDataList[0].electricity * eachElectricityHeight)
+            startPath.lineTo(spacingBetweenTwoBars, totalHeight.toFloat())
+            result.add(startPath)
+
+            for (index in 0..lineDataList.size - 2) {
                 val path = Path()
-                if (index == 0) {
-                    path.moveTo(0f, totalHeight.toFloat())
-                    path.lineTo((index + 1) * spacingBetweenTwoBars, pointY)
-                    path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
-                } else if (index == lineDataList.size - 1) {
-                    path.moveTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
-                    path.lineTo((index + 1) * spacingBetweenTwoBars, pointY)
-                    path.lineTo(totalWidth.toFloat(), totalHeight.toFloat())
-                } else {
-                    path.moveTo((index) * spacingBetweenTwoBars, totalHeight.toFloat())
-                    path.lineTo((index) * spacingBetweenTwoBars, totalHeight - lineDataList[index - 1].electricity * eachElectricityHeight)
-                    path.lineTo((index + 1) * spacingBetweenTwoBars, pointY)
-                    path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
-                }
+                path.moveTo((index + 1) * spacingBetweenTwoBars, totalHeight.toFloat())
+                path.lineTo((index + 1) * spacingBetweenTwoBars, totalHeight - lineDataList[index].electricity * eachElectricityHeight)
+                path.lineTo((index + 2) * spacingBetweenTwoBars, totalHeight - lineDataList[index + 1].electricity * eachElectricityHeight)
+                path.lineTo((index + 2) * spacingBetweenTwoBars, totalHeight.toFloat())
                 result.add(path)
             }
+
+            // 添加多余的结束，为了封闭结束
+            val endPath = Path()
+            endPath.moveTo(lineDataList.size * spacingBetweenTwoBars, totalHeight.toFloat())
+            endPath.lineTo(lineDataList.size * spacingBetweenTwoBars, totalHeight - lineDataList[lineDataList.size - 1].electricity * eachElectricityHeight)
+            endPath.lineTo(totalWidth.toFloat(), totalHeight.toFloat())
+            result.add(endPath)
         }
         return result
     }
