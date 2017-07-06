@@ -56,4 +56,14 @@ class DrawHelper(val canvas: Canvas, val lineFillChartConfig: LineFillChartConfi
             lineFillChartConfig.unitTextStartY,
             paint
     )
+
+    inline fun drawPointText(index: Int, paint: Paint) {
+        val text = lineFillChartConfig.lineDataList[index].electricity.toString()
+        canvas.drawText(
+                text,
+                lineFillChartConfig.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,
+                lineFillChartConfig.pointList [index].y - DrawTextUtils.getTextHeight(paint) + DrawTextUtils.getTextBaseLine(paint),
+                paint
+        )
+    }
 }

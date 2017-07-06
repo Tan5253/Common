@@ -38,9 +38,6 @@ class LineFillChartView(context: Context) : View(context) {
 
         mXAxisPaint.style = Paint.Style.STROKE
         mXAxisPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_BORDER_COLOR
-
-        mTextPaint.textSize = mLineFillChartConfig.xAxisTextSize
-        mTextPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_TEXT_COLOR
     }
 
     fun setData(lineDataList: List<LineData>) {
@@ -81,7 +78,13 @@ class LineFillChartView(context: Context) : View(context) {
                 // 画x轴刻度线
                 mDrawHelper.drawXAxisScale(index, mXAxisPaint)
                 // 画x轴文本
+                mTextPaint.textSize = mLineFillChartConfig.xAxisTextSize
+                mTextPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_TEXT_COLOR
                 mDrawHelper.drawXAxisText(index, mTextPaint)
+                // 画点的数值
+                mTextPaint.textSize = mLineFillChartConfig.pointTextSize
+                mTextPaint.color = LineFillChartConfig.DEFAULT_POINT_TEXT_COLOR
+                mDrawHelper.drawPointText(index, mTextPaint)
             }
 
             // 画x轴下面的单位文本
