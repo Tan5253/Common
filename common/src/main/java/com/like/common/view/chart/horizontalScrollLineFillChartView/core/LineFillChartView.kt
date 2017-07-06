@@ -47,16 +47,16 @@ class LineFillChartView(context: Context) : View(context) {
             mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
 
             mLinePaint.shader = LinearGradient(0f, mLineFillChartConfig.totalHeight.toFloat(), 0f, mLineFillChartConfig.linearGradientY1, LineFillChartConfig.DEFAULT_COLORS, LineFillChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
-            canvas.drawRect(mLineFillChartConfig.gradientblockRect, mLinePaint)
+//            canvas.drawRect(mLineFillChartConfig.gradientblockRect, mLinePaint)
 
-//            for (index in 0 until mLineFillChartConfig.pathList.size) {
-//                mDrawHelper.drawPath(index, mLinePaint)
-//            }
-//
-//            for (index in 0 until mLineFillChartConfig.pointList.size) {
-//                mDrawHelper.drawPoint(index, mPointFillPaint)
-//                mDrawHelper.drawPoint(index, mPointPaint)
-//            }
+            for (index in 0 until mLineFillChartConfig.pathList.size) {
+                mDrawHelper.drawPath(index, mLinePaint)
+            }
+
+            for (index in 0 until mLineFillChartConfig.pointList.size) {
+                mDrawHelper.drawPoint(index, mPointFillPaint)
+                mDrawHelper.drawPoint(index, mPointPaint)
+            }
         }
     }
 }
