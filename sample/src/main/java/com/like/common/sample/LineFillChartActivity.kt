@@ -21,7 +21,7 @@ class LineFillChartActivity : BaseActivity() {
                 LineData(1, 1000f),
                 LineData(2, 1200f),
                 LineData(3, 900f),
-                LineData(3, 100f)
+                LineData(4, 100f)
         )
     }
 }

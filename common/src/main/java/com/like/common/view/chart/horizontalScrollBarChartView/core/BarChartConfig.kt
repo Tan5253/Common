@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.RectF
 import com.like.common.util.DimensionUtils
+import com.like.common.util.DrawTextUtils
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 
 /**
@@ -59,9 +60,9 @@ class BarChartConfig(val context: Context) {
     val totalTextAreaHeight: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        val monthTextHeight = getTextHeight(paint)
+        val monthTextHeight = DrawTextUtils.getTextHeight(paint)
         paint.textSize = electricityTextSize
-        val electricityTextHeight = getTextHeight(paint)
+        val electricityTextHeight = DrawTextUtils.getTextHeight(paint)
         spacingOnTextAreaTopOrBottom * 2 + spacingBetweenTwoText + monthTextHeight + electricityTextHeight
     }
     // 文本区域的顶部y坐标
@@ -70,15 +71,15 @@ class BarChartConfig(val context: Context) {
     val monthTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        textAreaTop + spacingOnTextAreaTopOrBottom + getTextBaseLine(paint)
+        textAreaTop + spacingOnTextAreaTopOrBottom + DrawTextUtils.getTextBaseLine(paint)
     }
     // 电量数据文本绘制的起点Y坐标
     val electricityTextStartY: Float by lazy {
         val paint: Paint = Paint()
         paint.textSize = monthTextSize
-        val electricityTextTop = textAreaTop + spacingOnTextAreaTopOrBottom + getTextHeight(paint) + spacingBetweenTwoText
+        val electricityTextTop = textAreaTop + spacingOnTextAreaTopOrBottom + DrawTextUtils.getTextHeight(paint) + spacingBetweenTwoText
         paint.textSize = electricityTextSize
-        electricityTextTop + getTextBaseLine(paint)
+        electricityTextTop + DrawTextUtils.getTextBaseLine(paint)
     }
     // 柱形图的圆角半径
     val barRadius = eachBarWidth / 3
@@ -123,20 +124,5 @@ class BarChartConfig(val context: Context) {
         }
         return result
     }
-
-    /**
-     * @return 返回指定笔和指定字符串的长度
-     */
-    fun getTextlength(paint: Paint, text: String) = paint.measureText(text)
-
-    /**
-     * 获取绘制文本的起点Y坐标
-     */
-    fun getTextBaseLine(paint: Paint) = (getTextHeight(paint) - paint.fontMetrics.descent - paint.fontMetrics.ascent) / 2
-
-    /**
-     * @return 返回指定笔的文字高度
-     */
-    fun getTextHeight(paint: Paint) = paint.fontMetrics.bottom - paint.fontMetrics.top
 
 }

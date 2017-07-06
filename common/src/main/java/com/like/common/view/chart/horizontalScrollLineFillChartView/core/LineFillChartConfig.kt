@@ -1,12 +1,14 @@
 package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.like.common.util.DimensionUtils
+import com.like.common.util.DrawTextUtils
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
 /**
@@ -47,12 +49,20 @@ class LineFillChartConfig(val context: Context) {
     val spacingGradientTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 渐变色块距离底部的间隔
     val spacingGradientBottom: Float = DimensionUtils.dp2px(context, 47f).toFloat()
+    // x轴文本字体大小
+    val xAxisTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
 
     // 渐变色块及其顶部间隔的总高度
     val totalGradientAndSpacingTopHeight = spacingGradientTop + maxGradientHeight
     // 视图总高度
     val totalHeight = totalGradientAndSpacingTopHeight + spacingGradientBottom
 
+    // 月份数据文本绘制的起点Y坐标
+    val xAxisTextStartY: Float by lazy {
+        val paint: Paint = Paint()
+        paint.textSize = xAxisTextSize
+        totalGradientAndSpacingTopHeight + DrawTextUtils.getTextBaseLine(paint)
+    }
     // 所有数据
     val lineDataList: MutableList<LineData> = arrayListOf()
     // 所有点

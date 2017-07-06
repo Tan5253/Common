@@ -2,6 +2,7 @@ package com.like.common.view.chart.horizontalScrollBarChartView.core
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.like.common.util.DrawTextUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
@@ -20,7 +21,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
         canvas.drawText(
                 text,
                 barChartConfig.spacingBetweenTwoBars + barIndex * barAndSpacingWidth + barChartConfig.spacingBetweenTwoBars / 2 + barChartConfig.eachBarWidth / 2 - paint.measureText(text) / 2,
-                barChartConfig.barRectList[barIndex].top - barChartConfig.getTextHeight(paint) + barChartConfig.getTextBaseLine(paint),
+                barChartConfig.barRectList[barIndex].top - DrawTextUtils.getTextHeight(paint) + DrawTextUtils.getTextBaseLine(paint),
                 paint
         )
     }
@@ -29,7 +30,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
         val text = barChartConfig.barDataList[barIndex].month.toString()
         canvas.drawText(
                 text,
-                barChartConfig.spacingBetweenTwoBars + barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getTextlength(paint, text) / 2,
+                barChartConfig.spacingBetweenTwoBars + barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - DrawTextUtils.getTextlength(paint, text) / 2,
                 barChartConfig.monthTextStartY,
                 paint
         )
@@ -39,7 +40,7 @@ class DrawHelper(val canvas: Canvas, val barChartConfig: BarChartConfig) {
         val text = barChartConfig.barDataList[barIndex].electricity.toString()
         canvas.drawText(
                 text,
-                barChartConfig.spacingBetweenTwoBars + barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - barChartConfig.getTextlength(paint, text) / 2,
+                barChartConfig.spacingBetweenTwoBars + barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - DrawTextUtils.getTextlength(paint, text) / 2,
                 barChartConfig.electricityTextStartY,
                 paint
         )

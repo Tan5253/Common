@@ -2,6 +2,7 @@ package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.like.common.util.DrawTextUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val canvas: Canvas, val lineFillChartConfig: LineFillChartConfig) {
@@ -16,4 +17,13 @@ class DrawHelper(val canvas: Canvas, val lineFillChartConfig: LineFillChartConfi
 
     inline fun drawXAxisScale(index: Int, paint: Paint) = canvas.drawLine(lineFillChartConfig.pointList[index].x, lineFillChartConfig.totalGradientAndSpacingTopHeight - lineFillChartConfig.xAxisScaleHeight, lineFillChartConfig.pointList[index].x, lineFillChartConfig.totalGradientAndSpacingTopHeight, paint)
 
+    inline fun drawXAxisText(index: Int, paint: Paint) {
+        val text = lineFillChartConfig.lineDataList[index].month.toString()
+        canvas.drawText(
+                text,
+                lineFillChartConfig.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,
+                lineFillChartConfig.xAxisTextStartY,
+                paint
+        )
+    }
 }
