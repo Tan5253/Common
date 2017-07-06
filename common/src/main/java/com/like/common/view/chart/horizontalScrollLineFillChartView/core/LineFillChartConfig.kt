@@ -155,25 +155,25 @@ class LineFillChartConfig(val context: Context) {
         if (lineDataList.isNotEmpty()) {
             // 添加多余的开始，为了封闭开始
             val startPath = Path()
-            startPath.moveTo(0f, totalGradientAndSpacingTopHeight.toFloat())
+            startPath.moveTo(0f, totalGradientAndSpacingTopHeight)
             startPath.lineTo(spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[0].electricity * eachElectricityHeight)
-            startPath.lineTo(spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight.toFloat())
+            startPath.lineTo(spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
             result.add(startPath)
 
             for (index in 0..lineDataList.size - 2) {
                 val path = Path()
-                path.moveTo((index + 1) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight.toFloat())
+                path.moveTo((index + 1) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
                 path.lineTo((index + 1) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[index].electricity * eachElectricityHeight)
                 path.lineTo((index + 2) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[index + 1].electricity * eachElectricityHeight)
-                path.lineTo((index + 2) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight.toFloat())
+                path.lineTo((index + 2) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
                 result.add(path)
             }
 
             // 添加多余的结束，为了封闭结束
             val endPath = Path()
-            endPath.moveTo(lineDataList.size * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight.toFloat())
+            endPath.moveTo(lineDataList.size * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
             endPath.lineTo(lineDataList.size * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[lineDataList.size - 1].electricity * eachElectricityHeight)
-            endPath.lineTo(totalWidth.toFloat(), totalGradientAndSpacingTopHeight.toFloat())
+            endPath.lineTo(totalWidth, totalGradientAndSpacingTopHeight)
             result.add(endPath)
         }
         return result
