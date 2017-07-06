@@ -11,4 +11,9 @@ class DrawHelper(val canvas: Canvas, val lineFillChartConfig: LineFillChartConfi
     inline fun drawPoint(index: Int, paint: Paint) = canvas.drawCircle(lineFillChartConfig.pointList[index].x, lineFillChartConfig.pointList[index].y, lineFillChartConfig.pointCircleRadius, paint)
 
     inline fun drawGradientBottomRect(paint: Paint) = canvas.drawRect(lineFillChartConfig.gradientBottomRect, paint)
+
+    inline fun drawXAxis(paint: Paint) = canvas.drawLine(0f, lineFillChartConfig.totalGradientAndSpacingTopHeight, lineFillChartConfig.totalWidth, lineFillChartConfig.totalGradientAndSpacingTopHeight, paint)
+
+    inline fun drawXAxisScale(index: Int, paint: Paint) = canvas.drawLine(lineFillChartConfig.pointList[index].x, lineFillChartConfig.totalGradientAndSpacingTopHeight - lineFillChartConfig.xAxisScaleHeight, lineFillChartConfig.pointList[index].x, lineFillChartConfig.totalGradientAndSpacingTopHeight, paint)
+
 }
