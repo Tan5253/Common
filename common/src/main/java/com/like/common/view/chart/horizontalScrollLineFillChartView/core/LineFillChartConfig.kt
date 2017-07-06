@@ -11,7 +11,8 @@ import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineD
  */
 class LineFillChartConfig(val context: Context) {
     companion object {
-        val MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT = 40f * 30f// 每天40度*30天，渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
+        val MAX_ELECTRICITY_OF_DAY_ON_GRADIENT = 40f // (每天)渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
+        val MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT = MAX_ELECTRICITY_OF_DAY_ON_GRADIENT * 30// (每月)，渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
         val DEFAULT_COLORS = intArrayOf(// 填充颜色数组
                 0xff02bbff.toInt(),
                 0xff9f50fb.toInt(),
