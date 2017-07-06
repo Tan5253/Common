@@ -62,7 +62,7 @@ class DrawHelper(val canvas: Canvas, val lineFillChartConfig: LineFillChartConfi
         canvas.drawText(
                 text,
                 lineFillChartConfig.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,
-                lineFillChartConfig.pointList [index].y - DrawTextUtils.getTextHeight(paint) + DrawTextUtils.getTextBaseLine(paint),
+                lineFillChartConfig.pointList [index].y - DrawTextUtils.getTextHeight(paint) - lineFillChartConfig.spacingPointTextBottom + DrawTextUtils.getTextBaseLine(paint),
                 paint
         )
     }

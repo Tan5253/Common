@@ -27,11 +27,11 @@ class LineFillChartConfig(val context: Context) {
         )
         val DEFAULT_GRADIENT_BOTTOM_BG_COLOR = 0xff02bbff.toInt()// 渐变色块以下间隔的背景颜色
         val DEFAULT_POINT_FILL_COLOR = 0xffffffff.toInt()// 点圆中间的填充颜色
-        val DEFAULT_POINT_BORDER_COLOR = 0xff000000.toInt()// 点圆边框颜色
-        val DEFAULT_X_AXIS_BORDER_COLOR = 0xffffffff.toInt()// x轴线颜色
-        val DEFAULT_X_AXIS_SCALE_COLOR = 0xff000000.toInt()// x轴刻度线颜色
+        val DEFAULT_POINT_BORDER_COLOR = 0xff303030.toInt()// 点圆边框颜色
+        val DEFAULT_X_AXIS_BORDER_COLOR = 0xff73d6f8.toInt()// x轴线颜色
+        val DEFAULT_X_AXIS_SCALE_COLOR = 0xff73d6f8.toInt()// x轴刻度线颜色
         val DEFAULT_X_AXIS_TEXT_COLOR = 0xffffffff.toInt()// x轴文本颜色
-        val DEFAULT_POINT_TEXT_COLOR = 0xff000000.toInt()// 点的数值文本颜色
+        val DEFAULT_POINT_TEXT_COLOR = 0xff303030.toInt()// 点的数值文本颜色
         val DEFAULT_UNIT_TEXT_COLOR = 0xffffffff.toInt()// x轴下面的单位文本颜色
         val MAX_ELECTRICITY_OF_DAY_ON_GRADIENT = 40f // (每天)渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
         val MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT = MAX_ELECTRICITY_OF_DAY_ON_GRADIENT * 30// (每月)，渐变颜色对应的最大度数，超过此数值，为纯色DEFAULT_COLORS的最后一种颜色。
@@ -47,7 +47,7 @@ class LineFillChartConfig(val context: Context) {
     // 渐变色块最高点的高度
     val maxGradientHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 渐变色块距离顶部的间隔
-    val spacingGradientTop: Float = DimensionUtils.dp2px(context, 20f).toFloat()
+    val spacingGradientTop: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 渐变色块距离底部的间隔
     val spacingGradientBottom: Float = DimensionUtils.dp2px(context, 47f).toFloat()
     // x轴文本字体大小
@@ -56,8 +56,10 @@ class LineFillChartConfig(val context: Context) {
     val pointTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
     // x轴下面的单位文本字体大小
     val unitTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // 点的数值距离点圆的间隔
+    val spacingPointTextBottom = DimensionUtils.sp2px(context, 5f).toFloat()
     // x轴下面的单位上边的间隔
-    val spacingUnitTextTop = DimensionUtils.sp2px(context, 10f).toFloat()
+    val spacingUnitTextTop = DimensionUtils.sp2px(context, 8f).toFloat()
     // x轴下面的单位左边的间隔
     val spacingUnitTextLeft = DimensionUtils.sp2px(context, 12f).toFloat()
 
