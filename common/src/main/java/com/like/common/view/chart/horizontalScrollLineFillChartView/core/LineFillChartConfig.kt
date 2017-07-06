@@ -18,7 +18,7 @@ class LineFillChartConfig(val context: Context) {
                 0xfff84330.toInt()
         )
         val DEFAULT_COLORS_POSITIONS = floatArrayOf(// 填充颜色对应的终点位置的数组，用于按比例显示渐变
-                0.4f, 0.7f, 0.9f, 1.0f
+                0f, 0.3f, 0.6f, 1.0f
         )
     }
 

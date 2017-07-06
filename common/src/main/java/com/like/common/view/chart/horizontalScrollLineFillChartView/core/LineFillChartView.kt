@@ -46,6 +46,7 @@ class LineFillChartView(context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         if (mLineDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mLineFillChartConfig)
+
             for (index in 0 until mLineFillChartConfig.pathList.size) {
                 mDrawHelper.drawPath(index, mLinePaint)
             }
