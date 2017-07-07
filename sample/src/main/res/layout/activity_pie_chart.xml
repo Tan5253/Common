@@ -275,8 +275,8 @@
             android:layout_marginTop="20dp"
             android:background="#28c4ff"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -290,15 +290,15 @@
                     android:layout_height="wrap_content"
                     android:text="4月占比"
                     android:textColor="#bde9ff"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="3dp"
                     android:text="33.33%"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -313,15 +313,15 @@
                     android:layout_height="wrap_content"
                     android:text="5月占比"
                     android:textColor="#bde9ff"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="3dp"
                     android:text="33.33%"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -336,15 +336,15 @@
                     android:layout_height="wrap_content"
                     android:text="6月占比"
                     android:textColor="#bde9ff"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="3dp"
                     android:text="33.33%"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 
