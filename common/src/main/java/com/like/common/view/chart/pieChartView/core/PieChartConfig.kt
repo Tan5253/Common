@@ -18,7 +18,7 @@ class PieChartConfig(val context: Context) {
     }
 
     // 环形宽度
-    val ringWidth = DimensionUtils.dp2px(context, 30f).toFloat()
+    val ringWidth = DimensionUtils.dp2px(context, 25f).toFloat()
 
     // 每个月旋转的角度
     val sweepAngle: FloatArray = kotlin.FloatArray(3)
