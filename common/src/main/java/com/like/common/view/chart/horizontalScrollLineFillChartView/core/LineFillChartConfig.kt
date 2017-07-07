@@ -68,15 +68,14 @@ class LineFillChartConfig(val context: Context) {
     // 视图总高度
     val totalHeight = totalGradientAndSpacingTopHeight + spacingGradientBottom
 
+    val paint: Paint = Paint()
     // 月份数据文本绘制的起点Y坐标
     val xAxisTextStartY: Float by lazy {
-        val paint: Paint = Paint()
         paint.textSize = xAxisTextSize
         totalGradientAndSpacingTopHeight + DrawTextUtils.getTextBaseLine(paint)
     }
     // x轴下面的单位文本绘制的起点Y坐标
     val unitTextStartY: Float by lazy {
-        val paint: Paint = Paint()
         paint.textSize = xAxisTextSize
         val top = totalGradientAndSpacingTopHeight + DrawTextUtils.getTextHeight(paint)
         paint.textSize = unitTextSize

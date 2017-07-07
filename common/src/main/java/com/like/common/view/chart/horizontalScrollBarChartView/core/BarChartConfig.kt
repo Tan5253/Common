@@ -57,9 +57,9 @@ class BarChartConfig(val context: Context) {
     // 最左边的单位文本字体大小
     val unitTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
 
+    val paint: Paint = Paint()
     // 文本区域总高度
     val totalTextAreaHeight: Float by lazy {
-        val paint: Paint = Paint()
         paint.textSize = monthTextSize
         val monthTextHeight = DrawTextUtils.getTextHeight(paint)
         paint.textSize = electricityTextSize
@@ -70,13 +70,11 @@ class BarChartConfig(val context: Context) {
     val textAreaTop: Float = spacingBarTop + maxBarHeight + spacingBarBottom
     // 月份数据文本绘制的起点Y坐标
     val monthTextStartY: Float by lazy {
-        val paint: Paint = Paint()
         paint.textSize = monthTextSize
         textAreaTop + spacingOnTextAreaTopOrBottom + DrawTextUtils.getTextBaseLine(paint)
     }
     // 电量数据文本绘制的起点Y坐标
     val electricityTextStartY: Float by lazy {
-        val paint: Paint = Paint()
         paint.textSize = monthTextSize
         val electricityTextTop = textAreaTop + spacingOnTextAreaTopOrBottom + DrawTextUtils.getTextHeight(paint) + spacingBetweenTwoText
         paint.textSize = electricityTextSize
