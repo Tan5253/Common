@@ -6,8 +6,8 @@ import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 
 class BarChartView(context: Context) : View(context) {
-    private val mBarDataList: MutableList<BarData> = arrayListOf()
-    private val mBarChartConfig: BarChartConfig = BarChartConfig(context)
+    private val mDataList: MutableList<BarData> = arrayListOf()
+    private val mConfig: BarChartConfig = BarChartConfig(context)
     private lateinit var mDrawHelper: DrawHelper
 
     private val mBarPaintReal = Paint(Paint.ANTI_ALIAS_FLAG)// 柱形图，真实数据
@@ -32,46 +32,46 @@ class BarChartView(context: Context) : View(context) {
         mBarPaint.color = BarChartConfig.DEFAULT_COLOR
 
         mMonthTextPaint.style = Paint.Style.STROKE
-        mMonthTextPaint.textSize = mBarChartConfig.monthTextSize
+        mMonthTextPaint.textSize = mConfig.monthTextSize
 
         mElectricityTextPaint.style = Paint.Style.STROKE
-        mElectricityTextPaint.textSize = mBarChartConfig.electricityTextSize
+        mElectricityTextPaint.textSize = mConfig.electricityTextSize
 
         mUnitTextPaint.style = Paint.Style.STROKE
-        mUnitTextPaint.textSize = mBarChartConfig.unitTextSize
+        mUnitTextPaint.textSize = mConfig.unitTextSize
         mUnitTextPaint.color = BarChartConfig.DEFAULT_UNIT_TEXT_COLOR
 
         mTextBgPaint.style = Paint.Style.FILL
 
         mOtherTextPaint.color = BarChartConfig.DEFAULT_OTHER_TEXT_COLOR
-        mOtherTextPaint.textSize = mBarChartConfig.otherTextSize
+        mOtherTextPaint.textSize = mConfig.otherTextSize
     }
 
     fun setData(barDataList: List<BarData>) {
-        mBarDataList.clear()
+        mDataList.clear()
         if (barDataList.isNotEmpty()) {
-            mBarDataList.addAll(barDataList)
-            mBarChartConfig.setData(barDataList)
+            mDataList.addAll(barDataList)
+            mConfig.setData(barDataList)
         }
         requestLayout()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(mBarChartConfig.totalWidth, mBarChartConfig.totalHeight)
+        setMeasuredDimension(mConfig.totalWidth, mConfig.totalHeight)
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (mBarDataList.isNotEmpty()) {
-            mDrawHelper = DrawHelper(canvas, mBarChartConfig)
+        if (mDataList.isNotEmpty()) {
+            mDrawHelper = DrawHelper(canvas, mConfig)
 
-            mBarPaintReal.shader = LinearGradient(0f, mBarChartConfig.maxBarHeight + mBarChartConfig.spacingBarTop, 0f, mBarChartConfig.linearGradientY1, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
+            mBarPaintReal.shader = LinearGradient(0f, mConfig.maxBarHeight + mConfig.spacingBarTop, 0f, mConfig.linearGradientY1, BarChartConfig.DEFAULT_COLORS_REAL, BarChartConfig.DEFAULT_COLORS_POSITIONS, Shader.TileMode.CLAMP)
 
             // 画单位
             mTextBgPaint.color = BarChartConfig.DEFAULT_UNIT_BG_COLOR
             mDrawHelper.drawUnitBg(mTextBgPaint)
             mDrawHelper.drawUnitText(mUnitTextPaint)
 
-            for ((index, barData) in mBarDataList.withIndex()) {
+            for ((index, barData) in mDataList.withIndex()) {
                 if (barData.isRealData) {
                     mDrawHelper.drawBar(index, mBarPaintReal)
                     mTextBgPaint.color = BarChartConfig.DEFAULT_TEXT_AREA_BG_COLOR_REAL
