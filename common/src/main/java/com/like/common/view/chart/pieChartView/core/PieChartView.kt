@@ -27,8 +27,8 @@ class PieChartView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     fun setData(data: PieData?) {
+        mData = data
         if (data != null && data.monthDataList.isNotEmpty()) {
-            mData = data
             mConfig.setData(data)
         }
         requestLayout()
@@ -41,11 +41,13 @@ class PieChartView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     override fun onDraw(canvas: Canvas) {
-        for (i in 0..2) {
-            mPiePaint.color = PieChartConfig.DEFAULT_COLORS[i]
-            canvas.drawArc(pieRect, mConfig.startAngle[i], mConfig.sweepAngle[i], true, mPiePaint)
+        if (mData != null && mData!!.monthDataList.isNotEmpty()) {
+            for (i in 0..2) {
+                mPiePaint.color = PieChartConfig.DEFAULT_COLORS[i]
+                canvas.drawArc(pieRect, mConfig.startAngle[i], mConfig.sweepAngle[i], true, mPiePaint)
+            }
+            mPiePaint.color = PieChartConfig.DEFAULT_BG_COLOR
+            canvas.drawCircle(totalWidth / 2, totalHeight / 2, totalWidth / 2 - mConfig.ringWidth, mPiePaint)
         }
-        mPiePaint.color = PieChartConfig.DEFAULT_BG_COLOR
-        canvas.drawCircle(totalWidth / 2, totalHeight / 2, totalWidth / 2 - mConfig.ringWidth, mPiePaint)
     }
 }
