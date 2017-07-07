@@ -36,8 +36,9 @@ class PieChartView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        totalWidth = w.toFloat()
-        totalHeight = h.toFloat()
+        val min = Math.min(w.toFloat(), h.toFloat())
+        totalWidth = min
+        totalHeight = min
     }
 
     override fun onDraw(canvas: Canvas) {
