@@ -14,8 +14,8 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="170dp"
-                android:layout_height="170dp"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:layout_margin="20dp">
 
                 <com.like.common.view.chart.pieChartView.core.PieChartView
@@ -50,7 +50,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="160dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
@@ -275,8 +275,8 @@
             android:layout_marginTop="10dp"
             android:background="#28c4ff"
             android:orientation="horizontal"
-            android:paddingBottom="7dp"
-            android:paddingTop="7dp">
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -295,7 +295,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     tools:text="33.33%" />
@@ -318,7 +318,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     tools:text="33.33%" />
@@ -341,7 +341,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     tools:text="33.33%" />
