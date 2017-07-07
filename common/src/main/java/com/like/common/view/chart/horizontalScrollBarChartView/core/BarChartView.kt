@@ -1,7 +1,10 @@
 package com.like.common.view.chart.horizontalScrollBarChartView.core
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Shader
 import android.view.View
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 
@@ -24,7 +27,7 @@ class BarChartView(context: Context) : View(context) {
     private val mOtherTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
-        setBackgroundColor(Color.WHITE)
+        setBackgroundColor(BarChartConfig.DEFAULT_BG_COLOR)
 
         mBarPaintReal.style = Paint.Style.FILL
 

@@ -16,6 +16,7 @@ import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineD
  */
 class LineFillChartConfig(val context: Context) {
     companion object {
+        val DEFAULT_BG_COLOR = 0xffffffff.toInt()
         val DEFAULT_COLORS = intArrayOf(// 填充颜色数组
                 0xff02bbff.toInt(),
                 0xff9f50fb.toInt(),

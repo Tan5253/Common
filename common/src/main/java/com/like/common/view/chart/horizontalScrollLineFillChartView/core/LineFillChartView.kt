@@ -1,7 +1,10 @@
 package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Shader
 import android.view.View
 import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 
@@ -22,7 +25,7 @@ class LineFillChartView(context: Context) : View(context) {
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
-        setBackgroundColor(Color.WHITE)
+        setBackgroundColor(LineFillChartConfig.DEFAULT_BG_COLOR)
 
         mGradientPaint.style = Paint.Style.FILL
 

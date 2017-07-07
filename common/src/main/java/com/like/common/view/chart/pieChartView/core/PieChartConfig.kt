@@ -9,6 +9,7 @@ import com.like.common.view.chart.pieChartView.entity.PieData
  */
 class PieChartConfig(val context: Context) {
     companion object {
+        val DEFAULT_BG_COLOR = 0xffffffff.toInt()
         val DEFAULT_COLORS = intArrayOf(// 填充颜色数组
                 0xffff5581.toInt(),
                 0xff00ccff.toInt(),
@@ -22,6 +23,8 @@ class PieChartConfig(val context: Context) {
     val textSize0 = DimensionUtils.sp2px(context, 14f).toFloat()
     // 文本字体大小，"一季度"
     val textSize1 = DimensionUtils.sp2px(context, 16f).toFloat()
+    // 环形宽度
+    val ringWidth = DimensionUtils.dp2px(context, 40f).toFloat()
 
     // 第一段圆饼扇形的占圆的比例
     var pieRatio0: Float = 0f

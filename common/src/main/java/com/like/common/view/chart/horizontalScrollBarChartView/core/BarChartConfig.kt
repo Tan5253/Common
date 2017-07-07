@@ -12,6 +12,7 @@ import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
  */
 class BarChartConfig(val context: Context) {
     companion object {
+        val DEFAULT_BG_COLOR = 0xffffffff.toInt()
         val DEFAULT_COLORS_REAL = intArrayOf(// 柱形图颜色数组
                 0xff02bbff.toInt(),
                 0xff9f50fb.toInt(),

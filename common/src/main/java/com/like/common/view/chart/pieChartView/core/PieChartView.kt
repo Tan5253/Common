@@ -2,7 +2,6 @@ package com.like.common.view.chart.pieChartView.core
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
@@ -14,16 +13,16 @@ class PieChartView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private var mData: PieData? = null
     private val mConfig: PieChartConfig = PieChartConfig(context)
 
-    private var totalWidth: Int = 0
-    private var totalHeight: Int = 0
+    private var totalWidth: Float = 0f
+    private var totalHeight: Float = 0f
     private val pieRect: RectF by lazy {
-        RectF(0f, 0f, totalWidth.toFloat(), totalHeight.toFloat())
+        RectF(0f, 0f, totalWidth, totalHeight)
     }
 
     private val mPiePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
-        setBackgroundColor(Color.BLACK)
+        setBackgroundColor(PieChartConfig.DEFAULT_BG_COLOR)
 
         mPiePaint.style = Paint.Style.FILL
     }
@@ -38,21 +37,19 @@ class PieChartView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        totalWidth = w
-        totalHeight = h
+        totalWidth = w.toFloat()
+        totalHeight = h.toFloat()
     }
 
     override fun onDraw(canvas: Canvas) {
         Logger.wtf("totalWidth = $totalWidth totalHeight = $totalHeight")
-        //移动中心为整个View的中心，默认的是View的左上角
-        canvas.translate((totalWidth / 2).toFloat(), (totalHeight / 2).toFloat())
-
-        var startAngle = 0f
+        var startAngle = 150f
         val sweepAngle = 360f / 3f
         for (i in 0..2) {
             mPiePaint.color = PieChartConfig.DEFAULT_COLORS[i]
-            canvas.drawRect(pieRect, mPiePaint)
-            canvas.drawArc(pieRect, startAngle * sweepAngle, sweepAngle, true, mPiePaint)
+            canvas.drawArc(pieRect, startAngle + i * sweepAngle, sweepAngle, true, mPiePaint)
         }
+        mPiePaint.color = PieChartConfig.DEFAULT_BG_COLOR
+        canvas.drawCircle(totalWidth / 2, totalHeight / 2, totalWidth / 2 - mConfig.ringWidth, mPiePaint)
     }
 }
