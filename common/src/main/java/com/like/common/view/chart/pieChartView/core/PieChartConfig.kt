@@ -20,28 +20,28 @@ class PieChartConfig(val context: Context) {
                 0xffffcc00.toInt()
         )
         val DEFAULT_BOTTOM_BG_COLOR = 0xff28c4ff.toInt()// 底部矩形背景颜色
-        val DEFAULT_TEXT_COLOR_0 = 0xff606060.toInt()// 文本颜色
-        val DEFAULT_TEXT_COLOR_1 = 0xff606060.toInt()// 文本颜色
-        val DEFAULT_TEXT_COLOR_2 = 0xff606060.toInt()// 文本颜色
-        val DEFAULT_TEXT_COLOR_3 = 0xff303030.toInt()// 文本颜色
-        val DEFAULT_TEXT_COLOR_4 = 0xff606060.toInt()// 文本颜色
-        val DEFAULT_TEXT_COLOR_5 = 0xffbde9ff.toInt()// 文本颜色
-        val DEFAULT_TEXT_COLOR_6 = 0xffffffff.toInt()// 文本颜色
+        val DEFAULT_TEXT_COLOR_0 = 0xff606060.toInt()// 文本颜色，"2017"
+        val DEFAULT_TEXT_COLOR_1 = 0xff606060.toInt()// 文本颜色，"一季度"
+        val DEFAULT_TEXT_COLOR_2 = 0xff606060.toInt()// 文本颜色，"3个月份"
+        val DEFAULT_TEXT_COLOR_3 = 0xff303030.toInt()// 文本颜色，"电量"
+        val DEFAULT_TEXT_COLOR_4 = 0xff606060.toInt()// 文本颜色，"电费"
+        val DEFAULT_TEXT_COLOR_5 = 0xffbde9ff.toInt()// 文本颜色，"某月占比"
+        val DEFAULT_TEXT_COLOR_6 = 0xffffffff.toInt()// 文本颜色，"比例"
     }
 
-    // 文本字体大小
+    // 文本字体大小，"2017"
     val textSize0 = DimensionUtils.sp2px(context, 14f).toFloat()
-    // 文本字体大小
+    // 文本字体大小，"一季度"
     val textSize1 = DimensionUtils.sp2px(context, 16f).toFloat()
-    // 文本字体大小
+    // 文本字体大小，"3个月份"
     val textSize2 = DimensionUtils.sp2px(context, 12f).toFloat()
-    // 文本字体大小
+    // 文本字体大小，"电量"
     val textSize3 = DimensionUtils.sp2px(context, 18f).toFloat()
-    // 文本字体大小
+    // 文本字体大小，"电费"
     val textSize4 = DimensionUtils.sp2px(context, 18f).toFloat()
-    // 文本字体大小
+    // 文本字体大小，"某月占比"
     val textSize5 = DimensionUtils.sp2px(context, 12f).toFloat()
-    // 文本字体大小
+    // 文本字体大小，"比例"
     val textSize6 = DimensionUtils.sp2px(context, 14f).toFloat()
 
     // 底部文本区域上下留白
@@ -91,15 +91,26 @@ class PieChartConfig(val context: Context) {
     }
 
     val paint: Paint = Paint()
-    // 文本绘制的起点Y坐标
+    // 文本绘制的起点Y坐标，"2017"
     val textStartY0: Float by lazy {
         paint.textSize = textSize0
         pieCenterPoint.y - 10f - DrawTextUtils.getTextHeight(paint) + DrawTextUtils.getTextBaseLine(paint)
     }
-    // 文本绘制的起点Y坐标
+    // 文本绘制的起点Y坐标，"一季度"
     val textStartY1: Float by lazy {
         paint.textSize = textSize1
         pieCenterPoint.y + 10f + DrawTextUtils.getTextBaseLine(paint)
+    }
+    // 文本绘制的起点Y坐标，"4月"
+    val textStartY2_0: Float by lazy {
+        paint.textSize = textSize2
+        spacingTop + DrawTextUtils.getTextBaseLine(paint)
+    }
+    // 文本绘制的起点Y坐标，"5月"
+    val textStartY2_1: Float by lazy {
+    }
+    // 文本绘制的起点Y坐标，"6月"
+    val textStartY2_2: Float by lazy {
     }
 
     // 第一段圆饼扇形的占圆的比例
