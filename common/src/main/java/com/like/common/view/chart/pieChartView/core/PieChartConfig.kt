@@ -26,18 +26,20 @@ class PieChartConfig(val context: Context) {
     // 环形宽度
     val ringWidth = DimensionUtils.dp2px(context, 40f).toFloat()
 
-    // 第一段圆饼扇形的占圆的比例
-    var pieRatio0: Float = 0f
-    // 第二段圆饼扇形的占圆的比例
-    var pieRatio1: Float = 0f
-    // 第三段圆饼扇形的占圆的比例
-    var pieRatio2: Float = 0f
+    // 每个月旋转的角度
+    val sweepAngle: FloatArray = kotlin.FloatArray(3)
+    // 每个月绘制的起点角度
+    val startAngle: FloatArray = kotlin.FloatArray(3)
 
     fun setData(data: PieData) {
         val totalElectricity = data.monthDataList.sumByDouble { it.electricity.toDouble() }
-        pieRatio0 = data.monthDataList[0].electricity / totalElectricity.toFloat()
-        pieRatio1 = data.monthDataList[1].electricity / totalElectricity.toFloat()
-        pieRatio2 = data.monthDataList[2].electricity / totalElectricity.toFloat()
+        startAngle[0] = 150f
+        for (i in 0..2) {
+            sweepAngle[i] = 360f * data.monthDataList[i].electricity / totalElectricity.toFloat()
+            if (i > 0) {
+                startAngle[i] = startAngle[i - 1] + sweepAngle[i - 1]
+            }
+        }
     }
 
 }
