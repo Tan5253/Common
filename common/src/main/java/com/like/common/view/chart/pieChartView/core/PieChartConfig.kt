@@ -15,14 +15,8 @@ class PieChartConfig(val context: Context) {
                 0xff00ccff.toInt(),
                 0xffffcc00.toInt()
         )
-        val DEFAULT_TEXT_COLOR_0 = 0xff606060.toInt()// 文本颜色，"2017"
-        val DEFAULT_TEXT_COLOR_1 = 0xff606060.toInt()// 文本颜色，"一季度"
     }
 
-    // 文本字体大小，"2017"
-    val textSize0 = DimensionUtils.sp2px(context, 14f).toFloat()
-    // 文本字体大小，"一季度"
-    val textSize1 = DimensionUtils.sp2px(context, 16f).toFloat()
     // 环形宽度
     val ringWidth = DimensionUtils.dp2px(context, 40f).toFloat()
 
