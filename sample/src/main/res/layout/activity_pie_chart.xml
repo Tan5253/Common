@@ -288,17 +288,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4月占比"
                     android:textColor="#bde9ff"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    tools:text="4月占比" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="33.33%"
                     android:textColor="#ffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="33.33%" />
             </LinearLayout>
 
             <LinearLayout
@@ -311,17 +311,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5月占比"
                     android:textColor="#bde9ff"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    tools:text="5月占比" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="33.33%"
                     android:textColor="#ffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="33.33%" />
             </LinearLayout>
 
             <LinearLayout
@@ -334,17 +334,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="6月占比"
                     android:textColor="#bde9ff"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    tools:text="6月占比" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="33.33%"
                     android:textColor="#ffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="33.33%" />
             </LinearLayout>
         </LinearLayout>
 
