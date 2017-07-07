@@ -106,12 +106,6 @@ class PieChartConfig(val context: Context) {
         paint.textSize = textSize2
         spacingTop + DrawTextUtils.getTextBaseLine(paint)
     }
-    // 文本绘制的起点Y坐标，"5月"
-    val textStartY2_1: Float by lazy {
-    }
-    // 文本绘制的起点Y坐标，"6月"
-    val textStartY2_2: Float by lazy {
-    }
 
     // 第一段圆饼扇形的占圆的比例
     var pieRatio0: Float = 0f
