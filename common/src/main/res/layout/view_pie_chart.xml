@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.like.common.util.MoneyFormatUtils" />
+
         <variable
             name="pieData"
             type="com.like.common.view.chart.pieChartView.entity.PieData" />
@@ -126,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:text="@{String.valueOf(pieData.monthDataList.get(0).fee)}"
+                        android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(0).fee)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.00" />
@@ -200,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:text="@{String.valueOf(pieData.monthDataList.get(1).fee)}"
+                        android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(1).fee)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.00" />
@@ -274,7 +276,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:text="@{String.valueOf(pieData.monthDataList.get(2).fee)}"
+                        android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(2).fee)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.00" />
