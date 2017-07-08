@@ -119,7 +119,7 @@ object BindingUtils {
         try {
             tv.text = if (monthDataList != null) {
                 val totalElectricity = monthDataList.sumByDouble { it.electricity.toDouble() }.toFloat()
-                "${monthDataList[index].electricity / totalElectricity}%"
+                "${MoneyFormatUtils.formatOneDecimals((monthDataList[index].electricity / totalElectricity).toDouble() * 100)}%"
             } else {
                 ""
             }
