@@ -96,6 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:text="@{String.valueOf(pieData.monthDataList.get(0).electricity)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.0" />
@@ -104,9 +105,9 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="kw/h"
                         android:textColor="#606060"
-                        android:textSize="12sp"
-                        tools:text="kw/h" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -125,6 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:text="@{String.valueOf(pieData.monthDataList.get(0).fee)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.00" />
@@ -133,9 +135,9 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="元"
                         android:textColor="#606060"
-                        android:textSize="12sp"
-                        tools:text="元" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <Space
@@ -168,6 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:text="@{String.valueOf(pieData.monthDataList.get(1).electricity)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.0" />
@@ -176,9 +179,9 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="kw/h"
                         android:textColor="#606060"
-                        android:textSize="12sp"
-                        tools:text="kw/h" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -197,6 +200,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:text="@{String.valueOf(pieData.monthDataList.get(1).fee)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.00" />
@@ -205,9 +209,9 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="元"
                         android:textColor="#606060"
-                        android:textSize="12sp"
-                        tools:text="元" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <Space
@@ -240,6 +244,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:text="@{String.valueOf(pieData.monthDataList.get(2).electricity)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.0" />
@@ -248,9 +253,9 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="kw/h"
                         android:textColor="#606060"
-                        android:textSize="12sp"
-                        tools:text="kw/h" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -269,6 +274,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:text="@{String.valueOf(pieData.monthDataList.get(2).fee)}"
                         android:textColor="#303030"
                         android:textSize="14sp"
                         tools:text="240.00" />
@@ -277,9 +283,9 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="元"
                         android:textColor="#606060"
-                        android:textSize="12sp"
-                        tools:text="元" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
