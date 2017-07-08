@@ -15,6 +15,7 @@ class TwoLineChartView(context: Context) : View(context) {
 
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPointPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         setBackgroundColor(TwoLineChartConfig.DEFAULT_BG_COLOR)
@@ -23,6 +24,10 @@ class TwoLineChartView(context: Context) : View(context) {
         mLinePaint.color = TwoLineChartConfig.DEFAULT_OTHER_LINE_COLOR
 
         mPointPaint.style = Paint.Style.FILL
+
+        mTextPaint.style = Paint.Style.FILL
+        mTextPaint.textSize = mConfig.textSize
+        mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_0
     }
 
     fun setData(lineDataList: List<TwoLineData>) {
@@ -54,7 +59,17 @@ class TwoLineChartView(context: Context) : View(context) {
             for (index in 0 until mConfig.pointList2.size) {
                 mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
                 mDrawHelper.drawPoint2(index, mPointPaint)
+                mDrawHelper.drawXAxisText(index, mTextPaint)
             }
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
+            mDrawHelper.drawHuanBiLegendRect(mPointPaint)
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+            mDrawHelper.drawTongBiLegendRect(mPointPaint)
+
+            mDrawHelper.drawUnitText1(mTextPaint)
+            mDrawHelper.drawUnitText2(mTextPaint)
+            mDrawHelper.drawHuanBiText(mTextPaint)
+            mDrawHelper.drawTongBiText(mTextPaint)
         }
     }
 }

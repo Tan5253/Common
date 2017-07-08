@@ -3,6 +3,7 @@ package com.like.common.view.chart.horizontalScrollTwoLineChartView.core
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.PointF
+import android.graphics.RectF
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.like.common.util.DimensionUtils
@@ -40,11 +41,23 @@ class TwoLineChartConfig(val context: Context) {
     // 线条图的高度
     val maxLineViewHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 线条图距离顶部的间隔
-    val spacingLineViewTop: Float = DimensionUtils.dp2px(context, 30f).toFloat()
+    val spacingLineViewTop: Float = DimensionUtils.dp2px(context, 40f).toFloat()
     // 线条图距离底部的间隔
     val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 60f).toFloat()
     // 点圆半径
     val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
+    // 单位文本左边的距离
+    val spacingUnitTextLeft: Float = DimensionUtils.dp2px(context, 20f).toFloat()
+    // 顶部右边的"环比"文本距离右边的距离
+    val spacingTopHuanBiTextRight: Float = DimensionUtils.dp2px(context, 20f).toFloat()
+    // 图例的宽度
+    val legendWidth: Float = DimensionUtils.dp2px(context, 20f).toFloat()
+    // 图例的宽度
+    val legendHeight: Float = DimensionUtils.dp2px(context, 5f).toFloat()
+    // 环比图例与环比文本之间的间隔
+    val spacingBetweenLegendAndText1: Float = DimensionUtils.dp2px(context, 5f).toFloat()
+    // 环比图例与同比文本之间的间隔
+    val spacingBetweenLegendAndText2: Float = DimensionUtils.dp2px(context, 10f).toFloat()
 
     // 视图总高度
     val totalHeight = spacingLineViewTop + maxLineViewHeight + spacingLineViewBottom
@@ -77,19 +90,42 @@ class TwoLineChartConfig(val context: Context) {
     var spacingBetweenTwoPoints: Float = 0f
     // 每个百分比(1%)对应的高度
     var eachRatioHeight: Float = 0f
+    val screenWidthPixels: Float by lazy {
+        val metric = DisplayMetrics()
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(metric)
+        metric.widthPixels.toFloat()
+    }
+
+    val paint: Paint by lazy {
+        val paint = Paint()
+        paint.textSize = textSize
+        paint
+    }
+    // 环比图例的rect
+    val legendRect1 = RectF(
+            screenWidthPixels - spacingTopHuanBiTextRight - DrawTextUtils.getTextlength(paint, "环比") - spacingBetweenLegendAndText1 - legendWidth,
+            spacingUnitText1Top + (DrawTextUtils.getTextHeight(paint) - legendHeight) / 2,
+            screenWidthPixels - spacingTopHuanBiTextRight - DrawTextUtils.getTextlength(paint, "环比") - spacingBetweenLegendAndText1,
+            spacingUnitText1Top + (DrawTextUtils.getTextHeight(paint) - legendHeight) / 2 + legendHeight
+    )
+    // 同比图例的rect
+    val legendRect2 = RectF(
+            legendRect1.left - spacingBetweenLegendAndText2 - DrawTextUtils.getTextlength(paint, "同比") - spacingBetweenLegendAndText1 - legendWidth,
+            legendRect1.top,
+            legendRect1.left - spacingBetweenLegendAndText2 - DrawTextUtils.getTextlength(paint, "同比") - spacingBetweenLegendAndText1,
+            legendRect1.bottom
+    )
 
     fun setData(barDataList: List<TwoLineData>) {
         this.dataList.clear()
         this.dataList.addAll(barDataList)
 
-        val metric = DisplayMetrics()
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        wm.defaultDisplay.getMetrics(metric)
         totalWidth = if (dataList.size > DEFAULT_SHOW_POINT_COUNT) {
-            val eachSpacing = metric.widthPixels / (DEFAULT_SHOW_POINT_COUNT + 1)
-            metric.widthPixels.toFloat() + eachSpacing * (dataList.size - DEFAULT_SHOW_POINT_COUNT)
+            val eachSpacing = screenWidthPixels / (DEFAULT_SHOW_POINT_COUNT + 1)
+            screenWidthPixels + eachSpacing * (dataList.size - DEFAULT_SHOW_POINT_COUNT)
         } else {
-            metric.widthPixels.toFloat()
+            screenWidthPixels
         }
 
         spacingBetweenTwoPoints = totalWidth / (dataList.size + 1)
