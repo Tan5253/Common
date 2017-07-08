@@ -35,6 +35,15 @@ class BarChartConfig(val context: Context) {
         val DEFAULT_COLOR = 0xff9c9c9c.toInt()// 柱形图颜色，预测数据
     }
 
+    // "预测"两个字的字体大小
+    val otherTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
+    // 月份数据文本字体大小
+    val monthTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
+    // 电量数据文本字体大小
+    val electricityTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
+    // 最左边的单位文本字体大小
+    val unitTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
+
     // 每个柱形图的宽度
     val eachBarWidth: Float = DimensionUtils.dp2px(context, 15f).toFloat()
     // 两个柱形图之间的间隔
@@ -49,14 +58,6 @@ class BarChartConfig(val context: Context) {
     val spacingOnTextAreaTopOrBottom: Float = DimensionUtils.dp2px(context, 8f).toFloat()
     // 月份数据和电量数据之间的间隙
     val spacingBetweenTwoText: Float = DimensionUtils.dp2px(context, 3f).toFloat()
-    // "预测"两个字的字体大小
-    val otherTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
-    // 月份数据文本字体大小
-    val monthTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
-    // 电量数据文本字体大小
-    val electricityTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
-    // 最左边的单位文本字体大小
-    val unitTextSize = DimensionUtils.sp2px(context, 10f).toFloat()
 
     val paint: Paint = Paint()
     // 文本区域总高度
