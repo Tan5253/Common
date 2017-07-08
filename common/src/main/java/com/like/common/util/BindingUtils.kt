@@ -37,19 +37,19 @@ object BindingUtils {
         }
     }
 
-    // 显示月份文本0
+    // 显示月份文本
     @BindingAdapter("pieChartViewShowMonth0")
     @JvmStatic fun pieChartViewShowMonth0(tv: TextView, data: PieData?) {
         pieChartViewShowMonth(tv, data?.monthDataList?.get(0))
     }
 
-    // 显示月份文本1
+    // 显示月份文本
     @BindingAdapter("pieChartViewShowMonth1")
     @JvmStatic fun pieChartViewShowMonth1(tv: TextView, data: PieData?) {
         pieChartViewShowMonth(tv, data?.monthDataList?.get(1))
     }
 
-    // 显示月份文本2
+    // 显示月份文本
     @BindingAdapter("pieChartViewShowMonth2")
     @JvmStatic fun pieChartViewShowMonth2(tv: TextView, data: PieData?) {
         pieChartViewShowMonth(tv, data?.monthDataList?.get(2))
@@ -67,4 +67,33 @@ object BindingUtils {
         }
     }
 
+    // 显示年份占比标签文本
+    @BindingAdapter("pieChartViewShowMonthRatioText0")
+    @JvmStatic fun pieChartViewShowMonthRatioText0(tv: TextView, data: PieData?) {
+        pieChartViewShowMonthRatioText(tv, data?.monthDataList?.get(0))
+    }
+
+    // 显示年份占比标签文本
+    @BindingAdapter("pieChartViewShowMonthRatioText1")
+    @JvmStatic fun pieChartViewShowMonthRatioText1(tv: TextView, data: PieData?) {
+        pieChartViewShowMonthRatioText(tv, data?.monthDataList?.get(1))
+    }
+
+    // 显示年份占比标签文本
+    @BindingAdapter("pieChartViewShowMonthRatioText2")
+    @JvmStatic fun pieChartViewShowMonthRatioText2(tv: TextView, data: PieData?) {
+        pieChartViewShowMonthRatioText(tv, data?.monthDataList?.get(2))
+    }
+
+    fun pieChartViewShowMonthRatioText(tv: TextView, monthData: MonthData?) {
+        try {
+            tv.text = if (monthData != null) {
+                "${monthData.month}月占比"
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

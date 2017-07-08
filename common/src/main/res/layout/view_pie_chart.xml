@@ -313,6 +313,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#bde9ff"
                     android:textSize="10sp"
+                    app:pieChartViewShowMonthRatioText0="@{pieData}"
                     tools:text="4月占比" />
 
                 <TextView
@@ -336,6 +337,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#bde9ff"
                     android:textSize="10sp"
+                    app:pieChartViewShowMonthRatioText1="@{pieData}"
                     tools:text="5月占比" />
 
                 <TextView
@@ -359,6 +361,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#bde9ff"
                     android:textSize="10sp"
+                    app:pieChartViewShowMonthRatioText2="@{pieData}"
                     tools:text="6月占比" />
 
                 <TextView
