@@ -88,6 +88,7 @@
                         android:layout_marginLeft="5dp"
                         android:textColor="#606060"
                         android:textSize="10sp"
+                        app:pieChartViewShowMonth0="@{pieData}"
                         tools:text="12月" />
 
                     <TextView
@@ -159,6 +160,7 @@
                         android:layout_marginLeft="5dp"
                         android:textColor="#606060"
                         android:textSize="10sp"
+                        app:pieChartViewShowMonth1="@{pieData}"
                         tools:text="5月" />
 
                     <TextView
@@ -230,6 +232,7 @@
                         android:layout_marginLeft="5dp"
                         android:textColor="#606060"
                         android:textSize="10sp"
+                        app:pieChartViewShowMonth2="@{pieData}"
                         tools:text="6月" />
 
                     <TextView

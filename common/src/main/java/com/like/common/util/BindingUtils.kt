@@ -2,6 +2,7 @@ package com.like.common.util
 
 import android.databinding.BindingAdapter
 import android.widget.TextView
+import com.like.common.view.chart.pieChartView.entity.MonthData
 import com.like.common.view.chart.pieChartView.entity.PieData
 
 object BindingUtils {
@@ -30,6 +31,36 @@ object BindingUtils {
                 3 -> "三季度"
                 4 -> "四季度"
                 else -> ""
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    // 显示月份文本0
+    @BindingAdapter("pieChartViewShowMonth0")
+    @JvmStatic fun pieChartViewShowMonth0(tv: TextView, data: PieData?) {
+        pieChartViewShowMonth(tv, data?.monthDataList?.get(0))
+    }
+
+    // 显示月份文本1
+    @BindingAdapter("pieChartViewShowMonth1")
+    @JvmStatic fun pieChartViewShowMonth1(tv: TextView, data: PieData?) {
+        pieChartViewShowMonth(tv, data?.monthDataList?.get(1))
+    }
+
+    // 显示月份文本2
+    @BindingAdapter("pieChartViewShowMonth2")
+    @JvmStatic fun pieChartViewShowMonth2(tv: TextView, data: PieData?) {
+        pieChartViewShowMonth(tv, data?.monthDataList?.get(2))
+    }
+
+    fun pieChartViewShowMonth(tv: TextView, monthData: MonthData?) {
+        try {
+            tv.text = if (monthData != null) {
+                "${monthData.month}月"
+            } else {
+                ""
             }
         } catch (e: Exception) {
             e.printStackTrace()
