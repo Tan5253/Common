@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
-import com.like.common.view.chart.horizontalScrollLineFillChartView.entity.LineData
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
 
 /**
