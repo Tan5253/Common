@@ -322,6 +322,7 @@
                     android:layout_marginTop="2dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
+                    app:pieChartViewShowMonthRatio0="@{pieData}"
                     tools:text="33.33%" />
             </LinearLayout>
 
@@ -346,6 +347,7 @@
                     android:layout_marginTop="2dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
+                    app:pieChartViewShowMonthRatio1="@{pieData}"
                     tools:text="33.33%" />
             </LinearLayout>
 
@@ -370,6 +372,7 @@
                     android:layout_marginTop="2dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
+                    app:pieChartViewShowMonthRatio2="@{pieData}"
                     tools:text="33.33%" />
             </LinearLayout>
         </LinearLayout>

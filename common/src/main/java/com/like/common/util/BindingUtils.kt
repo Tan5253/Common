@@ -96,4 +96,35 @@ object BindingUtils {
             e.printStackTrace()
         }
     }
+
+    // 显示年份占比文本
+    @BindingAdapter("pieChartViewShowMonthRatio0")
+    @JvmStatic fun pieChartViewShowMonthRatio0(tv: TextView, data: PieData?) {
+        pieChartViewShowMonthRatio(tv, data?.monthDataList, 0)
+    }
+
+    // 显示年份占比文本
+    @BindingAdapter("pieChartViewShowMonthRatio1")
+    @JvmStatic fun pieChartViewShowMonthRatio1(tv: TextView, data: PieData?) {
+        pieChartViewShowMonthRatio(tv, data?.monthDataList, 1)
+    }
+
+    // 显示年份占比文本
+    @BindingAdapter("pieChartViewShowMonthRatio2")
+    @JvmStatic fun pieChartViewShowMonthRatio2(tv: TextView, data: PieData?) {
+        pieChartViewShowMonthRatio(tv, data?.monthDataList, 2)
+    }
+
+    fun pieChartViewShowMonthRatio(tv: TextView, monthDataList: List<MonthData>?, index: Int) {
+        try {
+            tv.text = if (monthDataList != null) {
+                val totalElectricity = monthDataList.sumByDouble { it.electricity.toDouble() }.toFloat()
+                "${monthDataList[index].electricity / totalElectricity}%"
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
