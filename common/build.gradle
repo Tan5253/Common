@@ -39,6 +39,8 @@ dependencies {
     compile rootProject.ext.deps.appcompat_v7
     testCompile rootProject.ext.deps.junit
 
+    compile rootProject.ext.deps.percent_layout
+
     compile rootProject.ext.deps.csv
 
     compile rootProject.ext.deps.glide

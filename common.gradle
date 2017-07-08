@@ -11,6 +11,8 @@ ext {
             recyclerview            : "com.android.support:recyclerview-v7:${compileSdkVersion}.+",
             design                  : "com.android.support:design:${compileSdkVersion}.+",
 
+            percent_layout          : "com.zhy:percent-support-extends:1.1.1",
+
             junit                   : "junit:junit:4.12",
 
             objectbox_android       : "io.objectbox:objectbox-android:0.9.12",

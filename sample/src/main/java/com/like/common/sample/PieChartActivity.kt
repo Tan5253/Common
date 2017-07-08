@@ -20,25 +20,25 @@ class PieChartActivity : BaseActivity() {
 
     fun changeData1(view: View) {
         val pieData = getSimulatedData1()
-        mBinding.pieData = pieData
-        mBinding.pieView.setData(pieData)
+        mBinding.viewPieChart.pieData = pieData
+        mBinding.viewPieChart.pieChartView.setData(pieData)
     }
 
     fun changeData2(view: View) {
         val pieData = getSimulatedData2()
-        mBinding.pieData = pieData
-        mBinding.pieView.setData(pieData)
+        mBinding.viewPieChart.pieData = pieData
+        mBinding.viewPieChart.pieChartView.setData(pieData)
     }
 
     fun changeData3(view: View) {
         val pieData = getSimulatedData3()
-        mBinding.pieData = pieData
-        mBinding.pieView.setData(pieData)
+        mBinding.viewPieChart.pieData = pieData
+        mBinding.viewPieChart.pieChartView.setData(pieData)
     }
 
     fun clearData(view: View) {
-        mBinding.pieData = null
-        mBinding.pieView.setData(null)
+        mBinding.viewPieChart.pieData = null
+        mBinding.viewPieChart.pieChartView.setData(null)
     }
 
     fun getSimulatedData1(): PieData = PieData(2015, 1, listOf(MonthData(1, 100f, 100f), MonthData(2, 200f, 200f), MonthData(3, 300f, 300f)))
