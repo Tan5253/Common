@@ -2,6 +2,7 @@ package com.like.common.view.chart.horizontalScrollTwoLineChartView.core
 
 import android.content.Context
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
 import android.util.DisplayMetrics
@@ -116,6 +117,10 @@ class TwoLineChartConfig(val context: Context) {
             legendRect1.left - spacingBetweenLegendAndText2 - DrawTextUtils.getTextlength(paint, "同比") - spacingBetweenLegendAndText1,
             legendRect1.bottom
     )
+    // 环比path
+    val path1: Path = Path()
+    // 同比path
+    val path2: Path = Path()
 
     fun setData(barDataList: List<TwoLineData>) {
         this.dataList.clear()
@@ -135,11 +140,15 @@ class TwoLineChartConfig(val context: Context) {
 
         eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
 
+        path1.reset()
+        path2.reset()
+
         pointList1.clear()
         pointList1.addAll(getAllPoint(1))
 
         pointList2.clear()
         pointList2.addAll(getAllPoint(2))
+
     }
 
     fun getAllPoint(flag: Int): List<PointF> {
@@ -154,6 +163,19 @@ class TwoLineChartConfig(val context: Context) {
                     spacingLineViewTop + maxLineViewHeight / 2 - twoLineData.ratio2 * eachRatioHeight
                 } else {
                     0f
+                }
+                if (flag == 1) {
+                    if (index == 0) {
+                        path1.moveTo(p.x, p.y)
+                    } else {
+                        path1.lineTo(p.x, p.y)
+                    }
+                } else if (flag == 2) {
+                    if (index == 0) {
+                        path2.moveTo(p.x, p.y)
+                    } else {
+                        path2.lineTo(p.x, p.y)
+                    }
                 }
                 result.add(p)
             }

@@ -93,4 +93,14 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             config.legendRect2,
             paint
     )
+
+    inline fun drawPath1(paint: Paint) = canvas.drawPath(
+            config.path1,
+            paint
+    )
+
+    inline fun drawPath2(paint: Paint) = canvas.drawPath(
+            config.path2,
+            paint
+    )
 }
