@@ -45,9 +45,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(pieData.year)}"
                         android:textColor="#606060"
                         android:textSize="14sp"
+                        app:pieChartViewShowYear="@{pieData}"
                         tools:text="2017" />
 
                     <TextView
@@ -56,6 +56,7 @@
                         android:layout_marginTop="5dp"
                         android:textColor="#606060"
                         android:textSize="16sp"
+                        app:pieChartViewShowQuarter="@{pieData}"
                         tools:text="一季度" />
                 </LinearLayout>
 
