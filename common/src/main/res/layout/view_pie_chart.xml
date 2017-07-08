@@ -32,7 +32,8 @@
                 <com.like.common.view.chart.pieChartView.core.PieChartView
                     android:id="@+id/pieChartView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    app:data="@{pieData}" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
