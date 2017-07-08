@@ -43,6 +43,8 @@ class TwoLineChartConfig(val context: Context) {
     val spacingLineViewTop: Float = DimensionUtils.dp2px(context, 30f).toFloat()
     // 线条图距离底部的间隔
     val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 60f).toFloat()
+    // 点圆半径
+    val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
 
     // 视图总高度
     val totalHeight = spacingLineViewTop + maxLineViewHeight + spacingLineViewBottom
@@ -92,8 +94,8 @@ class TwoLineChartConfig(val context: Context) {
 
         spacingBetweenTwoPoints = totalWidth / (dataList.size + 1)
 
-        val maxRatio1: Float = dataList.maxBy { it.ratio1 }!!.ratio1
-        val maxRatio2: Float = dataList.maxBy { it.ratio2 }!!.ratio2
+        val maxRatio1: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio1) }!!.ratio1)
+        val maxRatio2: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio2) }!!.ratio2)
 
         eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
 

@@ -2,12 +2,10 @@ package com.like.common.view.chart.horizontalScrollTwoLineChartView.core
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.view.View
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
-import com.like.logger.Logger
 
 
 class TwoLineChartView(context: Context) : View(context) {
@@ -16,13 +14,15 @@ class TwoLineChartView(context: Context) : View(context) {
     private lateinit var mDrawHelper: DrawHelper
 
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mPointPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         setBackgroundColor(TwoLineChartConfig.DEFAULT_BG_COLOR)
 
         mLinePaint.style = Paint.Style.STROKE
-//        mLinePaint.color = TwoLineChartConfig.DEFAULT_OTHER_LINE_COLOR
-        mLinePaint.color = Color.RED
+        mLinePaint.color = TwoLineChartConfig.DEFAULT_OTHER_LINE_COLOR
+
+        mPointPaint.style = Paint.Style.FILL
     }
 
     fun setData(lineDataList: List<TwoLineData>) {
@@ -42,12 +42,19 @@ class TwoLineChartView(context: Context) : View(context) {
         if (mDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mConfig)
 
-            Logger.wtf("width=${mConfig.totalWidth} height=${mConfig.totalHeight}")
-
-            canvas.drawLine(0f, mConfig.spacingLineViewTop, mConfig.totalWidth, mConfig.spacingLineViewTop, mLinePaint)
-            canvas.drawLine(0f, mConfig.spacingLineViewTop + mConfig.maxLineViewHeight, mConfig.totalWidth, mConfig.spacingLineViewTop + mConfig.maxLineViewHeight, mLinePaint)
+            mDrawHelper.drawTopLine(mLinePaint)
+            mDrawHelper.drawBottomLine(mLinePaint)
             mLinePaint.pathEffect = DashPathEffect(floatArrayOf(3f, 2f), 0f)
-            canvas.drawLine(0f, mConfig.spacingLineViewTop + mConfig.maxLineViewHeight / 2, mConfig.totalWidth, mConfig.spacingLineViewTop + mConfig.maxLineViewHeight / 2, mLinePaint)
+            mDrawHelper.drawMiddleLine(mLinePaint)
+
+            for (index in 0 until mConfig.pointList1.size) {
+                mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
+                mDrawHelper.drawPoint1(index, mPointPaint)
+            }
+            for (index in 0 until mConfig.pointList2.size) {
+                mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+                mDrawHelper.drawPoint2(index, mPointPaint)
+            }
         }
     }
 }
