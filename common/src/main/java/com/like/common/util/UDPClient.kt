@@ -26,6 +26,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
             udpLife = true
             socket = DatagramSocket()
             executors.execute(this)
+            sendBroadcast()
         }
     }
 
@@ -36,21 +37,24 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
         socket = null
     }
 
-    fun sendBroadcast() {
-        try {
-            socket?.send(DatagramPacket(byteArrayOf(), 0, InetAddress.getByName("255.255.255.255"), port))
-        } catch (e: Exception) {
-            Logger.e("发送广播数据失败！")
-            e.printStackTrace()
-        }
-    }
-
     fun send(message: String) {
         try {
             val sendBytes = message.toByteArray(charset("UTF-8"))
             socket?.send(DatagramPacket(sendBytes, sendBytes.size, InetAddress.getByName(ip), port))
         } catch (e: Exception) {
             Logger.e("发送数据失败！")
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * 发送广播，用于通知硬件客户端的ip和port。
+     */
+    private fun sendBroadcast() {
+        try {
+            socket?.send(DatagramPacket(byteArrayOf(), 0, InetAddress.getByName("255.255.255.255"), port))
+        } catch (e: Exception) {
+            Logger.e("发送广播数据失败！")
             e.printStackTrace()
         }
     }
