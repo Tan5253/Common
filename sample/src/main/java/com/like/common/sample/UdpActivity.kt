@@ -52,13 +52,16 @@ class UdpActivity : BaseActivity() {
             mBinding.btnSend.isEnabled = true
         }
         mBinding.btnSend.setOnClickListener {
-            val message = Message()
-            message.what = 2
-            if (mBinding.editSend.text.toString() !== "") {
-                client.send(mBinding.editSend.text.toString())
-                message.obj = mBinding.editSend.text.toString()
-                mHandler.sendMessage(message)
-            }
+            val thread = Thread(Runnable {
+                val message = Message()
+                message.what = 2
+                if (mBinding.editSend.text.toString() !== "") {
+                    client.send(mBinding.editSend.text.toString())
+                    message.obj = mBinding.editSend.text.toString()
+                    mHandler.sendMessage(message)
+                }
+            })
+            thread.start()
         }
         mBinding.btnUdpClose.setOnClickListener {
             client.udpLife = false
