@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.os.Message;
 import android.view.View;
 
 import com.like.base.context.BasePermissionActivity;
@@ -28,6 +29,13 @@ import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BasePermissionActivity {
     private ActivityMainBinding mBinding;
+    private android.os.Handler mHandler = new android.os.Handler(new android.os.Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+
+            return false;
+        }
+    });
 
     @Override
     protected BaseViewModel getViewModel() {

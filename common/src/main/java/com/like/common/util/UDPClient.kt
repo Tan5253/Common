@@ -76,7 +76,7 @@ class UDPClient(val context: Context) : Runnable {
         }
 
         Log.i("udpClient", "UDP监听关闭")
-        socket!!.close()
+        socket.close()
     }
 
 }

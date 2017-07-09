@@ -14,32 +14,28 @@ import com.like.common.sample.databinding.ActivityUdpBinding
 import com.like.common.util.UDPClient
 import java.util.concurrent.Executors
 
-
 class UdpActivity : BaseActivity() {
     private var client: UDPClient = UDPClient(this)
-    private val myHandler = MyHandler()
+    private val mHandler = android.os.Handler(Handler.Callback { msg ->
+        when (msg.what) {
+            1 -> {
+                udpRcvStrBuf.append(msg.obj.toString())
+                mBinding.txtRecv.text = udpRcvStrBuf.toString()
+            }
+            2 -> {
+                udpSendStrBuf.append(msg.obj.toString())
+                mBinding.txtSend.text = udpSendStrBuf.toString()
+            }
+            3 -> mBinding.txtRecv.text = udpRcvStrBuf.toString()
+        }
+        true
+    })
+
     private val udpRcvStrBuf = StringBuffer()
     private val udpSendStrBuf = StringBuffer()
 
     private val mBinding: ActivityUdpBinding by lazy {
         DataBindingUtil.setContentView<ActivityUdpBinding>(this, R.layout.activity_udp)
-    }
-
-    private inner class MyHandler : Handler() {
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            when (msg.what) {
-                1 -> {
-                    udpRcvStrBuf.append(msg.obj.toString())
-                    mBinding.txtRecv.text = udpRcvStrBuf.toString()
-                }
-                2 -> {
-                    udpSendStrBuf.append(msg.obj.toString())
-                    mBinding.txtSend.text = udpSendStrBuf.toString()
-                }
-                3 -> mBinding.txtRecv.text = udpRcvStrBuf.toString()
-            }
-        }
     }
 
     private val broadcastReceiver = object : BroadcastReceiver() {
@@ -49,7 +45,7 @@ class UdpActivity : BaseActivity() {
                 message.obj = intent.getStringExtra("udpRcvMsg")
                 message.what = 1
                 Log.i("主界面Broadcast", "收到" + message.obj.toString())
-                myHandler.sendMessage(message)
+                mHandler.sendMessage(message)
             }
         }
     }
@@ -62,7 +58,7 @@ class UdpActivity : BaseActivity() {
             udpRcvStrBuf.delete(0, udpRcvStrBuf.length)
             val message = Message()
             message.what = 3
-            myHandler.sendMessage(message)
+            mHandler.sendMessage(message)
         }
         mBinding.btnUdpConn.setOnClickListener {
             //建立线程池
@@ -79,7 +75,7 @@ class UdpActivity : BaseActivity() {
                 if (mBinding.editSend.text.toString() !== "") {
                     client.send(mBinding.editSend.text.toString())
                     message.obj = mBinding.editSend.text.toString()
-                    myHandler.sendMessage(message)
+                    mHandler.sendMessage(message)
                 }
             })
             thread.start()
@@ -92,4 +88,5 @@ class UdpActivity : BaseActivity() {
         }
         return null
     }
+
 }
