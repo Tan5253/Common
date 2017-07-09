@@ -39,7 +39,7 @@ dependencies {
     testCompile rootProject.ext.deps.junit
 
     compile rootProject.ext.deps.Base
-    annotationProcessor rootProject.ext.deps.rxbus_compiler
+    kapt rootProject.ext.deps.rxbus_compiler
 
     // ObjectBox数据库
     compile rootProject.ext.deps.objectbox_android

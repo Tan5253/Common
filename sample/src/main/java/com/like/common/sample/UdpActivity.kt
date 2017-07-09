@@ -1,17 +1,14 @@
 package com.like.common.sample
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.databinding.DataBindingUtil
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityUdpBinding
+import com.like.common.util.RxBusTag
 import com.like.common.util.UDPClient
+import com.like.rxbus.annotations.RxBusSubscribe
 import java.util.concurrent.Executors
 
 class UdpActivity : BaseActivity() {
@@ -38,21 +35,7 @@ class UdpActivity : BaseActivity() {
         DataBindingUtil.setContentView<ActivityUdpBinding>(this, R.layout.activity_udp)
     }
 
-    private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (intent.hasExtra("udpRcvMsg")) {
-                val message = Message()
-                message.obj = intent.getStringExtra("udpRcvMsg")
-                message.what = 1
-                Log.i("主界面Broadcast", "收到" + message.obj.toString())
-                mHandler.sendMessage(message)
-            }
-        }
-    }
-
     override fun getViewModel(): BaseViewModel? {
-        val udpRcvIntentFilter = IntentFilter("udpRcvMsg")
-        registerReceiver(broadcastReceiver, udpRcvIntentFilter)
         mBinding.btnSend.isEnabled = false
         mBinding.btnCleanRecv.setOnClickListener {
             udpRcvStrBuf.delete(0, udpRcvStrBuf.length)
@@ -69,16 +52,13 @@ class UdpActivity : BaseActivity() {
             mBinding.btnSend.isEnabled = true
         }
         mBinding.btnSend.setOnClickListener {
-            val thread = Thread(Runnable {
-                val message = Message()
-                message.what = 2
-                if (mBinding.editSend.text.toString() !== "") {
-                    client.send(mBinding.editSend.text.toString())
-                    message.obj = mBinding.editSend.text.toString()
-                    mHandler.sendMessage(message)
-                }
-            })
-            thread.start()
+            val message = Message()
+            message.what = 2
+            if (mBinding.editSend.text.toString() !== "") {
+                client.send(mBinding.editSend.text.toString())
+                message.obj = mBinding.editSend.text.toString()
+                mHandler.sendMessage(message)
+            }
         }
         mBinding.btnUdpClose.setOnClickListener {
             client.udpLife = false
@@ -87,6 +67,14 @@ class UdpActivity : BaseActivity() {
             mBinding.btnSend.isEnabled = false
         }
         return null
+    }
+
+    @RxBusSubscribe(RxBusTag.TAG_UDP_RECEIVE_SUCCESS)
+    fun receiveUdpMessage(msgRcv: String) {
+        val message = Message()
+        message.obj = msgRcv
+        message.what = 1
+        mHandler.sendMessage(message)
     }
 
 }
