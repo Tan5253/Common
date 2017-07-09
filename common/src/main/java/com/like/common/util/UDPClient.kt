@@ -35,7 +35,8 @@ class UDPClient(val context: Context) : Runnable {
             e.printStackTrace();
         }*/
 
-        val packetSend = DatagramPacket(msgSend.toByteArray(), msgSend.toByteArray().size, hostAddress, udpPort)
+        val sendBytes = msgSend.toByteArray(charset("UTF-8"))
+        val packetSend = DatagramPacket(sendBytes, sendBytes.size, hostAddress, udpPort)
 
         try {
             socket.send(packetSend)
@@ -61,7 +62,7 @@ class UDPClient(val context: Context) : Runnable {
             try {
                 Log.i("udpClient", "UDP监听")
                 socket.receive(packetRcv)
-                val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length)
+                val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, charset("UTF-8"))
                 //将收到的消息发给主界面
                 val RcvIntent = Intent()
                 RcvIntent.action = "udpRcvMsg"
