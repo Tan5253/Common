@@ -64,7 +64,7 @@ class UdpActivity : BaseActivity() {
             thread.start()
         }
         mBinding.btnUdpClose.setOnClickListener {
-            client.udpLife = false
+            client.close()
             mBinding.btnUdpConn.isEnabled = true
             mBinding.btnUdpClose.isEnabled = false
             mBinding.btnSend.isEnabled = false

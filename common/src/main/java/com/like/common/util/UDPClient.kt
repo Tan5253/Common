@@ -20,6 +20,12 @@ class UDPClient(val context: Context) : Runnable {
     val hostIp = "192.168.1.102"
     var udpLife = true //udp生命线程
 
+    fun close() {
+        udpLife = false
+        Logger.i("UDP监听关闭")
+        socket.close()
+    }
+
     // 发送消息
     fun send(message: String) {
         try {
@@ -37,8 +43,7 @@ class UDPClient(val context: Context) : Runnable {
         } catch (e: Exception) {
             Logger.e("初始化接收数据端失败！")
             e.printStackTrace()
-            Logger.i("UDP监听关闭")
-            socket.close()
+            close()
             return
         }
         while (udpLife) {
@@ -58,8 +63,7 @@ class UDPClient(val context: Context) : Runnable {
                 e.printStackTrace()
             }
         }
-        Logger.i("UDP监听关闭")
-        socket.close()
+        close()
     }
 
 }
