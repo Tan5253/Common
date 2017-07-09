@@ -38,6 +38,15 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
         socket = null
     }
 
+    fun setIp(ip: String) {
+        try {
+            ipAddress = InetAddress.getByName(ip)
+        } catch (e: Exception) {
+            Logger.e("设置ip地址失败！")
+            e.printStackTrace()
+        }
+    }
+
     fun send(message: String) {
         try {
             val sendBytes = message.toByteArray(charset("UTF-8"))
@@ -75,7 +84,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
                 val buf = ByteArray(receiverBufferSize)
                 val packetRcv = DatagramPacket(buf, buf.size)
                 socket?.receive(packetRcv)
-                ipAddress = packetRcv.address// 获取消息发送者的ip地址
+                ipAddress = packetRcv.address// todo 获取消息发送者的ip地址，这里需要改为外部设置，因为发送广播后，有可能搜索到多个设备，用户选择其中一个进行连接。
                 val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, charset("UTF-8"))
                 RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, RcvMsg)
                 Logger.i("接收到消息：$RcvMsg")
