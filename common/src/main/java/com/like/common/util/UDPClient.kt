@@ -7,6 +7,7 @@ import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
+import java.util.concurrent.Executors
 
 
 class UDPClient(val context: Context) : Runnable {
@@ -14,12 +15,23 @@ class UDPClient(val context: Context) : Runnable {
         private val BUFFER_SIZE = 1024
         private val RECEIVE_TIME_OUT = 5000
         private val socket: DatagramSocket = DatagramSocket()
+        private val executors = Executors.newCachedThreadPool()
     }
 
     val udpPort = 6000
     val hostIp = "192.168.1.102"
     var udpLife = true //udp生命线程
 
+    /**
+     * 启动接收者，在分线程里循环接收
+     */
+    fun startReceiver() {
+        executors.execute(this)
+    }
+
+    /**
+     * 关闭接收和发送
+     */
     fun close() {
         udpLife = false
         Logger.i("UDP监听关闭")

@@ -9,7 +9,6 @@ import com.like.common.sample.databinding.ActivityUdpBinding
 import com.like.common.util.RxBusTag
 import com.like.common.util.UDPClient
 import com.like.rxbus.annotations.RxBusSubscribe
-import java.util.concurrent.Executors
 
 class UdpActivity : BaseActivity() {
     private var client: UDPClient = UDPClient(this)
@@ -44,30 +43,25 @@ class UdpActivity : BaseActivity() {
             mHandler.sendMessage(message)
         }
         mBinding.btnUdpConn.setOnClickListener {
-            //建立线程池
-            val exec = Executors.newCachedThreadPool()
-            exec.execute(client)
+            client.startReceiver()
             mBinding.btnUdpClose.isEnabled = true
             mBinding.btnUdpConn.isEnabled = false
             mBinding.btnSend.isEnabled = true
         }
         mBinding.btnSend.setOnClickListener {
-            val thread = Thread(Runnable {
-                val message = Message()
-                message.what = 2
-                if (mBinding.editSend.text.toString() !== "") {
-                    client.send(mBinding.editSend.text.toString())
-                    message.obj = mBinding.editSend.text.toString()
-                    mHandler.sendMessage(message)
-                }
-            })
-            thread.start()
+            val message = Message()
+            message.what = 2
+            if (mBinding.editSend.text.toString() !== "") {
+                client.send(mBinding.editSend.text.toString())
+                message.obj = mBinding.editSend.text.toString()
+                mHandler.sendMessage(message)
+            }
         }
         mBinding.btnUdpClose.setOnClickListener {
             client.close()
             mBinding.btnUdpConn.isEnabled = true
             mBinding.btnUdpClose.isEnabled = false
-            mBinding.btnSend.isEnabled = false
+//            mBinding.btnSend.isEnabled = false
         }
         return null
     }
