@@ -17,9 +17,10 @@ import java.util.concurrent.Executors
  */
 class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = 5000) : Runnable {
     private val executors = Executors.newCachedThreadPool()
+    private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
+    private var ipAddress: InetAddress? = null
     private var udpLife = false // udp生命线程
     private var socket: DatagramSocket? = null
-    private val ip = "192.168.1.102"
 
     fun start() {
         if (!udpLife && socket == null) {
@@ -40,7 +41,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     fun send(message: String) {
         try {
             val sendBytes = message.toByteArray(charset("UTF-8"))
-            socket?.send(DatagramPacket(sendBytes, sendBytes.size, InetAddress.getByName(ip), port))
+            socket?.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
         } catch (e: Exception) {
             Logger.e("发送数据失败！")
             e.printStackTrace()
@@ -52,7 +53,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
      */
     private fun sendBroadcast() {
         try {
-            socket?.send(DatagramPacket(byteArrayOf(), 0, InetAddress.getByName("255.255.255.255"), port))
+            socket?.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
         } catch (e: Exception) {
             Logger.e("发送广播数据失败！")
             e.printStackTrace()
@@ -74,6 +75,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
                 val buf = ByteArray(receiverBufferSize)
                 val packetRcv = DatagramPacket(buf, buf.size)
                 socket?.receive(packetRcv)
+                ipAddress = packetRcv.address// 获取消息发送者的ip地址
                 val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, charset("UTF-8"))
                 RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, RcvMsg)
                 Logger.i("接收到消息：$RcvMsg")
