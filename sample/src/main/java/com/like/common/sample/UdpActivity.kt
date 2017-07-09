@@ -9,7 +9,7 @@ import com.like.common.util.UDPClient
 import com.like.rxbus.annotations.RxBusSubscribe
 
 class UdpActivity : BaseActivity() {
-    private val client: UDPClient = UDPClient()
+    private val client: UDPClient = UDPClient(6000)
 
     private val udpRcvStrBuf = StringBuffer()
     private val udpSendStrBuf = StringBuffer()
