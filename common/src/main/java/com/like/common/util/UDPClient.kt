@@ -1,6 +1,5 @@
 package com.like.common.util
 
-import android.content.Context
 import com.like.logger.Logger
 import com.like.rxbus.RxBus
 import java.net.DatagramPacket
@@ -9,40 +8,45 @@ import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.util.concurrent.Executors
 
-
-class UDPClient(val context: Context) : Runnable {
+class UDPClient : Runnable {
     companion object {
-        private val BUFFER_SIZE = 1024
-        private val RECEIVE_TIME_OUT = 5000
-        private val socket: DatagramSocket = DatagramSocket()
-        private val executors = Executors.newCachedThreadPool()
+        private val DEFAULT_BUFFER_SIZE = 1024
+        private val DEFAULT_RECEIVE_TIME_OUT = 5000
+        private val PORT = 6000
     }
 
-    val udpPort = 6000
-    val hostIp = "192.168.1.102"
-    var udpLife = true //udp生命线程
+    val ip = "192.168.1.102"
 
-    /**
-     * 启动接收者，在分线程里循环接收
-     */
-    fun startReceiver() {
+    private val executors = Executors.newCachedThreadPool()
+    private var udpLife = true //udp生命线程
+    private var socket: DatagramSocket? = null
+
+    fun start() {
+        udpLife = true
+        socket = DatagramSocket()
         executors.execute(this)
     }
 
-    /**
-     * 关闭接收和发送
-     */
     fun close() {
         udpLife = false
         Logger.i("UDP监听关闭")
-        socket.close()
+        socket?.close()
+        socket = null
     }
 
-    // 发送消息
+    fun sendBroadcast() {
+        try {
+            socket?.send(DatagramPacket(byteArrayOf(), 0, InetAddress.getByName("255.255.255.255"), PORT))
+        } catch (e: Exception) {
+            Logger.e("发送广播数据失败！")
+            e.printStackTrace()
+        }
+    }
+
     fun send(message: String) {
         try {
             val sendBytes = message.toByteArray(charset("UTF-8"))
-            socket.send(DatagramPacket(sendBytes, sendBytes.size, InetAddress.getByName(hostIp), udpPort))
+            socket?.send(DatagramPacket(sendBytes, sendBytes.size, InetAddress.getByName(ip), PORT))
         } catch (e: Exception) {
             Logger.e("发送数据失败！")
             e.printStackTrace()
@@ -51,7 +55,7 @@ class UDPClient(val context: Context) : Runnable {
 
     override fun run() {
         try {
-            socket.soTimeout = RECEIVE_TIME_OUT
+            socket?.soTimeout = DEFAULT_RECEIVE_TIME_OUT
         } catch (e: Exception) {
             Logger.e("初始化接收数据端失败！")
             e.printStackTrace()
@@ -61,9 +65,9 @@ class UDPClient(val context: Context) : Runnable {
         while (udpLife) {
             try {
                 Logger.i("UDP监听中……")
-                val buf = ByteArray(BUFFER_SIZE)
+                val buf = ByteArray(DEFAULT_BUFFER_SIZE)
                 val packetRcv = DatagramPacket(buf, buf.size)
-                socket.receive(packetRcv)
+                socket?.receive(packetRcv)
                 val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, charset("UTF-8"))
                 RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, RcvMsg)
                 Logger.i("接收到消息：$RcvMsg")
