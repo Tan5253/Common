@@ -31,7 +31,6 @@ class TwoLineChartView(context: Context) : View(context) {
 
         mTextPaint.style = Paint.Style.FILL
         mTextPaint.textSize = mConfig.textSize
-        mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_0
     }
 
     fun setData(lineDataList: List<TwoLineData>) {
@@ -56,30 +55,18 @@ class TwoLineChartView(context: Context) : View(context) {
             mLinePaint.pathEffect = DashPathEffect(floatArrayOf(5f, 5f), 0f)
             mDrawHelper.drawMiddleLine(mLinePaint)
 
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
             for (index in 0 until mConfig.pointList1.size) {
-                mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
                 mDrawHelper.drawPoint1(index, mPointPaint)// 画环比对应的点圆
             }
+
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_0
             for (index in 0 until mConfig.pointList2.size) {
-                mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
                 mDrawHelper.drawPoint2(index, mPointPaint)// 画同比对应的点圆
                 mDrawHelper.drawXAxisText(index, mTextPaint)// 画x轴文本
             }
 
-//            // 画环比图例
-//            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
-//            mDrawHelper.drawHuanBiLegendRect(mPointPaint)
-//            // 画同比图例
-//            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
-//            mDrawHelper.drawTongBiLegendRect(mPointPaint)
-//            // 画"单位：%"
-//            mDrawHelper.drawUnitText1(mTextPaint)
-//            // 画"环比"
-//            mDrawHelper.drawHuanBiText(mTextPaint)
-//            // 画"同比"
-//            mDrawHelper.drawTongBiText(mTextPaint)
-//            // 画"单位：日"
-//            mDrawHelper.drawUnitText2(mTextPaint)
             // 画"0.00%"
             mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
             mDrawHelper.drawMiddleLineText(mTextPaint)

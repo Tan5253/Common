@@ -56,48 +56,10 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
         )
     }
 
-    inline fun drawUnitText1(paint: Paint) = canvas.drawText(
-            "单位：%",
-            config.spacingUnitTextLeft,
-            config.unitText1StartY,
-            paint
-    )
-
-    inline fun drawUnitText2(paint: Paint) = canvas.drawText(
-            "单位：日",
-            config.spacingUnitTextLeft,
-            config.unitText2StartY,
-            paint
-    )
-
     inline fun drawMiddleLineText(paint: Paint) = canvas.drawText(
             "0.00%",
             5f,
             config.middleLineTextStartY,
-            paint
-    )
-
-    inline fun drawHuanBiText(paint: Paint) = canvas.drawText(
-            "环比",
-            config.legendRect1.right + config.spacingBetweenLegendAndText1,
-            config.unitText1StartY,
-            paint
-    )
-
-    inline fun drawTongBiText(paint: Paint) = canvas.drawText(
-            "同比",
-            config.legendRect2.right + config.spacingBetweenLegendAndText1,
-            config.unitText1StartY,
-            paint
-    )
-
-    inline fun drawHuanBiLegendRect(paint: Paint) = canvas.drawRect(
-            config.legendRect1,
-            paint
-    )
-
-    inline fun drawTongBiLegendRect(paint: Paint) = canvas.drawRect(
-            config.legendRect2,
             paint
     )
 

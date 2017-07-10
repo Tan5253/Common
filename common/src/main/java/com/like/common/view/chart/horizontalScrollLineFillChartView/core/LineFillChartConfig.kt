@@ -57,10 +57,6 @@ class LineFillChartConfig(val context: Context) {
     val spacingGradientBottom: Float = DimensionUtils.dp2px(context, 47f).toFloat()
     // 点的数值距离点圆的间隔
     val spacingPointTextBottom = DimensionUtils.dp2px(context, 5f).toFloat()
-    // x轴下面的单位上边的间隔
-    val spacingUnitTextTop = DimensionUtils.dp2px(context, 8f).toFloat()
-    // x轴下面的单位左边的间隔
-    val spacingUnitTextLeft = DimensionUtils.dp2px(context, 12f).toFloat()
 
     // 渐变色块及其顶部间隔的总高度
     val totalGradientAndSpacingTopHeight = spacingGradientTop + maxGradientHeight

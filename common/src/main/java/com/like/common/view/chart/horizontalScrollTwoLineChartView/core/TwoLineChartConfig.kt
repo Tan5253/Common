@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
-import android.graphics.RectF
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.like.common.util.DimensionUtils
@@ -34,12 +33,8 @@ class TwoLineChartConfig(val context: Context) {
     // 文本字体大小
     val textSize = DimensionUtils.sp2px(context, 12f).toFloat()
 
-    // "单位：%"顶部间隔
-    val spacingUnitText1Top: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 横坐标文本顶部的间隔
     val spacingXAxisTextTop: Float = DimensionUtils.dp2px(context, 8f).toFloat()
-    // 横坐标文本底部的间隔
-    val spacingXAxisTextBottom: Float = DimensionUtils.dp2px(context, 8f).toFloat()
     // 线条图的高度
     val maxLineViewHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
     // 线条图距离顶部的间隔
@@ -48,18 +43,6 @@ class TwoLineChartConfig(val context: Context) {
     val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 60f).toFloat()
     // 点圆半径
     val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
-    // 单位文本左边的距离
-    val spacingUnitTextLeft: Float = DimensionUtils.dp2px(context, 20f).toFloat()
-    // 顶部右边的"环比"文本距离右边的距离
-    val spacingTopHuanBiTextRight: Float = DimensionUtils.dp2px(context, 20f).toFloat()
-    // 图例的宽度
-    val legendWidth: Float = DimensionUtils.dp2px(context, 20f).toFloat()
-    // 图例的高度
-    val legendHeight: Float = DimensionUtils.dp2px(context, 5f).toFloat()
-    // 环比图例与环比文本之间的间隔
-    val spacingBetweenLegendAndText1: Float = DimensionUtils.dp2px(context, 5f).toFloat()
-    // 环比图例与同比文本之间的间隔
-    val spacingBetweenLegendAndText2: Float = DimensionUtils.dp2px(context, 10f).toFloat()
 
     // 视图总高度
     val totalHeight = spacingLineViewTop + maxLineViewHeight + spacingLineViewBottom
@@ -74,14 +57,10 @@ class TwoLineChartConfig(val context: Context) {
         paint.textSize = textSize
         DrawTextUtils.getTextHeight(paint)
     }
-    // "单位：%" 绘制的起点Y坐标
-    val unitText1StartY: Float = spacingUnitText1Top + textBaseLine
     // "0.00%" 绘制的起点Y坐标
     val middleLineTextStartY: Float = spacingLineViewTop + maxLineViewHeight / 2 - textHeight / 2 + textBaseLine
     //  横坐标文本绘制的起点Y坐标
     val xAxisStartY: Float = spacingLineViewTop + maxLineViewHeight + spacingXAxisTextTop + textBaseLine
-    // x轴下面的单位文本绘制的起点Y坐标
-    val unitText2StartY: Float = spacingLineViewTop + maxLineViewHeight + spacingXAxisTextTop + textHeight + spacingXAxisTextBottom + textBaseLine
     // 所有数据
     val dataList: MutableList<TwoLineData> = arrayListOf()
     // 环比对应的所有点的坐标
@@ -101,25 +80,6 @@ class TwoLineChartConfig(val context: Context) {
         metric.widthPixels.toFloat()
     }
 
-    val paint: Paint by lazy {
-        val paint = Paint()
-        paint.textSize = textSize
-        paint
-    }
-    // 环比图例的rect
-    val legendRect1 = RectF(
-            screenWidthPixels - spacingTopHuanBiTextRight - DrawTextUtils.getTextlength(paint, "环比") - spacingBetweenLegendAndText1 - legendWidth,
-            spacingUnitText1Top + (DrawTextUtils.getTextHeight(paint) - legendHeight) / 2,
-            screenWidthPixels - spacingTopHuanBiTextRight - DrawTextUtils.getTextlength(paint, "环比") - spacingBetweenLegendAndText1,
-            spacingUnitText1Top + (DrawTextUtils.getTextHeight(paint) - legendHeight) / 2 + legendHeight
-    )
-    // 同比图例的rect
-    val legendRect2 = RectF(
-            legendRect1.left - spacingBetweenLegendAndText2 - DrawTextUtils.getTextlength(paint, "同比") - spacingBetweenLegendAndText1 - legendWidth,
-            legendRect1.top,
-            legendRect1.left - spacingBetweenLegendAndText2 - DrawTextUtils.getTextlength(paint, "同比") - spacingBetweenLegendAndText1,
-            legendRect1.bottom
-    )
     // 环比path
     val path1: Path = Path()
     // 同比path
