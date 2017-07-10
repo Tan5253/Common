@@ -5,6 +5,7 @@ import com.like.rxbus.RxBus
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.net.Socket
+import java.net.SocketTimeoutException
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
@@ -16,7 +17,7 @@ import kotlin.concurrent.thread
  * @param readBufferSize    接收器的缓存大小，默认1024kb
  * @param readTimeOut       接收器每次读取数据的超时时长，默认10000毫秒
  */
-class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: Int = 10000) : Runnable {
+class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: Int = 3000) : Runnable {
     private val executors = Executors.newCachedThreadPool()
     private var life = false
     private var ip: String = ""
@@ -66,17 +67,21 @@ class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: 
 
         val buf = ByteArray(readBufferSize)
         while (life) {
-            Logger.i("TCP监听中……")
             try {
+                Logger.i("TCP监听中……")
                 val length = dis.read(buf)
                 val msgRcv = String(buf, 0, length, Charsets.UTF_8)
-                Logger.i("TCP接收到消息：$msgRcv")
                 RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, msgRcv)
+                Logger.i("TCP接收到消息：$msgRcv")
+            } catch (e1: SocketTimeoutException) {
+                Logger.w("TCP没有收到数据")
+                e1.printStackTrace()
             } catch (e: Exception) {
                 Logger.e("TCP接收消息失败！")
                 e.printStackTrace()
             }
         }
+        life = false
         dis.close()
         socket.close()
         Logger.i("TCP监听关闭")

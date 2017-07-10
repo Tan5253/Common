@@ -16,7 +16,7 @@ import kotlin.concurrent.thread
  * @param receiverBufferSize    接收器的缓存大小，默认1024kb
  * @param receiverTimeOut       接收器每次读取数据的超时时长，默认5000毫秒
  */
-class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = 5000) : Runnable {
+class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = 3000) : Runnable {
     private val executors = Executors.newCachedThreadPool()
     private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
     private var ipAddress: InetAddress? = null
@@ -53,6 +53,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
             try {
                 val sendBytes = message.toByteArray(Charsets.UTF_8)
                 socket?.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
+                Logger.i("UDP发送数据成功")
             } catch (e: Exception) {
                 Logger.e("UDP发送数据失败！")
                 e.printStackTrace()
@@ -67,6 +68,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
         thread {
             try {
                 socket?.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
+                Logger.i("UDP发送广播数据成功")
             } catch (e: Exception) {
                 Logger.e("UDP发送广播数据失败！")
                 e.printStackTrace()
@@ -77,8 +79,9 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     override fun run() {
         try {
             socket?.soTimeout = receiverTimeOut
+            Logger.i("初始化UDP客户端成功")
         } catch (e: Exception) {
-            Logger.e("UDP初始化接收数据端失败！")
+            Logger.e("初始化UDP客户端失败！")
             e.printStackTrace()
             close()
             return
