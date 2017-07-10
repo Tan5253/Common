@@ -7,6 +7,7 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.util.concurrent.Executors
+import kotlin.concurrent.thread
 
 /**
  * socket UDP 接收、发送数据的客户端
@@ -17,7 +18,7 @@ import java.util.concurrent.Executors
  */
 class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = 5000) : Runnable {
     private val executors = Executors.newCachedThreadPool()
-    private val broadcastIpAddress = InetAddress.getByName("172.16.103.255")// 广播地址，用于通知硬件客户端的ip和port。
+    private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
     private var ipAddress: InetAddress? = null
     private var life = false // udp生命线程
     private var socket: DatagramSocket? = null
@@ -61,11 +62,13 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
      * 发送广播，用于通知硬件客户端的ip和port。
      */
     private fun sendBroadcast() {
-        try {
-            socket?.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
-        } catch (e: Exception) {
-            Logger.e("UDP发送广播数据失败！")
-            e.printStackTrace()
+        thread {
+            try {
+                socket?.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
+            } catch (e: Exception) {
+                Logger.e("UDP发送广播数据失败！")
+                e.printStackTrace()
+            }
         }
     }
 
