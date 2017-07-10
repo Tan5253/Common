@@ -72,8 +72,8 @@ class TwoLineChartView(context: Context) : View(context) {
             mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
             mDrawHelper.drawTongBiLegendRect(mPointPaint)
 
-            // 画"单位：%"
-            mDrawHelper.drawUnitText1(mTextPaint)
+//            // 画"单位：%"
+//            mDrawHelper.drawUnitText1(mTextPaint)
             // 画"单位：日"
             mDrawHelper.drawUnitText2(mTextPaint)
             // 画"环比"
