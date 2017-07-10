@@ -35,7 +35,6 @@ class LineFillChartConfig(val context: Context) {
         val DEFAULT_X_AXIS_SCALE_COLOR = 0xff73d6f8.toInt()// x轴刻度线颜色
         val DEFAULT_X_AXIS_TEXT_COLOR = 0xffffffff.toInt()// x轴文本颜色
         val DEFAULT_POINT_TEXT_COLOR = 0xff303030.toInt()// 点的数值文本颜色
-        val DEFAULT_UNIT_TEXT_COLOR = 0xffffffff.toInt()// x轴下面的单位文本颜色
         val DEFAULT_SHOW_POINT_COUNT = 3// 一屏幕显示的最多点数量
     }
 
@@ -43,8 +42,6 @@ class LineFillChartConfig(val context: Context) {
     val xAxisTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
     // 点的数值文本字体大小
     val pointTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
-    // x轴下面的单位文本字体大小
-    val unitTextSize = DimensionUtils.sp2px(context, 12f).toFloat()
 
     // x轴刻度线高度
     val xAxisScaleHeight: Float = DimensionUtils.dp2px(context, 8f).toFloat()
@@ -75,13 +72,6 @@ class LineFillChartConfig(val context: Context) {
     val xAxisTextStartY: Float by lazy {
         paint.textSize = xAxisTextSize
         totalGradientAndSpacingTopHeight + DrawTextUtils.getTextBaseLine(paint)
-    }
-    // x轴下面的单位文本绘制的起点Y坐标
-    val unitTextStartY: Float by lazy {
-        paint.textSize = xAxisTextSize
-        val top = totalGradientAndSpacingTopHeight + DrawTextUtils.getTextHeight(paint)
-        paint.textSize = unitTextSize
-        top + spacingUnitTextTop + DrawTextUtils.getTextBaseLine(paint)
     }
     // 所有数据
     val lineDataList: MutableList<LineData> = arrayListOf()

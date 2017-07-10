@@ -50,13 +50,6 @@ class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
         )
     }
 
-    inline fun drawUnitText(paint: Paint) = canvas.drawText(
-            "单位：月",
-            config.spacingUnitTextLeft,
-            config.unitTextStartY,
-            paint
-    )
-
     inline fun drawPointText(index: Int, paint: Paint) {
         val text = config.lineDataList[index].electricity.toString()
         canvas.drawText(
