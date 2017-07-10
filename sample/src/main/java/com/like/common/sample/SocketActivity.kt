@@ -64,4 +64,10 @@ class SocketActivity : BaseActivity() {
         mBinding.txtRecv.text = udpRcvStrBuf.toString()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        udpClient.close()
+        tcpClient.close()
+    }
+
 }
