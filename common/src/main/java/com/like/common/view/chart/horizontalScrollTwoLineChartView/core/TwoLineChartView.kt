@@ -53,7 +53,7 @@ class TwoLineChartView(context: Context) : View(context) {
 
             mDrawHelper.drawTopLine(mLinePaint)
             mDrawHelper.drawBottomLine(mLinePaint)
-            mLinePaint.pathEffect = DashPathEffect(floatArrayOf(3f, 2f), 0f)
+            mLinePaint.pathEffect = DashPathEffect(floatArrayOf(5f, 5f), 0f)
             mDrawHelper.drawMiddleLine(mLinePaint)
 
             for (index in 0 until mConfig.pointList1.size) {
@@ -80,6 +80,9 @@ class TwoLineChartView(context: Context) : View(context) {
             mDrawHelper.drawHuanBiText(mTextPaint)
             // 画"同比"
             mDrawHelper.drawTongBiText(mTextPaint)
+            // 画"0.00%"
+            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
+            mDrawHelper.drawMiddleLineText(mTextPaint)
 
             // 画环比折线路径
             mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1

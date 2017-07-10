@@ -2,6 +2,7 @@ package com.like.common.view.chart.horizontalScrollTwoLineChartView.core
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Path
 import com.like.common.util.DrawTextUtils
 
 @Suppress("NOTHING_TO_INLINE")
@@ -15,13 +16,12 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             paint
     )
 
-    inline fun drawMiddleLine(paint: Paint) = canvas.drawLine(
-            0f,
-            config.spacingLineViewTop + config.maxLineViewHeight / 2,
-            config.totalWidth,
-            config.spacingLineViewTop + config.maxLineViewHeight / 2,
-            paint
-    )
+    inline fun drawMiddleLine(paint: Paint) {
+        val path = Path()
+        path.moveTo(0f, config.spacingLineViewTop + config.maxLineViewHeight / 2)
+        path.lineTo(config.totalWidth, config.spacingLineViewTop + config.maxLineViewHeight / 2)
+        canvas.drawPath(path, paint)
+    }
 
 
     inline fun drawBottomLine(paint: Paint) = canvas.drawLine(
@@ -67,6 +67,13 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             "单位：日",
             config.spacingUnitTextLeft,
             config.unitText2StartY,
+            paint
+    )
+
+    inline fun drawMiddleLineText(paint: Paint) = canvas.drawText(
+            "0.00%",
+            5f,
+            config.middleLineTextStartY,
             paint
     )
 

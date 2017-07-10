@@ -26,6 +26,7 @@ class TwoLineChartConfig(val context: Context) {
 
         val DEFAULT_TEXT_COLOR_0 = 0xff606060.toInt()// 文本颜色
         val DEFAULT_TEXT_COLOR_1 = 0xffffffff.toInt()// 文本颜色
+        val DEFAULT_TEXT_COLOR_2 = 0xffc0c0c0.toInt()// 文本颜色
 
         val DEFAULT_SHOW_POINT_COUNT = 3// 一屏幕显示的最多点数量
     }
@@ -75,6 +76,8 @@ class TwoLineChartConfig(val context: Context) {
     }
     // "单位：%" 绘制的起点Y坐标
     val unitText1StartY: Float = spacingUnitText1Top + textBaseLine
+    // "0.00%" 绘制的起点Y坐标
+    val middleLineTextStartY: Float = spacingLineViewTop + maxLineViewHeight / 2 - textHeight / 2 + textBaseLine
     //  横坐标文本绘制的起点Y坐标
     val xAxisStartY: Float = spacingLineViewTop + maxLineViewHeight + spacingXAxisTextTop + textBaseLine
     // x轴下面的单位文本绘制的起点Y坐标
