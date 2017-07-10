@@ -18,19 +18,19 @@ class LineFillChartActivity : BaseActivity() {
     }
 
     fun changeData1(view: View) {
-        mBinding.lineFillView.setData(getSimulatedData1())
+        mBinding.viewLineFillChart.lineFillChartView.setData(getSimulatedData1())
     }
 
     fun changeData2(view: View) {
-        mBinding.lineFillView.setData(getSimulatedData2())
+        mBinding.viewLineFillChart.lineFillChartView.setData(getSimulatedData2())
     }
 
     fun changeData3(view: View) {
-        mBinding.lineFillView.setData(getSimulatedData3())
+        mBinding.viewLineFillChart.lineFillChartView.setData(getSimulatedData3())
     }
 
     fun clearData(view: View) {
-        mBinding.lineFillView.setData(emptyList())
+        mBinding.viewLineFillChart.lineFillChartView.setData(emptyList())
     }
 
     fun getSimulatedData1(): List<LineData> {

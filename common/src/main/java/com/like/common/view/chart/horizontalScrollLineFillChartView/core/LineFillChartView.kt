@@ -90,10 +90,10 @@ class LineFillChartView(context: Context) : View(context) {
                 mDrawHelper.drawPointText(index, mTextPaint)
             }
 
-            // 画x轴下面的单位文本
-            mTextPaint.textSize = mConfig.unitTextSize
-            mTextPaint.color = LineFillChartConfig.DEFAULT_UNIT_TEXT_COLOR
-            mDrawHelper.drawUnitText(mTextPaint)
+//            // 画x轴下面的单位文本
+//            mTextPaint.textSize = mConfig.unitTextSize
+//            mTextPaint.color = LineFillChartConfig.DEFAULT_UNIT_TEXT_COLOR
+//            mDrawHelper.drawUnitText(mTextPaint)
         }
     }
 }

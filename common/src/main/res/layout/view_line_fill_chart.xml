@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/common_text_white_0">
+
+        <com.like.common.view.chart.horizontalScrollLineFillChartView.core.WrapHorizontalScrollLineFillChartView
+            android:id="@+id/lineFillChartView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/lineFillChartView"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:text="单位：月"
+            android:textColor="@color/common_text_white_0"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</layout>
