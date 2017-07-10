@@ -20,7 +20,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     private val executors = Executors.newCachedThreadPool()
     private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
     private var ipAddress: InetAddress? = null
-    private var life = false // udp生命线程
+    private var life = false
     private var socket: DatagramSocket? = null
 
     fun start() {
@@ -49,12 +49,14 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     }
 
     fun send(message: String) {
-        try {
-            val sendBytes = message.toByteArray(Charsets.UTF_8)
-            socket?.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
-        } catch (e: Exception) {
-            Logger.e("UDP发送数据失败！")
-            e.printStackTrace()
+        thread {
+            try {
+                val sendBytes = message.toByteArray(Charsets.UTF_8)
+                socket?.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
+            } catch (e: Exception) {
+                Logger.e("UDP发送数据失败！")
+                e.printStackTrace()
+            }
         }
     }
 
