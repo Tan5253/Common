@@ -54,7 +54,7 @@ class TwoLineChartConfig(val context: Context) {
     val spacingTopHuanBiTextRight: Float = DimensionUtils.dp2px(context, 20f).toFloat()
     // 图例的宽度
     val legendWidth: Float = DimensionUtils.dp2px(context, 20f).toFloat()
-    // 图例的宽度
+    // 图例的高度
     val legendHeight: Float = DimensionUtils.dp2px(context, 5f).toFloat()
     // 环比图例与环比文本之间的间隔
     val spacingBetweenLegendAndText1: Float = DimensionUtils.dp2px(context, 5f).toFloat()

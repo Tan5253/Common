@@ -18,19 +18,19 @@ class TwoLineChartActivity : BaseActivity() {
     }
 
     fun changeData1(view: View) {
-        mBinding.twoLineView.setData(getSimulatedData1())
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1())
     }
 
     fun changeData2(view: View) {
-        mBinding.twoLineView.setData(getSimulatedData2())
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData2())
     }
 
     fun changeData3(view: View) {
-        mBinding.twoLineView.setData(getSimulatedData3())
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData3())
     }
 
     fun clearData(view: View) {
-        mBinding.twoLineView.setData(emptyList())
+        mBinding.viewTwoLineChart.twoLineChartView.setData(emptyList())
     }
 
     fun getSimulatedData1(): List<TwoLineData> {

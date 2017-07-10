@@ -65,21 +65,21 @@ class TwoLineChartView(context: Context) : View(context) {
                 mDrawHelper.drawPoint2(index, mPointPaint)// 画同比对应的点圆
                 mDrawHelper.drawXAxisText(index, mTextPaint)// 画x轴文本
             }
-            // 画环比图例
-            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
-            mDrawHelper.drawHuanBiLegendRect(mPointPaint)
-            // 画同比图例
-            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
-            mDrawHelper.drawTongBiLegendRect(mPointPaint)
 
+//            // 画环比图例
+//            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
+//            mDrawHelper.drawHuanBiLegendRect(mPointPaint)
+//            // 画同比图例
+//            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+//            mDrawHelper.drawTongBiLegendRect(mPointPaint)
 //            // 画"单位：%"
 //            mDrawHelper.drawUnitText1(mTextPaint)
-            // 画"单位：日"
-            mDrawHelper.drawUnitText2(mTextPaint)
-            // 画"环比"
-            mDrawHelper.drawHuanBiText(mTextPaint)
-            // 画"同比"
-            mDrawHelper.drawTongBiText(mTextPaint)
+//            // 画"环比"
+//            mDrawHelper.drawHuanBiText(mTextPaint)
+//            // 画"同比"
+//            mDrawHelper.drawTongBiText(mTextPaint)
+//            // 画"单位：日"
+//            mDrawHelper.drawUnitText2(mTextPaint)
             // 画"0.00%"
             mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
             mDrawHelper.drawMiddleLineText(mTextPaint)

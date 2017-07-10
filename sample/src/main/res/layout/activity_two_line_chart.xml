@@ -6,11 +6,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.like.common.view.chart.horizontalScrollTwoLineChartView.core.WrapHorizontalScrollTwoLineChartView
-            android:id="@+id/twoLineView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/common_text_white_0" />
+        <include
+            android:id="@+id/view_two_line_chart"
+            layout="@layout/view_two_line_chart" />
 
         <Button
             android:layout_width="match_parent"
