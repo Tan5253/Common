@@ -18,7 +18,7 @@
 在Module的gradle中加入：
 ```groovy
     dependencies {
-        compile 'com.github.like5188:Common:1.0.4'
+        compile 'com.github.like5188:Common:1.0.5'
     }
 ```
 2、包含的工具类
@@ -35,6 +35,7 @@
     DateUtils
     DialogFragmentUtils             // kotlin，支持BaseActivity和BaseFragment扩展方法，并封装了BaseDialogFragment
     DimensionUtils
+    DrawTextUtils                   // kotlin，画文本时可以获取文本的宽、高、baseline等
     FileUtils
     HexUtil
     HighLightUtils
@@ -58,6 +59,8 @@
     StatusBarUtils
     StorageUtils
     TakePhotoUtils
+    TCPClient                       // kotlin，TCP客户端
+    UDPClient                       // kotlin，UDP客户端
     TimerUtils
     Verify
     ViewHolder
@@ -66,7 +69,7 @@
 ```java
     bottomNavigationBars            // 底部导航栏
     check                           // 复选框控制器
-    horizontalScrollLineChatView    // 水平滚动的折线图
+    chat                            // 自定义的统计图表
     pwdedittext                     // 组合密码框，支付时候使用
     radio                           // 单选框控制器
     roundedimageview                // 圆形ImageView
@@ -81,8 +84,8 @@
     MyHorizontalViewPager
     MyVerticalDividerGridView
     MyVideoView
-    RotateTextView
-    SelectableRoundedImageView
+    RotateTextView                  // 可以旋转角度的TextView
+    SelectableRoundedImageView      // 显示圆角的ImageView
     TimeTextView                    // 验证码专用TextView
 ```
 4、引用的库
@@ -98,6 +101,7 @@
     compile rootProject.ext.deps.Logger
     compile rootProject.ext.deps.rxbus
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    kapt 'com.android.databinding:compiler:2.3.3'
 ```
 # License
 ```xml
