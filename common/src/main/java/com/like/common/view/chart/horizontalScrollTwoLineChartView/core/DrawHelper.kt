@@ -23,7 +23,6 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
         canvas.drawPath(path, paint)
     }
 
-
     inline fun drawBottomLine(paint: Paint) = canvas.drawLine(
             0f,
             config.spacingLineViewTop + config.maxLineViewHeight,
@@ -31,6 +30,17 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             config.spacingLineViewTop + config.maxLineViewHeight,
             paint
     )
+
+    inline fun drawTouchLine(touchX: Float, paint: Paint) {
+        val touchPointX = config.getCurrentTouchPointX(touchX)
+        canvas.drawLine(
+                touchPointX,
+                config.spacingLineViewTop,
+                touchPointX,
+                config.spacingLineViewTop + config.maxLineViewHeight,
+                paint
+        )
+    }
 
     inline fun drawPoint1(index: Int, paint: Paint) = canvas.drawCircle(
             config.pointList1[index].x,

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.view.View
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
 
@@ -17,6 +18,8 @@ class TwoLineChartView(context: Context) : View(context) {
     private val mPathPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPointPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private var currentTouchX = -1f
 
     init {
         setBackgroundColor(TwoLineChartConfig.DEFAULT_BG_COLOR)
@@ -39,7 +42,16 @@ class TwoLineChartView(context: Context) : View(context) {
             mDataList.addAll(lineDataList)
             mConfig.setData(lineDataList)
         }
+        currentTouchX = -1f
         requestLayout()
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            currentTouchX = event.x
+            invalidate()
+        }
+        return super.onTouchEvent(event)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -49,7 +61,11 @@ class TwoLineChartView(context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         if (mDataList.isNotEmpty()) {
             mDrawHelper = DrawHelper(canvas, mConfig)
-
+            // 画竖直的触摸线
+            if (currentTouchX != -1f) {
+                mDrawHelper.drawTouchLine(currentTouchX, mLinePaint)
+            }
+            // 画上中下三条横线
             mDrawHelper.drawTopLine(mLinePaint)
             mDrawHelper.drawBottomLine(mLinePaint)
             mLinePaint.pathEffect = DashPathEffect(floatArrayOf(5f, 5f), 0f)
@@ -77,6 +93,7 @@ class TwoLineChartView(context: Context) : View(context) {
             // 画同比折线路径
             mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
             mDrawHelper.drawPath2(mPathPaint)
+
         }
     }
 }
