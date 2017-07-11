@@ -45,7 +45,7 @@ class TwoLineChartActivity : BaseActivity() {
         return listOf(
                 TwoLineData(1, 50f, 20f),
                 TwoLineData(2, 100f, -10f),
-                TwoLineData(3, 10f, 50f),
+                TwoLineData(3, 10f, 0f),
                 TwoLineData(4, 70f, -20f)
         )
     }

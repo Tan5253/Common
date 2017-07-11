@@ -21,8 +21,9 @@ class TwoLineChartConfig(val context: Context) {
         val DEFAULT_LINE_COLOR_2 = 0xffff9600.toInt()// 同比线颜色
         val DEFAULT_OTHER_LINE_COLOR = 0xffc0c0c0.toInt()// 其它线颜色
 
-        val DEFAULT_TEXT_BG_COLOR_1 = 0xff14d13a.toInt()// 环比值背景颜色
-        val DEFAULT_TEXT_BG_COLOR_2 = 0xffff3b14.toInt()// 同比值背景颜色
+        val DEFAULT_TEXT_BG_COLOR_1 = 0xffff3b14.toInt()// 正数值背景颜色
+        val DEFAULT_TEXT_BG_COLOR_2 = 0xff14d13a.toInt()// 负数值背景颜色
+        val DEFAULT_TEXT_BG_COLOR_3 = 0xff9c9c9c.toInt()// 0值背景颜色
 
         val DEFAULT_TEXT_COLOR_0 = 0xff606060.toInt()// 文本颜色
         val DEFAULT_TEXT_COLOR_1 = 0xffffffff.toInt()// 文本颜色
@@ -44,6 +45,12 @@ class TwoLineChartConfig(val context: Context) {
     val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 60f).toFloat()
     // 点圆半径
     val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
+    // 触摸点的数值显示区域的宽
+    val touchPointRectWidth: Float = DimensionUtils.dp2px(context, 40f).toFloat()
+    // 触摸点的数值显示区域的高
+    val touchPointRectHeight: Float = DimensionUtils.dp2px(context, 15f).toFloat()
+    // 触摸点的数值显示区域的圆角半径
+    val touchPointRectRadius: Float = DimensionUtils.dp2px(context, 3f).toFloat()
 
     // 视图总高度
     val totalHeight = spacingLineViewTop + maxLineViewHeight + spacingLineViewBottom
@@ -119,25 +126,64 @@ class TwoLineChartConfig(val context: Context) {
     val touchPointRect1 = RectF()
     // 同比线上触摸点的数值显示区域
     val touchPointRect2 = RectF()
+    // 环比线上触摸点的数值
+    var touchData1 = 0f
+    // 同比线上触摸点的数值
+    var touchData2 = 0f
 
     /**
      * 获取手指触摸点最接近的x坐标
      */
-    fun getCurrentTouchPoint(touchX: Float): PointF? {
-        var result: PointF? = null
+    fun getCurrentTouchPointX(touchX: Float): Float {
+        var pointF1: PointF? = null
+        var position: Int = -1
         if (pointList1.isNotEmpty()) {
             if (touchX <= pointList1.first().x + spacingBetweenTwoPoints / 2) {
-                result = pointList1.first()
+                pointF1 = pointList1.first()
+                position = 0
             } else if (touchX >= pointList1.last().x - spacingBetweenTwoPoints / 2) {
-                result = pointList1.last()
+                pointF1 = pointList1.last()
+                position = pointList1.size - 1
             } else {
-                val list = pointList1.filter { it.x - spacingBetweenTwoPoints / 2 <= touchX && it.x + spacingBetweenTwoPoints / 2 >= touchX }
-                if (list.isNotEmpty()) {
-                    result = list.first()
+                for ((index, pointF) in pointList1.withIndex()) {
+                    if (pointF.x - spacingBetweenTwoPoints / 2 <= touchX && pointF.x + spacingBetweenTwoPoints / 2 >= touchX) {
+                        pointF1 = pointF
+                        position = index
+                        break
+                    }
                 }
             }
         }
-        return result
+        if (pointF1 != null) {
+            touchPointRect1.left = pointF1.x - touchPointRectWidth / 2
+            touchPointRect1.top = pointF1.y - touchPointRectHeight / 2
+            touchPointRect1.right = touchPointRect1.left + touchPointRectWidth
+            touchPointRect1.bottom = touchPointRect1.top + touchPointRectHeight
+
+            val pointF2 = pointList2[position]
+            touchPointRect2.left = pointF2.x - touchPointRectWidth / 2
+            touchPointRect2.top = pointF2.y - touchPointRectHeight / 2
+            touchPointRect2.right = touchPointRect2.left + touchPointRectWidth
+            touchPointRect2.bottom = touchPointRect2.top + touchPointRectHeight
+
+            touchData1 = dataList[position].ratio1
+            touchData2 = dataList[position].ratio2
+        } else {
+            touchPointRect1.left = 0f
+            touchPointRect1.top = 0f
+            touchPointRect1.right = 0f
+            touchPointRect1.bottom = 0f
+
+            touchPointRect2.left = 0f
+            touchPointRect2.top = 0f
+            touchPointRect2.right = 0f
+            touchPointRect2.bottom = 0f
+
+            touchData1 = 0f
+            touchData2 = 0f
+
+        }
+        return if (pointF1 == null) -1f else pointF1.x
     }
 
     fun isTouchInView(touchY: Float): Boolean = touchY >= spacingLineViewTop && touchY <= spacingLineViewTop + maxLineViewHeight

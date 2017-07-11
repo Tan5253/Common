@@ -94,6 +94,25 @@ class TwoLineChartView(context: Context) : View(context) {
             mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
             mDrawHelper.drawPath2(mPathPaint)
 
+            if (currentTouchX != -1f) {
+                // 画触摸线上的值，正数为红色背景，负数为绿色背景
+                if (mConfig.touchData1 > 0) {
+                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
+                } else if (mConfig.touchData1 < 0) {
+                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
+                } else {
+                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
+                }
+                mDrawHelper.drawTouchPointRect1(mPointPaint)
+                if (mConfig.touchData2 > 0) {
+                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
+                } else if (mConfig.touchData2 < 0) {
+                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
+                } else {
+                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
+                }
+                mDrawHelper.drawTouchPointRect2(mPointPaint)
+            }
         }
     }
 }
