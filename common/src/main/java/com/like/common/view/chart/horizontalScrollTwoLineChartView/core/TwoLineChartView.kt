@@ -47,7 +47,7 @@ class TwoLineChartView(context: Context) : View(context) {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
+        if (event.action == MotionEvent.ACTION_DOWN && mConfig.isTouchInView(event.y)) {
             currentTouchX = event.x
             invalidate()
         }

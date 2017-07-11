@@ -118,13 +118,23 @@ class TwoLineChartConfig(val context: Context) {
      * 获取手指触摸点最接近的x坐标
      */
     fun getCurrentTouchPointX(touchX: Float): Float {
-        val result = pointList1.filter { it.x - spacingBetweenTwoPoints / 2 < touchX && it.x + spacingBetweenTwoPoints / 2 > touchX }
-        if (result.isEmpty()) {
-            return -1f
+        val firstX = pointList1.first().x
+        val lastX = pointList1.last().x
+        if (touchX <= firstX + spacingBetweenTwoPoints / 2) {
+            return firstX
+        } else if (touchX >= lastX - spacingBetweenTwoPoints / 2) {
+            return lastX
         } else {
-            return result.first().x
+            val result = pointList1.filter { it.x - spacingBetweenTwoPoints / 2 <= touchX && it.x + spacingBetweenTwoPoints / 2 >= touchX }
+            if (result.isEmpty()) {
+                return -1f
+            } else {
+                return result.first().x
+            }
         }
     }
+
+    fun isTouchInView(touchY: Float): Boolean = touchY >= spacingLineViewTop && touchY <= spacingLineViewTop + maxLineViewHeight
 
     fun getAllPoint(flag: Int): List<PointF> {
         val result: MutableList<PointF> = mutableListOf()
