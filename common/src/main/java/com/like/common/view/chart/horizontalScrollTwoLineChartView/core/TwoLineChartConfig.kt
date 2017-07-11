@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
+import android.graphics.RectF
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.like.common.util.DimensionUtils
@@ -114,24 +115,29 @@ class TwoLineChartConfig(val context: Context) {
 
     }
 
+    // 环比线上触摸点的数值显示区域
+    val touchPointRect1 = RectF()
+    // 同比线上触摸点的数值显示区域
+    val touchPointRect2 = RectF()
+
     /**
      * 获取手指触摸点最接近的x坐标
      */
-    fun getCurrentTouchPointX(touchX: Float): Float {
-        val firstX = pointList1.first().x
-        val lastX = pointList1.last().x
-        if (touchX <= firstX + spacingBetweenTwoPoints / 2) {
-            return firstX
-        } else if (touchX >= lastX - spacingBetweenTwoPoints / 2) {
-            return lastX
-        } else {
-            val result = pointList1.filter { it.x - spacingBetweenTwoPoints / 2 <= touchX && it.x + spacingBetweenTwoPoints / 2 >= touchX }
-            if (result.isEmpty()) {
-                return -1f
+    fun getCurrentTouchPoint(touchX: Float): PointF? {
+        var result: PointF? = null
+        if (pointList1.isNotEmpty()) {
+            if (touchX <= pointList1.first().x + spacingBetweenTwoPoints / 2) {
+                result = pointList1.first()
+            } else if (touchX >= pointList1.last().x - spacingBetweenTwoPoints / 2) {
+                result = pointList1.last()
             } else {
-                return result.first().x
+                val list = pointList1.filter { it.x - spacingBetweenTwoPoints / 2 <= touchX && it.x + spacingBetweenTwoPoints / 2 >= touchX }
+                if (list.isNotEmpty()) {
+                    result = list.first()
+                }
             }
         }
+        return result
     }
 
     fun isTouchInView(touchY: Float): Boolean = touchY >= spacingLineViewTop && touchY <= spacingLineViewTop + maxLineViewHeight
