@@ -1,4 +1,4 @@
-package com.like.kotlintest
+package com.like.common.util
 
 import android.content.Context
 import android.content.SharedPreferences
