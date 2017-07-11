@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import com.like.common.util.DrawTextUtils
+import com.like.common.util.MoneyFormatUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
@@ -98,5 +99,31 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             config.touchPointRectRadius,
             paint
     )
+
+    inline fun drawTouchPointText1(paint: Paint) {
+        if (config.touchPoint1 != null) {
+            // 这里去绝对值，因为正负靠背景来区分了
+            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(config.touchData1.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
+            canvas.drawText(
+                    text,
+                    config.touchPoint1!!.x - DrawTextUtils.getTextlength(paint, text) / 2,
+                    config.touchPoint1!!.y - DrawTextUtils.getTextHeight(paint) / 2 + DrawTextUtils.getTextBaseLine(paint),
+                    paint
+            )
+        }
+    }
+
+    inline fun drawTouchPointText2(paint: Paint) {
+        if (config.touchPoint2 != null) {
+            // 这里去绝对值，因为正负靠背景来区分了
+            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(config.touchData2.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
+            canvas.drawText(
+                    text,
+                    config.touchPoint2!!.x - DrawTextUtils.getTextlength(paint, text) / 2,
+                    config.touchPoint2!!.y - DrawTextUtils.getTextHeight(paint) / 2 + DrawTextUtils.getTextBaseLine(paint),
+                    paint
+            )
+        }
+    }
 
 }

@@ -130,39 +130,42 @@ class TwoLineChartConfig(val context: Context) {
     var touchData1 = 0f
     // 同比线上触摸点的数值
     var touchData2 = 0f
+    // 环比线上触摸点
+    var touchPoint1: PointF? = null
+    // 同比线上触摸点
+    var touchPoint2: PointF? = null
 
     /**
      * 获取手指触摸点最接近的x坐标
      */
     fun getCurrentTouchPointX(touchX: Float): Float {
-        var pointF1: PointF? = null
         var position: Int = -1
         if (pointList1.isNotEmpty()) {
             if (touchX <= pointList1.first().x + spacingBetweenTwoPoints / 2) {
-                pointF1 = pointList1.first()
+                touchPoint1 = pointList1.first()
                 position = 0
             } else if (touchX >= pointList1.last().x - spacingBetweenTwoPoints / 2) {
-                pointF1 = pointList1.last()
+                touchPoint1 = pointList1.last()
                 position = pointList1.size - 1
             } else {
                 for ((index, pointF) in pointList1.withIndex()) {
                     if (pointF.x - spacingBetweenTwoPoints / 2 <= touchX && pointF.x + spacingBetweenTwoPoints / 2 >= touchX) {
-                        pointF1 = pointF
+                        touchPoint1 = pointF
                         position = index
                         break
                     }
                 }
             }
         }
-        if (pointF1 != null) {
-            touchPointRect1.left = pointF1.x - touchPointRectWidth / 2
-            touchPointRect1.top = pointF1.y - touchPointRectHeight / 2
+        if (touchPoint1 != null) {
+            touchPointRect1.left = touchPoint1!!.x - touchPointRectWidth / 2
+            touchPointRect1.top = touchPoint1!!.y - touchPointRectHeight / 2
             touchPointRect1.right = touchPointRect1.left + touchPointRectWidth
             touchPointRect1.bottom = touchPointRect1.top + touchPointRectHeight
 
-            val pointF2 = pointList2[position]
-            touchPointRect2.left = pointF2.x - touchPointRectWidth / 2
-            touchPointRect2.top = pointF2.y - touchPointRectHeight / 2
+            touchPoint2 = pointList2[position]
+            touchPointRect2.left = touchPoint2!!.x - touchPointRectWidth / 2
+            touchPointRect2.top = touchPoint2!!.y - touchPointRectHeight / 2
             touchPointRect2.right = touchPointRect2.left + touchPointRectWidth
             touchPointRect2.bottom = touchPointRect2.top + touchPointRectHeight
 
@@ -181,9 +184,9 @@ class TwoLineChartConfig(val context: Context) {
 
             touchData1 = 0f
             touchData2 = 0f
-
+            touchPoint2 = null
         }
-        return if (pointF1 == null) -1f else pointF1.x
+        return if (touchPoint1 == null) -1f else touchPoint1!!.x
     }
 
     fun isTouchInView(touchY: Float): Boolean = touchY >= spacingLineViewTop && touchY <= spacingLineViewTop + maxLineViewHeight
