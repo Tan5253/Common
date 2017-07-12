@@ -18,10 +18,6 @@ class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: 
     private val executors = Executors.newCachedThreadPool()
     var ip: String = ""
 
-    fun start(ip: String) {
-        this.ip = ip
-    }
-
     fun send(message: String) {
         executors.execute {
             try {

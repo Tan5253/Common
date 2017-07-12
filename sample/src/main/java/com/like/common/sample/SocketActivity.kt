@@ -53,7 +53,7 @@ class SocketActivity : BaseActivity() {
         udpRcvStrBuf.append("服务器ip地址：$udpMessage\n")
         mBinding.txtRecv.text = udpRcvStrBuf.toString()
         udpClient.close()
-        tcpClient.start(udpMessage.ip)
+        tcpClient.ip = udpMessage.ip
     }
 
     @RxBusSubscribe(RxBusTag.TAG_TCP_RECEIVE_SUCCESS)
