@@ -36,11 +36,11 @@ class TwoLineChartConfig(val context: Context) {
     // 横坐标文本顶部的间隔
     val spacingXAxisTextTop: Float = DimensionUtils.dp2px(context, 8f).toFloat()
     // 线条图的高度
-    val maxLineViewHeight: Float = DimensionUtils.dp2px(context, 175f).toFloat()
+    val maxLineViewHeight: Float = DimensionUtils.dp2px(context, 130f).toFloat()
     // 线条图距离顶部的间隔
     val spacingLineViewTop: Float = DimensionUtils.dp2px(context, 40f).toFloat()
     // 线条图距离底部的间隔
-    val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 60f).toFloat()
+    val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 50f).toFloat()
     // 点圆半径
     val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
     // 触摸点的数值显示区域的宽
