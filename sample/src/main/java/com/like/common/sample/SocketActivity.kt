@@ -21,7 +21,7 @@ class SocketActivity : BaseActivity() {
     }
 
     override fun getViewModel(): BaseViewModel? {
-        mBinding.btnSend.isEnabled = false
+//        mBinding.btnSend.isEnabled = false
         mBinding.btnCleanRecv.setOnClickListener {
             udpRcvStrBuf.delete(0, udpRcvStrBuf.length)
             mBinding.txtRecv.text = udpRcvStrBuf.toString()
@@ -30,7 +30,7 @@ class SocketActivity : BaseActivity() {
             udpClient.start()
             mBinding.btnUdpClose.isEnabled = true
             mBinding.btnUdpConn.isEnabled = false
-            mBinding.btnSend.isEnabled = true
+//            mBinding.btnSend.isEnabled = true
         }
         mBinding.btnSend.setOnClickListener {
             if (mBinding.editSend.text.toString() !== "") {
@@ -41,9 +41,10 @@ class SocketActivity : BaseActivity() {
         }
         mBinding.btnUdpClose.setOnClickListener {
             udpClient.close()
+            tcpClient.close()
             mBinding.btnUdpConn.isEnabled = true
             mBinding.btnUdpClose.isEnabled = false
-            mBinding.btnSend.isEnabled = false
+//            mBinding.btnSend.isEnabled = false
         }
         return null
     }
@@ -52,7 +53,7 @@ class SocketActivity : BaseActivity() {
     fun udpReceivedMessage(udpMessage: UDPClient.UDPMessage) {
         udpRcvStrBuf.append("服务器ip地址：$udpMessage\n")
         mBinding.txtRecv.text = udpRcvStrBuf.toString()
-        tcpClient.ip = udpMessage.ip
+        tcpClient.start(udpMessage.ip)
     }
 
     @RxBusSubscribe(RxBusTag.TAG_TCP_RECEIVE_SUCCESS)
@@ -64,6 +65,7 @@ class SocketActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         udpClient.close()
+        tcpClient.close()
     }
 
 }

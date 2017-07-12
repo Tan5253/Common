@@ -6,6 +6,7 @@ import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
@@ -17,26 +18,27 @@ import kotlin.concurrent.thread
  * @param receiverTimeOut       接收器每次读取数据的超时时长，默认Int.MAX_VALUE毫秒
  */
 class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = Int.MAX_VALUE) : Runnable {
-    private val executors = Executors.newCachedThreadPool()
+    private var executors: ExecutorService? = null
     private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
     private var ipAddress: InetAddress? = null
     private var life = false
     private var socket: DatagramSocket? = null
 
     fun start() {
-        if (!life && socket == null) {
+        if (!life) {
             life = true
-            socket = DatagramSocket()
-            executors.execute(this)
-            sendBroadcast()
+            executors = Executors.newCachedThreadPool()
+            executors?.execute(this)
         }
     }
 
     fun close() {
         life = false
-        Logger.i("UDP监听关闭")
         socket?.close()
         socket = null
+        executors?.shutdownNow()
+        executors = null
+        Logger.i("UDP监听关闭")
     }
 
     fun setIp(ip: String) {
@@ -61,24 +63,12 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
         }
     }
 
-    /**
-     * 发送广播，用于通知硬件客户端的ip和port。
-     */
-    private fun sendBroadcast() {
-        thread {
-            try {
-                socket!!.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
-                Logger.i("UDP发送广播数据成功")
-            } catch (e: Exception) {
-                Logger.e("UDP发送广播数据失败！")
-                e.printStackTrace()
-            }
-        }
-    }
-
     override fun run() {
         try {
+            socket = DatagramSocket()
             socket!!.soTimeout = receiverTimeOut
+            // 发送广播，用于通知硬件客户端的ip和port。
+            socket!!.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
             Logger.i("初始化UDP客户端成功")
         } catch (e: Exception) {
             Logger.e("初始化UDP客户端失败！")
