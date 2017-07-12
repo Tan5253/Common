@@ -52,7 +52,6 @@ class SocketActivity : BaseActivity() {
     fun udpReceivedMessage(udpMessage: UDPClient.UDPMessage) {
         udpRcvStrBuf.append("服务器ip地址：$udpMessage\n")
         mBinding.txtRecv.text = udpRcvStrBuf.toString()
-        udpClient.close()
         tcpClient.ip = udpMessage.ip
     }
 
