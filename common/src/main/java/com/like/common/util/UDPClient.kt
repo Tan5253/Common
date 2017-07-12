@@ -52,7 +52,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
         thread {
             try {
                 val sendBytes = message.toByteArray(Charsets.UTF_8)
-                socket?.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
+                socket!!.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
                 Logger.i("UDP发送数据成功")
             } catch (e: Exception) {
                 Logger.e("UDP发送数据失败！")
@@ -67,7 +67,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     private fun sendBroadcast() {
         thread {
             try {
-                socket?.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
+                socket!!.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
                 Logger.i("UDP发送广播数据成功")
             } catch (e: Exception) {
                 Logger.e("UDP发送广播数据失败！")
@@ -78,7 +78,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
 
     override fun run() {
         try {
-            socket?.soTimeout = receiverTimeOut
+            socket!!.soTimeout = receiverTimeOut
             Logger.i("初始化UDP客户端成功")
         } catch (e: Exception) {
             Logger.e("初始化UDP客户端失败！")
@@ -91,7 +91,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
                 Logger.i("UDP监听中……")
                 val buf = ByteArray(receiverBufferSize)
                 val packetRcv = DatagramPacket(buf, buf.size)
-                socket?.receive(packetRcv)
+                socket!!.receive(packetRcv)
                 ipAddress = packetRcv.address
                 val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, Charsets.UTF_8)
                 RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress?.hostAddress!!, RcvMsg))
