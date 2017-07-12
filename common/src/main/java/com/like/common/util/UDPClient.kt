@@ -14,7 +14,7 @@ import kotlin.concurrent.thread
  *
  * @param port                  服务器端口号
  * @param receiverBufferSize    接收器的缓存大小，默认1024kb
- * @param receiverTimeOut       接收器每次读取数据的超时时长，默认5000毫秒
+ * @param receiverTimeOut       接收器每次读取数据的超时时长，默认3000毫秒
  */
 class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = 3000) : Runnable {
     private val executors = Executors.newCachedThreadPool()

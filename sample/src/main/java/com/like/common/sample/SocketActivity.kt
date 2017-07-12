@@ -41,7 +41,6 @@ class SocketActivity : BaseActivity() {
         }
         mBinding.btnUdpClose.setOnClickListener {
             udpClient.close()
-            tcpClient.close()
             mBinding.btnUdpConn.isEnabled = true
             mBinding.btnUdpClose.isEnabled = false
             mBinding.btnSend.isEnabled = false
@@ -54,7 +53,6 @@ class SocketActivity : BaseActivity() {
         udpRcvStrBuf.append("服务器ip地址：$udpMessage\n")
         mBinding.txtRecv.text = udpRcvStrBuf.toString()
         udpClient.close()
-        tcpClient.close()
         tcpClient.start(udpMessage.ip)
     }
 
@@ -67,7 +65,6 @@ class SocketActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         udpClient.close()
-        tcpClient.close()
     }
 
 }
