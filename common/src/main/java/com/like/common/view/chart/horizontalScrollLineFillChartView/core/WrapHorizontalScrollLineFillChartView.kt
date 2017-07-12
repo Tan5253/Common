@@ -20,7 +20,16 @@ class WrapHorizontalScrollLineFillChartView(context: Context, attrs: AttributeSe
         addView(lineFillChartView)
     }
 
-    fun setData(lineDataList: List<LineData>) {
-        lineFillChartView.setData(lineDataList)
+    /**
+     * 设置数据
+     *
+     * @param dataList          数据
+     * @param showPointCount    一屏幕显示的数据个数
+     */
+    fun setData(dataList: List<LineData>, showPointCount: Int = 3) {
+        if (showPointCount <= 0) {
+            throw IllegalArgumentException("showPointCount 参数必须大于0")
+        }
+        lineFillChartView.setData(dataList, showPointCount)
     }
 }

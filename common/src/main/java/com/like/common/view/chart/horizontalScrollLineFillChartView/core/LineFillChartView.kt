@@ -43,11 +43,14 @@ class LineFillChartView(context: Context) : View(context) {
         mXAxisPaint.color = LineFillChartConfig.DEFAULT_X_AXIS_BORDER_COLOR
     }
 
-    fun setData(lineDataList: List<LineData>) {
+    fun setData(lineDataList: List<LineData>, showPointCount: Int = 3) {
+        if (showPointCount <= 0) {
+            throw IllegalArgumentException("showPointCount 参数必须大于0")
+        }
         mDataList.clear()
         if (lineDataList.isNotEmpty()) {
             mDataList.addAll(lineDataList)
-            mConfig.setData(lineDataList)
+            mConfig.setData(lineDataList, showPointCount)
         }
         requestLayout()
     }

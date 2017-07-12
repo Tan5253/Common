@@ -35,7 +35,6 @@ class LineFillChartConfig(val context: Context) {
         val DEFAULT_X_AXIS_SCALE_COLOR = 0xff73d6f8.toInt()// x轴刻度线颜色
         val DEFAULT_X_AXIS_TEXT_COLOR = 0xffffffff.toInt()// x轴文本颜色
         val DEFAULT_POINT_TEXT_COLOR = 0xff303030.toInt()// 点的数值文本颜色
-        val DEFAULT_SHOW_POINT_COUNT = 3// 一屏幕显示的最多点数量
     }
 
     // x轴文本字体大小
@@ -86,16 +85,16 @@ class LineFillChartConfig(val context: Context) {
     // 渐变色块以下间隔的纯色背景
     val gradientBottomRect: RectF = RectF()
 
-    fun setData(barDataList: List<LineData>) {
+    fun setData(barDataList: List<LineData>, showPointCount: Int = 3) {
         this.lineDataList.clear()
         this.lineDataList.addAll(barDataList)
 
         val metric = DisplayMetrics()
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         wm.defaultDisplay.getMetrics(metric)
-        totalWidth = if (lineDataList.size > DEFAULT_SHOW_POINT_COUNT) {
-            val eachSpacing = metric.widthPixels / (DEFAULT_SHOW_POINT_COUNT + 1)
-            metric.widthPixels.toFloat() + eachSpacing * (lineDataList.size - DEFAULT_SHOW_POINT_COUNT)
+        totalWidth = if (lineDataList.size > showPointCount) {
+            val eachSpacing = metric.widthPixels / (showPointCount + 1)
+            metric.widthPixels.toFloat() + eachSpacing * (lineDataList.size - showPointCount)
         } else {
             metric.widthPixels.toFloat()
         }

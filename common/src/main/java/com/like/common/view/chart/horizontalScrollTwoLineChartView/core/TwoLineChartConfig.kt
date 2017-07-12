@@ -28,8 +28,6 @@ class TwoLineChartConfig(val context: Context) {
         val DEFAULT_TEXT_COLOR_0 = 0xff606060.toInt()// 文本颜色
         val DEFAULT_TEXT_COLOR_1 = 0xffffffff.toInt()// 文本颜色
         val DEFAULT_TEXT_COLOR_2 = 0xffc0c0c0.toInt()// 文本颜色
-
-        val DEFAULT_SHOW_POINT_COUNT = 3// 一屏幕显示的最多点数量
     }
 
     // 文本字体大小
@@ -93,13 +91,16 @@ class TwoLineChartConfig(val context: Context) {
     // 同比path
     val path2: Path = Path()
 
-    fun setData(barDataList: List<TwoLineData>) {
+    fun setData(barDataList: List<TwoLineData>, showPointCount: Int = 3) {
+        if (showPointCount <= 0) {
+            return
+        }
         this.dataList.clear()
         this.dataList.addAll(barDataList)
 
-        totalWidth = if (dataList.size > DEFAULT_SHOW_POINT_COUNT) {
-            val eachSpacing = screenWidthPixels / (DEFAULT_SHOW_POINT_COUNT + 1)
-            screenWidthPixels + eachSpacing * (dataList.size - DEFAULT_SHOW_POINT_COUNT)
+        totalWidth = if (dataList.size > showPointCount) {
+            val eachSpacing = screenWidthPixels / (showPointCount + 1)
+            screenWidthPixels + eachSpacing * (dataList.size - showPointCount)
         } else {
             screenWidthPixels
         }

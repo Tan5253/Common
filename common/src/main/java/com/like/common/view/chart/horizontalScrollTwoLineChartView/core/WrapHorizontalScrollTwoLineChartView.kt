@@ -20,7 +20,16 @@ class WrapHorizontalScrollTwoLineChartView(context: Context, attrs: AttributeSet
         addView(twoLineChartView)
     }
 
-    fun setData(dataList: List<TwoLineData>) {
-        twoLineChartView.setData(dataList)
+    /**
+     * 设置数据
+     *
+     * @param dataList          数据
+     * @param showPointCount    一屏幕显示的数据个数
+     */
+    fun setData(dataList: List<TwoLineData>, showPointCount: Int = 3) {
+        if (showPointCount <= 0) {
+            throw IllegalArgumentException("showPointCount 参数必须大于0")
+        }
+        twoLineChartView.setData(dataList, showPointCount)
     }
 }

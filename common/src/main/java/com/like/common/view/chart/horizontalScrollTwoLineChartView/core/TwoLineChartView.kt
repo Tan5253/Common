@@ -36,11 +36,14 @@ class TwoLineChartView(context: Context) : View(context) {
         mTextPaint.textSize = mConfig.textSize
     }
 
-    fun setData(lineDataList: List<TwoLineData>) {
+    fun setData(lineDataList: List<TwoLineData>, showPointCount: Int = 3) {
+        if (showPointCount <= 0) {
+            throw IllegalArgumentException("showPointCount 参数必须大于0")
+        }
         mDataList.clear()
         if (lineDataList.isNotEmpty()) {
             mDataList.addAll(lineDataList)
-            mConfig.setData(lineDataList)
+            mConfig.setData(lineDataList, showPointCount)
         }
         currentTouchX = -1f
         requestLayout()
