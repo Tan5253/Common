@@ -90,16 +90,17 @@
 ```
 4、引用的库
 ```java
-    compile rootProject.ext.deps.csv
-    compile rootProject.ext.deps.glide
-    compile rootProject.ext.deps.glide_transformations
-    compile rootProject.ext.deps.rxjava
-    compile rootProject.ext.deps.rxandroid
-    compile rootProject.ext.deps.rxbinding
-    compile rootProject.ext.deps.Base
-    compile rootProject.ext.deps.Toast
-    compile rootProject.ext.deps.Logger
-    compile rootProject.ext.deps.rxbus
+    compile 'com.zhy:percent-support-extends:1.1.1'
+    compile 'au.com.bytecode:opencsv:2.4'// csv文件解析
+    compile 'com.github.bumptech.glide:glide:3.7.0'// glide图片加载库
+    compile 'jp.wasabeef:glide-transformations:2.0.1'// glide对应的图片处理库，可以转换图片为圆形、圆角矩形、高斯模糊等等效果
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.github.like5188:Base:1.0.2'
+    compile 'com.github.like5188:Toast:1.0.1'
+    compile 'com.github.like5188:Logger:1.0.3'
+    compile 'com.github.like5188.RxBus:rxbus:1.0.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt 'com.android.databinding:compiler:2.3.3'
 ```

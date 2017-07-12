@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.like.common.sample.TwoLineChartActivity">
+        <activity android:name="com.like.common.sample.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +45,26 @@
 
         <activity
             android:name="com.like.common.sample.DialogFragmentActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.like.common.sample.SocketActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.like.common.sample.BarChartActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.like.common.sample.LineFillChartActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.like.common.sample.PieChartActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.like.common.sample.TwoLineChartActivity"
             android:screenOrientation="portrait" />
 
     </application>

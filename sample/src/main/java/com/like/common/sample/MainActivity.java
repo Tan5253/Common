@@ -131,6 +131,26 @@ public class MainActivity extends BasePermissionActivity {
         return true;
     }
 
+    public void clickSocket(View view) {
+        startActivity(new Intent(this, SocketActivity.class));
+    }
+
+    public void clickChart0(View view) {
+        startActivity(new Intent(this, PieChartActivity.class));
+    }
+
+    public void clickChart1(View view) {
+        startActivity(new Intent(this, LineFillChartActivity.class));
+    }
+
+    public void clickChart2(View view) {
+        startActivity(new Intent(this, TwoLineChartActivity.class));
+    }
+
+    public void clickChart3(View view) {
+        startActivity(new Intent(this, BarChartActivity.class));
+    }
+
     public void clickCustomRadioAndCheck(View view) {
         startActivity(new Intent(this, CustomRadioAndCheckActivity.class));
     }
