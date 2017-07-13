@@ -1,3 +1,6 @@
 package com.like.common.view.chart.horizontalScrollTwoLineChartView.entity
 
-data class TwoLineData(val x: Int, val ratio1: Float, val ratio2: Float)
+/**
+ * @param ratio2 当不传此值时，表示只有一条折线。
+ */
+data class TwoLineData(val x: Int, val ratio1: Float, val ratio2: Float = Float.MAX_VALUE)

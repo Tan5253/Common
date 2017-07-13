@@ -12,6 +12,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/ll_tuli"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -20,32 +21,49 @@
             android:paddingRight="20dp"
             android:paddingTop="20dp">
 
-            <View
-                android:layout_width="20dp"
-                android:layout_height="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#ff9600" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_tongbi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="同比"
-                android:textColor="#606060"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <View
-                android:layout_width="20dp"
-                android:layout_height="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#00a7ff" />
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#ff9600" />
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="同比"
+                    android:textColor="#606060"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_huanbi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="环比"
-                android:textColor="#606060"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#00a7ff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="环比"
+                    android:textColor="#606060"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -55,7 +73,7 @@
             android:layout_alignBottom="@id/twoLineChartView"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:text="单位：日"
+            android:text="单位："
             android:textColor="#606060"
             android:textSize="12sp" />
     </RelativeLayout>

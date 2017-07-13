@@ -17,8 +17,8 @@ import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLin
 class TwoLineChartConfig(val context: Context) {
     companion object {
         val DEFAULT_BG_COLOR = 0xffffffff.toInt()
-        val DEFAULT_LINE_COLOR_1 = 0xff00a7ff.toInt()// 环比线颜色
-        val DEFAULT_LINE_COLOR_2 = 0xffff9600.toInt()// 同比线颜色
+        val DEFAULT_LINE_COLOR_1 = 0xffff9600.toInt()// 环比线颜色
+        val DEFAULT_LINE_COLOR_2 = 0xff00a7ff.toInt()// 同比线颜色
         val DEFAULT_OTHER_LINE_COLOR = 0xffc0c0c0.toInt()// 其它线颜色
 
         val DEFAULT_TEXT_BG_COLOR_1 = 0xffff3b14.toInt()// 正数值背景颜色
@@ -108,19 +108,19 @@ class TwoLineChartConfig(val context: Context) {
         spacingBetweenTwoPoints = totalWidth / (dataList.size + 1)
 
         val maxRatio1: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio1) }!!.ratio1)
-        val maxRatio2: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio2) }!!.ratio2)
-
-        eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
+        if (hasTwoLine()) {
+            val maxRatio2: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio2) }!!.ratio2)
+            eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
+            path2.reset()
+            pointList2.clear()
+            pointList2.addAll(getAllPoint(2))
+        } else {
+            eachRatioHeight = maxLineViewHeight / 2 / maxRatio1
+        }
 
         path1.reset()
-        path2.reset()
-
         pointList1.clear()
         pointList1.addAll(getAllPoint(1))
-
-        pointList2.clear()
-        pointList2.addAll(getAllPoint(2))
-
     }
 
     // 环比线上触摸点的数值显示区域
@@ -163,29 +163,31 @@ class TwoLineChartConfig(val context: Context) {
             touchPointRect1.top = touchPoint1!!.y - touchPointRectHeight / 2
             touchPointRect1.right = touchPointRect1.left + touchPointRectWidth
             touchPointRect1.bottom = touchPointRect1.top + touchPointRectHeight
-
-            touchPoint2 = pointList2[position]
-            touchPointRect2.left = touchPoint2!!.x - touchPointRectWidth / 2
-            touchPointRect2.top = touchPoint2!!.y - touchPointRectHeight / 2
-            touchPointRect2.right = touchPointRect2.left + touchPointRectWidth
-            touchPointRect2.bottom = touchPointRect2.top + touchPointRectHeight
-
             touchData1 = dataList[position].ratio1
-            touchData2 = dataList[position].ratio2
+
+            if (hasTwoLine()) {
+                touchPoint2 = pointList2[position]
+                touchPointRect2.left = touchPoint2!!.x - touchPointRectWidth / 2
+                touchPointRect2.top = touchPoint2!!.y - touchPointRectHeight / 2
+                touchPointRect2.right = touchPointRect2.left + touchPointRectWidth
+                touchPointRect2.bottom = touchPointRect2.top + touchPointRectHeight
+                touchData2 = dataList[position].ratio2
+            }
         } else {
             touchPointRect1.left = 0f
             touchPointRect1.top = 0f
             touchPointRect1.right = 0f
             touchPointRect1.bottom = 0f
-
-            touchPointRect2.left = 0f
-            touchPointRect2.top = 0f
-            touchPointRect2.right = 0f
-            touchPointRect2.bottom = 0f
-
             touchData1 = 0f
-            touchData2 = 0f
-            touchPoint2 = null
+
+            if (hasTwoLine()) {
+                touchPointRect2.left = 0f
+                touchPointRect2.top = 0f
+                touchPointRect2.right = 0f
+                touchPointRect2.bottom = 0f
+                touchData2 = 0f
+                touchPoint2 = null
+            }
         }
         return if (touchPoint1 == null) -1f else touchPoint1!!.x
     }
@@ -223,5 +225,7 @@ class TwoLineChartConfig(val context: Context) {
         }
         return result
     }
+
+    fun hasTwoLine(): Boolean = dataList[0].ratio2 != Float.MAX_VALUE
 
 }

@@ -19,14 +19,20 @@ class TwoLineChartActivity : BaseActivity() {
 
     fun changeData1(view: View) {
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1())
+        mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
+        mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
     }
 
     fun changeData2(view: View) {
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData2())
+        mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
+        mBinding.viewTwoLineChart.tvUnit.text = "单位：月"
     }
 
     fun changeData3(view: View) {
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData3())
+        mBinding.viewTwoLineChart.llHuanbi.visibility = View.GONE
+        mBinding.viewTwoLineChart.tvUnit.text = "单位：时"
     }
 
     fun clearData(view: View) {
@@ -52,9 +58,9 @@ class TwoLineChartActivity : BaseActivity() {
 
     fun getSimulatedData3(): List<TwoLineData> {
         return listOf(
-                TwoLineData(1, -50f, -20f),
-                TwoLineData(2, -100f, -10f),
-                TwoLineData(3, -10f, -50f)
+                TwoLineData(1, -50f),
+                TwoLineData(2, -100f),
+                TwoLineData(3, -10f)
         )
     }
 }

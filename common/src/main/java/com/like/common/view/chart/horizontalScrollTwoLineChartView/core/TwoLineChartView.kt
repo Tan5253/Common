@@ -75,14 +75,9 @@ class TwoLineChartView(context: Context) : View(context) {
             mDrawHelper.drawMiddleLine(mLinePaint)
 
             mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
-            for (index in 0 until mConfig.pointList1.size) {
-                mDrawHelper.drawPoint1(index, mPointPaint)// 画环比对应的点圆
-            }
-
-            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
             mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_0
-            for (index in 0 until mConfig.pointList2.size) {
-                mDrawHelper.drawPoint2(index, mPointPaint)// 画同比对应的点圆
+            for (index in 0 until mConfig.pointList1.size) {
+                mDrawHelper.drawPoint1(index, mPointPaint)// 画点圆
                 mDrawHelper.drawXAxisText(index, mTextPaint)// 画x轴文本
             }
 
@@ -90,12 +85,19 @@ class TwoLineChartView(context: Context) : View(context) {
             mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
             mDrawHelper.drawMiddleLineText(mTextPaint)
 
-            // 画环比折线路径
+            // 画折线路径
             mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
             mDrawHelper.drawPath1(mPathPaint)
-            // 画同比折线路径
-            mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
-            mDrawHelper.drawPath2(mPathPaint)
+
+            if (mConfig.hasTwoLine()) {
+                mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+                for (index in 0 until mConfig.pointList2.size) {
+                    mDrawHelper.drawPoint2(index, mPointPaint)// 画点圆
+                }
+                // 画折线路径
+                mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+                mDrawHelper.drawPath2(mPathPaint)
+            }
 
             if (currentTouchX != -1f) {
                 // 画触摸线上的值的背景，正数为红色背景，负数为绿色背景
@@ -112,17 +114,19 @@ class TwoLineChartView(context: Context) : View(context) {
                 mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_1
                 mDrawHelper.drawTouchPointText1(mTextPaint)
 
-                if (mConfig.touchData2 > 0) {
-                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
-                } else if (mConfig.touchData2 < 0) {
-                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
-                } else {
-                    mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
-                }
-                mDrawHelper.drawTouchPointRect2(mPointPaint)
+                if (mConfig.hasTwoLine()) {
+                    if (mConfig.touchData2 > 0) {
+                        mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
+                    } else if (mConfig.touchData2 < 0) {
+                        mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
+                    } else {
+                        mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
+                    }
+                    mDrawHelper.drawTouchPointRect2(mPointPaint)
 
-                // 画触摸线上的值
-                mDrawHelper.drawTouchPointText2(mTextPaint)
+                    // 画触摸线上的值
+                    mDrawHelper.drawTouchPointText2(mTextPaint)
+                }
             }
         }
     }

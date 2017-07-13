@@ -52,12 +52,15 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             paint
     )
 
-    inline fun drawPoint2(index: Int, paint: Paint) = canvas.drawCircle(
-            config.pointList2[index].x,
-            config.pointList2[index].y,
-            config.pointCircleRadius,
-            paint
-    )
+    inline fun drawPoint2(index: Int, paint: Paint) {
+
+        canvas.drawCircle(
+                config.pointList2[index].x,
+                config.pointList2[index].y,
+                config.pointCircleRadius,
+                paint
+        )
+    }
 
     inline fun drawXAxisText(index: Int, paint: Paint) {
         val text = config.dataList[index].x.toString()
