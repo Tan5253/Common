@@ -27,7 +27,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     fun start() {
         if (!life) {
             life = true
-            executors = Executors.newCachedThreadPool()
+            executors = Executors.newSingleThreadExecutor()
             executors?.execute(this)
         }
     }
