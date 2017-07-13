@@ -21,14 +21,18 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     private var executors: ExecutorService? = null
     private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
     private var ipAddress: InetAddress? = null
-    private var life = false
     private var socket: DatagramSocket? = null
+    private @Volatile var life = false
 
     fun start() {
         if (!life) {
-            life = true
-            executors = Executors.newSingleThreadExecutor()
-            executors?.execute(this)
+            synchronized(UDPClient::class) {
+                if (!life) {
+                    life = true
+                    executors = Executors.newSingleThreadExecutor()
+                    executors?.execute(this)
+                }
+            }
         }
     }
 
