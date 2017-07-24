@@ -18,7 +18,7 @@
 在Module的gradle中加入：
 ```groovy
     dependencies {
-        compile 'com.github.like5188:Common:1.0.5'
+        compile 'com.github.like5188:Common:1.0.6'
     }
 ```
 2、包含的工具类
@@ -97,10 +97,10 @@
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.github.like5188:Base:1.0.2'
-    compile 'com.github.like5188:Toast:1.0.1'
-    compile 'com.github.like5188:Logger:1.0.3'
-    compile 'com.github.like5188.RxBus:rxbus:1.0.1'
+    compile 'com.github.like5188:Base:1.0.3'
+    compile 'com.github.like5188:Toast:1.0.2'
+    compile 'com.github.like5188:Logger:1.0.4'
+    compile 'com.github.like5188.RxBus:rxbus:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt 'com.android.databinding:compiler:2.3.3'
 ```

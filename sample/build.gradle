@@ -37,8 +37,8 @@ dependencies {
     compile rootProject.ext.deps.appcompat_v7
     testCompile rootProject.ext.deps.junit
 
-    compile 'com.github.like5188:Base:1.0.2'
-    kapt 'com.github.like5188.RxBus:rxbus-compiler:1.0.1'
+    compile 'com.github.like5188:Base:1.0.3'
+    kapt 'com.github.like5188.RxBus:rxbus-compiler:1.0.2'
 
     // ObjectBox数据库
     compile 'io.objectbox:objectbox-android:0.9.12'
