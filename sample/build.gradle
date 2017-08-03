@@ -30,24 +30,24 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile rootProject.ext.deps.appcompat_v7
-    testCompile rootProject.ext.deps.junit
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation rootProject.ext.deps.test
+    androidTestImplementation rootProject.ext.deps.espresso
+    testImplementation rootProject.ext.deps.junit
+    implementation rootProject.ext.deps.appcompat_v7
+    implementation rootProject.ext.deps.constraint
+    implementation rootProject.ext.deps.kotlin
 
-    compile 'com.github.like5188:Base:1.2.0'
-    kapt 'com.github.like5188.RxBus:rxbus-compiler:1.2.0'
+    compile 'com.github.like5188:Base:1.3.1'
+    kapt 'com.github.like5188.RxBus:rxbus-compiler:1.3.1'
 
     // ObjectBox数据库
     compile 'io.objectbox:objectbox-android:0.9.12'
 
     compile project(':common')
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt 'com.android.databinding:compiler:2.3.3'
 
     // Error:Conflict with dependency 'com.google.code.findbugs:jsr305' in project ':app'. Resolved versions for app (3.0.1) and test app (2.0.1) differ. See http://g.co/androidstudio/app-test-app-conflict for details.
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.2'
+    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
