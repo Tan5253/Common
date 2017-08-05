@@ -15,6 +15,7 @@ import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
 import com.like.common.util.ClickUtils;
+import com.like.common.util.ObjectSerializeUtils;
 import com.like.common.util.RxJavaUtils;
 import com.like.common.util.Verify;
 import com.like.common.view.bottomNavigationBars.BottomNavigationBarsHelper;
@@ -84,7 +85,9 @@ public class MainActivity extends BasePermissionActivity {
 
     @Override
     protected void hasPermissions() {
-
+        // 序列化测试，看是否在杀死进程后，序列化的对象是否也被清除了。
+        Logger.e(ObjectSerializeUtils.getObject(this, "111"));
+        ObjectSerializeUtils.saveObject(this, "111", new SerializeInfo("like"));
     }
 
     private void initToolBar() {

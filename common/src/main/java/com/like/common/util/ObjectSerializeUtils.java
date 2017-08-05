@@ -2,6 +2,8 @@ package com.like.common.util;
 
 import android.content.Context;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,7 +34,7 @@ public class ObjectSerializeUtils {
         Context applicationContext = context.getApplicationContext();
         ObjectOutputStream oos = null;
         try {
-            oos = new ObjectOutputStream(applicationContext.openFileOutput(fileName, Context.MODE_PRIVATE));
+            oos = new ObjectOutputStream(new FileOutputStream(applicationContext.getFilesDir() + "/" + fileName));
             oos.writeObject(obj);
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +61,7 @@ public class ObjectSerializeUtils {
         Object result = null;
         ObjectInputStream ois = null;
         try {
-            ois = new ObjectInputStream(applicationContext.openFileInput(fileName));
+            ois = new ObjectInputStream(new FileInputStream(applicationContext.getFilesDir() + "/" + fileName));
             result = ois.readObject();
         } catch (Exception e) {
             e.printStackTrace();
