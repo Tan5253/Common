@@ -17,11 +17,17 @@
             app:theme="@style/ToolbarTheme"
             app:title="">
 
+            <include
+                android:id="@+id/toolbar_navigation_custom_view"
+                layout="@layout/toolbar_custom_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left" />
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:ellipsize="end"
                 android:maxLines="1"

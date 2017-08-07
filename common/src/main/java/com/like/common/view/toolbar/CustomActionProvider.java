@@ -18,14 +18,13 @@ import com.like.common.view.BadgeView;
 public class CustomActionProvider extends ActionProvider {
     private Context mContext;
     private ToolbarCustomViewBinding mBinding;
-    private BadgeView badgeView;
+    private BadgeViewHelper badgeViewHelper;
 
     public CustomActionProvider(Context context) {
         super(context);
         mContext = context;
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.toolbar_custom_view, null, false);
-        badgeView = new BadgeView(context);
-        badgeView.setTargetView(mBinding.messageContainer);
+        badgeViewHelper = new BadgeViewHelper(context, mBinding.messageContainer);
     }
 
     @Override
@@ -76,6 +75,6 @@ public class CustomActionProvider extends ActionProvider {
     }
 
     void setMessageCount(int messageCount) {
-        badgeView.setBadgeCount(messageCount);
+        badgeViewHelper.setMessageCount(messageCount);
     }
 }

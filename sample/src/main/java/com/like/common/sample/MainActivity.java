@@ -21,6 +21,7 @@ import com.like.common.util.Verify;
 import com.like.common.view.bottomNavigationBars.BottomNavigationBarsHelper;
 import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
+import com.like.toast.ToastUtilsKt;
 
 import java.util.concurrent.TimeUnit;
 
@@ -93,12 +94,20 @@ public class MainActivity extends BasePermissionActivity {
     private void initToolBar() {
         new ToolbarUtils(this, mBinding.flToolbarContainer)
                 .showTitle("sample", R.color.common_text_white_0)
-                .hideNavigationBotton()
+                .showCustomNavigationView(R.drawable.icon_take_photo, "", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ToastUtilsKt.shortToastCenter(MainActivity.this, "拍照啦！");
+                    }
+                })
+                .setCustomNavigationViewTextColor(R.color.common_text_white_0)
+                .setCustomNavigationViewMessageCount(88)
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
                 .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.main_bottom_tab1_normal_new, "消息", v -> {
                 })
                 .setRightMenuTextColor(R.id.action_right_message, getResources().getColor(R.color.common_text_white_0))
                 .setMessageCount(R.id.action_right_message, 1).setDividerColor(Color.RED);
+
     }
 
     /**

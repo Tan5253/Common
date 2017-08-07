@@ -23,6 +23,7 @@ import com.like.common.databinding.ToolbarBinding;
 public class ToolbarUtils {
     private Activity mActivity;
     private ToolbarBinding mBinding;
+    private BadgeViewHelper navigationBadgeViewHelper;
 
     public ToolbarUtils(Activity activity, ViewGroup toolbarContainer) {
         mActivity = activity;
@@ -107,6 +108,51 @@ public class ToolbarUtils {
     }
 
     /**
+     * 设置自定义视图的导航按钮
+     */
+    public ToolbarUtils showCustomNavigationView(@DrawableRes int iconResId, String name, View.OnClickListener listener) {
+        hideNavigationBotton();
+        navigationBadgeViewHelper = new BadgeViewHelper(mActivity, mBinding.toolbarNavigationCustomView.messageContainer);
+        if (!TextUtils.isEmpty(name)) {
+            mBinding.toolbarNavigationCustomView.tvTitle.setVisibility(View.VISIBLE);
+            mBinding.toolbarNavigationCustomView.tvTitle.setText(name);
+        }
+        if (iconResId > 0) {
+            mBinding.toolbarNavigationCustomView.iv.setVisibility(View.VISIBLE);
+            mBinding.toolbarNavigationCustomView.iv.setImageResource(iconResId);
+        }
+        if (listener != null)
+            mBinding.toolbarNavigationCustomView.getRoot().setOnClickListener(listener);
+        return this;
+    }
+
+    /**
+     * 设置自定义视图的导航按钮文本颜色
+     */
+    public ToolbarUtils setCustomNavigationViewTextColor(int color) {
+        mBinding.toolbarNavigationCustomView.tvTitle.setTextColor(color);
+        return this;
+    }
+
+    /**
+     * 设置自定义视图的导航按钮文本大小
+     */
+    public ToolbarUtils setCustomNavigationViewTextSize(float size) {
+        mBinding.toolbarNavigationCustomView.tvTitle.setTextSize(size);
+        return this;
+    }
+
+
+    /**
+     * 设置自定义视图的导航按钮右上角显示的消息数
+     */
+    public ToolbarUtils setCustomNavigationViewMessageCount(int messageCount) {
+        navigationBadgeViewHelper.setMessageCount(messageCount);
+        return this;
+    }
+
+
+    /**
      * 设置导航按钮
      *
      * @param navigationIconResId 导航按钮图片资源id
@@ -161,7 +207,7 @@ public class ToolbarUtils {
     }
 
     /**
-     * 替换menu为自定义的视图
+     * 替换menu为自定义的视图，需要先调用setRightMenu()方法
      *
      * @param menuId
      * @param iconResId     <=0即不显示图片
