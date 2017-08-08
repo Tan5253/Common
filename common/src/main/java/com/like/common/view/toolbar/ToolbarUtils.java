@@ -85,7 +85,7 @@ public class ToolbarUtils {
     }
 
     /**
-     * 设置返回按钮
+     * 显示返回按钮
      *
      * @return
      */
@@ -95,10 +95,7 @@ public class ToolbarUtils {
     }
 
     /**
-     * 设置返回按钮
-     *
-     * @param iconResId
-     * @return
+     * 显示返回按钮
      */
     public ToolbarUtils showBackButton(@DrawableRes int iconResId) {
         if (iconResId > 0)
@@ -139,6 +136,14 @@ public class ToolbarUtils {
      */
     public ToolbarUtils setCustomNavigationViewTextSize(float size) {
         mBinding.toolbarNavigationCustomView.tvTitle.setTextSize(size);
+        return this;
+    }
+
+    /**
+     * 设置自定义视图的左边距
+     */
+    public ToolbarUtils setNavigationViewLeftMargin(int leftMargin) {
+        mBinding.toolbar.setContentInsetsAbsolute(leftMargin, 0);
         return this;
     }
 

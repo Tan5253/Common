@@ -102,6 +102,7 @@ public class MainActivity extends BasePermissionActivity {
                 })
                 .setCustomNavigationViewTextColor(R.color.common_text_white_0)
                 .setCustomNavigationViewMessageCount(88)
+                .setNavigationViewLeftMargin(100)
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
                 .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.main_bottom_tab1_normal_new, "消息", v -> {
                 })
