@@ -34,7 +34,6 @@ public class CustomActionProvider extends ActionProvider {
 
     void setOnClickListener(View.OnClickListener clickListener) {
         mBinding.getRoot().setOnClickListener(view -> {
-            setMessageCount(0);
             if (clickListener != null) {
                 clickListener.onClick(view);
             }
@@ -74,7 +73,7 @@ public class CustomActionProvider extends ActionProvider {
         mBinding.iv.setImageResource(iconResId);
     }
 
-    void setMessageCount(int messageCount) {
+    void setMessageCount(String messageCount) {
         badgeViewHelper.setMessageCount(messageCount);
     }
 }

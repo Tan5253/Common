@@ -146,7 +146,7 @@ public class ToolbarUtils {
     /**
      * 设置自定义视图的导航按钮右上角显示的消息数
      */
-    public ToolbarUtils setCustomNavigationViewMessageCount(int messageCount) {
+    public ToolbarUtils setCustomNavigationViewMessageCount(String messageCount) {
         navigationBadgeViewHelper.setMessageCount(messageCount);
         return this;
     }
@@ -247,7 +247,14 @@ public class ToolbarUtils {
         return this;
     }
 
-    public ToolbarUtils setMessageCount(int menuId, int messageCount) {
+    /**
+     * 设置右边指定菜单按钮的消息数量
+     *
+     * @param menuId
+     * @param messageCount
+     * @return
+     */
+    public ToolbarUtils setRightMenuMessageCount(int menuId, String messageCount) {
         CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
         if (customActionProvider != null) {
             customActionProvider.setMessageCount(messageCount);
@@ -255,6 +262,13 @@ public class ToolbarUtils {
         return this;
     }
 
+    /**
+     * 设置右边指定菜单按钮的文本颜色
+     *
+     * @param menuId
+     * @param color
+     * @return
+     */
     public ToolbarUtils setRightMenuTextColor(int menuId, @ColorInt int color) {
         CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
         if (customActionProvider != null) {
@@ -264,6 +278,8 @@ public class ToolbarUtils {
     }
 
     /**
+     * 设置右边指定菜单按钮的文本大小
+     *
      * @param menuId
      * @param size   单位sp
      * @return
@@ -276,6 +292,13 @@ public class ToolbarUtils {
         return this;
     }
 
+    /**
+     * 设置右边指定菜单按钮的文本
+     *
+     * @param menuId
+     * @param name
+     * @return
+     */
     public ToolbarUtils setRightMenuName(int menuId, String name) {
         CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
         if (customActionProvider != null) {
@@ -285,6 +308,12 @@ public class ToolbarUtils {
         return this;
     }
 
+    /**
+     * 获取右边指定菜单按钮的文本
+     *
+     * @param menuId
+     * @return
+     */
     public String getRightMenuName(int menuId) {
         String name = "";
         CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
@@ -294,6 +323,11 @@ public class ToolbarUtils {
         return name;
     }
 
+    /**
+     * 隐藏右边指定菜单
+     *
+     * @param menuId
+     */
     public void hideRightMenu(int menuId) {
         CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
         if (customActionProvider != null) {
@@ -301,6 +335,11 @@ public class ToolbarUtils {
         }
     }
 
+    /**
+     * 显示右边指定菜单
+     *
+     * @param menuId
+     */
     public void showRightMenu(int menuId) {
         CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
         if (customActionProvider != null) {

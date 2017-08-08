@@ -8,12 +8,12 @@ import com.like.common.view.BadgeView;
 public class BadgeViewHelper {
     private BadgeView badgeView;
 
-    public BadgeViewHelper(Context context,View target) {
+    public BadgeViewHelper(Context context, View target) {
         badgeView = new BadgeView(context);
         badgeView.setTargetView(target);
     }
 
-    public void setMessageCount(int messageCount) {
+    public void setMessageCount(String messageCount) {
         badgeView.setBadgeCount(messageCount);
     }
 }
