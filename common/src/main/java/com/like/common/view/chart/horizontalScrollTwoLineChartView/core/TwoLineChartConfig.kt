@@ -63,8 +63,6 @@ class TwoLineChartConfig(val context: Context) {
         paint.textSize = textSize
         DrawTextUtils.getTextHeight(paint)
     }
-    // "0.00%" 绘制的起点Y坐标
-    val middleLineTextStartY: Float = spacingLineViewTop + maxLineViewHeight / 2 - textHeight / 2 + textBaseLine
     //  横坐标文本绘制的起点Y坐标
     val xAxisStartY: Float = spacingLineViewTop + maxLineViewHeight + spacingXAxisTextTop + textBaseLine
     // 所有数据
@@ -73,8 +71,6 @@ class TwoLineChartConfig(val context: Context) {
     val pointList1: MutableList<PointF> = arrayListOf()
     // 同比对应的所有点的坐标
     val pointList2: MutableList<PointF> = arrayListOf()
-    // 视图总宽度
-    var totalWidth: Float = 0f
     // 两点之间的间隔
     var spacingBetweenTwoPoints: Float = 0f
     // 每个百分比(1%)对应的高度
@@ -85,6 +81,19 @@ class TwoLineChartConfig(val context: Context) {
         wm.defaultDisplay.getMetrics(metric)
         metric.widthPixels.toFloat()
     }
+    // 视图总宽度
+    var totalWidth: Float = screenWidthPixels
+    // "0.00%" 绘制的起点Y坐标
+    val middleLineTextStartY: Float = spacingLineViewTop + maxLineViewHeight / 2 - textHeight / 2 + textBaseLine
+    // "暂无数据" 绘制的起点X坐标
+    val middleTextStartX1: Float by lazy {
+        val paint = Paint()
+        paint.textSize = textSize
+        val textlength = DrawTextUtils.getTextlength(paint, "暂无数据")
+        (screenWidthPixels - textlength) / 2
+    }
+    // "暂无数据" 绘制的起点Y坐标
+    val middleTextStartY1: Float = spacingLineViewTop + maxLineViewHeight / 2 - textHeight / 2
 
     // 环比path
     val path1: Path = Path()

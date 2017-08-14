@@ -15,23 +15,28 @@ class PieChartActivity : BaseActivity() {
 
     override fun getViewModel(): BaseViewModel? {
         mBinding.root
+        mBinding.viewPieChart.flEmptyViewContainer.addView(View.inflate(this, R.layout.view_pie_chart_empty_view, null))
         return null
     }
 
     fun changeData1(view: View) {
         mBinding.pieData = getSimulatedData1()
+        mBinding.viewPieChart.flEmptyViewContainer.visibility = View.GONE
     }
 
     fun changeData2(view: View) {
         mBinding.pieData = getSimulatedData2()
+        mBinding.viewPieChart.flEmptyViewContainer.visibility = View.GONE
     }
 
     fun changeData3(view: View) {
         mBinding.pieData = getSimulatedData3()
+        mBinding.viewPieChart.flEmptyViewContainer.visibility = View.GONE
     }
 
     fun clearData(view: View) {
         mBinding.pieData = null
+        mBinding.viewPieChart.flEmptyViewContainer.visibility = View.VISIBLE
     }
 
     fun getSimulatedData1(): PieData = PieData(2015, 1, listOf(MonthData(1, 100f, 100f), MonthData(2, 200f, 200f), MonthData(3, 300f, 300f)))

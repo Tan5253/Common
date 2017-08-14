@@ -62,8 +62,8 @@ class TwoLineChartView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
+        mDrawHelper = DrawHelper(canvas, mConfig)
         if (mDataList.isNotEmpty()) {
-            mDrawHelper = DrawHelper(canvas, mConfig)
             // 画竖直的触摸线
             if (currentTouchX != -1f) {
                 mDrawHelper.drawTouchLine(currentTouchX, mLinePaint)
@@ -128,6 +128,23 @@ class TwoLineChartView(context: Context) : View(context) {
                     mDrawHelper.drawTouchPointText2(mTextPaint)
                 }
             }
+        } else {
+            // 画上中下三条横线
+            mDrawHelper.drawTopLine(mLinePaint)
+            mDrawHelper.drawBottomLine(mLinePaint)
+            mLinePaint.pathEffect = DashPathEffect(floatArrayOf(5f, 5f), 0f)
+            mDrawHelper.drawMiddleLine(mLinePaint)
+
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
+            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_0
+            for (index in 0 until mConfig.pointList1.size) {
+                mDrawHelper.drawXAxisText(index, mTextPaint)// 画x轴文本
+            }
+
+            // 画"0.00%"
+            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
+            mDrawHelper.drawMiddleLineText(mTextPaint)
+            mDrawHelper.drawMiddleLineText1(mTextPaint)
         }
     }
 }
