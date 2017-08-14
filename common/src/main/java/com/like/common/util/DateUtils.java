@@ -364,5 +364,64 @@ public class DateUtils {
         return now.get(Calendar.YEAR) - c.get(Calendar.YEAR);
     }
 
+    /**
+     * 判断是否为闰年
+     */
+    public static boolean isLeapYear(int year) {
+        if (year % 100 == 0 && year % 400 == 0) {
+            return true;
+        } else if (year % 100 != 0 && year % 4 == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 指定某年中的某月的第一天是星期几
+     *
+     * @param year
+     * @param month
+     * @return
+     */
+    public static int getWeekdayOfMonth(int year, int month) {
+        int dayOfWeek = 0;        //具体某一天是星期几
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month - 1, 1);
+        dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        return dayOfWeek;
+    }
+
+    /**
+     * 获取某一天属于某个月的第几个星期，即第几排，用于改变背景
+     *
+     * @return
+     */
+    public static int getWeekOfMonth(int year, int mouth, int date) {
+        String[] weeks = {"日", "一", "二", "三", "四", "五", "六"};
+        Calendar c = Calendar.getInstance();
+        c.set(year, mouth - 1, date);
+        int week = c.get(Calendar.WEEK_OF_MONTH);//获取是本月的第几周
+        int day = c.get(Calendar.DAY_OF_WEEK);//获致是本周的第几天地, 1代表星期天...7代表星期六
+//        Logger.i("本月的第" + week + "周");
+//        Logger.i("星期" + weeks[day - 1]);
+        return week;
+    }
+
+    /**
+     * 获取指定年、月的某月份的天数
+     */
+    public static int getDaysByYearMonth(int year, int month) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month - 1);
+        return c.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 获取当月的天数
+     */
+    public static int getDaysOfCurrentMonth() {
+        return getDaysByYearMonth(getCurYear(), getCurMonth());
+    }
 
 }
