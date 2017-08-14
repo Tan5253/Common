@@ -21,21 +21,25 @@ class PieChartActivity : BaseActivity() {
 
     fun changeData1(view: View) {
         mBinding.pieData = getSimulatedData1()
+        mBinding.viewPieChart.llChart.visibility = View.VISIBLE
         mBinding.viewPieChart.flEmptyViewContainer.visibility = View.GONE
     }
 
     fun changeData2(view: View) {
         mBinding.pieData = getSimulatedData2()
+        mBinding.viewPieChart.llChart.visibility = View.VISIBLE
         mBinding.viewPieChart.flEmptyViewContainer.visibility = View.GONE
     }
 
     fun changeData3(view: View) {
         mBinding.pieData = getSimulatedData3()
+        mBinding.viewPieChart.llChart.visibility = View.VISIBLE
         mBinding.viewPieChart.flEmptyViewContainer.visibility = View.GONE
     }
 
     fun clearData(view: View) {
         mBinding.pieData = null
+        mBinding.viewPieChart.llChart.visibility = View.GONE
         mBinding.viewPieChart.flEmptyViewContainer.visibility = View.VISIBLE
     }
 

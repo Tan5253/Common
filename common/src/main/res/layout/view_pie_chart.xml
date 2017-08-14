@@ -385,7 +385,6 @@
             </LinearLayout>
         </LinearLayout>
 
-
         <FrameLayout
             android:id="@+id/fl_empty_view_container"
             android:layout_width="match_parent"
