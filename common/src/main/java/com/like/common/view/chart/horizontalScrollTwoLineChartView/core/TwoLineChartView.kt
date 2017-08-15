@@ -6,7 +6,9 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.View
+import com.like.common.util.RxBusTag
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
+import com.like.rxbus.RxBus
 
 
 class TwoLineChartView(context: Context) : View(context) {
@@ -127,6 +129,7 @@ class TwoLineChartView(context: Context) : View(context) {
                     // 画触摸线上的值
                     mDrawHelper.drawTouchPointText2(mTextPaint)
                 }
+                RxBus.post(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED, Pair(mConfig.touchData1, mConfig.touchData2))
             }
         } else {
             // 画上中下三条横线

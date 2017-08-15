@@ -112,7 +112,7 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
 
     inline fun drawTouchPointText1(paint: Paint) {
         if (config.touchPoint1 != null) {
-            // 这里去绝对值，因为正负靠背景来区分了
+            // 这里取绝对值，因为正负靠背景来区分了
             val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(config.touchData1.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
             canvas.drawText(
                     text,
@@ -125,7 +125,7 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
 
     inline fun drawTouchPointText2(paint: Paint) {
         if (config.touchPoint2 != null) {
-            // 这里去绝对值，因为正负靠背景来区分了
+            // 这里取绝对值，因为正负靠背景来区分了
             val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(config.touchData2.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
             canvas.drawText(
                     text,

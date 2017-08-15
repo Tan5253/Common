@@ -5,7 +5,10 @@ import android.view.View
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityTwoLineChartBinding
+import com.like.common.util.RxBusTag
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
+import com.like.logger.Logger
+import com.like.rxbus.annotations.RxBusSubscribe
 
 class TwoLineChartActivity : BaseActivity() {
     private val mBinding: ActivityTwoLineChartBinding by lazy {
@@ -63,4 +66,10 @@ class TwoLineChartActivity : BaseActivity() {
                 TwoLineData(3, -10f)
         )
     }
+
+    @RxBusSubscribe(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED)
+    fun TAG_TWO_LINE_CHART_VIEW_CLICKED(pair: Pair<Float, Float>) {
+        Logger.e(pair)
+    }
+
 }
