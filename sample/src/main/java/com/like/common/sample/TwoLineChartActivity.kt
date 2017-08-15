@@ -18,6 +18,9 @@ class TwoLineChartActivity : BaseActivity() {
 
     override fun getViewModel(): BaseViewModel? {
         mBinding.root
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 2)
+        mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
+        mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
         return null
     }
 

@@ -32,8 +32,14 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             paint
     )
 
-    inline fun drawTouchLine(touchX: Float, paint: Paint) {
-        val touchPointX = config.getCurrentTouchPointX(touchX)
+    inline fun drawTouchLine(touchX: Float, paint: Paint, touchXData: Int = -Int.MAX_VALUE) {
+        var touchPointX = 0f
+        if (touchX == -1f && config.touchXData == -Int.MAX_VALUE) {
+            config.touchXData = touchXData
+            touchPointX = config.getCurrentTouchPointX()
+        } else {
+            touchPointX = config.getCurrentTouchPointX(touchX)
+        }
         if (touchPointX != -1f) {
             canvas.drawLine(
                     touchPointX,

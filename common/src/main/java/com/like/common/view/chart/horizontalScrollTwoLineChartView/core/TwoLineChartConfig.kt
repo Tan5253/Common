@@ -137,7 +137,7 @@ class TwoLineChartConfig(val context: Context) {
     // 同比线上触摸点的数值显示区域
     val touchPointRect2 = RectF()
     // 触摸点的x坐标数值
-    var touchXData = 1
+    var touchXData = -Int.MAX_VALUE
     // 环比线上触摸点的数值
     var touchData1 = 0f
     // 同比线上触摸点的数值
@@ -146,6 +146,19 @@ class TwoLineChartConfig(val context: Context) {
     var touchPoint1: PointF? = null
     // 同比线上触摸点
     var touchPoint2: PointF? = null
+
+    /**
+     * 第一次进入图表界面，没有触摸时，可以根据设置的初始值来画图
+     */
+    fun getCurrentTouchPointX(): Float {
+        dataList.forEachIndexed { index, twoLineData ->
+            if (twoLineData.x == touchXData) {
+                touchPoint1 = pointList1[index]
+                calcTouchData(index)
+            }
+        }
+        return if (touchPoint1 == null) -1f else touchPoint1!!.x
+    }
 
     /**
      * 获取手指触摸点最接近的x坐标
@@ -169,6 +182,11 @@ class TwoLineChartConfig(val context: Context) {
                 }
             }
         }
+        calcTouchData(position)
+        return if (touchPoint1 == null) -1f else touchPoint1!!.x
+    }
+
+    fun calcTouchData(position: Int) {
         if (touchPoint1 != null) {
             touchPointRect1.left = touchPoint1!!.x - touchPointRectWidth / 2
             touchPointRect1.top = touchPoint1!!.y - touchPointRectHeight / 2
@@ -194,7 +212,7 @@ class TwoLineChartConfig(val context: Context) {
             touchData1 = 0f
             touchPoint1 = null
 
-            touchXData = 1
+            touchXData = -Int.MAX_VALUE
 
             if (hasTwoLine()) {
                 touchPointRect2.left = 0f
@@ -205,7 +223,6 @@ class TwoLineChartConfig(val context: Context) {
                 touchPoint2 = null
             }
         }
-        return if (touchPoint1 == null) -1f else touchPoint1!!.x
     }
 
     fun isTouchInView(touchY: Float): Boolean = touchY >= spacingLineViewTop && touchY <= spacingLineViewTop + maxLineViewHeight

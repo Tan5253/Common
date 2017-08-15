@@ -23,6 +23,7 @@ class TwoLineChartView(context: Context) : View(context) {
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var currentTouchX = -1f
+    private var touchXData = -Int.MAX_VALUE
 
     init {
         setBackgroundColor(TwoLineChartConfig.DEFAULT_BG_COLOR)
@@ -39,7 +40,7 @@ class TwoLineChartView(context: Context) : View(context) {
         mTextPaint.textSize = mConfig.textSize
     }
 
-    fun setData(lineDataList: List<TwoLineData>, showPointCount: Int = 3) {
+    fun setData(lineDataList: List<TwoLineData>, touchXData: Int, showPointCount: Int) {
         if (showPointCount <= 0) {
             throw IllegalArgumentException("showPointCount 参数必须大于0")
         }
@@ -48,6 +49,7 @@ class TwoLineChartView(context: Context) : View(context) {
             mDataList.addAll(lineDataList)
             mConfig.setData(lineDataList, showPointCount)
         }
+        this.touchXData = touchXData
         currentTouchX = -1f
         requestLayout()
     }
@@ -68,8 +70,8 @@ class TwoLineChartView(context: Context) : View(context) {
         mDrawHelper = DrawHelper(canvas, mConfig)
         if (mDataList.isNotEmpty()) {
             // 画竖直的触摸线
-            if (currentTouchX != -1f) {
-                mDrawHelper.drawTouchLine(currentTouchX, mLinePaint)
+            if (currentTouchX != -1f || touchXData != -Int.MAX_VALUE) {
+                mDrawHelper.drawTouchLine(currentTouchX, mLinePaint, touchXData)
             }
             // 画上中下三条横线
             mDrawHelper.drawTopLine(mLinePaint)
@@ -102,7 +104,7 @@ class TwoLineChartView(context: Context) : View(context) {
                 mDrawHelper.drawPath2(mPathPaint)
             }
 
-            if (currentTouchX != -1f) {
+            if (currentTouchX != -1f || touchXData != -Int.MAX_VALUE) {
                 // 画触摸线上的值的背景，正数为红色背景，负数为绿色背景
                 if (mConfig.touchData1 > 0) {
                     mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
@@ -130,7 +132,8 @@ class TwoLineChartView(context: Context) : View(context) {
                     // 画触摸线上的值
                     mDrawHelper.drawTouchPointText2(mTextPaint)
                 }
-                RxBus.post(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED, TwoLineTouchData(mConfig.touchXData, mConfig.touchData1, mConfig.touchData2))
+                if (currentTouchX != -1f)// 触摸时才发送数据
+                    RxBus.post(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED, TwoLineTouchData(mConfig.touchXData, mConfig.touchData1, mConfig.touchData2))
             }
         } else {
             // 画上中下三条横线
