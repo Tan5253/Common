@@ -136,6 +136,8 @@ class TwoLineChartConfig(val context: Context) {
     val touchPointRect1 = RectF()
     // 同比线上触摸点的数值显示区域
     val touchPointRect2 = RectF()
+    // 触摸点的x坐标数值
+    var touchXData = 1
     // 环比线上触摸点的数值
     var touchData1 = 0f
     // 同比线上触摸点的数值
@@ -174,6 +176,8 @@ class TwoLineChartConfig(val context: Context) {
             touchPointRect1.bottom = touchPointRect1.top + touchPointRectHeight
             touchData1 = dataList[position].ratio1
 
+            touchXData = dataList[position].x
+
             if (hasTwoLine()) {
                 touchPoint2 = pointList2[position]
                 touchPointRect2.left = touchPoint2!!.x - touchPointRectWidth / 2
@@ -188,6 +192,9 @@ class TwoLineChartConfig(val context: Context) {
             touchPointRect1.right = 0f
             touchPointRect1.bottom = 0f
             touchData1 = 0f
+            touchPoint1 = null
+
+            touchXData = 1
 
             if (hasTwoLine()) {
                 touchPointRect2.left = 0f
