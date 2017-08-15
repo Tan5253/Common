@@ -101,7 +101,7 @@ class LineFillChartConfig(val context: Context) {
 
         spacingBetweenTwoPoints = totalWidth / (lineDataList.size + 1)
 
-        eachElectricityHeight = maxGradientHeight / lineDataList.maxBy { it.electricity }!!.electricity
+        eachElectricityHeight = maxGradientHeight / lineDataList.maxBy { it.yData }!!.yData
 
         val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_MONTH_ON_GRADIENT// 渐变色块的高度
         linearGradientY1 = maxGradientHeight - gradientblockHeight + spacingGradientTop
@@ -124,7 +124,7 @@ class LineFillChartConfig(val context: Context) {
             for (index in 0..lineDataList.size - 1) {
                 val p: PointF = PointF()
                 p.x = (index + 1) * spacingBetweenTwoPoints
-                p.y = totalGradientAndSpacingTopHeight - lineDataList[index].electricity * eachElectricityHeight
+                p.y = totalGradientAndSpacingTopHeight - lineDataList[index].yData * eachElectricityHeight
                 result.add(p)
             }
         }
@@ -137,15 +137,15 @@ class LineFillChartConfig(val context: Context) {
             // 添加多余的开始，为了封闭开始
             val startPath = Path()
             startPath.moveTo(0f, totalGradientAndSpacingTopHeight)
-            startPath.lineTo(spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[0].electricity * eachElectricityHeight)
+            startPath.lineTo(spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[0].yData * eachElectricityHeight)
             startPath.lineTo(spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
             result.add(startPath)
 
             for (index in 0..lineDataList.size - 2) {
                 val path = Path()
                 path.moveTo((index + 1) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
-                path.lineTo((index + 1) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[index].electricity * eachElectricityHeight)
-                path.lineTo((index + 2) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[index + 1].electricity * eachElectricityHeight)
+                path.lineTo((index + 1) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[index].yData * eachElectricityHeight)
+                path.lineTo((index + 2) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[index + 1].yData * eachElectricityHeight)
                 path.lineTo((index + 2) * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
                 result.add(path)
             }
@@ -153,7 +153,7 @@ class LineFillChartConfig(val context: Context) {
             // 添加多余的结束，为了封闭结束
             val endPath = Path()
             endPath.moveTo(lineDataList.size * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight)
-            endPath.lineTo(lineDataList.size * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[lineDataList.size - 1].electricity * eachElectricityHeight)
+            endPath.lineTo(lineDataList.size * spacingBetweenTwoPoints, totalGradientAndSpacingTopHeight - lineDataList[lineDataList.size - 1].yData * eachElectricityHeight)
             endPath.lineTo(totalWidth, totalGradientAndSpacingTopHeight)
             result.add(endPath)
         }

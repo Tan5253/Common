@@ -41,7 +41,7 @@ class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
     )
 
     inline fun drawXAxisText(index: Int, paint: Paint) {
-        val text = config.lineDataList[index].month.toString()
+        val text = config.lineDataList[index].xData.toString()
         canvas.drawText(
                 text,
                 config.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,
@@ -51,7 +51,7 @@ class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
     }
 
     inline fun drawPointText(index: Int, paint: Paint) {
-        val text = config.lineDataList[index].electricity.toString()
+        val text = config.lineDataList[index].yData.toString()
         canvas.drawText(
                 text,
                 config.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,

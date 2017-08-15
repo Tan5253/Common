@@ -104,7 +104,7 @@ class BarChartConfig(val context: Context) {
 
         totalWidth = (spacingBetweenTwoBars + eachBarWidth * barDataList.size + spacingBetweenTwoBars * barDataList.size).toInt()
 
-        eachElectricityHeight = maxBarHeight / barDataList.maxBy { it.electricity }!!.electricity
+        eachElectricityHeight = maxBarHeight / barDataList.maxBy { it.yData }!!.yData
 
         val gradientblockHeight = eachElectricityHeight * MAX_ELECTRICITY_OF_DAY_ON_GRADIENT// 柱形图的高度
         linearGradientY1 = maxBarHeight - gradientblockHeight + spacingBarTop
@@ -124,7 +124,7 @@ class BarChartConfig(val context: Context) {
         for ((index, barData) in barDataList.withIndex()) {
             val rect = RectF()
             rect.left = spacingBetweenTwoBars + index * (eachBarWidth + spacingBetweenTwoBars) + spacingBetweenTwoBars / 2
-            rect.top = spacingBarTop + maxBarHeight - barData.electricity * eachElectricityHeight
+            rect.top = spacingBarTop + maxBarHeight - barData.yData * eachElectricityHeight
             rect.right = rect.left + eachBarWidth
             rect.bottom = spacingBarTop + maxBarHeight
             result.add(rect)
