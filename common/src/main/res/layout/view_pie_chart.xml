@@ -103,7 +103,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="@{String.valueOf(pieData.monthDataList.get(0).electricity)}"
+                            android:text="@{String.valueOf(pieData.monthDataList.get(0).data1)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.0" />
@@ -133,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(0).fee)}"
+                            android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(0).data2)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
@@ -177,7 +177,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="@{String.valueOf(pieData.monthDataList.get(1).electricity)}"
+                            android:text="@{String.valueOf(pieData.monthDataList.get(1).data1)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.0" />
@@ -207,7 +207,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(1).fee)}"
+                            android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(1).data2)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
@@ -251,7 +251,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="@{String.valueOf(pieData.monthDataList.get(2).electricity)}"
+                            android:text="@{String.valueOf(pieData.monthDataList.get(2).data1)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.0" />
@@ -281,7 +281,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(2).fee)}"
+                            android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(2).data2)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />

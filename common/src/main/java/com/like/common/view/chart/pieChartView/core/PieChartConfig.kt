@@ -26,10 +26,10 @@ class PieChartConfig(val context: Context) {
     val startAngle: FloatArray = kotlin.FloatArray(3)
 
     fun setData(data: PieData) {
-        val totalElectricity = data.monthDataList.sumByDouble { it.electricity.toDouble() }
+        val totalElectricity = data.monthDataList.sumByDouble { it.data1.toDouble() }
         startAngle[0] = 150f
         for (i in 0..2) {
-            sweepAngle[i] = 360f * data.monthDataList[i].electricity / totalElectricity.toFloat()
+            sweepAngle[i] = 360f * data.monthDataList[i].data1 / totalElectricity.toFloat()
             if (i > 0) {
                 startAngle[i] = startAngle[i - 1] + sweepAngle[i - 1]
             }

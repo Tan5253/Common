@@ -118,8 +118,8 @@ object BindingUtils {
     fun pieChartViewShowMonthRatio(tv: TextView, monthDataList: List<MonthData>?, index: Int) {
         try {
             tv.text = if (monthDataList != null) {
-                val totalElectricity = monthDataList.sumByDouble { it.electricity.toDouble() }.toFloat()
-                "${MoneyFormatUtils.formatOneDecimals((monthDataList[index].electricity / totalElectricity).toDouble() * 100)}%"
+                val totalElectricity = monthDataList.sumByDouble { it.data1.toDouble() }.toFloat()
+                "${MoneyFormatUtils.formatOneDecimals((monthDataList[index].data1 / totalElectricity).toDouble() * 100)}%"
             } else {
                 ""
             }
