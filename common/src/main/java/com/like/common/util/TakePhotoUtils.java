@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Pair;
 import android.view.Display;
 
 import com.like.rxbus.RxBus;
@@ -165,7 +166,7 @@ public class TakePhotoUtils {
      * 处理裁剪返回的结果
      */
     private void handleCropPhotoResult() {
-        RxBus.post(RxBusTag.TAG_CROP_PHOTO_SUCCESS, BitmapFactory.decodeFile(cropFile.getAbsolutePath()));
+        RxBus.post(RxBusTag.TAG_CROP_PHOTO_SUCCESS, new Pair<>(cropFile, BitmapFactory.decodeFile(cropFile.getAbsolutePath())));
     }
 
     /**
@@ -176,7 +177,8 @@ public class TakePhotoUtils {
     private void handlePickPhotoResult(Intent data) {
         if (null != data && null != data.getData()) {
             Uri uri = data.getData();
-            RxBus.post(RxBusTag.TAG_PICK_PHOTO_SUCCESS, getBitmapFromUri(uri));
+            String filePathFromUri = getFilePathFromUri(uri);
+            RxBus.post(RxBusTag.TAG_PICK_PHOTO_SUCCESS, new Pair<>(new File(filePathFromUri), getBitMapFromPath(filePathFromUri)));
             if (isCrop) {
                 startPhotoZoom(uri, CODE_CROP_PHOTO);
             }
@@ -245,30 +247,29 @@ public class TakePhotoUtils {
      * 处理照相返回的结果
      */
     private void handleTakePhotoResult() {
-        RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, getBitmapFromUri(mPhotoUri));
+        String filePathFromUri = getFilePathFromUri(mPhotoUri);
+        RxBus.post(RxBusTag.TAG_TAKE_PHOTO_SUCCESS, new Pair<>(new File(filePathFromUri), getBitMapFromPath(filePathFromUri)));
         if (isCrop) {
             startPhotoZoom(mPhotoUri, CODE_CROP_PHOTO);
         }
         mPhotoUri = null;
     }
 
-    private Bitmap getBitmapFromUri(Uri uri) {
+    private String getFilePathFromUri(Uri uri) {
         if (uri == null)
             return null;
 
-        Bitmap bitmap = null;
+        String path = null;
         ContentResolver cr = activity.getContentResolver();
         //按 刚刚指定 的那个文件名，查询数据库，获得更多的 照片信息，比如 图片的物理绝对路径
         Cursor cursor = cr.query(uri, null, null, null, null);
         if (cursor != null) {
             if (cursor.moveToNext()) {
-                String path = cursor.getString(1);
-                //获得图片
-                bitmap = getBitMapFromPath(path);
+                path = cursor.getString(1);
             }
         }
         CloseableUtils.close(cursor);
-        return bitmap;
+        return path;
     }
 
     /* 获得图片，并进行适当的 缩放。 图片太大的话，是无法展示的。 */

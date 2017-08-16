@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.util.Pair;
 import android.view.View;
 
 import com.like.base.context.BasePermissionActivity;
@@ -11,7 +12,10 @@ import com.like.base.viewmodel.BaseViewModel;
 import com.like.common.sample.databinding.ActivityTakePhotoBinding;
 import com.like.common.util.RxBusTag;
 import com.like.common.util.TakePhotoUtils;
+import com.like.logger.Logger;
 import com.like.rxbus.annotations.RxBusSubscribe;
+
+import java.io.File;
 
 /**
  * 拍照测试
@@ -47,8 +51,9 @@ public class TakePhotoActivity extends BasePermissionActivity {
 
     // 照相成功、从相册选择图片成功、裁剪成功
     @RxBusSubscribe(RxBusTag.TAG_CROP_PHOTO_SUCCESS)
-    public void onTakePhotoSuccess(Bitmap photo) {
-        mBinding.ivTakePhoto.setImageBitmap(photo);
+    public void onTakePhotoSuccess(Pair<File, Bitmap> pair) {
+        Logger.i(pair.first.getAbsolutePath());
+        mBinding.ivTakePhoto.setImageBitmap(pair.second);
     }
 
     @Override
