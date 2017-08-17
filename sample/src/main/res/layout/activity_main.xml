@@ -29,6 +29,12 @@
                     android:layout_margin="10dp"
                     android:hint="搜索测试" />
 
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

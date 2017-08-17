@@ -1,11 +1,15 @@
 package com.like.common.util;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
@@ -22,6 +26,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
  */
 public class ImageLoaderUtils {
     private Context mContext;
+    private RequestManager requestManager;
 
     private volatile static ImageLoaderUtils sInstance = null;
 
@@ -36,8 +41,73 @@ public class ImageLoaderUtils {
         return sInstance;
     }
 
+    public static ImageLoaderUtils getInstance(Fragment fragment) {
+        if (sInstance == null) {
+            synchronized (ImageLoaderUtils.class) {
+                if (sInstance == null) {
+                    sInstance = new ImageLoaderUtils(fragment);
+                }
+            }
+        }
+        return sInstance;
+    }
+
+    public static ImageLoaderUtils getInstance(android.support.v4.app.Fragment fragment) {
+        if (sInstance == null) {
+            synchronized (ImageLoaderUtils.class) {
+                if (sInstance == null) {
+                    sInstance = new ImageLoaderUtils(fragment);
+                }
+            }
+        }
+        return sInstance;
+    }
+
+    public static ImageLoaderUtils getInstance(Activity activity) {
+        if (sInstance == null) {
+            synchronized (ImageLoaderUtils.class) {
+                if (sInstance == null) {
+                    sInstance = new ImageLoaderUtils(activity);
+                }
+            }
+        }
+        return sInstance;
+    }
+
+    public static ImageLoaderUtils getInstance(FragmentActivity activity) {
+        if (sInstance == null) {
+            synchronized (ImageLoaderUtils.class) {
+                if (sInstance == null) {
+                    sInstance = new ImageLoaderUtils(activity);
+                }
+            }
+        }
+        return sInstance;
+    }
+
     private ImageLoaderUtils(Context context) {
+        requestManager = Glide.with(context);
         mContext = context;
+    }
+
+    private ImageLoaderUtils(Fragment fragment) {
+        requestManager = Glide.with(fragment);
+        mContext = fragment.getActivity();
+    }
+
+    private ImageLoaderUtils(android.support.v4.app.Fragment fragment) {
+        requestManager = Glide.with(fragment);
+        mContext = fragment.getActivity();
+    }
+
+    private ImageLoaderUtils(Activity activity) {
+        requestManager = Glide.with(activity);
+        mContext = activity;
+    }
+
+    private ImageLoaderUtils(FragmentActivity activity) {
+        requestManager = Glide.with(activity);
+        mContext = activity;
     }
 
     /**
@@ -80,7 +150,7 @@ public class ImageLoaderUtils {
     public Observable<Bitmap> downloadImage(String url) {
         return Observable.create(observableEmitter -> {
             try {
-                Bitmap bitmap = Glide.with(mContext)
+                Bitmap bitmap = requestManager
                         .load(url)
                         .asBitmap()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
@@ -113,7 +183,7 @@ public class ImageLoaderUtils {
      * @param loadErrorImageResId 加载失败的图片
      */
     public void displayRoundRect(String url, ImageView imageView, int radius, int loadingImageResId, int loadErrorImageResId) {
-        Glide.with(mContext)
+        requestManager
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
@@ -142,7 +212,7 @@ public class ImageLoaderUtils {
      * @param loadErrorImageResId 加载失败的图片
      */
     public void displayCircle(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId) {
-        Glide.with(mContext)
+        requestManager
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
@@ -171,7 +241,7 @@ public class ImageLoaderUtils {
      * @param loadErrorImageResId 加载失败的图片
      */
     public void display(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId) {
-        Glide.with(mContext)
+        requestManager
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)

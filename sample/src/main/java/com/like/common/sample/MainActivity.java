@@ -15,6 +15,7 @@ import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
 import com.like.common.util.ClickUtils;
+import com.like.common.util.ImageLoaderUtils;
 import com.like.common.util.ObjectSerializeUtils;
 import com.like.common.util.RxJavaUtils;
 import com.like.common.util.Verify;
@@ -66,6 +67,8 @@ public class MainActivity extends BasePermissionActivity {
                 Logger.e("onErrorCall---------" + Thread.currentThread().getName());
             }
         });
+
+        ImageLoaderUtils.getInstance(this).display("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", mBinding.iv);
         return null;
     }
 
