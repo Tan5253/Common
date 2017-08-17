@@ -28,84 +28,27 @@ public class ImageLoaderUtils {
     private Context mContext;
     private RequestManager requestManager;
 
-    private volatile static ImageLoaderUtils sInstance = null;
-
-    public static ImageLoaderUtils getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (ImageLoaderUtils.class) {
-                if (sInstance == null) {
-                    sInstance = new ImageLoaderUtils(context);
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    public static ImageLoaderUtils getInstance(Fragment fragment) {
-        if (sInstance == null) {
-            synchronized (ImageLoaderUtils.class) {
-                if (sInstance == null) {
-                    sInstance = new ImageLoaderUtils(fragment);
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    public static ImageLoaderUtils getInstance(android.support.v4.app.Fragment fragment) {
-        if (sInstance == null) {
-            synchronized (ImageLoaderUtils.class) {
-                if (sInstance == null) {
-                    sInstance = new ImageLoaderUtils(fragment);
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    public static ImageLoaderUtils getInstance(Activity activity) {
-        if (sInstance == null) {
-            synchronized (ImageLoaderUtils.class) {
-                if (sInstance == null) {
-                    sInstance = new ImageLoaderUtils(activity);
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    public static ImageLoaderUtils getInstance(FragmentActivity activity) {
-        if (sInstance == null) {
-            synchronized (ImageLoaderUtils.class) {
-                if (sInstance == null) {
-                    sInstance = new ImageLoaderUtils(activity);
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    private ImageLoaderUtils(Context context) {
+    public ImageLoaderUtils(Context context) {
         requestManager = Glide.with(context);
         mContext = context;
     }
 
-    private ImageLoaderUtils(Fragment fragment) {
+    public ImageLoaderUtils(Fragment fragment) {
         requestManager = Glide.with(fragment);
         mContext = fragment.getActivity();
     }
 
-    private ImageLoaderUtils(android.support.v4.app.Fragment fragment) {
+    public ImageLoaderUtils(android.support.v4.app.Fragment fragment) {
         requestManager = Glide.with(fragment);
         mContext = fragment.getActivity();
     }
 
-    private ImageLoaderUtils(Activity activity) {
+    public ImageLoaderUtils(Activity activity) {
         requestManager = Glide.with(activity);
         mContext = activity;
     }
 
-    private ImageLoaderUtils(FragmentActivity activity) {
+    public ImageLoaderUtils(FragmentActivity activity) {
         requestManager = Glide.with(activity);
         mContext = activity;
     }
