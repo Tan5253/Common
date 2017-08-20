@@ -18,7 +18,7 @@ class TwoLineChartActivity : BaseActivity() {
     override fun getViewModel(): BaseViewModel? {
         mBinding.root
         // 测试有月份值默认值的情况
-        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 1)
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 11)
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.llTongbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
@@ -52,6 +52,7 @@ class TwoLineChartActivity : BaseActivity() {
 
     fun getSimulatedData1(): List<TwoLineData> {
         return listOf(
+                TwoLineData(1, 100f, 10f),
                 TwoLineData(2, 50f, 20f),
                 TwoLineData(3, 100f, 10f),
                 TwoLineData(4, 10f, 50f),
@@ -60,7 +61,9 @@ class TwoLineChartActivity : BaseActivity() {
                 TwoLineData(7, 10f, 50f),
                 TwoLineData(8, 50f, 20f),
                 TwoLineData(9, 100f, 10f),
-                TwoLineData(10, 10f, 50f)
+                TwoLineData(10, 10f, 50f),
+                TwoLineData(11, 10f, 50f),
+                TwoLineData(12, 10f, 50f)
         )
     }
 

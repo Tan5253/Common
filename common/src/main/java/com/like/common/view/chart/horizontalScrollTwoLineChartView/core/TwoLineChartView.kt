@@ -13,7 +13,7 @@ import com.like.rxbus.RxBus
 
 class TwoLineChartView(context: Context) : View(context) {
     private val mDataList: MutableList<TwoLineData> = arrayListOf()
-    private val mConfig: TwoLineChartConfig = TwoLineChartConfig(context)
+    val mConfig: TwoLineChartConfig = TwoLineChartConfig(context)
     private lateinit var mDrawHelper: DrawHelper
 
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)

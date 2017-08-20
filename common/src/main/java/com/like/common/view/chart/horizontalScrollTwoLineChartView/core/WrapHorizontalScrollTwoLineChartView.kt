@@ -31,6 +31,16 @@ class WrapHorizontalScrollTwoLineChartView(context: Context, attrs: AttributeSet
         if (showPointCount <= 0) {
             throw IllegalArgumentException("showPointCount 参数必须大于0")
         }
+        if (touchPosition >= dataList.size) {
+            throw IllegalArgumentException("touchPosition 参数必须小于dataList中的数据个数")
+        }
+
         twoLineChartView.setData(dataList, touchPosition, showPointCount)
+        if (touchPosition != -1) {// 如果有初始值，就使这个值处于屏幕中间
+            val currentTouchPositionX = (twoLineChartView.mConfig.pointList1[touchPosition].x.toInt()
+                    - twoLineChartView.mConfig.screenWidthPixels / 2).toInt()
+            // 这里必须用post，因为必须在HorizontalScrollView绘制完成后scrollTo()方法才会有效
+            this.post({ this.scrollTo(currentTouchPositionX, 0) })
+        }
     }
 }
