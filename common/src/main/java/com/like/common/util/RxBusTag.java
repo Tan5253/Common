@@ -10,5 +10,4 @@ public class RxBusTag {
     public static final String TAG_CROP_PHOTO_SUCCESS = "TAG_CROP_PHOTO_SUCCESS";// 通知裁剪返回成功
     public static final String TAG_UDP_RECEIVE_SUCCESS = "TAG_UDP_RECEIVE_SUCCESS";// UDP接收消息成功
     public static final String TAG_TCP_RECEIVE_SUCCESS = "TAG_TCP_RECEIVE_SUCCESS";// TCP接收消息成功
-    public static final String TAG_TWO_LINE_CHART_VIEW_CLICKED = "TAG_TWO_LINE_CHART_VIEW_CLICKED";// 双折线图表点击事件
 }

@@ -6,9 +6,7 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.View
-import com.like.common.util.RxBusTag
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
-import com.like.rxbus.RxBus
 
 
 class TwoLineChartView(context: Context) : View(context) {
@@ -22,6 +20,9 @@ class TwoLineChartView(context: Context) : View(context) {
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var currentTouchX = -1f
+
+    private var preTouchPosition = -1
+    private var listener: com.like.common.view.chart.horizontalScrollTwoLineChartView.core.OnClickListener? = null
 
     init {
         setBackgroundColor(TwoLineChartConfig.DEFAULT_BG_COLOR)
@@ -38,10 +39,8 @@ class TwoLineChartView(context: Context) : View(context) {
         mTextPaint.textSize = mConfig.textSize
     }
 
-    fun setData(twoLineDataList: List<TwoLineData>, touchPosition: Int, showPointCount: Int) {
-        if (showPointCount <= 0) {
-            throw IllegalArgumentException("showPointCount 参数必须大于0")
-        }
+    fun setData(twoLineDataList: List<TwoLineData>, touchPosition: Int, showPointCount: Int, listener: com.like.common.view.chart.horizontalScrollTwoLineChartView.core.OnClickListener? = null) {
+        this.listener = listener
         mDataList.clear()
         if (twoLineDataList.isNotEmpty()) {
             mDataList.addAll(twoLineDataList)
@@ -120,8 +119,9 @@ class TwoLineChartView(context: Context) : View(context) {
             mDrawHelper.drawTouchPointText2(mTextPaint)
         }
         // 发送当前触摸点的位置
-        if (mConfig.touchPosition != -1) {
-            RxBus.post(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED, mConfig.touchPosition)
+        if (mConfig.touchPosition != preTouchPosition) {
+            listener?.onClick(mConfig.touchPosition)
+            preTouchPosition = mConfig.touchPosition
         }
     }
 

@@ -5,10 +5,9 @@ import android.view.View
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityTwoLineChartBinding
-import com.like.common.util.RxBusTag
+import com.like.common.view.chart.horizontalScrollTwoLineChartView.core.OnClickListener
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
 import com.like.logger.Logger
-import com.like.rxbus.annotations.RxBusSubscribe
 
 class TwoLineChartActivity : BaseActivity() {
     private val mBinding: ActivityTwoLineChartBinding by lazy {
@@ -18,7 +17,11 @@ class TwoLineChartActivity : BaseActivity() {
     override fun getViewModel(): BaseViewModel? {
         mBinding.root
         // 测试有月份值默认值的情况
-        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 5)
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 5, listener = object : OnClickListener {
+            override fun onClick(position: Int) {
+                Logger.e("触摸点位置：$position")
+            }
+        })
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.llTongbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
@@ -108,11 +111,6 @@ class TwoLineChartActivity : BaseActivity() {
                 TwoLineData(2, -100f),
                 TwoLineData(3, -10f)
         )
-    }
-
-    @RxBusSubscribe(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED)
-    fun TAG_TWO_LINE_CHART_VIEW_CLICKED(touchPositon: Int) {
-        Logger.e("触摸点位置：$touchPositon")
     }
 
 }
