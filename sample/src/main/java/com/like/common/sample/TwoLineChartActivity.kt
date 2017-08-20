@@ -18,7 +18,7 @@ class TwoLineChartActivity : BaseActivity() {
     override fun getViewModel(): BaseViewModel? {
         mBinding.root
         // 测试有月份值默认值的情况
-        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 11)
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 5)
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.llTongbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
@@ -51,20 +51,46 @@ class TwoLineChartActivity : BaseActivity() {
     }
 
     fun getSimulatedData1(): List<TwoLineData> {
+//        return listOf(
+//                TwoLineData(1, 100f, 0f),
+//                TwoLineData(2, 50f, 20f),
+//                TwoLineData(3, 100f, 10f),
+//                TwoLineData(4, 10f, 50f),
+//                TwoLineData(5, 50f, 20f),
+//                TwoLineData(6, 100f, 10f)
+//        )
+//        return listOf(
+//                TwoLineData(1, ratio2 = 0f),
+//                TwoLineData(2, ratio2 = 20f),
+//                TwoLineData(3, ratio2 = 10f),
+//                TwoLineData(4, ratio2 = 50f),
+//                TwoLineData(5, ratio2 = 20f),
+//                TwoLineData(6, ratio2 = 10f)
+//        )
         return listOf(
-                TwoLineData(1, 100f, 10f),
-                TwoLineData(2, 50f, 20f),
-                TwoLineData(3, 100f, 10f),
-                TwoLineData(4, 10f, 50f),
-                TwoLineData(5, 50f, 20f),
-                TwoLineData(6, 100f, 10f),
-                TwoLineData(7, 10f, 50f),
-                TwoLineData(8, 50f, 20f),
-                TwoLineData(9, 100f, 10f),
-                TwoLineData(10, 10f, 50f),
-                TwoLineData(11, 10f, 50f),
-                TwoLineData(12, 10f, 50f)
+                TwoLineData(1, ratio2 = 0f),
+                TwoLineData(2, ratio2 = 0f),
+                TwoLineData(3, ratio2 = 0f),
+                TwoLineData(4, ratio2 = 0f),
+                TwoLineData(5, ratio2 = 0f),
+                TwoLineData(6, ratio2 = 0f)
         )
+//        return listOf(
+//                TwoLineData(1, 0f),
+//                TwoLineData(2, 0f),
+//                TwoLineData(3, 0f),
+//                TwoLineData(4, 0f),
+//                TwoLineData(5, 0f),
+//                TwoLineData(6, 0f)
+//        )
+//        return listOf(
+//                TwoLineData(1, -10f),
+//                TwoLineData(2, 20f),
+//                TwoLineData(3, -30f),
+//                TwoLineData(4, 15f),
+//                TwoLineData(5, 50f),
+//                TwoLineData(6, -20f)
+//        )
     }
 
     fun getSimulatedData2(): List<TwoLineData> {

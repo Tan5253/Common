@@ -100,12 +100,12 @@ class TwoLineChartConfig(val context: Context) {
     // 同比对应的所有点的坐标
     val pointList2: MutableList<PointF> = arrayListOf()
 
-    fun setData(barDataList: List<TwoLineData>, touchPosition: Int, showPointCount: Int = 3) {
+    fun setData(twoLineDataList: List<TwoLineData>, touchPosition: Int, showPointCount: Int = 3) {
         if (showPointCount <= 0) {
             return
         }
         this.dataList.clear()
-        this.dataList.addAll(barDataList)
+        this.dataList.addAll(twoLineDataList)
         this.touchPosition = touchPosition
 
         totalWidth = if (dataList.size > showPointCount) {
