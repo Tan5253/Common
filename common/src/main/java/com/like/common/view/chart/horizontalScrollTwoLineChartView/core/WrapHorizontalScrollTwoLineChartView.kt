@@ -24,13 +24,13 @@ class WrapHorizontalScrollTwoLineChartView(context: Context, attrs: AttributeSet
      * 设置数据
      *
      * @param dataList          数据
-     * @param touchXData        触摸线的初始值
+     * @param touchPosition     初始触摸位置
      * @param showPointCount    一屏幕显示的数据个数
      */
-    fun setData(dataList: List<TwoLineData>, touchXData: Int = -Int.MAX_VALUE, showPointCount: Int = 3) {
+    fun setData(dataList: List<TwoLineData>, touchPosition: Int = -1, showPointCount: Int = 3) {
         if (showPointCount <= 0) {
             throw IllegalArgumentException("showPointCount 参数必须大于0")
         }
-        twoLineChartView.setData(dataList, touchXData, showPointCount)
+        twoLineChartView.setData(dataList, touchPosition, showPointCount)
     }
 }

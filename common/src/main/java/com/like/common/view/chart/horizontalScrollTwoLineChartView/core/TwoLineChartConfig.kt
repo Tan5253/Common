@@ -65,12 +65,6 @@ class TwoLineChartConfig(val context: Context) {
     }
     //  横坐标文本绘制的起点Y坐标
     val xAxisStartY: Float = spacingLineViewTop + maxLineViewHeight + spacingXAxisTextTop + textBaseLine
-    // 所有数据
-    val dataList: MutableList<TwoLineData> = arrayListOf()
-    // 环比对应的所有点的坐标
-    val pointList1: MutableList<PointF> = arrayListOf()
-    // 同比对应的所有点的坐标
-    val pointList2: MutableList<PointF> = arrayListOf()
     // 两点之间的间隔
     var spacingBetweenTwoPoints: Float = 0f
     // 每个百分比(1%)对应的高度
@@ -99,13 +93,20 @@ class TwoLineChartConfig(val context: Context) {
     val path1: Path = Path()
     // 同比path
     val path2: Path = Path()
+    // 所有数据
+    val dataList: MutableList<TwoLineData> = arrayListOf()
+    // 环比对应的所有点的坐标
+    val pointList1: MutableList<PointF> = arrayListOf()
+    // 同比对应的所有点的坐标
+    val pointList2: MutableList<PointF> = arrayListOf()
 
-    fun setData(barDataList: List<TwoLineData>, showPointCount: Int = 3) {
+    fun setData(barDataList: List<TwoLineData>, touchPosition: Int, showPointCount: Int = 3) {
         if (showPointCount <= 0) {
             return
         }
         this.dataList.clear()
         this.dataList.addAll(barDataList)
+        this.touchPosition = touchPosition
 
         totalWidth = if (dataList.size > showPointCount) {
             val eachSpacing = screenWidthPixels / (showPointCount + 1)
@@ -117,128 +118,107 @@ class TwoLineChartConfig(val context: Context) {
         spacingBetweenTwoPoints = totalWidth / (dataList.size + 1)
 
         val maxRatio1: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio1) }!!.ratio1)
-        if (hasTwoLine()) {
-            val maxRatio2: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio2) }!!.ratio2)
+        val maxRatio2: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio2) }!!.ratio2)
+        if (hasLine1() && hasLine2()) {
             eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
-            path2.reset()
-            pointList2.clear()
-            pointList2.addAll(getAllPoint(2))
-        } else {
+        } else if (hasLine1()) {
             eachRatioHeight = maxLineViewHeight / 2 / maxRatio1
+        } else if (hasLine2()) {
+            eachRatioHeight = maxLineViewHeight / 2 / maxRatio2
         }
 
         path1.reset()
         pointList1.clear()
         pointList1.addAll(getAllPoint(1))
+
+        path2.reset()
+        pointList2.clear()
+        pointList2.addAll(getAllPoint(2))
     }
 
     // 环比线上触摸点的数值显示区域
     val touchPointRect1 = RectF()
     // 同比线上触摸点的数值显示区域
     val touchPointRect2 = RectF()
-    // 触摸点的x坐标数值
-    var touchXData = -Int.MAX_VALUE
-    // 环比线上触摸点的数值
-    var touchData1 = 0f
-    // 同比线上触摸点的数值
-    var touchData2 = 0f
-    // 环比线上触摸点
-    var touchPoint1: PointF? = null
-    // 同比线上触摸点
-    var touchPoint2: PointF? = null
-
-    /**
-     * 第一次进入图表界面，没有触摸时，可以根据设置的初始值来画图
-     */
-    fun getCurrentTouchPointX(): Float {
-        dataList.forEachIndexed { index, twoLineData ->
-            if (twoLineData.x == touchXData) {
-                touchPoint1 = pointList1[index]
-                calcTouchData(index)
-            }
-        }
-        return if (touchPoint1 == null) -1f else touchPoint1!!.x
-    }
+    // 当前触摸位置
+    var touchPosition = -1
 
     /**
      * 获取手指触摸点最接近的x坐标
      */
     fun getCurrentTouchPointX(touchX: Float): Float {
-        var position: Int = -1
-        if (pointList1.isNotEmpty()) {
-            if (touchX <= pointList1.first().x + spacingBetweenTwoPoints / 2) {
-                touchPoint1 = pointList1.first()
-                position = 0
-            } else if (touchX >= pointList1.last().x - spacingBetweenTwoPoints / 2) {
-                touchPoint1 = pointList1.last()
-                position = pointList1.size - 1
-            } else {
-                for ((index, pointF) in pointList1.withIndex()) {
-                    if (pointF.x - spacingBetweenTwoPoints / 2 <= touchX && pointF.x + spacingBetweenTwoPoints / 2 >= touchX) {
-                        touchPoint1 = pointF
-                        position = index
-                        break
+        val pointList = if (pointList1.isNotEmpty()) pointList1 else pointList2
+        if (touchX != -1f) {// 真实触摸时才计算
+            if (pointList.isNotEmpty()) {
+                if (touchX <= pointList.first().x + spacingBetweenTwoPoints / 2) {
+                    touchPosition = 0
+                } else if (touchX >= pointList.last().x - spacingBetweenTwoPoints / 2) {
+                    touchPosition = pointList.size - 1
+                } else {
+                    for ((index, pointF) in pointList.withIndex()) {
+                        if (pointF.x - spacingBetweenTwoPoints / 2 <= touchX && pointF.x + spacingBetweenTwoPoints / 2 >= touchX) {
+                            touchPosition = index
+                            break
+                        }
                     }
                 }
             }
         }
-        calcTouchData(position)
-        return if (touchPoint1 == null) -1f else touchPoint1!!.x
+        calcTouchPointRect()
+        return if (touchPosition == -1) -1f else pointList[touchPosition].x
     }
 
-    fun calcTouchData(position: Int) {
-        if (touchPoint1 != null) {
-            touchPointRect1.left = touchPoint1!!.x - touchPointRectWidth / 2
-            touchPointRect1.top = touchPoint1!!.y - touchPointRectHeight / 2
-            touchPointRect1.right = touchPointRect1.left + touchPointRectWidth
-            touchPointRect1.bottom = touchPointRect1.top + touchPointRectHeight
-            touchData1 = dataList[position].ratio1
-
-            touchXData = dataList[position].x
-
-            if (hasTwoLine()) {
-                touchPoint2 = pointList2[position]
-                touchPointRect2.left = touchPoint2!!.x - touchPointRectWidth / 2
-                touchPointRect2.top = touchPoint2!!.y - touchPointRectHeight / 2
-                touchPointRect2.right = touchPointRect2.left + touchPointRectWidth
-                touchPointRect2.bottom = touchPointRect2.top + touchPointRectHeight
-                touchData2 = dataList[position].ratio2
+    private fun calcTouchPointRect() {
+        if (touchPosition != -1) {
+            if (hasLine1()) {
+                with(pointList1[touchPosition]) {
+                    touchPointRect1.left = this.x - touchPointRectWidth / 2
+                    touchPointRect1.top = this.y - touchPointRectHeight / 2
+                    touchPointRect1.right = touchPointRect1.left + touchPointRectWidth
+                    touchPointRect1.bottom = touchPointRect1.top + touchPointRectHeight
+                }
+            }
+            if (hasLine2()) {
+                with(pointList2[touchPosition]) {
+                    touchPointRect2.left = this.x - touchPointRectWidth / 2
+                    touchPointRect2.top = this.y - touchPointRectHeight / 2
+                    touchPointRect2.right = touchPointRect2.left + touchPointRectWidth
+                    touchPointRect2.bottom = touchPointRect2.top + touchPointRectHeight
+                }
             }
         } else {
             touchPointRect1.left = 0f
             touchPointRect1.top = 0f
             touchPointRect1.right = 0f
             touchPointRect1.bottom = 0f
-            touchData1 = 0f
-            touchPoint1 = null
 
-            touchXData = -Int.MAX_VALUE
-
-            if (hasTwoLine()) {
-                touchPointRect2.left = 0f
-                touchPointRect2.top = 0f
-                touchPointRect2.right = 0f
-                touchPointRect2.bottom = 0f
-                touchData2 = 0f
-                touchPoint2 = null
-            }
+            touchPointRect2.left = 0f
+            touchPointRect2.top = 0f
+            touchPointRect2.right = 0f
+            touchPointRect2.bottom = 0f
         }
     }
 
     fun isTouchInView(touchY: Float): Boolean = touchY >= spacingLineViewTop && touchY <= spacingLineViewTop + maxLineViewHeight
 
-    fun getAllPoint(flag: Int): List<PointF> {
+    /**
+     * 获取所有折线的坐标点
+     *
+     * @param flag 1：折线1；2：折线2；
+     */
+    private fun getAllPoint(flag: Int): List<PointF> {
+        if (flag != 1 && flag != 2) {// 这里只支持两条线
+            return emptyList()
+        }
         val result: MutableList<PointF> = mutableListOf()
         if (dataList.isNotEmpty()) {
             for ((index, twoLineData) in dataList.withIndex()) {
-                val p: PointF = PointF()
+                val p = PointF()
                 p.x = (index + 1) * spacingBetweenTwoPoints
                 p.y = if (flag == 1) {
                     spacingLineViewTop + maxLineViewHeight / 2 - twoLineData.ratio1 * eachRatioHeight
-                } else if (flag == 2) {
-                    spacingLineViewTop + maxLineViewHeight / 2 - twoLineData.ratio2 * eachRatioHeight
                 } else {
-                    0f
+                    spacingLineViewTop + maxLineViewHeight / 2 - twoLineData.ratio2 * eachRatioHeight
                 }
                 if (flag == 1) {
                     if (index == 0) {
@@ -246,7 +226,7 @@ class TwoLineChartConfig(val context: Context) {
                     } else {
                         path1.lineTo(p.x, p.y)
                     }
-                } else if (flag == 2) {
+                } else {
                     if (index == 0) {
                         path2.moveTo(p.x, p.y)
                     } else {
@@ -259,6 +239,8 @@ class TwoLineChartConfig(val context: Context) {
         return result
     }
 
-    fun hasTwoLine(): Boolean = dataList[0].ratio2 != Float.MAX_VALUE
+    fun hasLine1(): Boolean = dataList[0].ratio1 != Float.MAX_VALUE
+
+    fun hasLine2(): Boolean = dataList[0].ratio2 != Float.MAX_VALUE
 
 }

@@ -7,7 +7,6 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityTwoLineChartBinding
 import com.like.common.util.RxBusTag
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData
-import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineTouchData
 import com.like.logger.Logger
 import com.like.rxbus.annotations.RxBusSubscribe
 
@@ -19,7 +18,7 @@ class TwoLineChartActivity : BaseActivity() {
     override fun getViewModel(): BaseViewModel? {
         mBinding.root
         // 测试有月份值默认值的情况
-        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 2)
+        mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 1)
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
         return null
@@ -49,9 +48,9 @@ class TwoLineChartActivity : BaseActivity() {
 
     fun getSimulatedData1(): List<TwoLineData> {
         return listOf(
-                TwoLineData(1, 50f, 20f),
-                TwoLineData(2, 100f, 10f),
-                TwoLineData(3, 10f, 50f)
+                TwoLineData(7, 50f, 20f),
+                TwoLineData(8, 100f, 10f),
+                TwoLineData(9, 10f, 50f)
         )
     }
 
@@ -73,8 +72,8 @@ class TwoLineChartActivity : BaseActivity() {
     }
 
     @RxBusSubscribe(RxBusTag.TAG_TWO_LINE_CHART_VIEW_CLICKED)
-    fun TAG_TWO_LINE_CHART_VIEW_CLICKED(data: TwoLineTouchData) {
-        Logger.e(data)
+    fun TAG_TWO_LINE_CHART_VIEW_CLICKED(touchPositon: Int) {
+        Logger.e("触摸点位置：$touchPositon")
     }
 
 }

@@ -32,14 +32,8 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             paint
     )
 
-    inline fun drawTouchLine(touchX: Float, paint: Paint, touchXData: Int = -Int.MAX_VALUE) {
-        var touchPointX = 0f
-        if (touchX == -1f && config.touchXData == -Int.MAX_VALUE) {
-            config.touchXData = touchXData
-            touchPointX = config.getCurrentTouchPointX()
-        } else {
-            touchPointX = config.getCurrentTouchPointX(touchX)
-        }
+    inline fun drawTouchLine(touchX: Float, paint: Paint) {
+        val touchPointX = config.getCurrentTouchPointX(touchX)
         if (touchPointX != -1f) {
             canvas.drawLine(
                     touchPointX,
@@ -117,26 +111,30 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
     )
 
     inline fun drawTouchPointText1(paint: Paint) {
-        if (config.touchPoint1 != null) {
+        if (config.touchPosition != -1) {
+            val touchPoint1 = config.pointList1[config.touchPosition]
+            val touchData1 = config.dataList[config.touchPosition].ratio1
             // 这里取绝对值，因为正负靠背景来区分了
-            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(config.touchData1.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
+            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData1.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
             canvas.drawText(
                     text,
-                    config.touchPoint1!!.x - DrawTextUtils.getTextlength(paint, text) / 2,
-                    config.touchPoint1!!.y - DrawTextUtils.getTextHeight(paint) / 2 + DrawTextUtils.getTextBaseLine(paint),
+                    touchPoint1.x - DrawTextUtils.getTextlength(paint, text) / 2,
+                    touchPoint1.y - DrawTextUtils.getTextHeight(paint) / 2 + DrawTextUtils.getTextBaseLine(paint),
                     paint
             )
         }
     }
 
     inline fun drawTouchPointText2(paint: Paint) {
-        if (config.touchPoint2 != null) {
+        if (config.touchPosition != -1) {
+            val touchPoint2 = config.pointList2[config.touchPosition]
+            val touchData2 = config.dataList[config.touchPosition].ratio2
             // 这里取绝对值，因为正负靠背景来区分了
-            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(config.touchData2.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
+            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData2.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
             canvas.drawText(
                     text,
-                    config.touchPoint2!!.x - DrawTextUtils.getTextlength(paint, text) / 2,
-                    config.touchPoint2!!.y - DrawTextUtils.getTextHeight(paint) / 2 + DrawTextUtils.getTextBaseLine(paint),
+                    touchPoint2.x - DrawTextUtils.getTextlength(paint, text) / 2,
+                    touchPoint2.y - DrawTextUtils.getTextHeight(paint) / 2 + DrawTextUtils.getTextBaseLine(paint),
                     paint
             )
         }
