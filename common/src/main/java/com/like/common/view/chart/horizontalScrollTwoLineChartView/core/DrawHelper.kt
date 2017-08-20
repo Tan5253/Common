@@ -72,17 +72,24 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
         )
     }
 
-    inline fun drawMiddleLineText(paint: Paint) = canvas.drawText(
+    inline fun drawMiddleLineLeftText(paint: Paint) = canvas.drawText(
             "0.00%",
-            5f,
-            config.middleLineTextStartY,
+            config.middleLineLeftTextStartX,
+            config.middleLineLeftTextStartY,
             paint
     )
 
-    inline fun drawMiddleLineText1(paint: Paint) = canvas.drawText(
+    inline fun drawMiddleLineRightText(paint: Paint) = canvas.drawText(
+            "0.00%",
+            config.middleLineRightTextStartX,
+            config.middleLineRightTextStartY,
+            paint
+    )
+
+    inline fun drawMiddleLineMiddleText(paint: Paint) = canvas.drawText(
             "暂无数据",
-            config.middleTextStartX1,
-            config.middleTextStartY1,
+            config.middleLineMiddleTextStartX,
+            config.middleLineMiddleTextStartY,
             paint
     )
 

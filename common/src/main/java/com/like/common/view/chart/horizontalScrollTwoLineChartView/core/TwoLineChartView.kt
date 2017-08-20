@@ -150,7 +150,8 @@ class TwoLineChartView(context: Context) : View(context) {
      */
     private fun drawPercent0Text() {
         mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
-        mDrawHelper.drawMiddleLineText(mTextPaint)
+        mDrawHelper.drawMiddleLineLeftText(mTextPaint)
+        mDrawHelper.drawMiddleLineRightText(mTextPaint)
     }
 
     /**
@@ -158,7 +159,7 @@ class TwoLineChartView(context: Context) : View(context) {
      */
     private fun drawNoDataText() {
         mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_2
-        mDrawHelper.drawMiddleLineText1(mTextPaint)
+        mDrawHelper.drawMiddleLineMiddleText(mTextPaint)
     }
 
     /**
