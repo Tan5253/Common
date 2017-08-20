@@ -67,22 +67,22 @@ class TwoLineChartActivity : BaseActivity() {
 //                TwoLineData(5, ratio2 = 20f),
 //                TwoLineData(6, ratio2 = 10f)
 //        )
-        return listOf(
-                TwoLineData(1, ratio2 = 0f),
-                TwoLineData(2, ratio2 = 0f),
-                TwoLineData(3, ratio2 = 0f),
-                TwoLineData(4, ratio2 = 0f),
-                TwoLineData(5, ratio2 = 0f),
-                TwoLineData(6, ratio2 = 0f)
-        )
 //        return listOf(
-//                TwoLineData(1, 0f),
-//                TwoLineData(2, 0f),
-//                TwoLineData(3, 0f),
-//                TwoLineData(4, 0f),
-//                TwoLineData(5, 0f),
-//                TwoLineData(6, 0f)
+//                TwoLineData(1, ratio2 = 0f),
+//                TwoLineData(2, ratio2 = 0f),
+//                TwoLineData(3, ratio2 = 0f),
+//                TwoLineData(4, ratio2 = 0f),
+//                TwoLineData(5, ratio2 = 0f),
+//                TwoLineData(6, ratio2 = 0f)
 //        )
+        return listOf(
+                TwoLineData(1, 0f),
+                TwoLineData(2, 0f),
+                TwoLineData(3, 0f),
+                TwoLineData(4, 0f),
+                TwoLineData(5, 0f),
+                TwoLineData(6, 0f)
+        )
 //        return listOf(
 //                TwoLineData(1, -10f),
 //                TwoLineData(2, 20f),

@@ -120,11 +120,17 @@ class TwoLineChartConfig(val context: Context) {
         val maxRatio1: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio1) }!!.ratio1)
         val maxRatio2: Float = Math.abs(dataList.maxBy { Math.abs(it.ratio2) }!!.ratio2)
         if (hasLine1() && hasLine2()) {
-            eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
+            if (maxOf(maxRatio1, maxRatio2) != 0f) {
+                eachRatioHeight = maxLineViewHeight / 2 / maxOf(maxRatio1, maxRatio2)
+            }
         } else if (hasLine1()) {
-            eachRatioHeight = maxLineViewHeight / 2 / maxRatio1
+            if (maxRatio1 != 0f) {
+                eachRatioHeight = maxLineViewHeight / 2 / maxRatio1
+            }
         } else if (hasLine2()) {
-            eachRatioHeight = maxLineViewHeight / 2 / maxRatio2
+            if (maxRatio2 != 0f) {
+                eachRatioHeight = maxLineViewHeight / 2 / maxRatio2
+            }
         }
 
         path1.reset()
