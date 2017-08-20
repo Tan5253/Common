@@ -20,6 +20,7 @@ class TwoLineChartActivity : BaseActivity() {
         // 测试有月份值默认值的情况
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1(), 1)
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
+        mBinding.viewTwoLineChart.llTongbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
         return null
     }
@@ -27,18 +28,21 @@ class TwoLineChartActivity : BaseActivity() {
     fun changeData1(view: View) {
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData1())
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
+        mBinding.viewTwoLineChart.llTongbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：日"
     }
 
     fun changeData2(view: View) {
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData2())
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.VISIBLE
+        mBinding.viewTwoLineChart.llTongbi.visibility = View.GONE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：月"
     }
 
     fun changeData3(view: View) {
         mBinding.viewTwoLineChart.twoLineChartView.setData(getSimulatedData3())
         mBinding.viewTwoLineChart.llHuanbi.visibility = View.GONE
+        mBinding.viewTwoLineChart.llTongbi.visibility = View.VISIBLE
         mBinding.viewTwoLineChart.tvUnit.text = "单位：时"
     }
 
@@ -62,10 +66,10 @@ class TwoLineChartActivity : BaseActivity() {
 
     fun getSimulatedData2(): List<TwoLineData> {
         return listOf(
-                TwoLineData(1, 50f, 20f),
-                TwoLineData(2, 100f, -10f),
-                TwoLineData(3, 10f, 0f),
-                TwoLineData(4, 70f, -20f)
+                TwoLineData(1, ratio2 = 20f),
+                TwoLineData(2, ratio2 = -10f),
+                TwoLineData(3, ratio2 = 0f),
+                TwoLineData(4, ratio2 = -20f)
         )
     }
 
