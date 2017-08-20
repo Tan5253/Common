@@ -48,9 +48,15 @@ class TwoLineChartActivity : BaseActivity() {
 
     fun getSimulatedData1(): List<TwoLineData> {
         return listOf(
-                TwoLineData(7, 50f, 20f),
-                TwoLineData(8, 100f, 10f),
-                TwoLineData(9, 10f, 50f)
+                TwoLineData(2, 50f, 20f),
+                TwoLineData(3, 100f, 10f),
+                TwoLineData(4, 10f, 50f),
+                TwoLineData(5, 50f, 20f),
+                TwoLineData(6, 100f, 10f),
+                TwoLineData(7, 10f, 50f),
+                TwoLineData(8, 50f, 20f),
+                TwoLineData(9, 100f, 10f),
+                TwoLineData(10, 10f, 50f)
         )
     }
 
