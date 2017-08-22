@@ -3,19 +3,15 @@ package com.like.common.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.util.Pair;
 import android.view.View;
 
 import com.like.base.context.BasePermissionActivity;
 import com.like.base.viewmodel.BaseViewModel;
 import com.like.common.sample.databinding.ActivityTakePhotoBinding;
+import com.like.common.util.ImageLoaderUtils;
 import com.like.common.util.RxBusTag;
 import com.like.common.util.TakePhotoUtils;
-import com.like.logger.Logger;
 import com.like.rxbus.annotations.RxBusSubscribe;
-
-import java.io.File;
 
 /**
  * 拍照测试
@@ -31,7 +27,7 @@ public class TakePhotoActivity extends BasePermissionActivity {
     @Override
     protected BaseViewModel getViewModel() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_take_photo);
-        mTakePhotoUtils = TakePhotoUtils.getInstance(this).setCrop(true).setSquareCropBox(false).setCropHeight(100).setCropWidth(500);
+        mTakePhotoUtils = new TakePhotoUtils(this);
         return null;
     }
 
@@ -51,9 +47,8 @@ public class TakePhotoActivity extends BasePermissionActivity {
 
     // 照相成功、从相册选择图片成功、裁剪成功
     @RxBusSubscribe(RxBusTag.TAG_CROP_PHOTO_SUCCESS)
-    public void onTakePhotoSuccess(Pair<File, Bitmap> pair) {
-        Logger.i(pair.first.getAbsolutePath());
-        mBinding.ivTakePhoto.setImageBitmap(pair.second);
+    public void onTakePhotoSuccess(String filePath) {
+        new ImageLoaderUtils(this).displayCircle(filePath, mBinding.ivTakePhoto);
     }
 
     @Override

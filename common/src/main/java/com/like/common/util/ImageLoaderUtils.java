@@ -138,25 +138,25 @@ public class ImageLoaderUtils {
                 .into(imageView);
     }
 
-    public void displayCircle(String url, ImageView imageView) {
-        displayCircle(url, imageView, -1);
+    public void displayCircle(String string, ImageView imageView) {
+        displayCircle(string, imageView, -1);
     }
 
-    public void displayCircle(String url, ImageView imageView, int loadingImageResId) {
-        displayCircle(url, imageView, loadingImageResId, -1);
+    public void displayCircle(String string, ImageView imageView, int loadingImageResId) {
+        displayCircle(string, imageView, loadingImageResId, -1);
     }
 
     /**
      * 显示圆形图片
      *
-     * @param url                 图片地址
+     * @param string              A file path, or a uri or url handled by {@link com.bumptech.glide.load.model.UriLoader}.
      * @param imageView
      * @param loadingImageResId   加载中的图片
      * @param loadErrorImageResId 加载失败的图片
      */
-    public void displayCircle(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId) {
+    public void displayCircle(String string, ImageView imageView, int loadingImageResId, int loadErrorImageResId) {
         requestManager
-                .load(url)
+                .load(string)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
                 .fitCenter()// 缩放图像让图像都测量出来等于或小于 ImageView 的边界范围,该图像将会完全显示，但可能不会填满整个ImageView。
