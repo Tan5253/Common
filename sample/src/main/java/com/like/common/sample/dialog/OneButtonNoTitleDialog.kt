@@ -28,7 +28,7 @@ class OneButtonNoTitleDialog : BaseDialogFragment<DialogFragmentOneButtonNoTitle
         }
     }
 
-    override fun cancelable() = true
+    override fun cancelable() = false
 
     override fun getDialogFragmentLayoutResId(): Int = R.layout.dialog_fragment_one_button_no_title
 

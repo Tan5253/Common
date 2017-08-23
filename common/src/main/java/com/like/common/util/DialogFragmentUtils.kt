@@ -114,7 +114,7 @@ abstract class BaseDialogFragment<in T : ViewDataBinding> : DialogFragment() {
         this.dismissAllowingStateLoss()
     }
 
-    open fun cancelable() = false
+    open fun cancelable() = true
 
     abstract fun getDialogFragmentLayoutResId(): Int
 
