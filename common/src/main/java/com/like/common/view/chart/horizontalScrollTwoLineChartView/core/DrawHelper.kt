@@ -122,7 +122,7 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             val touchPoint1 = config.pointList1[config.touchPosition]
             val touchData1 = config.dataList[config.touchPosition].ratio1
             // 这里取绝对值，因为正负靠背景来区分了
-            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData1.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
+            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData1.toDouble()))
             canvas.drawText(
                     text,
                     touchPoint1.x - DrawTextUtils.getTextlength(paint, text) / 2,
@@ -137,7 +137,7 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
             val touchPoint2 = config.pointList2[config.touchPosition]
             val touchData2 = config.dataList[config.touchPosition].ratio2
             // 这里取绝对值，因为正负靠背景来区分了
-            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData2.toDouble()), MoneyFormatUtils.DECIMAL_TYPE_0_2)
+            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData2.toDouble()))
             canvas.drawText(
                     text,
                     touchPoint2.x - DrawTextUtils.getTextlength(paint, text) / 2,
