@@ -4,13 +4,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="250dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -18,22 +16,24 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="接收区：" />
 
                 <Button
-                    android:id="@+id/btn_udpConn"
+                    android:id="@+id/btn_udpConnect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="建立连接"
+                    android:onClick="udpConnect"
+                    android:text="建立UDP连接"
                     android:textSize="8dp" />
 
                 <Button
-                    android:id="@+id/btn_udpClose"
+                    android:id="@+id/btn_closeUdpAndTcpConnection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="closeUdpAndTcpConnection"
                     android:text="关闭UDP和TCP连接"
                     android:textSize="8dp" />
 
@@ -41,6 +41,7 @@
                     android:id="@+id/btn_CleanRecv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="clearReceiveText"
                     android:text="清除接收区"
                     android:textSize="8dp" />
 
@@ -49,107 +50,72 @@
             <TextView
                 android:id="@+id/txt_Recv"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="7"
+                android:layout_height="match_parent"
                 android:background="@color/common_divider_gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Hex显示" />
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="二进制显示" />
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="十进制显示" />
-
-            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:text="发送区：" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_Send"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="7"
-                android:background="@color/common_divider_gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Hex显示" />
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="二进制显示" />
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="十进制显示" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/edit_Send"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:background="@color/common_divider_gray" />
+                    android:text="发送区：" />
 
                 <Button
-                    android:id="@+id/btn_Send"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:text="发送" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="queryVersionInfo"
+                    android:text="版本信息查询" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="updateSoundBoxSoft"
+                    android:text="启动软件升级" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="openWifi"
+                    android:text="打开wifi" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="closeWifi"
+                    android:text="关闭wifi" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="setWifiName"
+                    android:text="设置wifi名称" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="setWifiPassword"
+                    android:text="设置wifi密码" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="scanWifi"
+                    android:text="扫描wifi" />
 
             </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 </layout>

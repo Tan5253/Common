@@ -14,6 +14,7 @@ import com.like.common.sample.csv.CsvActivity;
 import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
+import com.like.common.sample.socket.SocketActivity;
 import com.like.common.util.ClickUtils;
 import com.like.common.util.ImageLoaderUtils;
 import com.like.common.util.ObjectSerializeUtils;

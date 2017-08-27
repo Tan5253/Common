@@ -18,10 +18,9 @@ import kotlin.concurrent.thread
  * @param receiverTimeOut       接收器每次读取数据的超时时长，默认Int.MAX_VALUE毫秒
  */
 class UDPClient(private val port: Int, private val receiverBufferSize: Int = 1024, private val receiverTimeOut: Int = Int.MAX_VALUE) : Runnable {
-    private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
-    private val executors: ExecutorService by lazy {
-        Executors.newSingleThreadExecutor()
-    }
+//    private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
+    private val broadcastIpAddress = InetAddress.getByName("192.168.75.2")// 广播地址，用于通知硬件客户端的ip和port。
+    private lateinit var executors: ExecutorService
     private lateinit var socket: DatagramSocket
     private lateinit var ipAddress: InetAddress
     private @Volatile var life = false
@@ -31,6 +30,7 @@ class UDPClient(private val port: Int, private val receiverBufferSize: Int = 102
             synchronized(UDPClient::class) {
                 if (!life) {
                     life = true
+                    executors = Executors.newSingleThreadExecutor()
                     executors.execute(this)
                 }
             }

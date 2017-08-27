@@ -15,17 +15,18 @@ import java.util.concurrent.Executors
  * @param readBufferSize    接收器的缓存大小，默认1024kb
  * @param readTimeOut       接收器每次读取数据的超时时长，默认3000毫秒，超时后就会放弃接收数据。
  */
-class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: Int = 3000) {
-    private var executors: ExecutorService? = null
-    var ip: String = ""
+class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, private val readTimeOut: Int = 3000) {
+    private val executors: ExecutorService by lazy {
+        Executors.newCachedThreadPool()
+    }
+    private var ip: String = ""
 
-    fun start(ip: String) {
+    fun setIp(ip: String) {
         this.ip = ip
-        executors = Executors.newCachedThreadPool()
     }
 
-    fun send(message: String) {
-        executors?.execute {
+    fun send(message: Any) {
+        executors.execute {
             val buf = ByteArray(readBufferSize)
             var socket: Socket? = null
             var dos: DataOutputStream? = null
@@ -34,19 +35,22 @@ class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: 
                 Logger.i("${Thread.currentThread().name}——初始化TCP客户端")
                 socket = Socket(ip, port)
                 socket.soTimeout = readTimeOut
-                dos = DataOutputStream(socket.getOutputStream())
-                dis = DataInputStream(socket.getInputStream())
                 // 发送数据
-                dos.writeUTF(message)
+                dos = DataOutputStream(socket.getOutputStream())
+                when (message) {
+                    is String -> dos.writeUTF(message)
+                    is ByteArray -> dos.write(message)
+                }
                 dos.flush()
                 Logger.i("${Thread.currentThread().name}——TCP发送数据成功")
                 // 等待接收数据
+                dis = DataInputStream(socket.getInputStream())
                 Logger.i("${Thread.currentThread().name}——TCP监听返回数据中……")
                 val length = dis.read(buf)
                 if (length > 0) {
-                    val msgRcv = String(buf, 0, length, Charsets.UTF_8)
-                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, msgRcv)
-                    Logger.i("${Thread.currentThread().name}——TCP接收到消息：$msgRcv")
+                    val rcvMsg = String(buf, 0, length, Charsets.UTF_8)
+                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, rcvMsg)
+                    Logger.i("${Thread.currentThread().name}——TCP接收到消息：$rcvMsg")
                 }
                 Logger.i("${Thread.currentThread().name}——TCP接收完毕")
             } catch (e: Exception) {
@@ -62,8 +66,7 @@ class TCPClient(val port: Int, val readBufferSize: Int = 1024, val readTimeOut: 
     }
 
     fun close() {
-        executors?.shutdownNow()
-        executors = null
+        executors.shutdownNow()
     }
 
 }

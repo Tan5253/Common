@@ -48,7 +48,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.like.common.sample.SocketActivity"
+            android:name="com.like.common.sample.socket.SocketActivity"
             android:screenOrientation="portrait" />
 
         <activity
