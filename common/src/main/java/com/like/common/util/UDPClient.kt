@@ -17,11 +17,13 @@ import kotlin.concurrent.thread
  * @param receiverBufferSize    接收器的缓存大小，默认1024kb
  * @param receiverTimeOut       接收器每次读取数据的超时时长，默认Int.MAX_VALUE毫秒
  */
-class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverTimeOut: Int = Int.MAX_VALUE) : Runnable {
-    private var executors: ExecutorService? = null
+class UDPClient(private val port: Int, private val receiverBufferSize: Int = 1024, private val receiverTimeOut: Int = Int.MAX_VALUE) : Runnable {
     private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
-    private var ipAddress: InetAddress? = null
-    private var socket: DatagramSocket? = null
+    private val executors: ExecutorService by lazy {
+        Executors.newSingleThreadExecutor()
+    }
+    private lateinit var socket: DatagramSocket
+    private lateinit var ipAddress: InetAddress
     private @Volatile var life = false
 
     fun start() {
@@ -29,8 +31,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
             synchronized(UDPClient::class) {
                 if (!life) {
                     life = true
-                    executors = Executors.newSingleThreadExecutor()
-                    executors?.execute(this)
+                    executors.execute(this)
                 }
             }
         }
@@ -38,10 +39,8 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
 
     fun close() {
         life = false
-        socket?.close()
-        socket = null
-        executors?.shutdownNow()
-        executors = null
+        socket.close()
+        executors.shutdownNow()
         Logger.i("UDP监听关闭")
     }
 
@@ -58,7 +57,7 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
         thread {
             try {
                 val sendBytes = message.toByteArray(Charsets.UTF_8)
-                socket!!.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
+                socket.send(DatagramPacket(sendBytes, sendBytes.size, ipAddress, port))
                 Logger.i("UDP发送数据成功")
             } catch (e: Exception) {
                 Logger.e("UDP发送数据失败！")
@@ -70,9 +69,9 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
     override fun run() {
         try {
             socket = DatagramSocket()
-            socket!!.soTimeout = receiverTimeOut
+            socket.soTimeout = receiverTimeOut
             // 发送广播，用于通知硬件客户端的ip和port。
-            socket!!.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
+            socket.send(DatagramPacket(byteArrayOf(), 0, broadcastIpAddress, port))
             Logger.i("初始化UDP客户端成功")
         } catch (e: Exception) {
             Logger.e("初始化UDP客户端失败！")
@@ -85,10 +84,10 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
                 Logger.i("UDP监听中……")
                 val buf = ByteArray(receiverBufferSize)
                 val packetRcv = DatagramPacket(buf, buf.size)
-                socket!!.receive(packetRcv)
+                socket.receive(packetRcv)
                 ipAddress = packetRcv.address
                 val rcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, Charsets.UTF_8)
-                RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress?.hostAddress!!, rcvMsg))
+                RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress.hostAddress!!, rcvMsg))
                 Logger.i("UDP接收到消息：$rcvMsg")
             } catch (e1: SocketTimeoutException) {
                 Logger.w("UDP没有收到数据")
