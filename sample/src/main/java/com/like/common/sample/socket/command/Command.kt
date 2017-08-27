@@ -25,7 +25,6 @@ open class Command(private val senderModuleId: Short, private val receiverModule
      * @param parameter 参数净荷区
      */
     protected fun putData(code: Byte, parameter: ByteArray = byteArrayOf()): ByteArray {
-        contentBuf.clear()
         contentBuf.put(header)
         contentBuf.putShort(senderModuleId)
         contentBuf.putShort(receiverModuleId)
@@ -36,6 +35,7 @@ open class Command(private val senderModuleId: Short, private val receiverModule
         val result = ByteArray(contentBuf.position())
         contentBuf.flip()
         contentBuf.get(result)
+        contentBuf.clear()
         return result
     }
 }
