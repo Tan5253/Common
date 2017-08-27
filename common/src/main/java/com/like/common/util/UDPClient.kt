@@ -87,9 +87,9 @@ class UDPClient(val port: Int, val receiverBufferSize: Int = 1024, val receiverT
                 val packetRcv = DatagramPacket(buf, buf.size)
                 socket!!.receive(packetRcv)
                 ipAddress = packetRcv.address
-                val RcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, Charsets.UTF_8)
-                RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress?.hostAddress!!, RcvMsg))
-                Logger.i("UDP接收到消息：$RcvMsg")
+                val rcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, Charsets.UTF_8)
+                RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress?.hostAddress!!, rcvMsg))
+                Logger.i("UDP接收到消息：$rcvMsg")
             } catch (e1: SocketTimeoutException) {
                 Logger.w("UDP没有收到数据")
                 e1.printStackTrace()
