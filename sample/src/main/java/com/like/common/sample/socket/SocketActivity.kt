@@ -14,8 +14,8 @@ import com.like.common.util.UDPClient
 import com.like.rxbus.annotations.RxBusSubscribe
 
 class SocketActivity : BaseActivity() {
-    private val udpClient: UDPClient = UDPClient(10000)
-    private val tcpClient: TCPClient = TCPClient(8000)
+    //    private val udpClient: UDPClient = UDPClient(10000)
+    private val tcpClient: TCPClient = TCPClient(32768 / 2)
 
     private val udpRcvStrBuf = StringBuffer()
 
@@ -29,16 +29,17 @@ class SocketActivity : BaseActivity() {
     }
 
     fun udpConnect(view: View) {
-        udpClient.start()
-        mBinding.btnCloseUdpAndTcpConnection.isEnabled = true
-        mBinding.btnUdpConnect.isEnabled = false
+//        udpClient.start()
+//        mBinding.btnCloseUdpAndTcpConnection.isEnabled = true
+//        mBinding.btnUdpConnect.isEnabled = false
+        tcpClient.setIp("192.168.1.238")
     }
 
     fun closeUdpAndTcpConnection(view: View) {
-        udpClient.close()
+//        udpClient.close()
         tcpClient.close()
-        mBinding.btnUdpConnect.isEnabled = true
-        mBinding.btnCloseUdpAndTcpConnection.isEnabled = false
+//        mBinding.btnUdpConnect.isEnabled = true
+//        mBinding.btnCloseUdpAndTcpConnection.isEnabled = false
     }
 
     fun clearReceiveText(view: View) {
@@ -89,7 +90,7 @@ class SocketActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        udpClient.close()
+//        udpClient.close()
         tcpClient.close()
     }
 
