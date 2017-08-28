@@ -75,7 +75,7 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
                 Logger.i("${Thread.currentThread().name}——TCP监听返回数据中……")
                 val length = dis.read(buf)
                 if (length > 0) {
-                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, buf)
+                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, buf.copyOf(length))
                     Logger.i("${Thread.currentThread().name}——TCP接收到消息：${String(buf, 0, length, Charsets.UTF_8)}")
                 }
                 Logger.i("${Thread.currentThread().name}——TCP接收完毕")

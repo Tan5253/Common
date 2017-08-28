@@ -1,13 +1,16 @@
 package com.like.common.sample.socket.command
 
 import java.nio.ByteBuffer
-import java.util.*
 
 /**
  * 通信返回的消息
  * 0xa5（消息头） + 消息发送模块号（2字节） + 消息接收模块号（2字节）+ 消息码（1字节）+ 消息净荷长度（2字节） + 消息净荷（最大2000字节）。
  */
 class Message {
+    /**
+     * 消息头(1字节)
+     */
+    private var header: Byte = 0
     /**
      * 消息发送模块号(2字节)
      */
@@ -30,10 +33,6 @@ class Message {
     private val message: ByteArray by lazy {
         ByteArray(messageLength.toInt())
     }
-    /**
-     * 消息头(2字节)
-     */
-    private var header: Short = 0
 
     private val contentBuf: ByteBuffer = ByteBuffer.allocate(2048)
 
@@ -43,7 +42,7 @@ class Message {
     fun parse(data: ByteArray): Message {
         contentBuf.put(data)
         contentBuf.flip()
-        header = contentBuf.short
+        header = contentBuf.get()
         senderModuleId = contentBuf.short
         receiverModuleId = contentBuf.short
         code = contentBuf.get()
@@ -54,7 +53,7 @@ class Message {
     }
 
     override fun toString(): String {
-        return "Message(senderModuleId=$senderModuleId, receiverModuleId=$receiverModuleId, code=$code, messageLength=$messageLength, message=${Arrays.toString(message)}, header=$header)"
+        return "Message(header=$header, senderModuleId=$senderModuleId, receiverModuleId=$receiverModuleId, code=$code, messageLength=$messageLength, message=$message)"
     }
 
 }

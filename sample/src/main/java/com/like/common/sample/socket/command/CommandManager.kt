@@ -14,7 +14,7 @@ class CommandManager {
 
     fun connect() {
         tcpClient.setIp("192.168.1.238")// todo 暂时写死，后面需要删除
-        udpClient.start()
+//        udpClient.start()
     }
 
     /**
@@ -119,7 +119,7 @@ class CommandManager {
      * 关闭客户端
      */
     fun close() {
-        udpClient.close()
+//        udpClient.close()
         tcpClient.close()
     }
 

@@ -9,6 +9,7 @@ import com.like.common.sample.databinding.ActivitySocketBinding
 import com.like.common.sample.socket.command.CommandManager
 import com.like.common.sample.socket.command.Message
 import com.like.common.util.RxBusTag
+import com.like.logger.Logger
 import com.like.rxbus.annotations.RxBusSubscribe
 
 class SocketActivity : BaseActivity() {
@@ -97,6 +98,7 @@ class SocketActivity : BaseActivity() {
     @RxBusSubscribe(RxBusTag.TAG_TCP_RECEIVE_SUCCESS)
     fun tcpReceivedMessage(data: ByteArray) {
         val message = Message().parse(data)
+        Logger.i(message)
         udpRcvStrBuf.append(message)
         mBinding.txtRecv.text = "$udpRcvStrBuf\n"
     }
