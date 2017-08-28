@@ -1,5 +1,6 @@
 package com.like.common.util
 
+import android.text.TextUtils
 import com.like.logger.Logger
 import com.like.rxbus.RxBus
 import java.io.DataInputStream
@@ -19,6 +20,7 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
     private val executors: ExecutorService by lazy {
         Executors.newCachedThreadPool()
     }
+
     private var ip: String = ""
 
     fun setIp(ip: String) {
@@ -41,6 +43,9 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
     }
 
     fun send(message: Any) {
+        if (TextUtils.isEmpty(ip) || port <= 0) {
+            throw IllegalArgumentException("TCP客户端的ip和port无效")
+        }
         when (message) {
             is String -> Logger.i("TCP发送消息$message")
             is ByteArray -> Logger.i("TCP发送消息${bytesToHexString(message)}")

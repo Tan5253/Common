@@ -22,7 +22,6 @@
                     android:text="接收区：" />
 
                 <Button
-                    android:id="@+id/btn_udpConnect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="udpConnect"
@@ -30,7 +29,6 @@
                     android:textSize="8dp" />
 
                 <Button
-                    android:id="@+id/btn_closeUdpAndTcpConnection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="closeUdpAndTcpConnection"
@@ -38,7 +36,6 @@
                     android:textSize="8dp" />
 
                 <Button
-                    android:id="@+id/btn_CleanRecv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="clearReceiveText"
@@ -113,6 +110,48 @@
                     android:layout_height="wrap_content"
                     android:onClick="scanWifi"
                     android:text="扫描wifi" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="openLights"
+                    android:text="开灯" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="closeLights"
+                    android:text="关灯" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="increaseLightsBrightness"
+                    android:text="增加灯光亮度" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="reduceLightsBrightness"
+                    android:text="减少灯光亮度" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="setLightsColor"
+                    android:text="设置灯光颜色" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="increaseVolume"
+                    android:text="增加音量" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="reduceVolume"
+                    android:text="减小音量" />
 
             </LinearLayout>
         </ScrollView>
