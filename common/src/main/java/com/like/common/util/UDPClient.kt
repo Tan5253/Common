@@ -18,12 +18,13 @@ import kotlin.concurrent.thread
  * @param receiverTimeOut       接收器每次读取数据的超时时长，默认Int.MAX_VALUE毫秒
  */
 class UDPClient(private val port: Int, private val receiverBufferSize: Int = 1024, private val receiverTimeOut: Int = Int.MAX_VALUE) : Runnable {
-//    private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
+    //    private val broadcastIpAddress = InetAddress.getByName("255.255.255.255")// 广播地址，用于通知硬件客户端的ip和port。
     private val broadcastIpAddress = InetAddress.getByName("192.168.75.2")// 广播地址，用于通知硬件客户端的ip和port。
     private lateinit var executors: ExecutorService
     private lateinit var socket: DatagramSocket
     private lateinit var ipAddress: InetAddress
-    private @Volatile var life = false
+    private @Volatile
+    var life = false
 
     fun start() {
         if (!life) {
@@ -86,8 +87,9 @@ class UDPClient(private val port: Int, private val receiverBufferSize: Int = 102
                 val packetRcv = DatagramPacket(buf, buf.size)
                 socket.receive(packetRcv)
                 ipAddress = packetRcv.address
+
+                RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress.hostAddress!!, packetRcv.data))
                 val rcvMsg = String(packetRcv.data, packetRcv.offset, packetRcv.length, Charsets.UTF_8)
-                RxBus.post(RxBusTag.TAG_UDP_RECEIVE_SUCCESS, UDPMessage(ipAddress.hostAddress!!, rcvMsg))
                 Logger.i("UDP接收到消息：$rcvMsg")
             } catch (e1: SocketTimeoutException) {
                 Logger.w("UDP没有收到数据")
@@ -100,6 +102,6 @@ class UDPClient(private val port: Int, private val receiverBufferSize: Int = 102
         close()
     }
 
-    data class UDPMessage(val ip: String, val message: String)
+    data class UDPMessage(val ip: String, val message: ByteArray)
 
 }

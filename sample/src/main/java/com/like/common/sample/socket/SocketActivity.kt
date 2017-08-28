@@ -6,6 +6,7 @@ import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.R
 import com.like.common.sample.databinding.ActivitySocketBinding
+import com.like.common.sample.socket.command.Message
 import com.like.common.sample.socket.command.PublicCommand
 import com.like.common.sample.socket.command.WifiCommand
 import com.like.common.util.RxBusTag
@@ -77,15 +78,16 @@ class SocketActivity : BaseActivity() {
 
     @RxBusSubscribe(RxBusTag.TAG_UDP_RECEIVE_SUCCESS)
     fun udpReceivedMessage(udpMessage: UDPClient.UDPMessage) {
-        udpRcvStrBuf.append("服务器ip地址：$udpMessage\n")
+        udpRcvStrBuf.append("服务器ip地址：${udpMessage.ip}")
         mBinding.txtRecv.text = udpRcvStrBuf.toString()
         tcpClient.setIp(udpMessage.ip)
     }
 
     @RxBusSubscribe(RxBusTag.TAG_TCP_RECEIVE_SUCCESS)
-    fun tcpReceivedMessage(message: String) {
+    fun tcpReceivedMessage(data: ByteArray) {
+        val message = Message().parse(data)
         udpRcvStrBuf.append(message)
-        mBinding.txtRecv.text = udpRcvStrBuf.toString()
+        mBinding.txtRecv.text = "$udpRcvStrBuf\n"
     }
 
     override fun onDestroy() {

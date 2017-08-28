@@ -25,7 +25,26 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
         this.ip = ip
     }
 
+    /**
+     * 数组转换成十六进制字符串
+     */
+    private fun bytesToHexString(bArray: ByteArray): String {
+        val sb = StringBuffer(bArray.size)
+        var sTemp: String
+        for (i in bArray.indices) {
+            sTemp = Integer.toHexString(0xFF and bArray[i].toInt())
+            if (sTemp.length < 2)
+                sb.append(0)
+            sb.append("${sTemp.toUpperCase()},")
+        }
+        return sb.toString()
+    }
+
     fun send(message: Any) {
+        when (message) {
+            is String -> Logger.i("TCP发送消息$message")
+            is ByteArray -> Logger.i("TCP发送消息${bytesToHexString(message)}")
+        }
         executors.execute {
             val buf = ByteArray(readBufferSize)
             var socket: Socket? = null
@@ -35,6 +54,7 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
                 Logger.i("${Thread.currentThread().name}——初始化TCP客户端")
                 socket = Socket(ip, port)
                 socket.soTimeout = readTimeOut
+
                 // 发送数据
                 dos = DataOutputStream(socket.getOutputStream())
                 when (message) {
@@ -42,15 +62,15 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
                     is ByteArray -> dos.write(message)
                 }
                 dos.flush()
+
                 Logger.i("${Thread.currentThread().name}——TCP发送数据成功")
                 // 等待接收数据
                 dis = DataInputStream(socket.getInputStream())
                 Logger.i("${Thread.currentThread().name}——TCP监听返回数据中……")
                 val length = dis.read(buf)
                 if (length > 0) {
-                    val rcvMsg = String(buf, 0, length, Charsets.UTF_8)
-                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, rcvMsg)
-                    Logger.i("${Thread.currentThread().name}——TCP接收到消息：$rcvMsg")
+                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, buf)
+                    Logger.i("${Thread.currentThread().name}——TCP接收到消息：${String(buf, 0, length, Charsets.UTF_8)}")
                 }
                 Logger.i("${Thread.currentThread().name}——TCP接收完毕")
             } catch (e: Exception) {
