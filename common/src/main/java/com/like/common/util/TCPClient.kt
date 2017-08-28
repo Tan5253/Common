@@ -44,7 +44,8 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, p
 
     fun send(message: Any) {
         if (TextUtils.isEmpty(ip) || port <= 0) {
-            throw IllegalArgumentException("TCP客户端的ip和port无效")
+            Logger.e("TCP发送消息失败，ip或者port无效")
+            return
         }
         when (message) {
             is String -> Logger.i("TCP发送消息$message")
