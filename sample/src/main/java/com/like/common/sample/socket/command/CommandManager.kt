@@ -13,7 +13,7 @@ class CommandManager {
     private val tcpClient: TCPClient = TCPClient(TCP_CLIENT_PORT)
 
     fun connect() {
-        tcpClient.setIp("172.16.103.22")// todo 暂时写死，后面需要删除
+        tcpClient.setIp("192.168.1.238")// todo 暂时写死，后面需要删除
 //        udpClient.start()
     }
 
