@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
  * @param readBufferSize    接收器的缓存大小，默认1024kb
  * @param readTimeOut       接收器每次读取数据的超时时长，默认3000毫秒，超时后就会放弃接收数据。
  */
-class TCPClient(private val port: Int, private val readBufferSize: Int = 1024, private val readTimeOut: Int = 3000) {
+class TCPClient(private val port: Int, private val readBufferSize: Int = 2048, private val readTimeOut: Int = 10000) {
     private val executors: ExecutorService by lazy {
         Executors.newCachedThreadPool()
     }

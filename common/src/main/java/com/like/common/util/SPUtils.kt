@@ -15,7 +15,7 @@ class SPUtils private constructor() {
         private lateinit var mContext: Context
 
         @JvmStatic fun getInstance(context: Context): SPUtils {
-            mContext = context
+            mContext = context.applicationContext
             return Holder.instance
         }
     }
