@@ -52,6 +52,11 @@ class Message {
         return this
     }
 
+    /**
+     * 是否是正确的返回消息
+     */
+    fun isRightMessage() = header.toInt() and 0xff == 0xa5
+
     override fun toString(): String {
         return "Message(header=$header, senderModuleId=$senderModuleId, receiverModuleId=$receiverModuleId, code=$code, messageLength=$messageLength, message=$message)"
     }
