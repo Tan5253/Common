@@ -10,7 +10,7 @@ import java.nio.ByteBuffer
  * @param senderModuleId    命令发送模块号(2字节)
  * @param receiverModuleId  命令接收模块号(2字节)
  */
-open class Command(private val senderModuleId: Short, private val receiverModuleId: Short) {
+open class Command(val senderModuleId: Short, val receiverModuleId: Short) {
     // 命令头(1字节)
     private val header: Byte = 0x7e
     // 命令条数(1字节)，默认只发1条
