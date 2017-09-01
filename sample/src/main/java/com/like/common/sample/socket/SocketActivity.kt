@@ -7,10 +7,6 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.R
 import com.like.common.sample.databinding.ActivitySocketBinding
 import com.like.common.sample.socket.command.CommandManager
-import com.like.common.sample.socket.message.Message
-import com.like.common.util.RxBusTag
-import com.like.logger.Logger
-import com.like.rxbus.annotations.RxBusSubscribe
 
 class SocketActivity : BaseActivity() {
     private val commandManager: CommandManager by lazy { CommandManager() }
@@ -68,19 +64,19 @@ class SocketActivity : BaseActivity() {
     }
 
     fun openLights(view: View) {
-        commandManager.openLights()
+        commandManager.lightUp()
     }
 
     fun closeLights(view: View) {
-        commandManager.closeLights()
+        commandManager.lightOff()
     }
 
     fun increaseLightsBrightness(view: View) {
-        commandManager.increaseLightsBrightness()
+        commandManager.increaseBrightness()
     }
 
     fun reduceLightsBrightness(view: View) {
-        commandManager.reduceLightsBrightness()
+        commandManager.reduceBrightness()
     }
 
     fun setLightsColor(view: View) {
@@ -93,14 +89,6 @@ class SocketActivity : BaseActivity() {
 
     fun reduceVolume(view: View) {
         commandManager.reduceVolume()
-    }
-
-    @RxBusSubscribe(RxBusTag.TAG_TCP_RECEIVE_SUCCESS)
-    fun tcpReceivedMessage(data: ByteArray) {
-        val message = Message().parse(data)
-        Logger.i(message)
-        udpRcvStrBuf.append(message)
-        mBinding.txtRecv.text = "$udpRcvStrBuf\n"
     }
 
     override fun onDestroy() {
