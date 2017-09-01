@@ -55,6 +55,7 @@ class CommandManager {
     fun connect() {
         tcpClient.setIp("192.168.1.238")// todo 暂时写死，后面需要删除
 //        udpClient.start()
+        RxBus.register(this)
     }
 
     /**
@@ -189,6 +190,7 @@ class CommandManager {
     fun close() {
 //        udpClient.close()
         tcpClient.close()
+        RxBus.unregister(this)
     }
 
 //    @RxBusSubscribe(RxBusTag.TAG_UDP_RECEIVE_SUCCESS)
@@ -200,8 +202,7 @@ class CommandManager {
     @RxBusSubscribe(RxBusTag.TAG_TCP_RECEIVE_SUCCESS)
     fun tcpReceivedMessage(wrapMessage: WrapMessage) {
         Logger.printMap(commandCache)
-        val filter = commandCache.filter { it.key.time == wrapMessage.time }
-        filter.entries.forEach {
+        commandCache.filter { it.key.time == wrapMessage.time }.entries.forEach {
             if (wrapMessage.message.isRightMessage(it.key.command)) {
                 RxBus.post(it.value, it.key.command)
             }
