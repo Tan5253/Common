@@ -33,17 +33,14 @@ class Message {
     /**
      * 消息净荷(最大2000字节)
      */
-    private val message: ByteArray by lazy {
-        ByteArray(messageLength.toInt())
-    }
-
-    private val contentBuf: ByteBuffer = ByteBuffer.allocate(2048)
+    lateinit var message: ByteArray
 
     /**
      * 解析数据
      */
     fun parse(data: ByteArray): Message {
         Logger.d("解析Message之前：${HexUtil.encodeHexStr(data)}")
+        val contentBuf: ByteBuffer = ByteBuffer.allocate(2048)
         contentBuf.put(data)
         contentBuf.flip()
         header = contentBuf.get()
@@ -51,6 +48,7 @@ class Message {
         receiverModuleId = contentBuf.short
         code = contentBuf.get()
         messageLength = contentBuf.short
+        message = ByteArray(messageLength.toInt())
         contentBuf.get(message)
         contentBuf.clear()
         return this

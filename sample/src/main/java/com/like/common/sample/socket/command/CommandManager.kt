@@ -2,6 +2,7 @@ package com.like.common.sample.socket.command
 
 import com.like.common.sample.socket.client.TCPClient
 import com.like.common.sample.socket.client.UDPClient
+import com.like.common.sample.socket.message.RealMessageInfo
 import com.like.common.sample.socket.message.WrapMessage
 import com.like.common.util.RxBusTag
 import com.like.logger.Logger
@@ -204,7 +205,7 @@ class CommandManager {
         Logger.printMap(commandCache)
         commandCache.filter { it.key.time == wrapMessage.time }.entries.forEach {
             if (wrapMessage.message.isRightMessage(it.key.command)) {
-                RxBus.post(it.value, it.key.command)
+                RxBus.post(it.value, RealMessageInfo().parse(wrapMessage.message.message))
             }
             commandCache.remove(it.key)
             Logger.printMap(commandCache)

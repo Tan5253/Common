@@ -7,6 +7,9 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.R
 import com.like.common.sample.databinding.ActivitySocketBinding
 import com.like.common.sample.socket.command.CommandManager
+import com.like.common.sample.socket.message.RealMessageInfo
+import com.like.logger.Logger
+import com.like.rxbus.annotations.RxBusSubscribe
 
 class SocketActivity : BaseActivity() {
     private val commandManager: CommandManager by lazy { CommandManager() }
@@ -94,6 +97,11 @@ class SocketActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         commandManager.close()
+    }
+
+    @RxBusSubscribe(CommandManager.TAG_QUERY_VERSIONINFO)
+    fun TAG_QUERY_VERSIONINFO(realMessageInfo: RealMessageInfo) {
+        Logger.e(realMessageInfo)
     }
 
 }
