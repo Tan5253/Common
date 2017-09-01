@@ -1,5 +1,8 @@
-package com.like.common.sample.socket.command
+package com.like.common.sample.socket.message
 
+import com.like.common.sample.socket.command.Command
+import com.like.common.util.HexUtil
+import com.like.logger.Logger
 import java.nio.ByteBuffer
 
 /**
@@ -40,6 +43,7 @@ class Message {
      * 解析数据
      */
     fun parse(data: ByteArray): Message {
+        Logger.d("解析Message之前：${HexUtil.encodeHexStr(data)}")
         contentBuf.put(data)
         contentBuf.flip()
         header = contentBuf.get()

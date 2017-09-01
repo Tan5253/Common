@@ -7,7 +7,7 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.R
 import com.like.common.sample.databinding.ActivitySocketBinding
 import com.like.common.sample.socket.command.CommandManager
-import com.like.common.sample.socket.command.Message
+import com.like.common.sample.socket.message.Message
 import com.like.common.util.RxBusTag
 import com.like.logger.Logger
 import com.like.rxbus.annotations.RxBusSubscribe

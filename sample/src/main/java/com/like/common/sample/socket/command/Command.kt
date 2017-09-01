@@ -9,22 +9,22 @@ import java.nio.ByteBuffer
  *
  * @param senderModuleId    命令发送模块号(2字节)
  * @param receiverModuleId  命令接收模块号(2字节)
+ * @param code              命令码(1字节)
+ * @param parameter         参数净荷区(放参数的地方)
  */
-open class Command(val senderModuleId: Short, val receiverModuleId: Short) {
-    // 命令头(1字节)
-    private val header: Byte = 0x7e
-    // 命令条数(1字节)，默认只发1条
-    private val cmdNumber: Byte = 0x01
-    // 完整命令的缓存
-    private val contentBuf: ByteBuffer = ByteBuffer.allocate(2048)
+open class Command(val senderModuleId: Short, val receiverModuleId: Short, val code: Byte, var parameter: ByteArray = byteArrayOf()) {
+    companion object {
+        // 命令头(1字节)
+        private val header: Byte = 0x7e
+        // 命令条数(1字节)，默认只发1条
+        private val cmdNumber: Byte = 0x01
+    }
 
     /**
-     * 放入命令码和参数，并返回一条完整的命令数据
-     *
-     * @param code      命令码(1字节)
-     * @param parameter 参数净荷区
+     * 组合成一条完整的命令数据
      */
-    protected fun putData(code: Byte, parameter: ByteArray = byteArrayOf()): ByteArray {
+    fun getFullCommand(): ByteArray {
+        val contentBuf: ByteBuffer = ByteBuffer.allocate(2048)// 完整命令的缓存
         contentBuf.put(header)
         contentBuf.putShort(senderModuleId)
         contentBuf.putShort(receiverModuleId)
@@ -38,6 +38,7 @@ open class Command(val senderModuleId: Short, val receiverModuleId: Short) {
         contentBuf.clear()
         return result
     }
+
 }
 
 

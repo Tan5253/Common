@@ -1,5 +1,6 @@
-package com.like.common.util
+package com.like.common.sample.socket.client
 
+import com.like.common.util.RxBusTag
 import com.like.logger.Logger
 import com.like.rxbus.RxBus
 import java.net.DatagramPacket

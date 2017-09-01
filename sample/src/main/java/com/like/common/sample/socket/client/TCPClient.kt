@@ -1,6 +1,11 @@
-package com.like.common.util
+package com.like.common.sample.socket.client
 
 import android.text.TextUtils
+import com.like.common.sample.socket.command.WrapCommand
+import com.like.common.sample.socket.message.Message
+import com.like.common.sample.socket.message.WrapMessage
+import com.like.common.util.HexUtil
+import com.like.common.util.RxBusTag
 import com.like.logger.Logger
 import com.like.rxbus.RxBus
 import java.io.DataInputStream
@@ -27,29 +32,10 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 2048, p
         this.ip = ip
     }
 
-    /**
-     * 数组转换成十六进制字符串
-     */
-    private fun bytesToHexString(bArray: ByteArray): String {
-        val sb = StringBuffer(bArray.size)
-        var sTemp: String
-        for (i in bArray.indices) {
-            sTemp = Integer.toHexString(0xFF and bArray[i].toInt())
-            if (sTemp.length < 2)
-                sb.append(0)
-            sb.append("${sTemp.toUpperCase()},")
-        }
-        return sb.toString()
-    }
-
-    fun send(message: Any) {
+    fun send(cotent: Any) {
         if (TextUtils.isEmpty(ip) || port <= 0) {
             Logger.e("TCP发送消息失败，ip或者port无效")
             return
-        }
-        when (message) {
-            is String -> Logger.i("TCP发送消息$message")
-            is ByteArray -> Logger.i("TCP发送消息${bytesToHexString(message)}")
         }
         executors.execute {
             val buf = ByteArray(readBufferSize)
@@ -63,9 +49,9 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 2048, p
 
                 // 发送数据
                 dos = DataOutputStream(socket.getOutputStream())
-                when (message) {
-                    is String -> dos.writeUTF(message)
-                    is ByteArray -> dos.write(message)
+                when (cotent) {
+                    is String -> dos.writeUTF(cotent.apply { Logger.i("TCP发送消息$this") })
+                    is WrapCommand -> dos.write(cotent.command.getFullCommand().apply { Logger.i("TCP发送消息${HexUtil.encodeHexStr(this)}") })
                 }
                 dos.flush()
 
@@ -75,7 +61,7 @@ class TCPClient(private val port: Int, private val readBufferSize: Int = 2048, p
                 Logger.i("${Thread.currentThread().name}——TCP监听返回数据中……")
                 val length = dis.read(buf)
                 if (length > 0) {
-                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, buf.copyOf(length))
+                    RxBus.post(RxBusTag.TAG_TCP_RECEIVE_SUCCESS, WrapMessage(Message().parse(buf.copyOf(length))).apply { time = (cotent as WrapCommand).time })
                     Logger.i("${Thread.currentThread().name}——TCP接收到消息：${String(buf, 0, length, Charsets.UTF_8)}")
                 }
                 Logger.i("${Thread.currentThread().name}——TCP接收完毕")
