@@ -64,10 +64,6 @@ class Message {
         return isHeaderRight && isReceiverModuleIdRight && isSenderModuleIdRight
     }
 
-    override fun toString(): String {
-        return "Message(header=$header, senderModuleId=$senderModuleId, receiverModuleId=$receiverModuleId, code=$code, messageLength=$messageLength, message=$message)"
-    }
-
 }
 
 
