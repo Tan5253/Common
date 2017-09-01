@@ -4,7 +4,7 @@ import java.nio.ByteBuffer
 
 class RealMessageInfo {
     var code: Byte = 0// 0：成功；其它：失败；
-    var data: String = ""// 真正的数据
+    var data: String = ""// 真正的数据，有可能是json字符串，有可能是错误信息。
 
     fun parse(dataBytes: ByteArray): RealMessageInfo {
         val contentBuf: ByteBuffer = ByteBuffer.allocate(2048)
