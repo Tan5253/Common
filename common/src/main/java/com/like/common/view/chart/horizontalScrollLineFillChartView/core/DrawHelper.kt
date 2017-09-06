@@ -44,18 +44,18 @@ class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
         val text = config.lineDataList[index].xData.toString()
         canvas.drawText(
                 text,
-                config.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,
+                config.pointList[index].x - DrawTextUtils.getTextlength(paint, text) / 2,
                 config.xAxisTextStartY,
                 paint
         )
     }
 
     inline fun drawPointText(index: Int, paint: Paint) {
-        val text = config.lineDataList[index].yData.toString()
+        val text = "${config.lineDataList[index].yData}度"
         canvas.drawText(
                 text,
-                config.pointList [index].x - DrawTextUtils.getTextlength(paint, text) / 2,
-                config.pointList [index].y - DrawTextUtils.getTextHeight(paint) - config.spacingPointTextBottom + DrawTextUtils.getTextBaseLine(paint),
+                config.pointList[index].x - DrawTextUtils.getTextlength(paint, text) / 2,
+                config.pointList[index].y - DrawTextUtils.getTextHeight(paint) - config.spacingPointTextBottom + DrawTextUtils.getTextBaseLine(paint),
                 paint
         )
     }

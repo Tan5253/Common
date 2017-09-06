@@ -111,7 +111,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="kw/h"
+                            android:text="度"
                             android:textColor="#606060"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -183,7 +183,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="kw/h"
+                            android:text="度"
                             android:textColor="#606060"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -256,7 +256,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="kw/h"
+                            android:text="度"
                             android:textColor="#606060"
                             android:textSize="12sp" />
                     </LinearLayout>
