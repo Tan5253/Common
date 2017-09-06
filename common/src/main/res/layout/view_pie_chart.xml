@@ -72,7 +72,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:orientation="vertical"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
@@ -99,19 +99,18 @@
                             tools:text="12月" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
                             android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(0).data1)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
 
                         <TextView
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:text="kw/h"
                             android:textColor="#606060"
                             android:textSize="12sp" />
@@ -129,19 +128,18 @@
                             android:visibility="invisible" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
                             android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(0).data2)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
 
                         <TextView
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:text="元"
                             android:textColor="#606060"
                             android:textSize="12sp" />
@@ -173,19 +171,18 @@
                             tools:text="5月" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
                             android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(1).data1)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
 
                         <TextView
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:text="kw/h"
                             android:textColor="#606060"
                             android:textSize="12sp" />
@@ -203,19 +200,19 @@
                             android:visibility="invisible" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
                             android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(1).data2)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
 
+
                         <TextView
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:text="元"
                             android:textColor="#606060"
                             android:textSize="12sp" />
@@ -247,19 +244,18 @@
                             tools:text="6月" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
                             android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(2).data1)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
 
                         <TextView
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:text="kw/h"
                             android:textColor="#606060"
                             android:textSize="12sp" />
@@ -277,19 +273,19 @@
                             android:visibility="invisible" />
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
                             android:text="@{MoneyFormatUtils.formatTwoDecimals(pieData.monthDataList.get(2).data2)}"
                             android:textColor="#303030"
                             android:textSize="14sp"
                             tools:text="240.00" />
 
+
                         <TextView
-                            android:layout_width="40dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:text="元"
                             android:textColor="#606060"
                             android:textSize="12sp" />
