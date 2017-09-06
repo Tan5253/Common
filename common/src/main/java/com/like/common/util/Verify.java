@@ -26,7 +26,8 @@ public class Verify {
             ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "请输入手机号码");
             return false;
         }
-        String reg = "(^13\\d{9}$)|(^14[5,7]\\d{8}$)|(^15[0,1,2,3,5,6,7,8,9]\\d{8}$)|(^17[6,7,8]\\d{8}$)|(^18\\d{9}$)";
+//        String reg = "(^13\\d{9}$)|(^14[5,7]\\d{8}$)|(^15[0,1,2,3,5,6,7,8,9]\\d{8}$)|(^17[6,7,8]\\d{8}$)|(^18\\d{9}$)";
+        String reg = "(^1[3,4,5,7,8]\\d{9}$)";
         Pattern p = Pattern.compile(reg);
         Matcher m = p.matcher(phoneNumber);
         result = m.matches();
