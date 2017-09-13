@@ -3,6 +3,7 @@ package com.like.common.view.chart.horizontalScrollLineFillChartView.core
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.like.common.util.DrawTextUtils
+import com.like.common.util.MoneyFormatUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
@@ -51,7 +52,7 @@ class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
     }
 
     inline fun drawPointText(index: Int, paint: Paint) {
-        val text = "${config.lineDataList[index].yData}度"
+        val text = "${MoneyFormatUtils.formatTwoDecimals(config.lineDataList[index].yData.toDouble())}度"
         canvas.drawText(
                 text,
                 config.pointList[index].x - DrawTextUtils.getTextlength(paint, text) / 2,

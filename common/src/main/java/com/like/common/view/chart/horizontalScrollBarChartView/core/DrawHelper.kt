@@ -3,6 +3,7 @@ package com.like.common.view.chart.horizontalScrollBarChartView.core
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.like.common.util.DrawTextUtils
+import com.like.common.util.MoneyFormatUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val canvas: Canvas, val config: BarChartConfig) {
@@ -37,7 +38,7 @@ class DrawHelper(val canvas: Canvas, val config: BarChartConfig) {
     }
 
     inline fun drawElectricity(barIndex: Int, paint: Paint) {
-        val text = config.barDataList[barIndex].yData.toString()
+        val text = MoneyFormatUtils.formatTwoDecimals(config.barDataList[barIndex].yData.toDouble())
         canvas.drawText(
                 text,
                 config.spacingBetweenTwoBars + barIndex * barAndSpacingWidth + barAndSpacingWidth / 2 - DrawTextUtils.getTextlength(paint, text) / 2,
