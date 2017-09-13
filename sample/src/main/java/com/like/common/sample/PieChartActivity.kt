@@ -43,9 +43,9 @@ class PieChartActivity : BaseActivity() {
         mBinding.viewPieChart.flEmptyViewContainer.visibility = View.VISIBLE
     }
 
-    fun getSimulatedData1(): PieData = PieData(2015, 1, listOf(MonthData(1, 100f, 100f), MonthData(2, 200f, 200f), MonthData(3, 300f, 300f)))
+    fun getSimulatedData1(): PieData = PieData(2015, 1, listOf(MonthData(1, 100f, 100f, "100.00", "100.00"), MonthData(2, 200f, 200f, "200.00", "200.00"), MonthData(3, 300f, 300f, "300.00", "300.00")))
 
-    fun getSimulatedData2(): PieData = PieData(2016, 2, listOf(MonthData(4, 400f, 400f), MonthData(5, 400f, 400f), MonthData(6, 400f, 400f)))
+    fun getSimulatedData2(): PieData = PieData(2016, 2, listOf(MonthData(4, 400f, 400f, "400.00", "400.00"), MonthData(5, 400f, 400f, "400.00", "400.00"), MonthData(6, 400f, 400f, "400.00", "400.00")))
 
-    fun getSimulatedData3(): PieData = PieData(2017, 3, listOf(MonthData(7, 700f, 700f), MonthData(8, 1400f, 1400f), MonthData(9, 700f, 700f)))
+    fun getSimulatedData3(): PieData = PieData(2017, 3, listOf(MonthData(7, 700f, 700f, "700.00", "700.00"), MonthData(8, 1400f, 1400f, "1400.00", "1400.00"), MonthData(9, 700f, 700f, "700.00", "700.00")))
 }
