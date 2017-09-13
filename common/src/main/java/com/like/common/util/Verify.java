@@ -54,6 +54,10 @@ public class Verify {
             ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "密码长度至少6位");
             return false;
         }
+        if (pwd.length() > 20) {
+            ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "密码长度最多20位");
+            return false;
+        }
         String reg = "^\\S{6,}$";
         Pattern p = Pattern.compile(reg);
         Matcher m = p.matcher(pwd);
@@ -81,6 +85,10 @@ public class Verify {
             ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "登录密码至少6位");
             return false;
         }
+        if (pwd.length() > 20) {
+            ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "登录密码最多20位");
+            return false;
+        }
         String reg = "^\\S{6,}$";
         Pattern p = Pattern.compile(reg);
         Matcher m = p.matcher(pwd);
@@ -92,7 +100,7 @@ public class Verify {
     }
 
     /**
-     * 验证新支付密码，至少6位字母、数字、下划线
+     * 验证新支付密码，6位数字
      *
      * @param context
      * @param pwd
