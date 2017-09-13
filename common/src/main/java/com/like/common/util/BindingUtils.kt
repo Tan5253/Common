@@ -9,7 +9,8 @@ object BindingUtils {
 
     // 显示年份文本
     @BindingAdapter("pieChartViewShowYear")
-    @JvmStatic fun pieChartViewShowYear(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowYear(tv: TextView, data: PieData?) {
         try {
             tv.text = if (data != null && data.year > 0) {
                 data.year.toString()
@@ -23,7 +24,8 @@ object BindingUtils {
 
     // 显示季度文本
     @BindingAdapter("pieChartViewShowQuarter")
-    @JvmStatic fun pieChartViewShowQuarter(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowQuarter(tv: TextView, data: PieData?) {
         try {
             tv.text = when (data?.quarter) {
                 1 -> "一季度"
@@ -39,19 +41,22 @@ object BindingUtils {
 
     // 显示月份文本
     @BindingAdapter("pieChartViewShowMonth0")
-    @JvmStatic fun pieChartViewShowMonth0(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonth0(tv: TextView, data: PieData?) {
         pieChartViewShowMonth(tv, data?.monthDataList?.get(0))
     }
 
     // 显示月份文本
     @BindingAdapter("pieChartViewShowMonth1")
-    @JvmStatic fun pieChartViewShowMonth1(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonth1(tv: TextView, data: PieData?) {
         pieChartViewShowMonth(tv, data?.monthDataList?.get(1))
     }
 
     // 显示月份文本
     @BindingAdapter("pieChartViewShowMonth2")
-    @JvmStatic fun pieChartViewShowMonth2(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonth2(tv: TextView, data: PieData?) {
         pieChartViewShowMonth(tv, data?.monthDataList?.get(2))
     }
 
@@ -69,19 +74,22 @@ object BindingUtils {
 
     // 显示年份占比标签文本
     @BindingAdapter("pieChartViewShowMonthRatioText0")
-    @JvmStatic fun pieChartViewShowMonthRatioText0(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonthRatioText0(tv: TextView, data: PieData?) {
         pieChartViewShowMonthRatioText(tv, data?.monthDataList?.get(0))
     }
 
     // 显示年份占比标签文本
     @BindingAdapter("pieChartViewShowMonthRatioText1")
-    @JvmStatic fun pieChartViewShowMonthRatioText1(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonthRatioText1(tv: TextView, data: PieData?) {
         pieChartViewShowMonthRatioText(tv, data?.monthDataList?.get(1))
     }
 
     // 显示年份占比标签文本
     @BindingAdapter("pieChartViewShowMonthRatioText2")
-    @JvmStatic fun pieChartViewShowMonthRatioText2(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonthRatioText2(tv: TextView, data: PieData?) {
         pieChartViewShowMonthRatioText(tv, data?.monthDataList?.get(2))
     }
 
@@ -99,19 +107,22 @@ object BindingUtils {
 
     // 显示年份占比文本
     @BindingAdapter("pieChartViewShowMonthRatio0")
-    @JvmStatic fun pieChartViewShowMonthRatio0(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonthRatio0(tv: TextView, data: PieData?) {
         pieChartViewShowMonthRatio(tv, data?.monthDataList, 0)
     }
 
     // 显示年份占比文本
     @BindingAdapter("pieChartViewShowMonthRatio1")
-    @JvmStatic fun pieChartViewShowMonthRatio1(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonthRatio1(tv: TextView, data: PieData?) {
         pieChartViewShowMonthRatio(tv, data?.monthDataList, 1)
     }
 
     // 显示年份占比文本
     @BindingAdapter("pieChartViewShowMonthRatio2")
-    @JvmStatic fun pieChartViewShowMonthRatio2(tv: TextView, data: PieData?) {
+    @JvmStatic
+    fun pieChartViewShowMonthRatio2(tv: TextView, data: PieData?) {
         pieChartViewShowMonthRatio(tv, data?.monthDataList, 2)
     }
 
@@ -119,7 +130,7 @@ object BindingUtils {
         try {
             tv.text = if (monthDataList != null) {
                 val totalElectricity = monthDataList.sumByDouble { it.data1.toDouble() }.toFloat()
-                "${MoneyFormatUtils.formatOneDecimals((monthDataList[index].data1 / totalElectricity).toDouble() * 100)}%"
+                "${MoneyFormatUtils.formatTwoDecimals((monthDataList[index].data1 / totalElectricity).toDouble() * 100)}%"
             } else {
                 ""
             }
