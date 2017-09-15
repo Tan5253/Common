@@ -42,7 +42,13 @@ class TwoLineChartConfig(val context: Context) {
     // 线条图距离底部的间隔
     val spacingLineViewBottom: Float = DimensionUtils.dp2px(context, 50f).toFloat()
     // 点圆半径
-    val pointCircleRadius: Float = DimensionUtils.dp2px(context, 2.5f).toFloat()
+    val pointCircleRadius: Float = DimensionUtils.dp2px(context, 5f).toFloat()
+    // 空心点圆半径
+    val hollowPointCircleRadius: Float = DimensionUtils.dp2px(context, 4f).toFloat()
+    // 空心点圆宽度
+    val hollowPointCircleWidth: Float = DimensionUtils.dp2px(context, 2f).toFloat()
+    // 路径宽度
+    val pathWidth: Float = DimensionUtils.dp2px(context, 2f).toFloat()
     // 触摸点的数值显示区域的宽
     val touchPointRectWidth: Float = DimensionUtils.dp2px(context, 40f).toFloat()
     // 触摸点的数值显示区域的高

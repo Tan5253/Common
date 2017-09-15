@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import com.like.common.util.DrawTextUtils
-import com.like.common.util.MoneyFormatUtils
 
 @Suppress("NOTHING_TO_INLINE")
 class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
@@ -45,20 +44,51 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
         }
     }
 
-    inline fun drawPoint1(index: Int, paint: Paint) = canvas.drawCircle(
-            config.pointList1[index].x,
-            config.pointList1[index].y,
-            config.pointCircleRadius,
-            paint
-    )
+    inline fun drawPoint1(index: Int, paint: Paint) {
+        canvas.drawCircle(
+                config.pointList1[index].x,
+                config.pointList1[index].y,
+                config.pointCircleRadius,
+                paint
+        )
+    }
+
+    inline fun drawHollowPoint1(index: Int, hollowPaint: Paint, hollowFillPaint: Paint) {
+        canvas.drawCircle(
+                config.pointList1[index].x,
+                config.pointList1[index].y,
+                config.hollowPointCircleRadius,
+                hollowPaint
+        )
+        canvas.drawCircle(
+                config.pointList1[index].x,
+                config.pointList1[index].y,
+                config.hollowPointCircleRadius - hollowPaint.strokeWidth,
+                hollowFillPaint
+        )
+    }
 
     inline fun drawPoint2(index: Int, paint: Paint) {
-
         canvas.drawCircle(
                 config.pointList2[index].x,
                 config.pointList2[index].y,
                 config.pointCircleRadius,
                 paint
+        )
+    }
+
+    inline fun drawHollowPoint2(index: Int, hollowPaint: Paint, hollowFillPaint: Paint) {
+        canvas.drawCircle(
+                config.pointList2[index].x,
+                config.pointList2[index].y,
+                config.hollowPointCircleRadius,
+                hollowPaint
+        )
+        canvas.drawCircle(
+                config.pointList2[index].x,
+                config.pointList2[index].y,
+                config.hollowPointCircleRadius - hollowPaint.strokeWidth,
+                hollowFillPaint
         )
     }
 
@@ -120,9 +150,7 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
     inline fun drawTouchPointText1(paint: Paint) {
         if (config.touchPosition != -1) {
             val touchPoint1 = config.pointList1[config.touchPosition]
-            val touchData1 = config.dataList[config.touchPosition].ratio1
-            // 这里取绝对值，因为正负靠背景来区分了
-            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData1.toDouble()))
+            val text = config.dataList[config.touchPosition].showData1
             canvas.drawText(
                     text,
                     touchPoint1.x - DrawTextUtils.getTextlength(paint, text) / 2,
@@ -135,9 +163,7 @@ class DrawHelper(val canvas: Canvas, val config: TwoLineChartConfig) {
     inline fun drawTouchPointText2(paint: Paint) {
         if (config.touchPosition != -1) {
             val touchPoint2 = config.pointList2[config.touchPosition]
-            val touchData2 = config.dataList[config.touchPosition].ratio2
-            // 这里取绝对值，因为正负靠背景来区分了
-            val text = MoneyFormatUtils.formatTwoDecimals(Math.abs(touchData2.toDouble()))
+            val text = config.dataList[config.touchPosition].showData2
             canvas.drawText(
                     text,
                     touchPoint2.x - DrawTextUtils.getTextlength(paint, text) / 2,

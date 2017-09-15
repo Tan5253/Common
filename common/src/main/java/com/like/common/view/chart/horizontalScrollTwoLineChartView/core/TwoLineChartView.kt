@@ -17,6 +17,8 @@ class TwoLineChartView(context: Context) : View(context) {
     private val mLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPathPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPointPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mHollowPointPaint = Paint(Paint.ANTI_ALIAS_FLAG)// 画空心圆点
+    private val mHollowPointFillPaint = Paint(Paint.ANTI_ALIAS_FLAG)// 画空心圆点时填充中心
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var currentTouchX = -1f
@@ -31,9 +33,15 @@ class TwoLineChartView(context: Context) : View(context) {
         mLinePaint.color = TwoLineChartConfig.DEFAULT_OTHER_LINE_COLOR
 
         mPathPaint.style = Paint.Style.STROKE
-        mPathPaint.strokeWidth = 5f
+        mPathPaint.strokeWidth = mConfig.pathWidth
 
         mPointPaint.style = Paint.Style.FILL
+
+        mHollowPointFillPaint.style = Paint.Style.FILL
+        mHollowPointFillPaint.color = TwoLineChartConfig.DEFAULT_BG_COLOR
+
+        mHollowPointPaint.style = Paint.Style.STROKE
+        mHollowPointPaint.strokeWidth = mConfig.hollowPointCircleWidth
 
         mTextPaint.style = Paint.Style.FILL
         mTextPaint.textSize = mConfig.textSize
@@ -89,35 +97,35 @@ class TwoLineChartView(context: Context) : View(context) {
         // 画竖直的触摸线
         mDrawHelper.drawTouchLine(currentTouchX, mLinePaint)
 
-        // 画折线1的值及其背景
-        if (mConfig.hasLine1()) {
-            // 画触摸线上的值的背景，正数为红色背景，负数为绿色背景
-            val touchData1 = mDataList[mConfig.touchPosition].ratio1
-            when {
-                touchData1 > 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
-                touchData1 < 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
-                else -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
-            }
-            mDrawHelper.drawTouchPointRect1(mPointPaint)
-            // 画触摸线上的值
-            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_1
-            mDrawHelper.drawTouchPointText1(mTextPaint)
-        }
-        // 画折线2的值及其背景
-        if (mConfig.hasLine2()) {
-            // 画触摸线上的值的背景，正数为红色背景，负数为绿色背景
-            val touchData2 = mDataList[mConfig.touchPosition].ratio2
-            when {
-                touchData2 > 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
-                touchData2 < 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
-                else -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
-            }
-            mDrawHelper.drawTouchPointRect2(mPointPaint)
-
-            // 画触摸线上的值
-            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_1
-            mDrawHelper.drawTouchPointText2(mTextPaint)
-        }
+//        // 画折线1的值及其背景
+//        if (mConfig.hasLine1()) {
+//            // 画触摸线上的值的背景，正数为红色背景，负数为绿色背景
+//            val touchData1 = mDataList[mConfig.touchPosition].ratio1
+//            when {
+//                touchData1 > 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
+//                touchData1 < 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
+//                else -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
+//            }
+//            mDrawHelper.drawTouchPointRect1(mPointPaint)
+//            // 画触摸线上的值
+//            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_1
+//            mDrawHelper.drawTouchPointText1(mTextPaint)
+//        }
+//        // 画折线2的值及其背景
+//        if (mConfig.hasLine2()) {
+//            // 画触摸线上的值的背景，正数为红色背景，负数为绿色背景
+//            val touchData2 = mDataList[mConfig.touchPosition].ratio2
+//            when {
+//                touchData2 > 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_1
+//                touchData2 < 0 -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_2
+//                else -> mPointPaint.color = TwoLineChartConfig.DEFAULT_TEXT_BG_COLOR_3
+//            }
+//            mDrawHelper.drawTouchPointRect2(mPointPaint)
+//
+//            // 画触摸线上的值
+//            mTextPaint.color = TwoLineChartConfig.DEFAULT_TEXT_COLOR_1
+//            mDrawHelper.drawTouchPointText2(mTextPaint)
+//        }
         // 发送当前触摸点的位置
         if (mConfig.touchPosition != preTouchPosition) {
             listener?.onClick(mConfig.touchPosition)
@@ -167,12 +175,19 @@ class TwoLineChartView(context: Context) : View(context) {
      */
     private fun drawPath1() {
         if (mConfig.hasLine1()) {
-            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
-            for (index in 0 until mConfig.pointList1.size) {
-                mDrawHelper.drawPoint1(index, mPointPaint)
-            }
+            // 画折线路径
             mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
             mDrawHelper.drawPath1(mPathPaint)
+            // 画点
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
+            mHollowPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_1
+            for (index in 0 until mConfig.pointList1.size) {
+                if (mConfig.dataList[index].showData1 == "--") {
+                    mDrawHelper.drawHollowPoint1(index, mHollowPointFillPaint, mHollowPointPaint)// 画空心点圆
+                } else {
+                    mDrawHelper.drawPoint1(index, mPointPaint)// 画点圆
+                }
+            }
         }
     }
 
@@ -181,13 +196,19 @@ class TwoLineChartView(context: Context) : View(context) {
      */
     private fun drawPath2() {
         if (mConfig.hasLine2()) {
-            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
-            for (index in 0 until mConfig.pointList2.size) {
-                mDrawHelper.drawPoint2(index, mPointPaint)// 画点圆
-            }
             // 画折线路径
             mPathPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
             mDrawHelper.drawPath2(mPathPaint)
+            // 画点
+            mPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+            mHollowPointPaint.color = TwoLineChartConfig.DEFAULT_LINE_COLOR_2
+            for (index in 0 until mConfig.pointList2.size) {
+                if (mConfig.dataList[index].showData2 == "--") {
+                    mDrawHelper.drawHollowPoint2(index, mHollowPointFillPaint, mHollowPointPaint)// 画空心点圆
+                } else {
+                    mDrawHelper.drawPoint2(index, mPointPaint)// 画点圆
+                }
+            }
         }
     }
 

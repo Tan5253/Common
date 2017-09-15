@@ -54,14 +54,14 @@ class TwoLineChartActivity : BaseActivity() {
     }
 
     fun getSimulatedData1(): List<TwoLineData> {
-//        return listOf(
-//                TwoLineData(1, 100f, 0f),
-//                TwoLineData(2, 50f, 20f),
-//                TwoLineData(3, 100f, 10f),
-//                TwoLineData(4, 10f, 50f),
-//                TwoLineData(5, 50f, 20f),
-//                TwoLineData(6, 100f, 10f)
-//        )
+        return listOf(
+                TwoLineData(1, 0f, 0f, showData2 = "--"),
+                TwoLineData(2, 50f, -20f),
+                TwoLineData(3, 100f, 10f),
+                TwoLineData(4, 0f, 50f, "--"),
+                TwoLineData(5, 0f, 0f, "--"),
+                TwoLineData(6, 0f, 0f, "--", "--")
+        )
 //        return listOf(
 //                TwoLineData(1, ratio2 = 0f),
 //                TwoLineData(2, ratio2 = 20f),
@@ -78,14 +78,14 @@ class TwoLineChartActivity : BaseActivity() {
 //                TwoLineData(5, ratio2 = 0f),
 //                TwoLineData(6, ratio2 = 0f)
 //        )
-        return listOf(
-                TwoLineData(1, 0f),
-                TwoLineData(2, 0f),
-                TwoLineData(3, 0f),
-                TwoLineData(4, 0f),
-                TwoLineData(5, 0f),
-                TwoLineData(6, 0f)
-        )
+//        return listOf(
+//                TwoLineData(1, 0f),
+//                TwoLineData(2, 0f),
+//                TwoLineData(3, 0f),
+//                TwoLineData(4, 0f),
+//                TwoLineData(5, 0f),
+//                TwoLineData(6, 0f)
+//        )
 //        return listOf(
 //                TwoLineData(1, -10f),
 //                TwoLineData(2, 20f),
@@ -100,7 +100,7 @@ class TwoLineChartActivity : BaseActivity() {
         return listOf(
                 TwoLineData(1, ratio2 = 20f),
                 TwoLineData(2, ratio2 = -10f),
-                TwoLineData(3, ratio2 = 0f),
+                TwoLineData(3, ratio2 = 0f, showData2 = "--"),
                 TwoLineData(4, ratio2 = -20f)
         )
     }
@@ -109,7 +109,7 @@ class TwoLineChartActivity : BaseActivity() {
         return listOf(
                 TwoLineData(1, -50f),
                 TwoLineData(2, -100f),
-                TwoLineData(3, -10f)
+                TwoLineData(3, 0f, showData1 = "--")
         )
     }
 
