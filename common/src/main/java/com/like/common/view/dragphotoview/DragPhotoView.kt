@@ -61,13 +61,13 @@ class DragPhotoView : PhotoView {
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
-                    if (mAnimationManager.mTranslateY >= 0 && event.pointerCount == 1) {
+                    if (mAnimationManager.mTranslateY >= 0f && event.pointerCount == 1) {
                         onEventMove(event)
                         return true
                     }
 
                     // 防止下拉的时候双手缩放
-                    if (mAnimationManager.mTranslateY >= 0 && mAnimationManager.mScale < 0.95f) {
+                    if (mAnimationManager.mTranslateY >= 0f && mAnimationManager.mScale < 0.95f) {
                         return true
                     }
                 }
