@@ -56,16 +56,14 @@ class DragPhotoView : PhotoView {
                     canFinish = !canFinish
                 }
                 MotionEvent.ACTION_MOVE -> {
+                    Logger.e("mTranslateX=${mAnimationManager.mTranslateX}")
                     // ViewPager的事件
                     if (mAnimationManager.mTranslateY == 0f && mAnimationManager.mTranslateX != 0f) {
-                        Logger.d("1 mTranslateX = " + mAnimationManager.mTranslateX)
-                        mAnimationManager.mScale = 1f
                         return super.dispatchTouchEvent(event)
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
                     if (mAnimationManager.mTranslateY >= 0f && event.pointerCount == 1) {
-                        Logger.d("2 mTranslateX = " + mAnimationManager.mTranslateX)
                         mAnimationManager.updateTranslateX(event.x - mDownX)
                                 .updateTranslateY(event.y - mDownY)
                                 .updateScale()
@@ -76,7 +74,6 @@ class DragPhotoView : PhotoView {
 
                     // 防止下拉的时候双手缩放
                     if (mAnimationManager.mTranslateY >= 0f && mAnimationManager.mScale < 0.95f) {
-                        Logger.d("3 mTranslateX = " + mAnimationManager.mTranslateX)
                         return true
                     }
                 }
@@ -86,7 +83,7 @@ class DragPhotoView : PhotoView {
                         if (mAnimationManager.mTranslateY > AnimationManager.MAX_TRANSLATE_Y) {
                             mExitListener?.onExit(this, mAnimationManager.mTranslateX, mAnimationManager.mTranslateY, mWidth, mHeight)
                         } else {
-                            mAnimationManager.start()
+                            mAnimationManager.restoreSmooth()
                         }
                         // 延时判断是否可以退出
                         postDelayed({

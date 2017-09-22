@@ -17,6 +17,7 @@ class AnimationManager(val view: DragPhotoView) {
     var mTranslateY: Float = 0f
     var mScale: Float = 1f
     var mMinScale: Float = 0.5f
+    var isStart: Boolean = false
 
     fun updateTranslateX(translateX: Float): AnimationManager {
         mTranslateX = translateX
@@ -50,9 +51,30 @@ class AnimationManager(val view: DragPhotoView) {
         return this
     }
 
-    fun start() {
-        animatorSet.play(getScaleAnimation()).with(getTranslateXAnimation()).with(getTranslateYAnimation()).with(getAlphaAnimation())
-        animatorSet.start()
+    fun restoreImmediately() {
+        mAlpha = 255
+        mTranslateX = 0f
+        mTranslateY = 0f
+        mScale = 1f
+        isStart = false
+        view.invalidate()
+    }
+
+    /**
+     * 启动还原动画
+     */
+    fun restoreSmooth() {
+        if (!isStart) {
+            isStart = true
+            animatorSet.play(getScaleAnimation()).with(getTranslateXAnimation()).with(getTranslateYAnimation()).with(getAlphaAnimation())
+            animatorSet.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    super.onAnimationEnd(animation)
+                    isStart = false
+                }
+            })
+            animatorSet.start()
+        }
     }
 
     fun finish() {
