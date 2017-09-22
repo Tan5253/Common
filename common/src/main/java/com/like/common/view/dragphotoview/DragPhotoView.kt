@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
+import com.like.common.util.PhoneUtils
 
 class DragPhotoView : PhotoView {
     companion object {
@@ -18,8 +19,10 @@ class DragPhotoView : PhotoView {
     var mDownX: Float = 0f
     var mDownY: Float = 0f
 
-    var mWidth: Int = 0
-    var mHeight: Int = 0
+    val screenWidth = PhoneUtils.getInstance(context).mPhoneStatus.screenWidth.toFloat()
+    val screenHeight = PhoneUtils.getInstance(context).mPhoneStatus.screenHeight.toFloat()
+    var mWidth: Float = 0f
+    var mHeight: Float = 0f
 
     var canFinish: Boolean = false
     var isMyTouchEvent: Boolean = false// 是否是PhotoView的touch事件
@@ -35,16 +38,16 @@ class DragPhotoView : PhotoView {
 
     override fun onDraw(canvas: Canvas?) {
         mPaint.alpha = mAnimationManager.mAlpha
-        canvas?.drawRect(0f, 0f, 2000f, 3000f, mPaint)
+        canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
         canvas?.translate(mAnimationManager.mTranslateX, mAnimationManager.mTranslateY)
-        canvas?.scale(mAnimationManager.mScale, mAnimationManager.mScale, mWidth / 2.toFloat(), mHeight / 2.toFloat())
+        canvas?.scale(mAnimationManager.mScale, mAnimationManager.mScale, mWidth / 2, mHeight / 2)
         super.onDraw(canvas)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        mWidth = w
-        mHeight = h
+        mWidth = w.toFloat()
+        mHeight = h.toFloat()
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
