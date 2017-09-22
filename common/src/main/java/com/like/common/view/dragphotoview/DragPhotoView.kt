@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.util.PhoneUtils
+import com.like.logger.Logger
 
 class DragPhotoView : PhotoView {
     val mPaint: Paint = Paint().apply { color = Color.BLACK }
@@ -50,31 +51,43 @@ class DragPhotoView : PhotoView {
         if (scale == 1f) {
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    onEventDown(event)
+                    mDownX = event.x
+                    mDownY = event.y
                     canFinish = !canFinish
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
                     if (mAnimationManager.mTranslateY == 0f && mAnimationManager.mTranslateX != 0f) {
+                        Logger.d("1 mTranslateX = " + mAnimationManager.mTranslateX)
                         mAnimationManager.mScale = 1f
                         return super.dispatchTouchEvent(event)
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
                     if (mAnimationManager.mTranslateY >= 0f && event.pointerCount == 1) {
-                        onEventMove(event)
+                        Logger.d("2 mTranslateX = " + mAnimationManager.mTranslateX)
+                        mAnimationManager.updateTranslateX(event.x - mDownX)
+                                .updateTranslateY(event.y - mDownY)
+                                .updateScale()
+                                .updateAlpha()
+                        invalidate()
                         return true
                     }
 
                     // 防止下拉的时候双手缩放
                     if (mAnimationManager.mTranslateY >= 0f && mAnimationManager.mScale < 0.95f) {
+                        Logger.d("3 mTranslateX = " + mAnimationManager.mTranslateX)
                         return true
                     }
                 }
                 MotionEvent.ACTION_UP -> {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
-                        onEventUp(event)
+                        if (mAnimationManager.mTranslateY > AnimationManager.MAX_TRANSLATE_Y) {
+                            mExitListener?.onExit(this, mAnimationManager.mTranslateX, mAnimationManager.mTranslateY, mWidth, mHeight)
+                        } else {
+                            mAnimationManager.start()
+                        }
                         // 延时判断是否可以退出
                         postDelayed({
                             if (mAnimationManager.mTranslateX == 0f && mAnimationManager.mTranslateY == 0f && canFinish) {
@@ -87,27 +100,6 @@ class DragPhotoView : PhotoView {
             }
         }
         return super.dispatchTouchEvent(event)
-    }
-
-    private fun onEventDown(event: MotionEvent) {
-        mDownX = event.x
-        mDownY = event.y
-    }
-
-    private fun onEventMove(event: MotionEvent) {
-        mAnimationManager.updateTranslateX(event.x - mDownX)
-                .updateTranslateY(event.y - mDownY)
-                .updateScale()
-                .updateAlpha()
-        invalidate()
-    }
-
-    private fun onEventUp(event: MotionEvent) {
-        if (mAnimationManager.mTranslateY > AnimationManager.MAX_TRANSLATE_Y) {
-            mExitListener?.onExit(this, mAnimationManager.mTranslateX, mAnimationManager.mTranslateY, mWidth, mHeight)
-        } else {
-            mAnimationManager.start()
-        }
     }
 
 }
