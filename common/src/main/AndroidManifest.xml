@@ -23,6 +23,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
+        <activity
+            android:name="com.like.common.view.dragphotoview.DragPhotoViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
     </application>
 
 </manifest>

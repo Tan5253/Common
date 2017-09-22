@@ -31,7 +31,7 @@ public class DragPhotoViewActivity extends AppCompatActivity {
 
 
     public void startPhotoActivity(Context context, ImageView imageView) {
-        Intent intent = new Intent(context, DragPhotoActivity.class);
+        Intent intent = new Intent(context, com.like.common.view.dragphotoview.DragPhotoViewActivity.class);
         int location[] = new int[2];
         /**
          *iew.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
