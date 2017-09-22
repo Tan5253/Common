@@ -21,7 +21,6 @@ class DragPhotoView : PhotoView {
     var mHeight: Float = 0f
 
     var canFinish: Boolean = false
-    var isMyTouchEvent: Boolean = false// 是否是PhotoView的touch事件
 
     var mTapListener: OnTapListener? = null
     var mExitListener: OnExitListener? = null
@@ -57,20 +56,13 @@ class DragPhotoView : PhotoView {
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
                     if (mAnimationManager.mTranslateY == 0f && mAnimationManager.mTranslateX != 0f) {
-                        //如果不消费事件，则不作操作
-                        if (!isMyTouchEvent) {
-                            mAnimationManager.mScale = 1f
-                            return super.dispatchTouchEvent(event)
-                        }
+                        mAnimationManager.mScale = 1f
+                        return super.dispatchTouchEvent(event)
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
                     if (mAnimationManager.mTranslateY >= 0 && event.pointerCount == 1) {
                         onEventMove(event)
-                        //如果有上下位移 则不交给viewpager
-                        if (mAnimationManager.mTranslateY != 0f) {
-                            isMyTouchEvent = true
-                        }
                         return true
                     }
 
@@ -83,7 +75,6 @@ class DragPhotoView : PhotoView {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
                         onEventUp(event)
-                        isMyTouchEvent = false
                         // 延时判断是否可以退出
                         postDelayed({
                             if (mAnimationManager.mTranslateX == 0f && mAnimationManager.mTranslateY == 0f && canFinish) {
