@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
+import com.like.logger.Logger
 
 class AnimationManager(val view: DragPhotoView) {
     companion object {
@@ -73,6 +74,7 @@ class AnimationManager(val view: DragPhotoView) {
                     isStart = false
                 }
             })
+            Logger.d("restoreSmooth mScale = $mScale mAlpha = $mAlpha mTranslateX = $mTranslateX mTranslateY = $mTranslateY")
             animatorSet.start()
         }
     }

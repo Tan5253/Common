@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
@@ -32,6 +33,37 @@ class DragPhotoView : PhotoView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
+    /**以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
+    var scrollState = 0
+
+    fun init() {
+        val viewPager = getParentViewPager()
+        viewPager?.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+
+            override fun onPageSelected(position: Int) {
+                Logger.e("onPageSelected position = $position")
+                mAnimationManager.restoreSmooth()
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                if (scrollState == 1 && state == 0) {
+                    mAnimationManager.restoreSmooth()
+                }
+                scrollState = state
+                Logger.d("onPageScrollStateChanged state = $state")
+                super.onPageScrollStateChanged(state)
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Logger.w("onPageScrolled position = $position")
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+        })
+    }
+
+    /**以上代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
+
     override fun onDraw(canvas: Canvas?) {
         mPaint.alpha = mAnimationManager.mAlpha
         canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
@@ -44,6 +76,7 @@ class DragPhotoView : PhotoView {
         super.onSizeChanged(w, h, oldw, oldh)
         mWidth = w.toFloat()
         mHeight = h.toFloat()
+        init()
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
@@ -56,7 +89,6 @@ class DragPhotoView : PhotoView {
                     canFinish = !canFinish
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    Logger.e("mTranslateX=${mAnimationManager.mTranslateX}")
                     // ViewPager的事件
                     if (mAnimationManager.mTranslateY == 0f && mAnimationManager.mTranslateX != 0f) {
                         return super.dispatchTouchEvent(event)
@@ -97,6 +129,13 @@ class DragPhotoView : PhotoView {
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    private fun getParentViewPager(): ViewPager? {
+        return if (parent != null && parent is ViewPager) {
+            parent as ViewPager
+        } else
+            null
     }
 
 }
