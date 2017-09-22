@@ -10,10 +10,6 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.util.PhoneUtils
 
 class DragPhotoView : PhotoView {
-    companion object {
-        const val MAX_TRANSLATE_Y = 500
-    }
-
     val mPaint: Paint = Paint().apply { color = Color.BLACK }
 
     var mDownX: Float = 0f
@@ -102,42 +98,22 @@ class DragPhotoView : PhotoView {
         return super.dispatchTouchEvent(event)
     }
 
-    fun onEventDown(event: MotionEvent) {
+    private fun onEventDown(event: MotionEvent) {
         mDownX = event.x
         mDownY = event.y
     }
 
-    fun onEventMove(event: MotionEvent) {
-        val moveY = event.y
-        val moveX = event.x
-        mAnimationManager.mTranslateX = moveX - mDownX
-        mAnimationManager.mTranslateY = moveY - mDownY
-
-        if (mAnimationManager.mTranslateY < 0) {
-            mAnimationManager.mTranslateY = 0f
-        }
-
-        val translateYPercent = mAnimationManager.mTranslateY / MAX_TRANSLATE_Y
-        mAnimationManager.mScale = 1 - translateYPercent
-        if (mAnimationManager.mScale < mAnimationManager.mMinScale) {
-            mAnimationManager.mScale = mAnimationManager.mMinScale
-        } else if (mAnimationManager.mScale > 1f) {
-            mAnimationManager.mScale = 1f
-        }
-
-        mAnimationManager.mAlpha = (255 * (1 - translateYPercent)).toInt()
-        if (mAnimationManager.mAlpha > 255) {
-            mAnimationManager.mAlpha = 255
-        } else if (mAnimationManager.mAlpha < 0) {
-            mAnimationManager.mAlpha = 0
-        }
-
+    private fun onEventMove(event: MotionEvent) {
+        mAnimationManager.updateTranslateX(event.x - mDownX)
+                .updateTranslateY(event.y - mDownY)
+                .updateScale()
+                .updateAlpha()
         invalidate()
     }
 
-    fun onEventUp(event: MotionEvent) {
-        if (mAnimationManager.mTranslateY > MAX_TRANSLATE_Y) {
-            mExitListener?.onExit(this, mAnimationManager.mTranslateX, mAnimationManager.mTranslateY, mWidth.toFloat(), mHeight.toFloat())
+    private fun onEventUp(event: MotionEvent) {
+        if (mAnimationManager.mTranslateY > AnimationManager.MAX_TRANSLATE_Y) {
+            mExitListener?.onExit(this, mAnimationManager.mTranslateX, mAnimationManager.mTranslateY, mWidth, mHeight)
         } else {
             mAnimationManager.start()
         }
