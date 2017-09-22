@@ -63,6 +63,15 @@
             android:name="com.like.common.sample.TwoLineChartActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.like.common.sample.dragphotoview.DragPhotoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent" />
+
+        <activity
+            android:name="com.like.common.sample.dragphotoview.DragPhotoViewActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

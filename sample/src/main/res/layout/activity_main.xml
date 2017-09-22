@@ -39,6 +39,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:onClick="clickDragPhoto"
+                    android:text="DragPhotoView测试" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:onClick="clickChart0"
                     android:text="圆饼图" />
 
