@@ -52,7 +52,7 @@ class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo:
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 animation?.removeAllListeners()
-                mExitListener?.onExitFinish()
+                mExitListener?.onFinish()
             }
         })
         animatorSet.start()

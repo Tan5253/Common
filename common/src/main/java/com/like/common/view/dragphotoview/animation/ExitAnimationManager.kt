@@ -52,7 +52,7 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 animation?.removeAllListeners()
-                mExitListener?.onExitFinish()
+                mExitListener?.onFinish()
             }
         })
         animatorSet.start()

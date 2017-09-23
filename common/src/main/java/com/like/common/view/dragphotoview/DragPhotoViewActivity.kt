@@ -40,17 +40,8 @@ class DragPhotoViewActivity : BaseActivity() {
         mImageUrlList.mapTo(mPhotoViews) {
             DragPhotoView(this, dragPhotoViewInfo).apply {
                 setImageResource(R.drawable.wugeng)
-                mTapListener = object : OnTapListener {
-                    override fun onTap(view: DragPhotoView) {
-                        view.disappear()
-                    }
-                }
                 mExitListener = object : OnExitListener {
-                    override fun onExit(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
-                        view.exit(x, y)
-                    }
-
-                    override fun onExitFinish() {
+                    override fun onFinish() {
                         finish()
                         overridePendingTransition(0, 0)
                     }

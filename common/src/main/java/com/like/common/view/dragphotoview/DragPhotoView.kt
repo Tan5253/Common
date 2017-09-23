@@ -24,7 +24,6 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
 
     var canFinish: Boolean = false
 
-    var mTapListener: OnTapListener? = null
     var mExitListener: OnExitListener? = null
 
     val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragPhotoViewInfo) }
@@ -125,14 +124,14 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
                         if (mRestoreAnimationManager.translateY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
-                            mExitListener?.onExit(this, mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY, mWidth, mHeight)
+                            exit(mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY)
                         } else {
                             mRestoreAnimationManager.start()
                         }
                         // 延时判断是否可以退出
                         postDelayed({
                             if (mRestoreAnimationManager.translateX == 0f && mRestoreAnimationManager.translateY == 0f && canFinish) {
-                                mTapListener?.onTap(this@DragPhotoView)
+                                disappear()
                             }
                             canFinish = false
                         }, 300)
