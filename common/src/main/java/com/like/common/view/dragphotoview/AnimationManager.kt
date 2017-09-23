@@ -12,7 +12,7 @@ class AnimationManager(val view: DragPhotoView) {
         const val MAX_RESTORE_ANIMATOR_TRANSLATE_Y = 500
     }
 
-    // 还原动画相关
+    // 在DragPhotoViewActivity中由缩放到还原的动画
     private val restoreAnimatorSet: AnimatorSet = AnimatorSet()
     var restoreAnimAlpha: Int = 255
     var restoreAnimTranslateX: Float = 0f
@@ -20,9 +20,8 @@ class AnimationManager(val view: DragPhotoView) {
     var restoreAnimScale: Float = 1f
     var restoreAnimMinScale: Float = 0.5f
     var restoreAnimIsStart: Boolean = false
-    // 退出动画相关
+    // 进入退出DragPhotoViewActivity的动画
 
-    // 进入动画相关
 
     fun updateRestoreAnimTranslateX(translateX: Float): AnimationManager {
         restoreAnimTranslateX = translateX
