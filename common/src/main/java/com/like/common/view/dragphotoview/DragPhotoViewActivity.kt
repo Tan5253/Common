@@ -81,6 +81,6 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-//        view.disappear()
+        mPhotoViews[mViewPager.currentItem].disappear()
     }
 }
