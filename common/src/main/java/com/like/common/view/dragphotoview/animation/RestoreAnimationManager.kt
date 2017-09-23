@@ -2,17 +2,15 @@ package com.like.common.view.dragphotoview.animation
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import com.like.common.view.dragphotoview.DragPhotoView
+import com.like.common.view.dragphotoview.DragPhotoViewInfo
 import com.like.logger.Logger
 
 /**
  * 在DragPhotoViewActivity中由缩放到还原的动画管理
  */
-class RestoreAnimationManager(val dragPhotoView: DragPhotoView) : IAnimationManager {
-    // 在DragPhotoViewActivity中由缩放到还原的动画
-    private val animatorSet: AnimatorSet = AnimatorSet()
+class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     var alpha: Int = 255
     var translateX: Float = 0f
     var translateY: Float = 0f
@@ -24,7 +22,7 @@ class RestoreAnimationManager(val dragPhotoView: DragPhotoView) : IAnimationMana
         if (!isStart) {
             isStart = true
             animatorSet.play(ValueAnimator.ofFloat(scale, 1f).apply {
-                duration = IAnimationManager.DURATION
+                duration = AnimationManager.DURATION
                 addUpdateListener {
                     scale = it.animatedValue as Float
                     dragPhotoView.invalidate()
@@ -37,19 +35,19 @@ class RestoreAnimationManager(val dragPhotoView: DragPhotoView) : IAnimationMana
                 })
             })
                     .with(ValueAnimator.ofFloat(translateX, 0f).apply {
-                        duration = IAnimationManager.DURATION
+                        duration = AnimationManager.DURATION
                         addUpdateListener {
                             translateX = it.animatedValue as Float
                         }
                     })
                     .with(ValueAnimator.ofFloat(translateY, 0f).apply {
-                        duration = IAnimationManager.DURATION
+                        duration = AnimationManager.DURATION
                         addUpdateListener {
                             translateY = it.animatedValue as Float
                         }
                     })
                     .with(ValueAnimator.ofInt(alpha, 255).apply {
-                        duration = IAnimationManager.DURATION
+                        duration = AnimationManager.DURATION
                         addUpdateListener {
                             alpha = it.animatedValue as Int
                         }
@@ -80,7 +78,7 @@ class RestoreAnimationManager(val dragPhotoView: DragPhotoView) : IAnimationMana
     }
 
     fun updateScale() {
-        val translateYPercent = translateY / IAnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
+        val translateYPercent = translateY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val scale = 1 - translateYPercent
         this.scale = when {
             scale < minScale -> minScale
@@ -90,7 +88,7 @@ class RestoreAnimationManager(val dragPhotoView: DragPhotoView) : IAnimationMana
     }
 
     fun updateAlpha() {
-        val translateYPercent = translateY / IAnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
+        val translateYPercent = translateY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val alpha = (255 * (1 - translateYPercent)).toInt()
         this.alpha = when {
             alpha > 255 -> 255

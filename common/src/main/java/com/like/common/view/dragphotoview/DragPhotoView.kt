@@ -5,15 +5,14 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.support.v4.view.ViewPager
-import android.util.AttributeSet
 import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.util.PhoneUtils
-import com.like.common.view.dragphotoview.animation.IAnimationManager
+import com.like.common.view.dragphotoview.animation.AnimationManager
 import com.like.common.view.dragphotoview.animation.RestoreAnimationManager
 import com.like.logger.Logger
 
-class DragPhotoView : PhotoView {
+class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : PhotoView(context) {
     val mPaint: Paint = Paint().apply { color = Color.BLACK }
 
     var mDownX: Float = 0f
@@ -29,11 +28,7 @@ class DragPhotoView : PhotoView {
     var mTapListener: OnTapListener? = null
     var mExitListener: OnExitListener? = null
 
-    val mRestoreAnimationManager: RestoreAnimationManager = RestoreAnimationManager(this)
-
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    val mRestoreAnimationManager: RestoreAnimationManager = RestoreAnimationManager(this, dragPhotoViewInfo)
 
     /**以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
     var scrollState = 0
@@ -114,7 +109,7 @@ class DragPhotoView : PhotoView {
                 MotionEvent.ACTION_UP -> {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.translateY > IAnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
+                        if (mRestoreAnimationManager.translateY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
                             mExitListener?.onExit(this, mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY, mWidth, mHeight)
                         } else {
                             mRestoreAnimationManager.start()

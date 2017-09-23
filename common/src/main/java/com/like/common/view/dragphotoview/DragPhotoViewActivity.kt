@@ -46,7 +46,7 @@ class DragPhotoViewActivity : BaseActivity() {
         dragPhotoViewInfo = intent.getSerializableExtra(KEY_DATA) as DragPhotoViewInfo
 
         mImageUrlList.mapTo(mPhotoViews) {
-            DragPhotoView(this).apply {
+            DragPhotoView(this, dragPhotoViewInfo).apply {
                 setImageResource(R.drawable.wugeng)
                 mTapListener = object : OnTapListener {
                     override fun onTap(view: DragPhotoView) {
