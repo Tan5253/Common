@@ -38,12 +38,12 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
 
             override fun onPageSelected(position: Int) {
                 Logger.e("onPageSelected position = $position")
-                mRestoreAnimationManager.start()
+                restore()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 if (scrollState == 1 && state == 0) {
-                    mRestoreAnimationManager.start()
+                    restore()
                 }
                 scrollState = state
                 Logger.d("onPageScrollStateChanged state = $state")
@@ -56,6 +56,10 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
             }
 
         })
+    }
+
+    fun restore() {
+        mRestoreAnimationManager.start()
     }
 
     fun disappear() {
@@ -124,7 +128,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                         if (mRestoreAnimationManager.translateY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
                             exit(mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY)
                         } else {
-                            mRestoreAnimationManager.start()
+                            restore()
                         }
                         // 延时判断是否可以退出
                         postDelayed({
