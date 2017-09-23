@@ -114,23 +114,15 @@ class DragPhotoViewActivity : BaseActivity() {
 
     private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
         view.mRestoreAnimationManager.finish()
-        val viewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
-        val viewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
-        view.x = viewX
-        view.y = viewY
+        // 计算当前DragPhotoView的x和y
+        view.x = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
+        view.y = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
 
-        val centerX = view.x + dragPhotoViewInfo.originWidth / 2
-        val centerY = view.y + dragPhotoViewInfo.originHeight / 2
-
-        val exitTranslateX = dragPhotoViewInfo.originCenterX - centerX
-        val exitTranslateY = dragPhotoViewInfo.originCenterY - centerY
-
-
-        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + exitTranslateX)
+        val translateXAnimator = ValueAnimator.ofFloat(view.x, dragPhotoViewInfo.originLeft.toFloat())
         translateXAnimator.addUpdateListener { valueAnimator -> view.x = valueAnimator.animatedValue as Float }
         translateXAnimator.duration = 300
         translateXAnimator.start()
-        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + exitTranslateY)
+        val translateYAnimator = ValueAnimator.ofFloat(view.y, dragPhotoViewInfo.originTop.toFloat())
         translateYAnimator.addUpdateListener { valueAnimator -> view.y = valueAnimator.animatedValue as Float }
         translateYAnimator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animator: Animator) {
