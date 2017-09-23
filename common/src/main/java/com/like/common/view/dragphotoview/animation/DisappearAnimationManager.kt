@@ -10,17 +10,10 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  * 从正常状态退出DragPhotoViewActivity的动画
  */
 class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    private var pendingTranslateX = 0f
-    private var pendingTranslateY = 0f
-    private var pendingScaleX = 0f
-    private var pendingScaleY = 0f
-
-    init {
-        pendingTranslateX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
-        pendingTranslateY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
-        pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.width.toFloat()
-        pendingScaleY = dragPhotoViewInfo.originHeight / dragPhotoView.height.toFloat()
-    }
+    private val pendingTranslateX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
+    private val pendingTranslateY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
+    private val pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.width.toFloat()
+    private val pendingScaleY = dragPhotoViewInfo.originHeight / dragPhotoView.height.toFloat()
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", 0f, pendingTranslateX))
