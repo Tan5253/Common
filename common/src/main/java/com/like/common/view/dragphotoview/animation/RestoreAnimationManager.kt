@@ -68,10 +68,6 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
     }
 
     override fun finish() {
-        translateX = -dragPhotoView.width / 2 + dragPhotoView.width * scale / 2
-        translateY = -dragPhotoView.height / 2 + dragPhotoView.height * scale / 2
-        Logger.e("finish translateX = $translateX translateY = $translateY")
-        dragPhotoView.invalidate()
     }
 
     fun updateTranslateX(translateX: Float) {

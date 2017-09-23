@@ -113,7 +113,9 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
-        view.mRestoreAnimationManager.finish()
+        view.mRestoreAnimationManager.translateX = -view.width / 2 + view.width * view.mRestoreAnimationManager.scale / 2
+        view.mRestoreAnimationManager.translateY = -view.height / 2 + view.height * view.mRestoreAnimationManager.scale / 2
+        view.invalidate()
 
         val viewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
         val viewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
