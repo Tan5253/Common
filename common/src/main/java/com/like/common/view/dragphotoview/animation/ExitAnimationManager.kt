@@ -1,7 +1,7 @@
 package com.like.common.view.dragphotoview.animation
 
 import android.animation.AnimatorSet
-import android.animation.ValueAnimator
+import android.animation.ObjectAnimator
 import android.app.Activity
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
@@ -35,18 +35,8 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ValueAnimator.ofFloat(dragPhotoView.x, dragPhotoView.x + pendingTranslateX).apply {
-            duration = AnimationManager.DURATION
-            addUpdateListener {
-                dragPhotoView.x = it.animatedValue as Float
-            }
-        })
-                .with(ValueAnimator.ofFloat(dragPhotoView.y, dragPhotoView.y + pendingTranslateY).apply {
-                    duration = AnimationManager.DURATION
-                    addUpdateListener {
-                        dragPhotoView.y = it.animatedValue as Float
-                    }
-                })
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", dragPhotoView.x, dragPhotoView.x + pendingTranslateX))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoView.y + pendingTranslateY))
     }
 
     override fun onEnd() {
