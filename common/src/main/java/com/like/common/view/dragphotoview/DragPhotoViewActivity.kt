@@ -1,7 +1,5 @@
 package com.like.common.view.dragphotoview
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
@@ -23,12 +21,6 @@ class DragPhotoViewActivity : BaseActivity() {
     private val mPhotoViews = ArrayList<DragPhotoView>()
 
     private lateinit var dragPhotoViewInfo: DragPhotoViewInfo
-    private var mTargetHeight: Float = 0f
-    private var mTargetWidth: Float = 0f
-    private var mScaleX: Float = 0f
-    private var mScaleY: Float = 0f
-    private var mTranslationX: Float = 0f
-    private var mTranslationY: Float = 0f
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -50,13 +42,11 @@ class DragPhotoViewActivity : BaseActivity() {
                 setImageResource(R.drawable.wugeng)
                 mTapListener = object : OnTapListener {
                     override fun onTap(view: DragPhotoView) {
-//                        finishWithAnimation()
                         view.disappear()
                     }
                 }
                 mExitListener = object : OnExitListener {
                     override fun onExit(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
-//                        performExitAnimation(view, x, y, w, h)
                         view.exit(x, y)
                     }
 
@@ -84,153 +74,13 @@ class DragPhotoViewActivity : BaseActivity() {
         mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                val location = IntArray(2)
-
-                val photoView = mPhotoViews[0]
-                photoView.getLocationOnScreen(location)
-
-                mTargetHeight = photoView.height.toFloat()
-                mTargetWidth = photoView.width.toFloat()
-                mScaleX = dragPhotoViewInfo.originWidth.toFloat() / mTargetWidth
-                mScaleY = dragPhotoViewInfo.originHeight.toFloat() / mTargetHeight
-
-                val targetCenterX = location[0] + mTargetWidth / 2
-                val targetCenterY = location[1] + mTargetHeight / 2
-
-                mTranslationX = dragPhotoViewInfo.originCenterX - targetCenterX
-                mTranslationY = dragPhotoViewInfo.originCenterY - targetCenterY
-//                photoView.translationX = mTranslationX
-//                photoView.translationY = mTranslationY
-//
-//                photoView.scaleX = mScaleX
-//                photoView.scaleY = mScaleY
-
-//                performEnterAnimation()
-
-                photoView.enter()
+                mPhotoViews[0].enter()
             }
         })
-
         return null
     }
 
-    private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
-        // 把缩放后的view移动到初始位置，并刷新。这一步是为了解决拖拽时有可能导致view显示的图片不完整（被屏幕边缘剪切了）。
-        // 如果不做处理，只需要下面的代码
-//        val newViewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
-//        val newViewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
-//        val translateXAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originLeft.toFloat() - newViewX)
-//        val translateYAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originTop.toFloat() - newViewY)
-        view.mRestoreAnimationManager.translateX = -view.width / 2 + view.width * view.mRestoreAnimationManager.scale / 2
-        view.mRestoreAnimationManager.translateY = -view.height / 2 + view.height * view.mRestoreAnimationManager.scale / 2
-        view.invalidate()
-        // 把缩放后的view移动到手指释放时的位置，准备开始动画。
-        view.x = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
-        view.y = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
-        // 计算缩放后的view和原始的view的位移
-        val curCenterX = view.x + dragPhotoViewInfo.originWidth / 2
-        val curCenterY = view.y + dragPhotoViewInfo.originHeight / 2
-        val pendingTranslateX = dragPhotoViewInfo.originCenterX - curCenterX
-        val pendingTranslateY = dragPhotoViewInfo.originCenterY - curCenterY
-        // 开始动画
-        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + pendingTranslateX)
-        translateXAnimator.addUpdateListener { valueAnimator -> view.x = valueAnimator.animatedValue as Float }
-        translateXAnimator.duration = 300
-        translateXAnimator.start()
-        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + pendingTranslateY)
-        translateYAnimator.addUpdateListener { valueAnimator -> view.y = valueAnimator.animatedValue as Float }
-        translateYAnimator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animator: Animator) {
-
-            }
-
-            override fun onAnimationEnd(animator: Animator) {
-                animator.removeAllListeners()
-                finish()
-                overridePendingTransition(0, 0)
-            }
-
-            override fun onAnimationCancel(animator: Animator) {
-
-            }
-
-            override fun onAnimationRepeat(animator: Animator) {
-
-            }
-        })
-        translateYAnimator.duration = 300
-        translateYAnimator.start()
-    }
-
-    private fun finishWithAnimation() {
-        val photoView = mPhotoViews[0]
-        val translateXAnimator = ValueAnimator.ofFloat(0f, mTranslationX)
-        translateXAnimator.addUpdateListener { valueAnimator -> photoView.x = valueAnimator.animatedValue as Float }
-        translateXAnimator.duration = 300
-        translateXAnimator.start()
-
-        val translateYAnimator = ValueAnimator.ofFloat(0f, mTranslationY)
-        translateYAnimator.addUpdateListener { valueAnimator -> photoView.y = valueAnimator.animatedValue as Float }
-        translateYAnimator.duration = 300
-        translateYAnimator.start()
-
-        val scaleYAnimator = ValueAnimator.ofFloat(1f, mScaleY)
-        scaleYAnimator.addUpdateListener { valueAnimator -> photoView.scaleY = valueAnimator.animatedValue as Float }
-        scaleYAnimator.duration = 300
-        scaleYAnimator.start()
-
-        val scaleXAnimator = ValueAnimator.ofFloat(1f, mScaleX)
-        scaleXAnimator.addUpdateListener { valueAnimator -> photoView.scaleX = valueAnimator.animatedValue as Float }
-
-        scaleXAnimator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animator: Animator) {
-
-            }
-
-            override fun onAnimationEnd(animator: Animator) {
-                animator.removeAllListeners()
-                finish()
-                overridePendingTransition(0, 0)
-            }
-
-            override fun onAnimationCancel(animator: Animator) {
-
-            }
-
-            override fun onAnimationRepeat(animator: Animator) {
-
-            }
-        })
-        scaleXAnimator.duration = 300
-        scaleXAnimator.start()
-    }
-
-    private fun performEnterAnimation() {
-        val photoView = mPhotoViews[0]
-        val translateXAnimator = ValueAnimator.ofFloat(photoView.x, 0f)
-        translateXAnimator.addUpdateListener { valueAnimator -> photoView.x = valueAnimator.animatedValue as Float }
-        translateXAnimator.duration = 300
-        translateXAnimator.start()
-
-        val translateYAnimator = ValueAnimator.ofFloat(photoView.y, 0f)
-        translateYAnimator.addUpdateListener { valueAnimator -> photoView.y = valueAnimator.animatedValue as Float }
-        translateYAnimator.duration = 300
-        translateYAnimator.start()
-
-        val scaleYAnimator = ValueAnimator.ofFloat(mScaleY, 1f)
-        scaleYAnimator.addUpdateListener { valueAnimator -> photoView.scaleY = valueAnimator.animatedValue as Float }
-        scaleYAnimator.duration = 300
-        scaleYAnimator.start()
-
-        val scaleXAnimator = ValueAnimator.ofFloat(mScaleX, 1f)
-        scaleXAnimator.addUpdateListener { valueAnimator -> photoView.scaleX = valueAnimator.animatedValue as Float }
-        scaleXAnimator.duration = 300
-        scaleXAnimator.start()
-    }
-
     override fun onBackPressed() {
-//        finishWithAnimation()
 //        view.disappear()
     }
 }
