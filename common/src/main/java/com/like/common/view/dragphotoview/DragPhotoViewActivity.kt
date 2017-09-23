@@ -113,26 +113,24 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
+        // 把缩放后的view移动到初始位置，并刷新。这一步是为了解决拖拽时有可能导致view显示的图片不完整（被屏幕边缘剪切了）。
         view.mRestoreAnimationManager.translateX = -view.width / 2 + view.width * view.mRestoreAnimationManager.scale / 2
         view.mRestoreAnimationManager.translateY = -view.height / 2 + view.height * view.mRestoreAnimationManager.scale / 2
         view.invalidate()
-
-        val viewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
-        val viewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
-        view.x = viewX
-        view.y = viewY
-
-        val centerX = view.x + dragPhotoViewInfo.originWidth / 2
-        val centerY = view.y + dragPhotoViewInfo.originHeight / 2
-
-        val translateX = dragPhotoViewInfo.originCenterX - centerX
-        val translateY = dragPhotoViewInfo.originCenterY - centerY
-
-        val translateXAnimator = ValueAnimator.ofFloat(viewX, viewX + translateX)
+        // 把缩放后的view移动到手指释放时的位置，准备开始动画。
+        view.x = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
+        view.y = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
+        // 计算缩放后的view和原始的view的位移
+        val curCenterX = view.x + dragPhotoViewInfo.originWidth / 2
+        val curCenterY = view.y + dragPhotoViewInfo.originHeight / 2
+        val translateX = dragPhotoViewInfo.originCenterX - curCenterX
+        val translateY = dragPhotoViewInfo.originCenterY - curCenterY
+        // 开始动画
+        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + translateX)
         translateXAnimator.addUpdateListener { valueAnimator -> view.x = valueAnimator.animatedValue as Float }
         translateXAnimator.duration = 300
         translateXAnimator.start()
-        val translateYAnimator = ValueAnimator.ofFloat(viewY, viewY + translateY)
+        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + translateY)
         translateYAnimator.addUpdateListener { valueAnimator -> view.y = valueAnimator.animatedValue as Float }
         translateYAnimator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animator: Animator) {
