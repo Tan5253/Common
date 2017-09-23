@@ -3,16 +3,16 @@ package com.like.common.view.dragphotoview.animation
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.Activity
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
-import com.like.common.view.dragphotoview.OnExitListener
 
 /**
  * 从缩放状态退出DragPhotoViewActivity的动画
  */
-class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo, var mExitListener: OnExitListener? = null) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    var pendingTranslateX = 0f
-    var pendingTranslateY = 0f
+class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
+    private var pendingTranslateX = 0f
+    private var pendingTranslateY = 0f
 
     fun setData(curTranslationX: Float, curTranslationY: Float): ExitAnimationManager {
         // 把缩放后的dragPhotoView移动到初始位置，并刷新。这一步是为了解决拖拽时有可能导致dragPhotoView显示的图片不完整（被屏幕边缘剪切了）。
@@ -52,7 +52,11 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 animation?.removeAllListeners()
-                mExitListener?.onFinish()
+                val activity = dragPhotoView.context
+                if (activity is Activity) {
+                    activity.finish()
+                    activity.overridePendingTransition(0, 0)
+                }
             }
         })
         animatorSet.start()

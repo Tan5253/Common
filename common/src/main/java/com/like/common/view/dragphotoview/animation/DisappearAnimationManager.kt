@@ -3,18 +3,18 @@ package com.like.common.view.dragphotoview.animation
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.Activity
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
-import com.like.common.view.dragphotoview.OnExitListener
 
 /**
  * 从正常状态退出DragPhotoViewActivity的动画
  */
-class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo, var mExitListener: OnExitListener? = null) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    var pendingTranslateX = 0f
-    var pendingTranslateY = 0f
-    var pendingScaleX = 0f
-    var pendingScaleY = 0f
+class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
+    private var pendingTranslateX = 0f
+    private var pendingTranslateY = 0f
+    private var pendingScaleX = 0f
+    private var pendingScaleY = 0f
 
     init {
         pendingTranslateX = dragPhotoViewInfo.originCenterX - dragPhotoView.mWidth / 2
@@ -52,7 +52,11 @@ class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo:
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 animation?.removeAllListeners()
-                mExitListener?.onFinish()
+                val activity = dragPhotoView.context
+                if (activity is Activity) {
+                    activity.finish()
+                    activity.overridePendingTransition(0, 0)
+                }
             }
         })
         animatorSet.start()
