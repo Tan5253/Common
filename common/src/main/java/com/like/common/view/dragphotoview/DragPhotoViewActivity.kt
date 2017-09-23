@@ -114,6 +114,11 @@ class DragPhotoViewActivity : BaseActivity() {
 
     private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
         // 把缩放后的view移动到初始位置，并刷新。这一步是为了解决拖拽时有可能导致view显示的图片不完整（被屏幕边缘剪切了）。
+        // 如果不做处理，只需要下面的代码
+//        val newViewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
+//        val newViewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
+//        val translateXAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originLeft.toFloat() - newViewX)
+//        val translateYAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originTop.toFloat() - newViewY)
         view.mRestoreAnimationManager.translateX = -view.width / 2 + view.width * view.mRestoreAnimationManager.scale / 2
         view.mRestoreAnimationManager.translateY = -view.height / 2 + view.height * view.mRestoreAnimationManager.scale / 2
         view.invalidate()
