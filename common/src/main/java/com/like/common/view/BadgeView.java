@@ -208,9 +208,9 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     }
 
     /*
-     * Attach the BadgeView to the target view
+     * Attach the BadgeView to the target dragPhotoView
      * 
-     * @param target the view to attach the BadgeView
+     * @param target the dragPhotoView to attach the BadgeView
      */
     public void setTargetView(View target) {
         if (getParent() != null) {

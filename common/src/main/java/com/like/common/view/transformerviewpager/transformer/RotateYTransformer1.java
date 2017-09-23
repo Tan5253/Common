@@ -20,11 +20,11 @@ public class RotateYTransformer1 implements ViewPager.PageTransformer {
 
 			if (position < 0)// [0,-1]
 			{
-//				view.setPivotX(view.getWidth() * (0.5f + 0.5f * (-position)));
+//				dragPhotoView.setPivotX(dragPhotoView.getWidth() * (0.5f + 0.5f * (-position)));
 				view.setPivotX(view.getWidth());
 			} else// [1,0]
 			{
-//				view.setPivotX(view.getWidth() * 0.5f * (1 - position));
+//				dragPhotoView.setPivotX(dragPhotoView.getWidth() * 0.5f * (1 - position));
 				view.setPivotX(0);
 			}
 

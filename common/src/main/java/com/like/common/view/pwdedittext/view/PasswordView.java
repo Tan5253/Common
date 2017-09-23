@@ -161,10 +161,10 @@ public class PasswordView extends View {
     }
 
     /**
-     * Determines the height of this view
+     * Determines the height of this dragPhotoView
      *
      * @param measureSpec A measureSpec packed into an int
-     * @return The height of the view, honoring constraints from measureSpec
+     * @return The height of the dragPhotoView, honoring constraints from measureSpec
      */
     private int measureHeight(int measureSpec) {
         int result = 0;

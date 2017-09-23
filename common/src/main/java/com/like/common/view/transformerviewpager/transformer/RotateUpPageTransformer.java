@@ -31,7 +31,7 @@ public class RotateUpPageTransformer implements ViewPager.PageTransformer {
 			}
 		} else { // (1,+Infinity]
 			// This page is way off-screen to the right.
-			// ViewHelper.setRotation(view, ROT_MAX);
+			// ViewHelper.setRotation(dragPhotoView, ROT_MAX);
 			view.setRotation(-DEFAULT_MAX_ROTATE);
 			view.setPivotX(0);
 			view.setPivotY(0);

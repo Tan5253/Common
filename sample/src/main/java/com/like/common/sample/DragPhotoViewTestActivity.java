@@ -36,7 +36,7 @@ public class DragPhotoViewTestActivity extends AppCompatActivity {
         int location[] = new int[2];
         /**
          *iew.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-         *view.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+         *dragPhotoView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
          *getLocationOnScreen计算该视图在全局坐标系中的x，y值，
          *(注意这个值是要从屏幕顶端算起，也就是索包括了通知栏的高度)//获取在当前屏幕内的绝对坐标
          *location [0]--->x坐标,location [1]--->y坐标

@@ -102,7 +102,7 @@ class DragPhotoViewActivity : BaseActivity() {
                 performEnterAnimation()
 
                 for (i in mPhotoViews.indices) {
-                    mPhotoViews[i].mAnimationManager.restoreAnimMinScale = mScaleX
+                    mPhotoViews[i].mRestoreAnimationManager.minScale = mScaleX
                 }
             }
         })
@@ -111,7 +111,7 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
-        view.mAnimationManager.finish()
+        view.mRestoreAnimationManager.finish()
         val viewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
         val viewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
         view.x = viewX
