@@ -122,15 +122,15 @@ class DragPhotoViewActivity : BaseActivity() {
         val centerX = view.x + dragPhotoViewInfo.originWidth / 2
         val centerY = view.y + dragPhotoViewInfo.originHeight / 2
 
-        val translateX = dragPhotoViewInfo.originCenterX - centerX
-        val translateY = dragPhotoViewInfo.originCenterY - centerY
+        val exitTranslateX = dragPhotoViewInfo.originCenterX - centerX
+        val exitTranslateY = dragPhotoViewInfo.originCenterY - centerY
 
 
-        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + translateX)
+        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + exitTranslateX)
         translateXAnimator.addUpdateListener { valueAnimator -> view.x = valueAnimator.animatedValue as Float }
         translateXAnimator.duration = 300
         translateXAnimator.start()
-        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + translateY)
+        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + exitTranslateY)
         translateYAnimator.addUpdateListener { valueAnimator -> view.y = valueAnimator.animatedValue as Float }
         translateYAnimator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animator: Animator) {
