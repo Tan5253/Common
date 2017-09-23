@@ -1,5 +1,7 @@
 package com.like.common.view.dragphotoview.animation
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
@@ -10,9 +12,37 @@ abstract class AnimationManager(val dragPhotoView: DragPhotoView, val dragPhotoV
         const val MAX_RESTORE_ANIMATOR_TRANSLATE_Y = 500
     }
 
-    val animatorSet: AnimatorSet = AnimatorSet()
+    private var isStart: Boolean = false
+    private val animatorSet: AnimatorSet = AnimatorSet()
 
-    abstract fun start()
+    init {
+        animatorSet.duration = AnimationManager.DURATION
+        animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                super.onAnimationStart(animation)
+                isStart = true
+                onStart()
+            }
 
-    abstract fun finish()
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
+                animation?.removeAllListeners()
+                isStart = false
+                onEnd()
+            }
+        })
+    }
+
+    @Synchronized
+    fun start() {
+        if (isStart) {
+            return
+        }
+        fillAnimatorSet(animatorSet)
+        animatorSet.start()
+    }
+
+    abstract fun fillAnimatorSet(animatorSet: AnimatorSet)
+    open fun onStart() {}
+    open fun onEnd() {}
 }

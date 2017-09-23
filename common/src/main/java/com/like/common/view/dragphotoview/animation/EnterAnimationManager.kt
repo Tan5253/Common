@@ -1,5 +1,6 @@
 package com.like.common.view.dragphotoview.animation
 
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
@@ -16,7 +17,7 @@ class EnterAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Dra
         dragPhotoView.translationY = dragPhotoViewInfo.originCenterY - dragPhotoView.mHeight / 2
     }
 
-    override fun start() {
+    override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         animatorSet.play(ValueAnimator.ofFloat(dragPhotoView.x, 0f).apply {
             duration = AnimationManager.DURATION
             addUpdateListener {
@@ -41,11 +42,6 @@ class EnterAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Dra
                         dragPhotoView.scaleY = it.animatedValue as Float
                     }
                 })
-        animatorSet.start()
-    }
-
-    override fun finish() {
-
     }
 
 }

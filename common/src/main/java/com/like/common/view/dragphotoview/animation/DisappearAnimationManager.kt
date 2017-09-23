@@ -1,8 +1,7 @@
 package com.like.common.view.dragphotoview.animation
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.Activity
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
@@ -17,52 +16,25 @@ class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo:
     private var pendingScaleY = 0f
 
     init {
-        pendingTranslateX = dragPhotoViewInfo.originCenterX - dragPhotoView.mWidth / 2
-        pendingTranslateY = dragPhotoViewInfo.originCenterY - dragPhotoView.mHeight / 2
-        pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.mWidth
-        pendingScaleY = dragPhotoViewInfo.originHeight / dragPhotoView.mHeight
+        pendingTranslateX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
+        pendingTranslateY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
+        pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.width.toFloat()
+        pendingScaleY = dragPhotoViewInfo.originHeight / dragPhotoView.height.toFloat()
     }
 
-    override fun start() {
-        animatorSet.play(ValueAnimator.ofFloat(0f, pendingTranslateX).apply {
-            duration = AnimationManager.DURATION
-            addUpdateListener {
-                dragPhotoView.x = it.animatedValue as Float
-            }
-        })
-                .with(ValueAnimator.ofFloat(0f, pendingTranslateY).apply {
-                    duration = AnimationManager.DURATION
-                    addUpdateListener {
-                        dragPhotoView.y = it.animatedValue as Float
-                    }
-                })
-                .with(ValueAnimator.ofFloat(1f, pendingScaleX).apply {
-                    duration = AnimationManager.DURATION
-                    addUpdateListener {
-                        dragPhotoView.scaleX = it.animatedValue as Float
-                    }
-                })
-                .with(ValueAnimator.ofFloat(1f, pendingScaleY).apply {
-                    duration = AnimationManager.DURATION
-                    addUpdateListener {
-                        dragPhotoView.scaleY = it.animatedValue as Float
-                    }
-                })
-        animatorSet.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                super.onAnimationEnd(animation)
-                animation?.removeAllListeners()
-                val activity = dragPhotoView.context
-                if (activity is Activity) {
-                    activity.finish()
-                    activity.overridePendingTransition(0, 0)
-                }
-            }
-        })
-        animatorSet.start()
+    override fun fillAnimatorSet(animatorSet: AnimatorSet) {
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", 0f, pendingTranslateX))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "y", 0f, pendingTranslateY))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleX", 1f, pendingScaleX))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleY", 1f, pendingScaleY))
     }
 
-    override fun finish() {
+    override fun onEnd() {
+        val activity = dragPhotoView.context
+        if (activity is Activity) {
+            activity.finish()
+            activity.overridePendingTransition(0, 0)
+        }
     }
 
 }

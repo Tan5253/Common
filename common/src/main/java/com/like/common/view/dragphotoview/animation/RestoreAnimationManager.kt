@@ -2,10 +2,10 @@ package com.like.common.view.dragphotoview.animation
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
-import com.like.logger.Logger
 
 /**
  * 从缩放状态在DragPhotoViewActivity中还原的动画管理
@@ -16,58 +16,43 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
     var translateY: Float = 0f
     var scale: Float = 1f
     var minScale: Float = 0.5f
-    var isStart: Boolean = false
 
     init {
         minScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
     }
 
-    override fun start() {
-        if (!isStart) {
-            isStart = true
-            animatorSet.play(ValueAnimator.ofFloat(scale, 1f).apply {
-                duration = AnimationManager.DURATION
-                addUpdateListener {
-                    scale = it.animatedValue as Float
-                    dragPhotoView.invalidate()
-                }
-                addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
-                        super.onAnimationEnd(animation)
-                        animation?.removeAllListeners()
-                    }
-                })
-            })
-                    .with(ValueAnimator.ofFloat(translateX, 0f).apply {
-                        duration = AnimationManager.DURATION
-                        addUpdateListener {
-                            translateX = it.animatedValue as Float
-                        }
-                    })
-                    .with(ValueAnimator.ofFloat(translateY, 0f).apply {
-                        duration = AnimationManager.DURATION
-                        addUpdateListener {
-                            translateY = it.animatedValue as Float
-                        }
-                    })
-                    .with(ValueAnimator.ofInt(alpha, 255).apply {
-                        duration = AnimationManager.DURATION
-                        addUpdateListener {
-                            alpha = it.animatedValue as Int
-                        }
-                    })
-            animatorSet.addListener(object : AnimatorListenerAdapter() {
+    override fun fillAnimatorSet(animatorSet: AnimatorSet) {
+        animatorSet.play(ValueAnimator.ofFloat(scale, 1f).apply {
+            duration = AnimationManager.DURATION
+            addUpdateListener {
+                scale = it.animatedValue as Float
+                dragPhotoView.invalidate()
+            }
+            addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     super.onAnimationEnd(animation)
-                    isStart = false
+                    animation?.removeAllListeners()
                 }
             })
-            Logger.d("startRestoreAnimator scale = $scale alpha = $alpha translateX = $translateX translateY = $translateY")
-            animatorSet.start()
-        }
-    }
-
-    override fun finish() {
+        })
+                .with(ValueAnimator.ofFloat(translateX, 0f).apply {
+                    duration = AnimationManager.DURATION
+                    addUpdateListener {
+                        translateX = it.animatedValue as Float
+                    }
+                })
+                .with(ValueAnimator.ofFloat(translateY, 0f).apply {
+                    duration = AnimationManager.DURATION
+                    addUpdateListener {
+                        translateY = it.animatedValue as Float
+                    }
+                })
+                .with(ValueAnimator.ofInt(alpha, 255).apply {
+                    duration = AnimationManager.DURATION
+                    addUpdateListener {
+                        alpha = it.animatedValue as Int
+                    }
+                })
     }
 
     fun updateTranslateX(translateX: Float) {
