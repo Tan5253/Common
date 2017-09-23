@@ -99,7 +99,9 @@ class DragPhotoViewActivity : BaseActivity() {
                 photoView.scaleX = mScaleX
                 photoView.scaleY = mScaleY
 
-                performEnterAnimation()
+//                performEnterAnimation()
+
+                photoView.mEnterAnimationManager.start()
 
                 for (i in mPhotoViews.indices) {
                     mPhotoViews[i].mRestoreAnimationManager.minScale = mScaleX
