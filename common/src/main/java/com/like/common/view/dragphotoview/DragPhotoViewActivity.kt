@@ -50,7 +50,8 @@ class DragPhotoViewActivity : BaseActivity() {
                 setImageResource(R.drawable.wugeng)
                 mTapListener = object : OnTapListener {
                     override fun onTap(view: DragPhotoView) {
-                        finishWithAnimation()
+//                        finishWithAnimation()
+                        view.disappear()
                     }
                 }
                 mExitListener = object : OnExitListener {
@@ -233,6 +234,7 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        finishWithAnimation()
+//        finishWithAnimation()
+//        view.disappear()
     }
 }

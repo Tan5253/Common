@@ -8,10 +8,7 @@ import android.support.v4.view.ViewPager
 import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.util.PhoneUtils
-import com.like.common.view.dragphotoview.animation.AnimationManager
-import com.like.common.view.dragphotoview.animation.EnterAnimationManager
-import com.like.common.view.dragphotoview.animation.ExitAnimationManager
-import com.like.common.view.dragphotoview.animation.RestoreAnimationManager
+import com.like.common.view.dragphotoview.animation.*
 import com.like.logger.Logger
 
 class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : PhotoView(context) {
@@ -33,6 +30,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
     val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragPhotoViewInfo) }
     val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(this, dragPhotoViewInfo) }
     val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(this, dragPhotoViewInfo, mExitListener) }
+    val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(this, dragPhotoViewInfo, mExitListener) }
 
     /**以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
     var scrollState = 0
@@ -61,6 +59,10 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
             }
 
         })
+    }
+
+    fun disappear() {
+        mDisappearAnimationManager.start()
     }
 
     fun enter() {

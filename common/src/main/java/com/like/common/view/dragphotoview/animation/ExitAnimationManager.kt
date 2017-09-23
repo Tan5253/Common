@@ -7,6 +7,9 @@ import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 import com.like.common.view.dragphotoview.OnExitListener
 
+/**
+ * 从缩放状态退出DragPhotoViewActivity的动画
+ */
 class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo, var mExitListener: OnExitListener? = null) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     var pendingTranslateX = 0f
     var pendingTranslateY = 0f
