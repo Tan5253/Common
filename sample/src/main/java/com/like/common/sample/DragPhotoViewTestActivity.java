@@ -1,4 +1,4 @@
-package com.like.common.sample.dragphotoview;
+package com.like.common.sample;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +8,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.like.common.sample.R;
+import com.like.common.view.dragphotoview.DragPhotoViewActivity;
+import com.like.common.view.dragphotoview.DragPhotoViewInfo;
 
 /**
  * Created by like on 2017/9/22.
  */
 
-public class DragPhotoViewActivity extends AppCompatActivity {
+public class DragPhotoViewTestActivity extends AppCompatActivity {
     private ImageView mImageView;
 
     @Override
@@ -31,7 +32,7 @@ public class DragPhotoViewActivity extends AppCompatActivity {
 
 
     public void startPhotoActivity(Context context, ImageView imageView) {
-        Intent intent = new Intent(context, com.like.common.view.dragphotoview.DragPhotoViewActivity.class);
+        Intent intent = new Intent(context, DragPhotoViewActivity.class);
         int location[] = new int[2];
         /**
          *iew.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
@@ -42,11 +43,7 @@ public class DragPhotoViewActivity extends AppCompatActivity {
          *
          */
         imageView.getLocationOnScreen(location);
-        intent.putExtra("left", location[0]);
-        intent.putExtra("top", location[1]);
-        intent.putExtra("height", imageView.getHeight());
-        intent.putExtra("width", imageView.getWidth());
-
+        intent.putExtra(DragPhotoViewActivity.KEY_DATA, new DragPhotoViewInfo(location[0], location[1], imageView.getWidth(), imageView.getHeight()));
         context.startActivity(intent);
         overridePendingTransition(0, 0);
     }

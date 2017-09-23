@@ -14,16 +14,15 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
 
 class DragPhotoViewActivity : BaseActivity() {
+    companion object {
+        const val KEY_DATA = "DragPhotoViewInfo"
+    }
+
     private val mViewPager: FixMultiViewPager by lazy { FixMultiViewPager(this) }
     private val mImageUrlList = listOf("url", "url", "url")
     private val mPhotoViews = ArrayList<DragPhotoView>()
 
-    private var mOriginLeft: Int = 0
-    private var mOriginTop: Int = 0
-    private var mOriginHeight: Int = 0
-    private var mOriginWidth: Int = 0
-    private var mOriginCenterX: Int = 0
-    private var mOriginCenterY: Int = 0
+    private lateinit var dragPhotoViewInfo: DragPhotoViewInfo
     private var mTargetHeight: Float = 0f
     private var mTargetWidth: Float = 0f
     private var mScaleX: Float = 0f
@@ -43,6 +42,8 @@ class DragPhotoViewActivity : BaseActivity() {
         }
 
         setContentView(mViewPager)
+
+        dragPhotoViewInfo = intent.getSerializableExtra(KEY_DATA) as DragPhotoViewInfo
 
         mImageUrlList.mapTo(mPhotoViews) {
             DragPhotoView(this).apply {
@@ -77,13 +78,6 @@ class DragPhotoViewActivity : BaseActivity() {
             override fun onGlobalLayout() {
                 mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                mOriginLeft = intent.getIntExtra("left", 0)
-                mOriginTop = intent.getIntExtra("top", 0)
-                mOriginHeight = intent.getIntExtra("height", 0)
-                mOriginWidth = intent.getIntExtra("width", 0)
-                mOriginCenterX = mOriginLeft + mOriginWidth / 2
-                mOriginCenterY = mOriginTop + mOriginHeight / 2
-
                 val location = IntArray(2)
 
                 val photoView = mPhotoViews[0]
@@ -91,14 +85,14 @@ class DragPhotoViewActivity : BaseActivity() {
 
                 mTargetHeight = photoView.height.toFloat()
                 mTargetWidth = photoView.width.toFloat()
-                mScaleX = mOriginWidth.toFloat() / mTargetWidth
-                mScaleY = mOriginHeight.toFloat() / mTargetHeight
+                mScaleX = dragPhotoViewInfo.originWidth.toFloat() / mTargetWidth
+                mScaleY = dragPhotoViewInfo.originHeight.toFloat() / mTargetHeight
 
                 val targetCenterX = location[0] + mTargetWidth / 2
                 val targetCenterY = location[1] + mTargetHeight / 2
 
-                mTranslationX = mOriginCenterX - targetCenterX
-                mTranslationY = mOriginCenterY - targetCenterY
+                mTranslationX = dragPhotoViewInfo.originCenterX - targetCenterX
+                mTranslationY = dragPhotoViewInfo.originCenterY - targetCenterY
                 photoView.translationX = mTranslationX
                 photoView.translationY = mTranslationY
 
@@ -123,11 +117,11 @@ class DragPhotoViewActivity : BaseActivity() {
         view.x = viewX
         view.y = viewY
 
-        val centerX = view.x + mOriginWidth / 2
-        val centerY = view.y + mOriginHeight / 2
+        val centerX = view.x + dragPhotoViewInfo.originWidth / 2
+        val centerY = view.y + dragPhotoViewInfo.originHeight / 2
 
-        val translateX = mOriginCenterX - centerX
-        val translateY = mOriginCenterY - centerY
+        val translateX = dragPhotoViewInfo.originCenterX - centerX
+        val translateY = dragPhotoViewInfo.originCenterY - centerY
 
 
         val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + translateX)

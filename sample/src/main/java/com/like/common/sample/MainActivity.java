@@ -13,7 +13,6 @@ import com.like.common.sample.chenjin.ChenJinActivity;
 import com.like.common.sample.csv.CsvActivity;
 import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
-import com.like.common.sample.dragphotoview.DragPhotoViewActivity;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
 import com.like.common.util.ClickUtils;
 import com.like.common.util.ImageLoaderUtils;
@@ -193,7 +192,7 @@ public class MainActivity extends BasePermissionActivity {
     }
 
     public void clickDragPhoto(View view) {
-        startActivity(new Intent(this, DragPhotoViewActivity.class));
+        startActivity(new Intent(this, DragPhotoViewTestActivity.class));
     }
 
     private Disposable subscribe;
