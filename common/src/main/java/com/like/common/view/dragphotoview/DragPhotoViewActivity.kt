@@ -128,14 +128,14 @@ class DragPhotoViewActivity : BaseActivity() {
         // 计算缩放后的view和原始的view的位移
         val curCenterX = view.x + dragPhotoViewInfo.originWidth / 2
         val curCenterY = view.y + dragPhotoViewInfo.originHeight / 2
-        val translateX = dragPhotoViewInfo.originCenterX - curCenterX
-        val translateY = dragPhotoViewInfo.originCenterY - curCenterY
+        val pendingTranslateX = dragPhotoViewInfo.originCenterX - curCenterX
+        val pendingTranslateY = dragPhotoViewInfo.originCenterY - curCenterY
         // 开始动画
-        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + translateX)
+        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + pendingTranslateX)
         translateXAnimator.addUpdateListener { valueAnimator -> view.x = valueAnimator.animatedValue as Float }
         translateXAnimator.duration = 300
         translateXAnimator.start()
-        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + translateY)
+        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + pendingTranslateY)
         translateYAnimator.addUpdateListener { valueAnimator -> view.y = valueAnimator.animatedValue as Float }
         translateYAnimator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animator: Animator) {
