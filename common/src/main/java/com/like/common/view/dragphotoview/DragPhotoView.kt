@@ -42,12 +42,12 @@ class DragPhotoView : PhotoView {
 
             override fun onPageSelected(position: Int) {
                 Logger.e("onPageSelected position = $position")
-                mAnimationManager.restoreSmooth()
+                mAnimationManager.startRestoreAnimtor()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 if (scrollState == 1 && state == 0) {
-                    mAnimationManager.restoreSmooth()
+                    mAnimationManager.startRestoreAnimtor()
                 }
                 scrollState = state
                 Logger.d("onPageScrollStateChanged state = $state")
@@ -65,10 +65,10 @@ class DragPhotoView : PhotoView {
     /**以上代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
 
     override fun onDraw(canvas: Canvas?) {
-        mPaint.alpha = mAnimationManager.mAlpha
+        mPaint.alpha = mAnimationManager.restoreAnimAlpha
         canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
-        canvas?.translate(mAnimationManager.mTranslateX, mAnimationManager.mTranslateY)
-        canvas?.scale(mAnimationManager.mScale, mAnimationManager.mScale, mWidth / 2, mHeight / 2)
+        canvas?.translate(mAnimationManager.restoreAnimTranslateX, mAnimationManager.restoreAnimTranslateY)
+        canvas?.scale(mAnimationManager.restoreAnimScale, mAnimationManager.restoreAnimScale, mWidth / 2, mHeight / 2)
         super.onDraw(canvas)
     }
 
@@ -90,36 +90,36 @@ class DragPhotoView : PhotoView {
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
-                    if (mAnimationManager.mTranslateY == 0f && mAnimationManager.mTranslateX != 0f) {
+                    if (mAnimationManager.restoreAnimTranslateY == 0f && mAnimationManager.restoreAnimTranslateX != 0f) {
                         return super.dispatchTouchEvent(event)
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
-                    if (mAnimationManager.mTranslateY >= 0f && event.pointerCount == 1) {
-                        mAnimationManager.updateTranslateX(event.x - mDownX)
-                                .updateTranslateY(event.y - mDownY)
-                                .updateScale()
-                                .updateAlpha()
+                    if (mAnimationManager.restoreAnimTranslateY >= 0f && event.pointerCount == 1) {
+                        mAnimationManager.updateRestoreAnimTranslateX(event.x - mDownX)
+                                .updateRestoreAnimTranslateY(event.y - mDownY)
+                                .updateRestoreAnimScale()
+                                .updateRestoreAnimAlpha()
                         invalidate()
                         return true
                     }
 
                     // 防止下拉的时候双手缩放
-                    if (mAnimationManager.mTranslateY >= 0f && mAnimationManager.mScale < 0.95f) {
+                    if (mAnimationManager.restoreAnimTranslateY >= 0f && mAnimationManager.restoreAnimScale < 0.95f) {
                         return true
                     }
                 }
                 MotionEvent.ACTION_UP -> {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
-                        if (mAnimationManager.mTranslateY > AnimationManager.MAX_TRANSLATE_Y) {
-                            mExitListener?.onExit(this, mAnimationManager.mTranslateX, mAnimationManager.mTranslateY, mWidth, mHeight)
+                        if (mAnimationManager.restoreAnimTranslateY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
+                            mExitListener?.onExit(this, mAnimationManager.restoreAnimTranslateX, mAnimationManager.restoreAnimTranslateY, mWidth, mHeight)
                         } else {
-                            mAnimationManager.restoreSmooth()
+                            mAnimationManager.startRestoreAnimtor()
                         }
                         // 延时判断是否可以退出
                         postDelayed({
-                            if (mAnimationManager.mTranslateX == 0f && mAnimationManager.mTranslateY == 0f && canFinish) {
+                            if (mAnimationManager.restoreAnimTranslateX == 0f && mAnimationManager.restoreAnimTranslateY == 0f && canFinish) {
                                 mTapListener?.onTap(this@DragPhotoView)
                             }
                             canFinish = false

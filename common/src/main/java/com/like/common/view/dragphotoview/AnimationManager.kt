@@ -8,43 +8,47 @@ import com.like.logger.Logger
 
 class AnimationManager(val view: DragPhotoView) {
     companion object {
-        const val MAX_TRANSLATE_Y = 500
         const val DURATION = 300L
+        const val MAX_RESTORE_ANIMATOR_TRANSLATE_Y = 500
     }
 
-    private val animatorSet: AnimatorSet = AnimatorSet()
-    var mAlpha: Int = 255
-    var mTranslateX: Float = 0f
-    var mTranslateY: Float = 0f
-    var mScale: Float = 1f
-    var mMinScale: Float = 0.5f
-    var isStart: Boolean = false
+    // 还原动画相关
+    private val restoreAnimatorSet: AnimatorSet = AnimatorSet()
+    var restoreAnimAlpha: Int = 255
+    var restoreAnimTranslateX: Float = 0f
+    var restoreAnimTranslateY: Float = 0f
+    var restoreAnimScale: Float = 1f
+    var restoreAnimMinScale: Float = 0.5f
+    var restoreAnimIsStart: Boolean = false
+    // 退出动画相关
 
-    fun updateTranslateX(translateX: Float): AnimationManager {
-        mTranslateX = translateX
+    // 进入动画相关
+
+    fun updateRestoreAnimTranslateX(translateX: Float): AnimationManager {
+        restoreAnimTranslateX = translateX
         return this
     }
 
-    fun updateTranslateY(translateY: Float): AnimationManager {
-        mTranslateY = if (translateY < 0) 0f else translateY
+    fun updateRestoreAnimTranslateY(translateY: Float): AnimationManager {
+        restoreAnimTranslateY = if (translateY < 0) 0f else translateY
         return this
     }
 
-    fun updateScale(): AnimationManager {
-        val translateYPercent = mTranslateY / MAX_TRANSLATE_Y
+    fun updateRestoreAnimScale(): AnimationManager {
+        val translateYPercent = restoreAnimTranslateY / MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val scale = 1 - translateYPercent
-        mScale = when {
-            scale < mMinScale -> mMinScale
+        restoreAnimScale = when {
+            scale < restoreAnimMinScale -> restoreAnimMinScale
             scale > 1f -> 1f
             else -> scale
         }
         return this
     }
 
-    fun updateAlpha(): AnimationManager {
-        val translateYPercent = mTranslateY / MAX_TRANSLATE_Y
+    fun updateRestoreAnimAlpha(): AnimationManager {
+        val translateYPercent = restoreAnimTranslateY / MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val alpha = (255 * (1 - translateYPercent)).toInt()
-        mAlpha = when {
+        restoreAnimAlpha = when {
             alpha > 255 -> 255
             alpha < 0 -> 0
             else -> alpha
@@ -52,72 +56,58 @@ class AnimationManager(val view: DragPhotoView) {
         return this
     }
 
-    fun restoreImmediately() {
-        mAlpha = 255
-        mTranslateX = 0f
-        mTranslateY = 0f
-        mScale = 1f
-        isStart = false
-        view.invalidate()
-    }
-
     /**
      * 启动还原动画
      */
-    fun restoreSmooth() {
-        if (!isStart) {
-            isStart = true
-            animatorSet.play(getScaleAnimation()).with(getTranslateXAnimation()).with(getTranslateYAnimation()).with(getAlphaAnimation())
-            animatorSet.addListener(object : AnimatorListenerAdapter() {
+    fun startRestoreAnimtor() {
+        if (!restoreAnimIsStart) {
+            restoreAnimIsStart = true
+            restoreAnimatorSet.play(ValueAnimator.ofFloat(restoreAnimScale, 1f).apply {
+                duration = DURATION
+                addUpdateListener {
+                    restoreAnimScale = it.animatedValue as Float
+                    view.invalidate()
+                }
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        animation?.removeAllListeners()
+                    }
+                })
+            })
+                    .with(ValueAnimator.ofFloat(restoreAnimTranslateX, 0f).apply {
+                        duration = DURATION
+                        addUpdateListener {
+                            restoreAnimTranslateX = it.animatedValue as Float
+                        }
+                    })
+                    .with(ValueAnimator.ofFloat(restoreAnimTranslateY, 0f).apply {
+                        duration = DURATION
+                        addUpdateListener {
+                            restoreAnimTranslateY = it.animatedValue as Float
+                        }
+                    })
+                    .with(ValueAnimator.ofInt(restoreAnimAlpha, 255).apply {
+                        duration = DURATION
+                        addUpdateListener {
+                            restoreAnimAlpha = it.animatedValue as Int
+                        }
+                    })
+            restoreAnimatorSet.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     super.onAnimationEnd(animation)
-                    isStart = false
+                    restoreAnimIsStart = false
                 }
             })
-            Logger.d("restoreSmooth mScale = $mScale mAlpha = $mAlpha mTranslateX = $mTranslateX mTranslateY = $mTranslateY")
-            animatorSet.start()
+            Logger.d("startRestoreAnimtor restoreAnimScale = $restoreAnimScale restoreAnimAlpha = $restoreAnimAlpha restoreAnimTranslateX = $restoreAnimTranslateX restoreAnimTranslateY = $restoreAnimTranslateY")
+            restoreAnimatorSet.start()
         }
     }
 
     fun finish() {
-        mTranslateX = -view.width / 2 + view.width * mScale / 2
-        mTranslateY = -view.height / 2 + view.height * mScale / 2
+        restoreAnimTranslateX = -view.width / 2 + view.width * restoreAnimScale / 2
+        restoreAnimTranslateY = -view.height / 2 + view.height * restoreAnimScale / 2
         view.invalidate()
-    }
-
-    private fun getAlphaAnimation() = ValueAnimator.ofInt(mAlpha, 255).apply {
-        duration = DURATION
-        addUpdateListener {
-            mAlpha = it.animatedValue as Int
-        }
-    }
-
-    private fun getTranslateXAnimation() = ValueAnimator.ofFloat(mTranslateX, 0f).apply {
-        duration = DURATION
-        addUpdateListener {
-            mTranslateX = it.animatedValue as Float
-        }
-    }
-
-    private fun getTranslateYAnimation() = ValueAnimator.ofFloat(mTranslateY, 0f).apply {
-        duration = DURATION
-        addUpdateListener {
-            mTranslateY = it.animatedValue as Float
-        }
-    }
-
-    private fun getScaleAnimation() = ValueAnimator.ofFloat(mScale, 1f).apply {
-        duration = DURATION
-        addUpdateListener {
-            mScale = it.animatedValue as Float
-            view.invalidate()
-        }
-        addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                super.onAnimationEnd(animation)
-                animation?.removeAllListeners()
-            }
-        })
     }
 
 }
