@@ -15,6 +15,7 @@ class EnterAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Dra
     private val initTranslationY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
 
     init {
+        // 移动到原始位置，并缩放到原始大小。当进入动画后，放大了就会填满。
         dragPhotoView.scaleX = initScaleX
         dragPhotoView.scaleY = initScaleY
 
