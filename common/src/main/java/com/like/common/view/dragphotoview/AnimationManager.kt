@@ -21,44 +21,14 @@ class AnimationManager(val view: DragPhotoView) {
     var restoreAnimMinScale: Float = 0.5f
     var restoreAnimIsStart: Boolean = false
     // 进入退出DragPhotoViewActivity的动画
+    lateinit var dragPhotoViewInfo: DragPhotoViewInfo
+    private val enterAnimatorSet: AnimatorSet = AnimatorSet()
 
+    fun startEnterAnimator() {
 
-    fun updateRestoreAnimTranslateX(translateX: Float): AnimationManager {
-        restoreAnimTranslateX = translateX
-        return this
     }
 
-    fun updateRestoreAnimTranslateY(translateY: Float): AnimationManager {
-        restoreAnimTranslateY = if (translateY < 0) 0f else translateY
-        return this
-    }
-
-    fun updateRestoreAnimScale(): AnimationManager {
-        val translateYPercent = restoreAnimTranslateY / MAX_RESTORE_ANIMATOR_TRANSLATE_Y
-        val scale = 1 - translateYPercent
-        restoreAnimScale = when {
-            scale < restoreAnimMinScale -> restoreAnimMinScale
-            scale > 1f -> 1f
-            else -> scale
-        }
-        return this
-    }
-
-    fun updateRestoreAnimAlpha(): AnimationManager {
-        val translateYPercent = restoreAnimTranslateY / MAX_RESTORE_ANIMATOR_TRANSLATE_Y
-        val alpha = (255 * (1 - translateYPercent)).toInt()
-        restoreAnimAlpha = when {
-            alpha > 255 -> 255
-            alpha < 0 -> 0
-            else -> alpha
-        }
-        return this
-    }
-
-    /**
-     * 启动还原动画
-     */
-    fun startRestoreAnimtor() {
+    fun startRestoreAnimator() {
         if (!restoreAnimIsStart) {
             restoreAnimIsStart = true
             restoreAnimatorSet.play(ValueAnimator.ofFloat(restoreAnimScale, 1f).apply {
@@ -98,7 +68,7 @@ class AnimationManager(val view: DragPhotoView) {
                     restoreAnimIsStart = false
                 }
             })
-            Logger.d("startRestoreAnimtor restoreAnimScale = $restoreAnimScale restoreAnimAlpha = $restoreAnimAlpha restoreAnimTranslateX = $restoreAnimTranslateX restoreAnimTranslateY = $restoreAnimTranslateY")
+            Logger.d("startRestoreAnimator restoreAnimScale = $restoreAnimScale restoreAnimAlpha = $restoreAnimAlpha restoreAnimTranslateX = $restoreAnimTranslateX restoreAnimTranslateY = $restoreAnimTranslateY")
             restoreAnimatorSet.start()
         }
     }
@@ -107,6 +77,38 @@ class AnimationManager(val view: DragPhotoView) {
         restoreAnimTranslateX = -view.width / 2 + view.width * restoreAnimScale / 2
         restoreAnimTranslateY = -view.height / 2 + view.height * restoreAnimScale / 2
         view.invalidate()
+    }
+
+    fun updateRestoreAnimTranslateX(translateX: Float): AnimationManager {
+        restoreAnimTranslateX = translateX
+        return this
+    }
+
+    fun updateRestoreAnimTranslateY(translateY: Float): AnimationManager {
+        restoreAnimTranslateY = if (translateY < 0) 0f else translateY
+        return this
+    }
+
+    fun updateRestoreAnimScale(): AnimationManager {
+        val translateYPercent = restoreAnimTranslateY / MAX_RESTORE_ANIMATOR_TRANSLATE_Y
+        val scale = 1 - translateYPercent
+        restoreAnimScale = when {
+            scale < restoreAnimMinScale -> restoreAnimMinScale
+            scale > 1f -> 1f
+            else -> scale
+        }
+        return this
+    }
+
+    fun updateRestoreAnimAlpha(): AnimationManager {
+        val translateYPercent = restoreAnimTranslateY / MAX_RESTORE_ANIMATOR_TRANSLATE_Y
+        val alpha = (255 * (1 - translateYPercent)).toInt()
+        restoreAnimAlpha = when {
+            alpha > 255 -> 255
+            alpha < 0 -> 0
+            else -> alpha
+        }
+        return this
     }
 
 }

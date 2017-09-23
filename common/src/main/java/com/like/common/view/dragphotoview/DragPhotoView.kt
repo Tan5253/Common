@@ -42,12 +42,12 @@ class DragPhotoView : PhotoView {
 
             override fun onPageSelected(position: Int) {
                 Logger.e("onPageSelected position = $position")
-                mAnimationManager.startRestoreAnimtor()
+                mAnimationManager.startRestoreAnimator()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 if (scrollState == 1 && state == 0) {
-                    mAnimationManager.startRestoreAnimtor()
+                    mAnimationManager.startRestoreAnimator()
                 }
                 scrollState = state
                 Logger.d("onPageScrollStateChanged state = $state")
@@ -115,7 +115,7 @@ class DragPhotoView : PhotoView {
                         if (mAnimationManager.restoreAnimTranslateY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
                             mExitListener?.onExit(this, mAnimationManager.restoreAnimTranslateX, mAnimationManager.restoreAnimTranslateY, mWidth, mHeight)
                         } else {
-                            mAnimationManager.startRestoreAnimtor()
+                            mAnimationManager.startRestoreAnimator()
                         }
                         // 延时判断是否可以退出
                         postDelayed({
