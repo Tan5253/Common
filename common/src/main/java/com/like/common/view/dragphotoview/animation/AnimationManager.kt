@@ -13,11 +13,9 @@ abstract class AnimationManager(val dragPhotoView: DragPhotoView, val dragPhotoV
     }
 
     private var isStart: Boolean = false
-    private val animatorSet: AnimatorSet = AnimatorSet()
-
-    init {
-        animatorSet.duration = AnimationManager.DURATION
-        animatorSet.addListener(object : AnimatorListenerAdapter() {
+    private val animatorSet: AnimatorSet = AnimatorSet().apply {
+        duration = AnimationManager.DURATION
+        addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
                 isStart = true
@@ -40,6 +38,10 @@ abstract class AnimationManager(val dragPhotoView: DragPhotoView, val dragPhotoV
         }
         fillAnimatorSet(animatorSet)
         animatorSet.start()
+    }
+
+    fun cancel() {
+        animatorSet.cancel()
     }
 
     abstract fun fillAnimatorSet(animatorSet: AnimatorSet)
