@@ -12,6 +12,7 @@ import android.view.WindowManager
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
+import com.like.logger.Logger
 
 class DragPhotoViewActivity : BaseActivity() {
     companion object {
@@ -113,6 +114,7 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     private fun performExitAnimation(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
+        Logger.w("performExitAnimation finish translateX = $x translateY = $y")
         view.mRestoreAnimationManager.finish()
         // 计算当前DragPhotoView的x和y
         view.x = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
