@@ -18,6 +18,10 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
     var minScale: Float = 0.5f
     var isStart: Boolean = false
 
+    init {
+        minScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
+    }
+
     override fun start() {
         if (!isStart) {
             isStart = true

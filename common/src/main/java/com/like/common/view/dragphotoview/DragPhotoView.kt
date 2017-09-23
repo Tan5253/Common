@@ -68,6 +68,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
         canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
         canvas?.translate(mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY)
         canvas?.scale(mRestoreAnimationManager.scale, mRestoreAnimationManager.scale, mWidth / 2, mHeight / 2)
+        Logger.d("onDraw scale = ${mRestoreAnimationManager.scale} alpha = ${mRestoreAnimationManager.alpha} translateX = ${mRestoreAnimationManager.translateX} translateY = ${mRestoreAnimationManager.translateY}")
         super.onDraw(canvas)
     }
 
