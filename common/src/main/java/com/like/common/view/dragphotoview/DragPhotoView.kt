@@ -29,8 +29,8 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
     var mTapListener: OnTapListener? = null
     var mExitListener: OnExitListener? = null
 
-    val mRestoreAnimationManager: RestoreAnimationManager = RestoreAnimationManager(this, dragPhotoViewInfo)
-    val mEnterAnimationManager: EnterAnimationManager = EnterAnimationManager(this, dragPhotoViewInfo)
+    val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragPhotoViewInfo) }
+    val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(this, dragPhotoViewInfo) }
 
     /**以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
     var scrollState = 0

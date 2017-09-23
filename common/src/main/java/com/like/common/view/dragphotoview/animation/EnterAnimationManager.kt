@@ -9,15 +9,11 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  */
 class EnterAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     init {
-//        dragPhotoView.scaleX = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
-//        dragPhotoView.scaleY = dragPhotoViewInfo.originHeight.toFloat() / dragPhotoView.mHeight
-//
-//        val location = IntArray(2)
-//        dragPhotoView.getLocationOnScreen(location)
-//        val targetCenterX = location[0] + dragPhotoView.mWidth / 2
-//        val targetCenterY = location[1] + dragPhotoView.mHeight / 2
-//        dragPhotoView.translationX = dragPhotoViewInfo.originCenterX - targetCenterX
-//        dragPhotoView.translationY = dragPhotoViewInfo.originCenterY - targetCenterY
+        dragPhotoView.scaleX = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
+        dragPhotoView.scaleY = dragPhotoViewInfo.originHeight.toFloat() / dragPhotoView.mHeight
+
+        dragPhotoView.translationX = dragPhotoViewInfo.originCenterX - dragPhotoView.mWidth / 2
+        dragPhotoView.translationY = dragPhotoViewInfo.originCenterY - dragPhotoView.mHeight / 2
     }
 
     override fun start() {

@@ -93,11 +93,11 @@ class DragPhotoViewActivity : BaseActivity() {
 
                 mTranslationX = dragPhotoViewInfo.originCenterX - targetCenterX
                 mTranslationY = dragPhotoViewInfo.originCenterY - targetCenterY
-                photoView.translationX = mTranslationX
-                photoView.translationY = mTranslationY
-
-                photoView.scaleX = mScaleX
-                photoView.scaleY = mScaleY
+//                photoView.translationX = mTranslationX
+//                photoView.translationY = mTranslationY
+//
+//                photoView.scaleX = mScaleX
+//                photoView.scaleY = mScaleY
 
 //                performEnterAnimation()
 
