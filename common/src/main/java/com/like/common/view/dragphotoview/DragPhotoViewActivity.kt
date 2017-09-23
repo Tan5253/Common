@@ -55,7 +55,13 @@ class DragPhotoViewActivity : BaseActivity() {
                 }
                 mExitListener = object : OnExitListener {
                     override fun onExit(view: DragPhotoView, x: Float, y: Float, w: Float, h: Float) {
-                        performExitAnimation(view, x, y, w, h)
+//                        performExitAnimation(view, x, y, w, h)
+                        view.exit(x, y)
+                    }
+
+                    override fun onExitFinish() {
+                        finish()
+                        overridePendingTransition(0, 0)
                     }
                 }
             }
@@ -101,7 +107,7 @@ class DragPhotoViewActivity : BaseActivity() {
 
 //                performEnterAnimation()
 
-                photoView.mEnterAnimationManager.start()
+                photoView.enter()
 
                 for (i in mPhotoViews.indices) {
                     mPhotoViews[i].mRestoreAnimationManager.minScale = mScaleX

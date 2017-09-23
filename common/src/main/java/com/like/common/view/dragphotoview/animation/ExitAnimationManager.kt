@@ -1,56 +1,58 @@
 package com.like.common.view.dragphotoview.animation
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
+import com.like.common.view.dragphotoview.OnExitListener
 
-class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo, translationX: Float, translationY: Float) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    init {
-//        dragPhotoView.translationX = -dragPhotoView.width / 2 + dragPhotoView.width * dragPhotoView.scaleX / 2
-//        dragPhotoView.translationY = -dragPhotoView.height / 2 + dragPhotoView.height * dragPhotoView.scaleY / 2
-//
-//        val viewX = mTargetWidth / 2 + translationX - mTargetWidth * mScaleX / 2
-//        val viewY = mTargetHeight / 2 + translationY - mTargetHeight * mScaleY / 2
-//        view.x = viewX
-//        view.y = viewY
-//
-//        val centerX = view.x + dragPhotoViewInfo.originWidth / 2
-//        val centerY = view.y + dragPhotoViewInfo.originHeight / 2
-//
-//        val translateX = dragPhotoViewInfo.originCenterX - centerX
-//        val translateY = dragPhotoViewInfo.originCenterY - centerY
-//
-//
-//        val translateXAnimator = ValueAnimator.ofFloat(view.x, view.x + translateX)
-//        translateXAnimator.addUpdateListener { valueAnimator -> view.x = valueAnimator.animatedValue as Float }
-//        translateXAnimator.duration = 300
-//        translateXAnimator.start()
-//        val translateYAnimator = ValueAnimator.ofFloat(view.y, view.y + translateY)
-//        translateYAnimator.addUpdateListener { valueAnimator -> view.y = valueAnimator.animatedValue as Float }
-//        translateYAnimator.addListener(object : Animator.AnimatorListener {
-//            override fun onAnimationStart(animator: Animator) {
-//
-//            }
-//
-//            override fun onAnimationEnd(animator: Animator) {
-//                animator.removeAllListeners()
-//                finish()
-//                overridePendingTransition(0, 0)
-//            }
-//
-//            override fun onAnimationCancel(animator: Animator) {
-//
-//            }
-//
-//            override fun onAnimationRepeat(animator: Animator) {
-//
-//            }
-//        })
-//        translateYAnimator.duration = 300
-//        translateYAnimator.start()
+class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo, var mExitListener: OnExitListener? = null) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
+    var pendingTranslateX = 0f
+    var pendingTranslateY = 0f
+
+    fun setData(curTranslationX: Float, curTranslationY: Float): ExitAnimationManager {
+        // 把缩放后的dragPhotoView移动到初始位置，并刷新。这一步是为了解决拖拽时有可能导致dragPhotoView显示的图片不完整（被屏幕边缘剪切了）。
+        // 如果不做处理，只需要下面的代码
+//        val newViewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2
+//        val newViewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
+//        val translateXAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originLeft.toFloat() - newViewX)
+//        val translateYAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originTop.toFloat() - newViewY)
+        dragPhotoView.mRestoreAnimationManager.translateX = -dragPhotoView.width / 2 + dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.scale / 2
+        dragPhotoView.mRestoreAnimationManager.translateY = -dragPhotoView.height / 2 + dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.scale / 2
+        dragPhotoView.invalidate()
+        // 把缩放后的dragPhotoView移动到手指释放时的位置，准备开始动画。
+        dragPhotoView.x = dragPhotoView.mWidth / 2 + curTranslationX - dragPhotoView.mWidth * dragPhotoView.mRestoreAnimationManager.scale / 2
+        dragPhotoView.y = dragPhotoView.mHeight / 2 + curTranslationY - dragPhotoView.mHeight * dragPhotoView.mRestoreAnimationManager.scale / 2
+        // 计算缩放后的dragPhotoView和原始的dragPhotoView的位移
+        val curCenterX = dragPhotoView.x + dragPhotoViewInfo.originWidth / 2
+        val curCenterY = dragPhotoView.y + dragPhotoViewInfo.originHeight / 2
+        pendingTranslateX = dragPhotoViewInfo.originCenterX - curCenterX
+        pendingTranslateY = dragPhotoViewInfo.originCenterY - curCenterY
+        return this
     }
 
     override fun start() {
-
+        animatorSet.play(ValueAnimator.ofFloat(dragPhotoView.x, dragPhotoView.x + pendingTranslateX).apply {
+            duration = AnimationManager.DURATION
+            addUpdateListener {
+                dragPhotoView.x = it.animatedValue as Float
+            }
+        })
+                .with(ValueAnimator.ofFloat(dragPhotoView.y, dragPhotoView.y + pendingTranslateY).apply {
+                    duration = AnimationManager.DURATION
+                    addUpdateListener {
+                        dragPhotoView.y = it.animatedValue as Float
+                    }
+                })
+        animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
+                animation?.removeAllListeners()
+                mExitListener?.onExitFinish()
+            }
+        })
+        animatorSet.start()
     }
 
     override fun finish() {
