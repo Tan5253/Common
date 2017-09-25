@@ -15,7 +15,7 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
     var canvasTranslationX: Float = 0f
     var canvasTranslationY: Float = 0f
     var canvasScale: Float = 1f
-    var minCanvasScale: Float = 0.5f
+    private var minCanvasScale: Float = 0.5f
 
     init {
         minCanvasScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
