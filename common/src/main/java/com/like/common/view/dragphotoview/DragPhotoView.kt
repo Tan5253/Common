@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.util.PhoneUtils
 import com.like.common.view.dragphotoview.animation.*
-import com.like.logger.Logger
 
 class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : PhotoView(context) {
     private val mPaint: Paint = Paint().apply { color = Color.BLACK }
@@ -37,7 +36,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
         viewPager?.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
 
             override fun onPageSelected(position: Int) {
-                Logger.e("onPageSelected position = $position")
+//                Logger.e("onPageSelected position = $position")
                 restore()
             }
 
@@ -46,12 +45,12 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                     restore()
                 }
                 scrollState = state
-                Logger.d("onPageScrollStateChanged state = $state")
+//                Logger.d("onPageScrollStateChanged state = $state")
                 super.onPageScrollStateChanged(state)
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                Logger.w("onPageScrolled position = $position")
+//                Logger.w("onPageScrolled position = $position")
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
 
