@@ -13,19 +13,12 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo;
 
 import java.util.ArrayList;
 
-/**
- * Created by like on 2017/9/22.
- */
-
 public class DragPhotoViewTestActivity extends AppCompatActivity {
-    private ImageView mImageView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_dragphotoview);
-        mImageView = (ImageView) findViewById(R.id.imageView);
     }
 
     public void onClick(View view) {
