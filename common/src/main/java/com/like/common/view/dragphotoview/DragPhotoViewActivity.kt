@@ -13,13 +13,13 @@ import com.like.common.R
 
 class DragPhotoViewActivity : BaseActivity() {
     companion object {
-        const val KEY_DATA = "DragPhotoViewInfo"
+        const val KEY_DATA = "dragPhotoViewInfoList"
     }
 
     private val mViewPager: FixMultiViewPager by lazy { FixMultiViewPager(this) }
     private val mPhotoViews = ArrayList<DragPhotoView>()
 
-    private lateinit var dragPhotoViewInfo: DragPhotoViewInfo
+    private lateinit var dragPhotoViewInfoList: List<DragPhotoViewInfo>
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -34,17 +34,17 @@ class DragPhotoViewActivity : BaseActivity() {
 
         setContentView(mViewPager)
 
-        dragPhotoViewInfo = intent.getSerializableExtra(KEY_DATA) as DragPhotoViewInfo
+        dragPhotoViewInfoList = intent.getSerializableExtra(KEY_DATA) as List<DragPhotoViewInfo>
 
-        dragPhotoViewInfo.imageUrlList.mapTo(mPhotoViews) {
-            DragPhotoView(this, dragPhotoViewInfo).apply {
+        dragPhotoViewInfoList.mapTo(mPhotoViews) {
+            DragPhotoView(this, it).apply {
                 setImageResource(R.drawable.wugeng)
             }
         }
 
         mViewPager.adapter = object : PagerAdapter() {
             override fun isViewFromObject(view: View?, `object`: Any?) = view === `object`
-            override fun getCount() = dragPhotoViewInfo.imageUrlList.size
+            override fun getCount() = dragPhotoViewInfoList.size
             override fun instantiateItem(container: ViewGroup?, position: Int): Any {
                 container?.addView(mPhotoViews[position])
                 return mPhotoViews[position]

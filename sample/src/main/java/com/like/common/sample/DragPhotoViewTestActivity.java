@@ -12,7 +12,6 @@ import com.like.common.view.dragphotoview.DragPhotoViewActivity;
 import com.like.common.view.dragphotoview.DragPhotoViewInfo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by like on 2017/9/22.
@@ -36,21 +35,21 @@ public class DragPhotoViewTestActivity extends AppCompatActivity {
 
     public void startPhotoActivity(Context context, ImageView imageView) {
         Intent intent = new Intent(context, DragPhotoViewActivity.class);
-        int location[] = new int[2];
-        /**
-         *iew.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-         *dragPhotoView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-         *getLocationOnScreen计算该视图在全局坐标系中的x，y值，
-         *(注意这个值是要从屏幕顶端算起，也就是索包括了通知栏的高度)//获取在当前屏幕内的绝对坐标
-         *location [0]--->x坐标,location [1]--->y坐标
-         *
-         */
-        imageView.getLocationOnScreen(location);
-        List<String> imageUrlList = new ArrayList<>();
-        imageUrlList.add("url0");
-        imageUrlList.add("url1");
-        imageUrlList.add("url2");
-        intent.putExtra(DragPhotoViewActivity.KEY_DATA, new DragPhotoViewInfo(location[0], location[1], imageView.getWidth(), imageView.getHeight(), imageUrlList));
+        ArrayList<DragPhotoViewInfo> list = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            /**
+             *view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+             *dragPhotoView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+             *getLocationOnScreen计算该视图在全局坐标系中的x，y值，
+             *(注意这个值是要从屏幕顶端算起，也就是索包括了通知栏的高度)//获取在当前屏幕内的绝对坐标
+             *location [0]--->x坐标,location [1]--->y坐标
+             *
+             */
+            int location[] = new int[2];
+            imageView.getLocationOnScreen(location);
+            list.add(new DragPhotoViewInfo(location[0], location[1], imageView.getWidth(), imageView.getHeight(), "url" + i));
+        }
+        intent.putParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA, list);
         context.startActivity(intent);
         overridePendingTransition(0, 0);
     }
