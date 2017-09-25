@@ -11,6 +11,7 @@ import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
 import com.like.common.util.ImageLoaderUtils
+import com.like.logger.Logger
 
 class DragPhotoViewActivity : BaseActivity() {
     companion object {
@@ -38,6 +39,8 @@ class DragPhotoViewActivity : BaseActivity() {
         setContentView(mViewPager)
 
         dragPhotoViewInfoList = intent.getSerializableExtra(KEY_DATA) as List<DragPhotoViewInfo>
+
+        Logger.printCollection(dragPhotoViewInfoList)
 
         dragPhotoViewInfoList.mapTo(mPhotoViews) {
             DragPhotoView(this, it).apply {

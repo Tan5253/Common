@@ -8,6 +8,7 @@ class DragPhotoViewInfo(val originLeft: Int, val originTop: Int, val originWidth
     var originCenterX: Int = 0
     var originCenterY: Int = 0
 
+
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readInt(),
@@ -39,6 +40,10 @@ class DragPhotoViewInfo(val originLeft: Int, val originTop: Int, val originWidth
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun toString(): String {
+        return "DragPhotoViewInfo(originLeft=$originLeft, originTop=$originTop, originWidth=$originWidth, originHeight=$originHeight, imageUrl='$imageUrl', imageResId=$imageResId, isClicked=$isClicked, originCenterX=$originCenterX, originCenterY=$originCenterY)"
     }
 
     companion object CREATOR : Parcelable.Creator<DragPhotoViewInfo> {
