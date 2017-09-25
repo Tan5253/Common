@@ -26,14 +26,7 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
             duration = AnimationManager.DURATION
             addUpdateListener {
                 canvasScale = it.animatedValue as Float
-                dragPhotoView.invalidate()
             }
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    super.onAnimationEnd(animation)
-                    animation?.removeAllListeners()
-                }
-            })
         })
                 .with(ValueAnimator.ofFloat(canvasTranslationX, 0f).apply {
                     duration = AnimationManager.DURATION
@@ -51,7 +44,14 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
                     duration = AnimationManager.DURATION
                     addUpdateListener {
                         canvasBgAlpha = it.animatedValue as Int
+                        dragPhotoView.invalidate()
                     }
+                    addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            super.onAnimationEnd(animation)
+                            animation?.removeAllListeners()
+                        }
+                    })
                 })
     }
 
