@@ -77,11 +77,10 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
     /**以上代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
 
     override fun onDraw(canvas: Canvas?) {
-        mPaint.alpha = mRestoreAnimationManager.alpha
+        mPaint.alpha = mRestoreAnimationManager.canvasBgAlpha
         canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
-        canvas?.translate(mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY)
-        canvas?.scale(mRestoreAnimationManager.scale, mRestoreAnimationManager.scale, mWidth / 2, mHeight / 2)
-        Logger.d("onDraw scale = ${mRestoreAnimationManager.scale} alpha = ${mRestoreAnimationManager.alpha} translateX = ${mRestoreAnimationManager.translateX} translateY = ${mRestoreAnimationManager.translateY}")
+        canvas?.translate(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
+        canvas?.scale(mRestoreAnimationManager.canvasScale, mRestoreAnimationManager.canvasScale, mWidth / 2, mHeight / 2)
         super.onDraw(canvas)
     }
 
@@ -103,12 +102,12 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
-                    if (mRestoreAnimationManager.translateY == 0f && mRestoreAnimationManager.translateX != 0f) {
+                    if (mRestoreAnimationManager.canvasTranslationY == 0f && mRestoreAnimationManager.canvasTranslationX != 0f) {
                         return super.dispatchTouchEvent(event)
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
-                    if (mRestoreAnimationManager.translateY >= 0f && event.pointerCount == 1) {
+                    if (mRestoreAnimationManager.canvasTranslationY >= 0f && event.pointerCount == 1) {
                         mRestoreAnimationManager.updateTranslateX(event.x - mDownX)
                         mRestoreAnimationManager.updateTranslateY(event.y - mDownY)
                         mRestoreAnimationManager.updateScale()
@@ -118,21 +117,21 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                     }
 
                     // 防止下拉的时候双手缩放
-                    if (mRestoreAnimationManager.translateY >= 0f && mRestoreAnimationManager.scale < 0.95f) {
+                    if (mRestoreAnimationManager.canvasTranslationY >= 0f && mRestoreAnimationManager.canvasScale < 0.95f) {
                         return true
                     }
                 }
                 MotionEvent.ACTION_UP -> {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.translateY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
-                            exit(mRestoreAnimationManager.translateX, mRestoreAnimationManager.translateY)
+                        if (mRestoreAnimationManager.canvasTranslationY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
+                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
                         } else {
                             restore()
                         }
                         // 延时判断是否可以退出
                         postDelayed({
-                            if (mRestoreAnimationManager.translateX == 0f && mRestoreAnimationManager.translateY == 0f && canFinish) {
+                            if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f && canFinish) {
                                 disappear()
                             }
                             canFinish = false

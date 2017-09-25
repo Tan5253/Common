@@ -11,21 +11,21 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  * 从缩放状态在DragPhotoViewActivity中还原的动画管理
  */
 class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    var alpha: Int = 255
-    var translateX: Float = 0f
-    var translateY: Float = 0f
-    var scale: Float = 1f
-    var minScale: Float = 0.5f
+    var canvasBgAlpha: Int = 255
+    var canvasTranslationX: Float = 0f
+    var canvasTranslationY: Float = 0f
+    var canvasScale: Float = 1f
+    var minCanvasScale: Float = 0.5f
 
     init {
-        minScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
+        minCanvasScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ValueAnimator.ofFloat(scale, 1f).apply {
+        animatorSet.play(ValueAnimator.ofFloat(canvasScale, 1f).apply {
             duration = AnimationManager.DURATION
             addUpdateListener {
-                scale = it.animatedValue as Float
+                canvasScale = it.animatedValue as Float
                 dragPhotoView.invalidate()
             }
             addListener(object : AnimatorListenerAdapter() {
@@ -35,48 +35,48 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
                 }
             })
         })
-                .with(ValueAnimator.ofFloat(translateX, 0f).apply {
+                .with(ValueAnimator.ofFloat(canvasTranslationX, 0f).apply {
                     duration = AnimationManager.DURATION
                     addUpdateListener {
-                        translateX = it.animatedValue as Float
+                        canvasTranslationX = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofFloat(translateY, 0f).apply {
+                .with(ValueAnimator.ofFloat(canvasTranslationY, 0f).apply {
                     duration = AnimationManager.DURATION
                     addUpdateListener {
-                        translateY = it.animatedValue as Float
+                        canvasTranslationY = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofInt(alpha, 255).apply {
+                .with(ValueAnimator.ofInt(canvasBgAlpha, 255).apply {
                     duration = AnimationManager.DURATION
                     addUpdateListener {
-                        alpha = it.animatedValue as Int
+                        canvasBgAlpha = it.animatedValue as Int
                     }
                 })
     }
 
-    fun updateTranslateX(translateX: Float) {
-        this.translateX = translateX
+    fun updateTranslateX(translationX: Float) {
+        canvasTranslationX = translationX
     }
 
-    fun updateTranslateY(translateY: Float) {
-        this.translateY = if (translateY < 0) 0f else translateY
+    fun updateTranslateY(translationY: Float) {
+        canvasTranslationY = if (translationY < 0) 0f else translationY
     }
 
     fun updateScale() {
-        val translateYPercent = translateY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
+        val translateYPercent = canvasTranslationY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val scale = 1 - translateYPercent
-        this.scale = when {
-            scale < minScale -> minScale
+        canvasScale = when {
+            scale < minCanvasScale -> minCanvasScale
             scale > 1f -> 1f
             else -> scale
         }
     }
 
     fun updateAlpha() {
-        val translateYPercent = translateY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
+        val translateYPercent = canvasTranslationY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val alpha = (255 * (1 - translateYPercent)).toInt()
-        this.alpha = when {
+        canvasBgAlpha = when {
             alpha > 255 -> 255
             alpha < 0 -> 0
             else -> alpha

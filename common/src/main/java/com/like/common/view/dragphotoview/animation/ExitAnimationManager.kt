@@ -20,12 +20,12 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
 //        val newViewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2
 //        val translateXAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originLeft.toFloat() - newViewX)
 //        val translateYAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originTop.toFloat() - newViewY)
-        dragPhotoView.mRestoreAnimationManager.translateX = -dragPhotoView.width / 2 + dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.scale / 2
-        dragPhotoView.mRestoreAnimationManager.translateY = -dragPhotoView.height / 2 + dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.scale / 2
+        dragPhotoView.mRestoreAnimationManager.canvasTranslationX = -dragPhotoView.width / 2 + dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
+        dragPhotoView.mRestoreAnimationManager.canvasTranslationY = -dragPhotoView.height / 2 + dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
         dragPhotoView.invalidate()
         // 把缩放后的dragPhotoView移动到手指释放时的位置，准备开始动画。
-        dragPhotoView.x = dragPhotoView.mWidth / 2 + curTranslationX - dragPhotoView.mWidth * dragPhotoView.mRestoreAnimationManager.scale / 2
-        dragPhotoView.y = dragPhotoView.mHeight / 2 + curTranslationY - dragPhotoView.mHeight * dragPhotoView.mRestoreAnimationManager.scale / 2
+        dragPhotoView.x = dragPhotoView.mWidth / 2 + curTranslationX - dragPhotoView.mWidth * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
+        dragPhotoView.y = dragPhotoView.mHeight / 2 + curTranslationY - dragPhotoView.mHeight * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
         // 计算缩放后的dragPhotoView和原始的dragPhotoView的位移
         val curCenterX = dragPhotoView.x + dragPhotoViewInfo.originWidth / 2
         val curCenterY = dragPhotoView.y + dragPhotoViewInfo.originHeight / 2
