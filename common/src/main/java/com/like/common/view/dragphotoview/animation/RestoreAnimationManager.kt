@@ -18,7 +18,7 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
     private var minCanvasScale: Float = 0.5f
 
     init {
-        minCanvasScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.mWidth
+        minCanvasScale = dragPhotoViewInfo.originWidth.toFloat() / dragPhotoView.width
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
