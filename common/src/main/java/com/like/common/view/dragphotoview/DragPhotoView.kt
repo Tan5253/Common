@@ -28,7 +28,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
     private val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(this, dragPhotoViewInfo) }
     private val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(this, dragPhotoViewInfo) }
 
-    /**以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
+    // 以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug
     private var scrollState = 0
 
     fun init() {
@@ -56,6 +56,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
 
         })
     }
+    // 以上代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug
 
     fun restore() {
         mRestoreAnimationManager.start()
@@ -72,8 +73,6 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
     fun exit(curTranslationX: Float, curTranslationY: Float) {
         mExitAnimationManager.setData(curTranslationX, curTranslationY).start()
     }
-
-    /**以上代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
 
     override fun onDraw(canvas: Canvas?) {
         mPaint.alpha = mRestoreAnimationManager.canvasBgAlpha
