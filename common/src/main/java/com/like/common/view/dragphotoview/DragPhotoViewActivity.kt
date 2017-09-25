@@ -10,6 +10,7 @@ import android.view.WindowManager
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
+import com.like.common.util.ImageLoaderUtils
 
 class DragPhotoViewActivity : BaseActivity() {
     companion object {
@@ -18,6 +19,8 @@ class DragPhotoViewActivity : BaseActivity() {
 
     private val mViewPager: FixMultiViewPager by lazy { FixMultiViewPager(this) }
     private val mPhotoViews = ArrayList<DragPhotoView>()
+
+    private val mImageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(this) }
 
     private lateinit var dragPhotoViewInfoList: List<DragPhotoViewInfo>
 
@@ -38,13 +41,17 @@ class DragPhotoViewActivity : BaseActivity() {
 
         dragPhotoViewInfoList.mapTo(mPhotoViews) {
             DragPhotoView(this, it).apply {
-                setImageResource(R.drawable.wugeng)
+                if (it.imageResId > 0) {
+                    setImageResource(it.imageResId)
+                } else {
+                    mImageLoaderUtils.display(it.imageUrl, this)
+                }
             }
         }
 
         mViewPager.adapter = object : PagerAdapter() {
             override fun isViewFromObject(view: View?, `object`: Any?) = view === `object`
-            override fun getCount() = dragPhotoViewInfoList.size
+            override fun getCount() = mPhotoViews.size
             override fun instantiateItem(container: ViewGroup?, position: Int): Any {
                 container?.addView(mPhotoViews[position])
                 return mPhotoViews[position]
@@ -55,13 +62,27 @@ class DragPhotoViewActivity : BaseActivity() {
             }
         }
 
-        mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                mPhotoViews[0].enter()
-            }
-        })
+        val curClickedIndex = getCurClickedIndex()
+        if (curClickedIndex != -1) {
+            mViewPager.currentItem = curClickedIndex
+            mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    mPhotoViews[curClickedIndex].enter()
+                }
+            })
+        }
+
         return null
+    }
+
+    private fun getCurClickedIndex(): Int {
+        dragPhotoViewInfoList.forEachIndexed { index, dragPhotoViewInfo ->
+            if (dragPhotoViewInfo.isClicked) {
+                return index
+            }
+        }
+        return -1
     }
 
     override fun onBackPressed() {
