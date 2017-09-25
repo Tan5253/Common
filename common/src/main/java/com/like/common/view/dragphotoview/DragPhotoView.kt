@@ -108,10 +108,10 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
 
                     // 单手指按下，并在Y方向上拖动了一段距离
                     if (mRestoreAnimationManager.canvasTranslationY >= 0f && event.pointerCount == 1) {
-                        mRestoreAnimationManager.updateTranslateX(event.x - mDownX)
-                        mRestoreAnimationManager.updateTranslateY(event.y - mDownY)
-                        mRestoreAnimationManager.updateScale()
-                        mRestoreAnimationManager.updateAlpha()
+                        mRestoreAnimationManager.updateCanvasTranslationX(event.x - mDownX)
+                        mRestoreAnimationManager.updateCanvasTranslationY(event.y - mDownY)
+                        mRestoreAnimationManager.updateCanvasScale()
+                        mRestoreAnimationManager.updateCanvasBgAlpha()
                         invalidate()
                         return true
                     }

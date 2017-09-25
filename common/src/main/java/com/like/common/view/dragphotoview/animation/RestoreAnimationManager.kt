@@ -55,15 +55,15 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
                 })
     }
 
-    fun updateTranslateX(translationX: Float) {
+    fun updateCanvasTranslationX(translationX: Float) {
         canvasTranslationX = translationX
     }
 
-    fun updateTranslateY(translationY: Float) {
+    fun updateCanvasTranslationY(translationY: Float) {
         canvasTranslationY = if (translationY < 0) 0f else translationY
     }
 
-    fun updateScale() {
+    fun updateCanvasScale() {
         val translateYPercent = canvasTranslationY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val scale = 1 - translateYPercent
         canvasScale = when {
@@ -73,7 +73,7 @@ class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: D
         }
     }
 
-    fun updateAlpha() {
+    fun updateCanvasBgAlpha() {
         val translateYPercent = canvasTranslationY / AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y
         val alpha = (255 * (1 - translateYPercent)).toInt()
         canvasBgAlpha = when {
