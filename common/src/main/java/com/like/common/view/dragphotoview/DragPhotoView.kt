@@ -12,25 +12,25 @@ import com.like.common.view.dragphotoview.animation.*
 import com.like.logger.Logger
 
 class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : PhotoView(context) {
-    val mPaint: Paint = Paint().apply { color = Color.BLACK }
+    private val mPaint: Paint = Paint().apply { color = Color.BLACK }
 
-    var mDownX: Float = 0f
-    var mDownY: Float = 0f
+    private var mDownX: Float = 0f
+    private var mDownY: Float = 0f
 
-    val screenWidth = PhoneUtils.getInstance(context).mPhoneStatus.screenWidth.toFloat()
-    val screenHeight = PhoneUtils.getInstance(context).mPhoneStatus.screenHeight.toFloat()
-    var mWidth: Float = 0f
-    var mHeight: Float = 0f
+    private val screenWidth = PhoneUtils.getInstance(context).mPhoneStatus.screenWidth.toFloat()
+    private val screenHeight = PhoneUtils.getInstance(context).mPhoneStatus.screenHeight.toFloat()
+    private var mWidth: Float = 0f
+    private var mHeight: Float = 0f
 
-    var canFinish: Boolean = false
+    private var canFinish: Boolean = false
 
-    val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragPhotoViewInfo) }
-    val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(this, dragPhotoViewInfo) }
-    val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(this, dragPhotoViewInfo) }
-    val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(this, dragPhotoViewInfo) }
+    internal val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragPhotoViewInfo) }
+    private val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(this, dragPhotoViewInfo) }
+    private val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(this, dragPhotoViewInfo) }
+    private val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(this, dragPhotoViewInfo) }
 
     /**以下代码：处理ViewPager由于滑动冲突导致的不能在每次滚动完毕时正常回归原位的bug**/
-    var scrollState = 0
+    private var scrollState = 0
 
     fun init() {
         val viewPager = getParentViewPager()
