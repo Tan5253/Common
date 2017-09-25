@@ -7,7 +7,7 @@ import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 
 /**
- * 从正常状态退出DragPhotoViewActivity的动画
+ * DragPhotoViewActivity消失的动画
  */
 class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     private val pendingTranslateX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
