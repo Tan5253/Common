@@ -10,10 +10,10 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  * 从缩放状态退出DragPhotoViewActivity的动画
  */
 class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    val halfDragPhotoViewWidth = dragPhotoView.width / 2
-    val halfDragPhotoViewHeight = dragPhotoView.height / 2
-    val halfScaleDragPhotoViewWidth = dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
-    val halfScaleDragPhotoViewHeight = dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
+    private val halfDragPhotoViewWidth = dragPhotoView.width / 2
+    private val halfDragPhotoViewHeight = dragPhotoView.height / 2
+    private val halfScaleDragPhotoViewWidth = dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
+    private val halfScaleDragPhotoViewHeight = dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
     private var pendingTranslateX = 0f
     private var pendingTranslateY = 0f
 
