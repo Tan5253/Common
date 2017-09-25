@@ -17,7 +17,6 @@ class DragPhotoViewActivity : BaseActivity() {
     }
 
     private val mViewPager: FixMultiViewPager by lazy { FixMultiViewPager(this) }
-    private val mImageUrlList = listOf("url", "url", "url")
     private val mPhotoViews = ArrayList<DragPhotoView>()
 
     private lateinit var dragPhotoViewInfo: DragPhotoViewInfo
@@ -37,7 +36,7 @@ class DragPhotoViewActivity : BaseActivity() {
 
         dragPhotoViewInfo = intent.getSerializableExtra(KEY_DATA) as DragPhotoViewInfo
 
-        mImageUrlList.mapTo(mPhotoViews) {
+        dragPhotoViewInfo.imageUrlList.mapTo(mPhotoViews) {
             DragPhotoView(this, dragPhotoViewInfo).apply {
                 setImageResource(R.drawable.wugeng)
             }
@@ -45,7 +44,7 @@ class DragPhotoViewActivity : BaseActivity() {
 
         mViewPager.adapter = object : PagerAdapter() {
             override fun isViewFromObject(view: View?, `object`: Any?) = view === `object`
-            override fun getCount() = mImageUrlList.size
+            override fun getCount() = dragPhotoViewInfo.imageUrlList.size
             override fun instantiateItem(container: ViewGroup?, position: Int): Any {
                 container?.addView(mPhotoViews[position])
                 return mPhotoViews[position]

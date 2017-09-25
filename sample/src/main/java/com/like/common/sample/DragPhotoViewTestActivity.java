@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import com.like.common.view.dragphotoview.DragPhotoViewActivity;
 import com.like.common.view.dragphotoview.DragPhotoViewInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by like on 2017/9/22.
  */
@@ -43,7 +46,11 @@ public class DragPhotoViewTestActivity extends AppCompatActivity {
          *
          */
         imageView.getLocationOnScreen(location);
-        intent.putExtra(DragPhotoViewActivity.KEY_DATA, new DragPhotoViewInfo(location[0], location[1], imageView.getWidth(), imageView.getHeight()));
+        List<String> imageUrlList = new ArrayList<>();
+        imageUrlList.add("url0");
+        imageUrlList.add("url1");
+        imageUrlList.add("url2");
+        intent.putExtra(DragPhotoViewActivity.KEY_DATA, new DragPhotoViewInfo(location[0], location[1], imageView.getWidth(), imageView.getHeight(), imageUrlList));
         context.startActivity(intent);
         overridePendingTransition(0, 0);
     }
