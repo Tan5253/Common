@@ -8,7 +8,7 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
 
 abstract class AnimationManager(val dragPhotoView: DragPhotoView, val dragPhotoViewInfo: DragPhotoViewInfo) {
     companion object {
-        const val DURATION = 2000L
+        const val DURATION = 1000L
     }
 
     private var isStart: Boolean = false
