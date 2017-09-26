@@ -11,7 +11,6 @@ import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
 import com.like.common.util.ImageLoaderUtils
-import com.like.logger.Logger
 
 class DragPhotoViewActivity : BaseActivity() {
     companion object {
@@ -36,37 +35,37 @@ class DragPhotoViewActivity : BaseActivity() {
             window.statusBarColor = ContextCompat.getColor(this, R.color.common_transparent)
         }
 
-        setContentView(mViewPager)
-
         dragPhotoViewInfoList = intent.getSerializableExtra(KEY_DATA) as List<DragPhotoViewInfo>
-
-        Logger.printCollection(dragPhotoViewInfoList)
-
-        dragPhotoViewInfoList.mapTo(mPhotoViews) {
-            DragPhotoView(this, it).apply {
-                if (it.imageResId > 0) {
-                    setImageResource(it.imageResId)
-                } else {
-                    mImageLoaderUtils.display(it.imageUrl, this)
-                }
-            }
-        }
-
-        mViewPager.adapter = object : PagerAdapter() {
-            override fun isViewFromObject(view: View?, `object`: Any?) = view === `object`
-            override fun getCount() = mPhotoViews.size
-            override fun instantiateItem(container: ViewGroup?, position: Int): Any {
-                container?.addView(mPhotoViews[position])
-                return mPhotoViews[position]
-            }
-
-            override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
-                container?.removeView(mPhotoViews[position])
-            }
-        }
 
         val curClickedIndex = getCurClickedIndex()
         if (curClickedIndex != -1) {
+            setContentView(mViewPager)
+
+            initDragPhotoViewInfoIndex(curClickedIndex)
+
+            dragPhotoViewInfoList.mapTo(mPhotoViews) {
+                DragPhotoView(this, it).apply {
+                    if (it.imageResId > 0) {
+                        setImageResource(it.imageResId)
+                    } else {
+                        mImageLoaderUtils.display(it.imageUrl, this)
+                    }
+                }
+            }
+
+            mViewPager.adapter = object : PagerAdapter() {
+                override fun isViewFromObject(view: View?, `object`: Any?) = view === `object`
+                override fun getCount() = mPhotoViews.size
+                override fun instantiateItem(container: ViewGroup?, position: Int): Any {
+                    container?.addView(mPhotoViews[position])
+                    return mPhotoViews[position]
+                }
+
+                override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
+                    container?.removeView(mPhotoViews[position])
+                }
+            }
+
             mViewPager.currentItem = curClickedIndex
             mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -86,6 +85,12 @@ class DragPhotoViewActivity : BaseActivity() {
             }
         }
         return -1
+    }
+
+    private fun initDragPhotoViewInfoIndex(curClickedIndex: Int) {
+        dragPhotoViewInfoList.forEachIndexed { index, dragPhotoViewInfo ->
+            dragPhotoViewInfo.index = index - curClickedIndex
+        }
     }
 
     override fun onBackPressed() {

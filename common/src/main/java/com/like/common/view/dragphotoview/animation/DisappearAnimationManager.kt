@@ -10,13 +10,14 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  * DragPhotoViewActivity消失的动画
  */
 class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    private val pendingTranslationX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
+    private val initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index
+    private val pendingTranslationX = initTranslationX + dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
     private val pendingTranslationY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
     private val pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.width.toFloat()
     private val pendingScaleY = dragPhotoViewInfo.originHeight / dragPhotoView.height.toFloat()
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", 0f, pendingTranslationX))
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, pendingTranslationX))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "y", 0f, pendingTranslationY))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleX", 1f, pendingScaleX))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleY", 1f, pendingScaleY))

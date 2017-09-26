@@ -16,6 +16,7 @@ class DragPhotoViewInfo(val originLeft: Int, val originTop: Int, val originWidth
     // 下面是根据原始尺寸计算出来的辅助尺寸
     var originCenterX: Int = originLeft + originWidth / 2
     var originCenterY: Int = originTop + originHeight / 2
+    var index: Int = 0// 以第一次进入DragPhotoViewActivity时那个视图为索引0，前后的视图依此类推。
 
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
