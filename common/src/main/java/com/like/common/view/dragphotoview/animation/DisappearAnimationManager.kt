@@ -11,13 +11,13 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  */
 class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     private val initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index
-    private val pendingTranslationX = initTranslationX + dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
+    private val pendingTranslationX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
     private val pendingTranslationY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
     private val pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.width.toFloat()
     private val pendingScaleY = dragPhotoViewInfo.originHeight / dragPhotoView.height.toFloat()
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, pendingTranslationX))
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, initTranslationX + pendingTranslationX))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "y", 0f, pendingTranslationY))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleX", 1f, pendingScaleX))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleY", 1f, pendingScaleY))
