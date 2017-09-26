@@ -2,7 +2,6 @@ package com.like.common.view.dragphotoview.animation
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.app.Activity
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 
@@ -17,6 +16,9 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
     private var initTranslationX = 0f
     private var pendingTranslationX = 0f
     private var pendingTranslationY = 0f
+    // 注意：这里是以缩放后的视图为初始情况
+    private val pendingScaleX = dragPhotoViewInfo.originWidth / (dragPhotoView.width.toFloat() * dragPhotoView.mRestoreAnimationManager.canvasScale)
+    private val pendingScaleY = dragPhotoViewInfo.originHeight / (dragPhotoView.height.toFloat() * dragPhotoView.mRestoreAnimationManager.canvasScale)
 
     fun setData(curTranslationX: Float, curTranslationY: Float): ExitAnimationManager {
         // 把缩放后的dragPhotoView移动到屏幕左上角的位置，这样能保证不管是否缩放，都能显示完整的图片，并刷新。这一步是为了解决拖拽时有可能导致dragPhotoView显示的图片不完整（被屏幕边缘剪切了）。
@@ -44,14 +46,16 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, initTranslationX + pendingTranslationX))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoView.y + pendingTranslationY))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleX", 1f, pendingScaleX))// 注意：这里是以缩放后的视图为初始情况，所以开始为1f
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleY", 1f, pendingScaleY))
     }
 
     override fun onEnd() {
-        val activity = dragPhotoView.context
-        if (activity is Activity) {
-            activity.finish()
-            activity.overridePendingTransition(0, 0)
-        }
+//        val activity = dragPhotoView.context
+//        if (activity is Activity) {
+//            activity.finish()
+//            activity.overridePendingTransition(0, 0)
+//        }
     }
 
 }
