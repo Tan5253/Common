@@ -27,6 +27,7 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
 //        val translateYAnimator = ValueAnimator.ofFloat(0f, dragPhotoViewInfo.originTop.toFloat() - newViewY)
         dragPhotoView.mRestoreAnimationManager.canvasTranslationX = -halfDragPhotoViewWidth + halfScaleDragPhotoViewWidth
         dragPhotoView.mRestoreAnimationManager.canvasTranslationY = -halfDragPhotoViewHeight + halfScaleDragPhotoViewHeight
+        dragPhotoView.mRestoreAnimationManager.canvasBgAlpha = 0
         dragPhotoView.invalidate()
         // 把缩放后的dragPhotoView移动到手指释放时的位置，准备开始动画。
         dragPhotoView.x = halfDragPhotoViewWidth + curTranslationX - halfScaleDragPhotoViewWidth
