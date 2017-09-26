@@ -2,6 +2,7 @@ package com.like.common.view.dragphotoview.animation
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 
@@ -14,8 +15,6 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
     private val halfScaleDragPhotoViewWidth = dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
     private val halfScaleDragPhotoViewHeight = dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
     private var initTranslationX = 0f
-    private var pendingTranslationX = 0f
-    private var pendingTranslationY = 0f
     // 注意：这里是以缩放后的视图为初始情况
     private val pendingScaleX = dragPhotoViewInfo.originWidth / (dragPhotoView.width.toFloat() * dragPhotoView.mRestoreAnimationManager.canvasScale)
     private val pendingScaleY = dragPhotoViewInfo.originHeight / (dragPhotoView.height.toFloat() * dragPhotoView.mRestoreAnimationManager.canvasScale)
@@ -34,28 +33,26 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
         // 把缩放后的dragPhotoView移动到手指释放时的位置，准备开始动画。
         dragPhotoView.x = halfDragPhotoViewWidth + curTranslationX - halfScaleDragPhotoViewWidth
         dragPhotoView.y = halfDragPhotoViewHeight + curTranslationY - halfScaleDragPhotoViewHeight
-        // 计算缩放后的dragPhotoView距离原始的dragPhotoView的位移
-        val curCenterX = dragPhotoView.x + halfScaleDragPhotoViewWidth
-        val curCenterY = dragPhotoView.y + halfScaleDragPhotoViewHeight
-        initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index + dragPhotoView.x// 要考虑ViewPager切换页面对初始值的影响
-        pendingTranslationX = dragPhotoViewInfo.originCenterX - curCenterX
-        pendingTranslationY = dragPhotoViewInfo.originCenterY - curCenterY
+        // 计算初始TranslationX时要考虑ViewPager切换页面对初始值的影响
+        initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index + dragPhotoView.x
         return this
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, initTranslationX + pendingTranslationX))
-                .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoView.y + pendingTranslationY))
+        dragPhotoView.pivotX = 0f
+        dragPhotoView.pivotY = 0f
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, dragPhotoViewInfo.originLeft.toFloat()))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoViewInfo.originTop.toFloat()))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleX", 1f, pendingScaleX))// 注意：这里是以缩放后的视图为初始情况，所以开始为1f
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleY", 1f, pendingScaleY))
     }
 
     override fun onEnd() {
-//        val activity = dragPhotoView.context
-//        if (activity is Activity) {
-//            activity.finish()
-//            activity.overridePendingTransition(0, 0)
-//        }
+        val activity = dragPhotoView.context
+        if (activity is Activity) {
+            activity.finish()
+            activity.overridePendingTransition(0, 0)
+        }
     }
 
 }
