@@ -3,11 +3,19 @@ package com.like.common.view.dragphotoview
 import android.os.Parcel
 import android.os.Parcelable
 
+/**
+ * @param originLeft    原始imageview的left
+ * @param originTop     原始imageview的top
+ * @param originWidth   原始imageview的width
+ * @param originHeight  原始imageview的height
+ * @param imageUrl      原始图片的url
+ * @param imageResId    原始图片的资源id
+ * @param isClicked     是否当前点击的那张图片
+ */
 class DragPhotoViewInfo(val originLeft: Int, val originTop: Int, val originWidth: Int, val originHeight: Int, val imageUrl: String = "", val imageResId: Int = 0, val isClicked: Boolean = false) : Parcelable {
     // 下面是根据原始尺寸计算出来的辅助尺寸
-    var originCenterX: Int = 0
-    var originCenterY: Int = 0
-
+    var originCenterX: Int = originLeft + originWidth / 2
+    var originCenterY: Int = originTop + originHeight / 2
 
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
@@ -19,11 +27,6 @@ class DragPhotoViewInfo(val originLeft: Int, val originTop: Int, val originWidth
             parcel.readByte() != 0.toByte()) {
         originCenterX = parcel.readInt()
         originCenterY = parcel.readInt()
-    }
-
-    init {
-        originCenterX = originLeft + originWidth / 2
-        originCenterY = originTop + originHeight / 2
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -40,10 +43,6 @@ class DragPhotoViewInfo(val originLeft: Int, val originTop: Int, val originWidth
 
     override fun describeContents(): Int {
         return 0
-    }
-
-    override fun toString(): String {
-        return "DragPhotoViewInfo(originLeft=$originLeft, originTop=$originTop, originWidth=$originWidth, originHeight=$originHeight, imageUrl='$imageUrl', imageResId=$imageResId, isClicked=$isClicked, originCenterX=$originCenterX, originCenterY=$originCenterY)"
     }
 
     companion object CREATOR : Parcelable.Creator<DragPhotoViewInfo> {
