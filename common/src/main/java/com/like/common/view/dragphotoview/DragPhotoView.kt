@@ -8,7 +8,10 @@ import android.support.v4.view.ViewPager
 import android.view.MotionEvent
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.util.PhoneUtils
-import com.like.common.view.dragphotoview.animation.*
+import com.like.common.view.dragphotoview.animation.DisappearAnimationManager
+import com.like.common.view.dragphotoview.animation.EnterAnimationManager
+import com.like.common.view.dragphotoview.animation.ExitAnimationManager
+import com.like.common.view.dragphotoview.animation.RestoreAnimationManager
 
 class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : PhotoView(context) {
     private val mPaint: Paint = Paint().apply { color = Color.BLACK }
@@ -122,7 +125,7 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                 MotionEvent.ACTION_UP -> {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.canvasTranslationY > AnimationManager.MAX_RESTORE_ANIMATOR_TRANSLATE_Y) {
+                        if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
                             exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
                         } else {
                             restore()

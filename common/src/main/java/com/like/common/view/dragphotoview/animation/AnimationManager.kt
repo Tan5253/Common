@@ -9,7 +9,6 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
 abstract class AnimationManager(val dragPhotoView: DragPhotoView, val dragPhotoViewInfo: DragPhotoViewInfo) {
     companion object {
         const val DURATION = 300L
-        const val MAX_RESTORE_ANIMATOR_TRANSLATE_Y = 500
     }
 
     private var isStart: Boolean = false
