@@ -10,7 +10,7 @@ import com.like.common.view.dragphotoview.DragPhotoViewInfo
  * DragPhotoViewActivity消失的动画
  */
 class DisappearAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
-    private val initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index
+    private val initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index// 要考虑ViewPager切换页面对初始值的影响
     private val pendingTranslationX = dragPhotoViewInfo.originCenterX - dragPhotoView.width.toFloat() / 2
     private val pendingTranslationY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
     private val pendingScaleX = dragPhotoViewInfo.originWidth / dragPhotoView.width.toFloat()

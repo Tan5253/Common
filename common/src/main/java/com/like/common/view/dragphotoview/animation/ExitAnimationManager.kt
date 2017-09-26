@@ -14,6 +14,7 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
     private val halfDragPhotoViewHeight = dragPhotoView.height / 2
     private val halfScaleDragPhotoViewWidth = dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
     private val halfScaleDragPhotoViewHeight = dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
+    private var initTranslationX = 0f
     private var pendingTranslationX = 0f
     private var pendingTranslationY = 0f
 
@@ -33,13 +34,14 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
         // 计算缩放后的dragPhotoView距离原始的dragPhotoView的位移
         val curCenterX = dragPhotoView.x + halfScaleDragPhotoViewWidth
         val curCenterY = dragPhotoView.y + halfScaleDragPhotoViewHeight
+        initTranslationX = dragPhotoView.width.toFloat() * dragPhotoViewInfo.index + dragPhotoView.x// 要考虑ViewPager切换页面对初始值的影响
         pendingTranslationX = dragPhotoViewInfo.originCenterX - curCenterX
         pendingTranslationY = dragPhotoViewInfo.originCenterY - curCenterY
         return this
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", dragPhotoView.x, dragPhotoView.x + pendingTranslationX))
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", initTranslationX, initTranslationX + pendingTranslationX))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoView.y + pendingTranslationY))
     }
 
