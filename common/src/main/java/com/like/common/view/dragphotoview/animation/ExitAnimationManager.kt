@@ -14,8 +14,8 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
     private val halfDragPhotoViewHeight = dragPhotoView.height / 2
     private val halfScaleDragPhotoViewWidth = dragPhotoView.width * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
     private val halfScaleDragPhotoViewHeight = dragPhotoView.height * dragPhotoView.mRestoreAnimationManager.canvasScale / 2
-    private var pendingTranslateX = 0f
-    private var pendingTranslateY = 0f
+    private var pendingTranslationX = 0f
+    private var pendingTranslationY = 0f
 
     fun setData(curTranslationX: Float, curTranslationY: Float): ExitAnimationManager {
         // 把缩放后的dragPhotoView移动到屏幕左上角的位置，这样能保证不管是否缩放，都能显示完整的图片，并刷新。这一步是为了解决拖拽时有可能导致dragPhotoView显示的图片不完整（被屏幕边缘剪切了）。
@@ -33,14 +33,14 @@ class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Drag
         // 计算缩放后的dragPhotoView距离原始的dragPhotoView的位移
         val curCenterX = dragPhotoView.x + halfScaleDragPhotoViewWidth
         val curCenterY = dragPhotoView.y + halfScaleDragPhotoViewHeight
-        pendingTranslateX = dragPhotoViewInfo.originCenterX - curCenterX
-        pendingTranslateY = dragPhotoViewInfo.originCenterY - curCenterY
+        pendingTranslationX = dragPhotoViewInfo.originCenterX - curCenterX
+        pendingTranslationY = dragPhotoViewInfo.originCenterY - curCenterY
         return this
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", dragPhotoView.x, dragPhotoView.x + pendingTranslateX))
-                .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoView.y + pendingTranslateY))
+        animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", dragPhotoView.x, dragPhotoView.x + pendingTranslationX))
+                .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, dragPhotoView.y + pendingTranslationY))
     }
 
     override fun onEnd() {
