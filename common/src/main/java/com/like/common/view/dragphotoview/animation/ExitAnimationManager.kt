@@ -7,7 +7,7 @@ import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 
 /**
- * 从缩放状态退出DragPhotoViewActivity的动画
+ * 从缩放状态到退出DragPhotoViewActivity的动画
  */
 class ExitAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     private val halfDragPhotoViewWidth = dragPhotoView.width / 2

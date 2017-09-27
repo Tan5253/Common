@@ -8,7 +8,7 @@ import com.like.common.view.dragphotoview.DragPhotoView
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 
 /**
- * 从缩放状态在DragPhotoViewActivity中还原的动画管理
+ * 在DragPhotoViewActivity中，DragPhotoView从缩放状态还原的动画管理
  */
 class RestoreAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: DragPhotoViewInfo) : AnimationManager(dragPhotoView, dragPhotoViewInfo) {
     var canvasBgAlpha: Int = 255

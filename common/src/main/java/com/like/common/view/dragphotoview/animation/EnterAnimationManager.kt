@@ -15,7 +15,7 @@ class EnterAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Dra
     private val initTranslationY = dragPhotoViewInfo.originCenterY - dragPhotoView.height.toFloat() / 2
 
     init {
-        // 移动到原始位置，并缩放到原始大小。当进入动画后，放大了就会填满。
+        // 移动到原始位置，并缩放到原始大小。开始动画前的准备工作
         dragPhotoView.scaleX = initScaleX
         dragPhotoView.scaleY = initScaleY
 
@@ -24,6 +24,7 @@ class EnterAnimationManager(dragPhotoView: DragPhotoView, dragPhotoViewInfo: Dra
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
+        // 当进入动画后，放大了就会填满。所以不需要translation动画
         animatorSet.play(ObjectAnimator.ofFloat(dragPhotoView, "x", dragPhotoView.x, 0f))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "y", dragPhotoView.y, 0f))
                 .with(ObjectAnimator.ofFloat(dragPhotoView, "scaleX", initScaleX, 1f))
