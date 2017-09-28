@@ -62,7 +62,7 @@ class DragViewTestActivity : BaseActivity() {
                 val sdPath = "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/video_0.mp4"
                 ResourceUtils.Assets2Sd(this, "video_0.mp4", sdPath)
                 val intent = Intent(this, DragVideoViewActivity::class.java)
-                intent.putExtra(DragVideoViewActivity.KEY_DATA, DragVideoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.wugeng, sdPath))
+                intent.putExtra(DragVideoViewActivity.KEY_DATA, DragVideoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.video_image, sdPath))
                 startActivity(intent)
             }
         }

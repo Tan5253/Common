@@ -56,7 +56,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
         })
 
         if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
-            RxJavaUtils.timer(3000) {
+            RxJavaUtils.timer(2000) {
                 removeAllViews()
                 addView(VideoView(context).apply {
                     layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
