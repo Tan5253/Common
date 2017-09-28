@@ -38,7 +38,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
     init {
         setBackgroundColor(Color.BLACK)
 
-        val imageView = ImageView(context).apply {
+        addView(ImageView(context).apply {
             layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
                 addRule(RelativeLayout.CENTER_IN_PARENT)
             }
@@ -53,8 +53,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
                     enter()
                 }
             })
-        }
-        addView(imageView)
+        })
 
         if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
             RxJavaUtils.timer(3000) {
