@@ -41,7 +41,7 @@ class DragViewTestActivity : BaseActivity() {
                  */
                 val location0 = IntArray(2)
                 mBinding.iv0.getLocationOnScreen(location0)
-                list.add(DragPhotoViewInfo(location0[0], location0[1], mBinding.iv0.width, mBinding.iv0.height, "", R.drawable.wugeng, view.id == R.id.iv_0))
+                list.add(DragPhotoViewInfo(location0[0], location0[1], mBinding.iv0.width, mBinding.iv0.height, "", R.drawable.video_image_1, view.id == R.id.iv_0))
 
                 val location1 = IntArray(2)
                 mBinding.iv1.getLocationOnScreen(location1)

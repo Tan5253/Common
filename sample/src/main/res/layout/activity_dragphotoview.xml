@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -56,45 +57,45 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.zhy.android.percent.support.PercentLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/iv_0"
-                    android:layout_width="90dp"
-                    android:layout_height="160dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:onClick="onClick"
-                    android:src="@drawable/wugeng" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/video_image_1"
+                    app:layout_heightPercent="33.33%w" />
 
                 <ImageView
                     android:id="@+id/iv_1"
-                    android:layout_width="90dp"
-                    android:layout_height="160dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="1"
                     android:onClick="onClick"
-                    android:src="@drawable/wugeng1" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/wugeng1"
+                    app:layout_heightPercent="33.33%w" />
 
                 <ImageView
                     android:id="@+id/iv_2"
-                    android:layout_width="90dp"
-                    android:layout_height="160dp"
-                    android:onClick="onClick"
-                    android:src="@drawable/wugeng2" />
-
-                <Space
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/wugeng2"
+                    app:layout_heightPercent="33.33%w" />
+
+            </com.zhy.android.percent.support.PercentLinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
