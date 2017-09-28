@@ -35,7 +35,7 @@ class DragPhotoViewActivity : BaseActivity() {
             window.statusBarColor = ContextCompat.getColor(this, R.color.common_transparent)
         }
 
-        dragPhotoViewInfoList = intent.getSerializableExtra(KEY_DATA) as List<DragPhotoViewInfo>
+        dragPhotoViewInfoList = intent.getParcelableArrayListExtra(KEY_DATA)
 
         val curClickedIndex = getCurClickedIndex()
         if (curClickedIndex != -1) {
