@@ -64,7 +64,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.like.common.sample.DragPhotoViewTestActivity"
+            android:name="com.like.common.sample.DragViewTestActivity"
             android:screenOrientation="portrait" />
     </application>
 

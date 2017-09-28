@@ -192,7 +192,7 @@ public class MainActivity extends BasePermissionActivity {
     }
 
     public void clickDragPhoto(View view) {
-        startActivity(new Intent(this, DragPhotoViewTestActivity.class));
+        startActivity(new Intent(this, DragViewTestActivity.class));
     }
 
     private Disposable subscribe;

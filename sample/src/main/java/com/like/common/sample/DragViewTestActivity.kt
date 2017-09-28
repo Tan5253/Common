@@ -9,9 +9,11 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityDragphotoviewBinding
 import com.like.common.view.dragphotoview.DragPhotoViewActivity
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
+import com.like.common.view.dragvideoview.DragVideoViewActivity
+import com.like.common.view.dragvideoview.DragVideoViewInfo
 import java.util.*
 
-class DragPhotoViewTestActivity : BaseActivity() {
+class DragViewTestActivity : BaseActivity() {
     private val mBinding: ActivityDragphotoviewBinding by lazy {
         DataBindingUtil.setContentView<ActivityDragphotoviewBinding>(this, R.layout.activity_dragphotoview)
     }
@@ -24,9 +26,9 @@ class DragPhotoViewTestActivity : BaseActivity() {
     }
 
     fun onClick(view: View) {
-        val list = ArrayList<DragPhotoViewInfo>()
         when (view.id) {
             R.id.iv_0, R.id.iv_1, R.id.iv_2 -> {
+                val list = ArrayList<DragPhotoViewInfo>()
                 /**
                  * view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
                  * dragPhotoView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
@@ -46,16 +48,19 @@ class DragPhotoViewTestActivity : BaseActivity() {
                 val location2 = IntArray(2)
                 mBinding.iv2.getLocationOnScreen(location2)
                 list.add(DragPhotoViewInfo(location2[0], location2[1], mBinding.iv2.width, mBinding.iv2.height, "", R.drawable.wugeng2, view.id == R.id.iv_2))
+
+                val intent = Intent(this, DragPhotoViewActivity::class.java)
+                intent.putParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA, list)
+                startActivity(intent)
             }
             R.id.rl_video -> {
                 val location0 = IntArray(2)
                 mBinding.rlVideo.getLocationOnScreen(location0)
-                list.add(DragPhotoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.wugeng, view.id == R.id.rl_video))
+                val intent = Intent(this, DragVideoViewActivity::class.java)
+                intent.putExtra(DragVideoViewActivity.KEY_DATA, DragVideoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.wugeng, "file:///android_asset/video_0.mp4"))
+                startActivity(intent)
             }
         }
-        val intent = Intent(this, DragPhotoViewActivity::class.java)
-        intent.putParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA, list)
-        startActivity(intent)
         overridePendingTransition(0, 0)
     }
 
