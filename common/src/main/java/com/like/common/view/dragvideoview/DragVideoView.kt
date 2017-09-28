@@ -1,34 +1,28 @@
 package com.like.common.view.dragvideoview
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.FrameLayout
-import com.like.common.R
-import com.like.common.databinding.ViewDragVideoBinding
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.VideoView
 import com.like.common.dragVideoView.dragvideodragVideoView.animation.DisappearAnimationManager
 import com.like.common.util.ImageLoaderUtils
-import com.like.common.util.PhoneUtils
 import com.like.common.util.RxJavaUtils
 import com.like.common.view.dragvideoview.animation.EnterAnimationManager
 import com.like.common.view.dragvideoview.animation.ExitAnimationManager
 import com.like.common.view.dragvideoview.animation.RestoreAnimationManager
 import com.like.logger.Logger
 
-class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : FrameLayout(context) {
+class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : RelativeLayout(context) {
     private val mPaint: Paint = Paint().apply { color = Color.BLACK }
 
     private var mDownX: Float = 0f
     private var mDownY: Float = 0f
 
-    private val screenWidth = PhoneUtils.getInstance(context).mPhoneStatus.screenWidth.toFloat()
-    private val screenHeight = PhoneUtils.getInstance(context).mPhoneStatus.screenHeight.toFloat()
     private var mWidth: Float = 0f
     private var mHeight: Float = 0f
 
@@ -42,33 +36,42 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Fr
     private val mImageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(context) }
 
     init {
-        val binding = DataBindingUtil.inflate<ViewDragVideoBinding>(LayoutInflater.from(context), R.layout.view_drag_video, this, true)
+        setBackgroundColor(Color.BLACK)
 
-        binding.videoView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                binding.videoView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                if (dragVideoViewInfo.imageResId > 0) {
-                    binding.iv.setImageResource(dragVideoViewInfo.imageResId)
-                } else {
-                    mImageLoaderUtils.display(dragVideoViewInfo.imageUrl, binding.iv)
-                }
-
-                if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
-                    RxJavaUtils.timer(3000) {
-                        binding.iv.visibility = View.GONE
-                        binding.progressbar.visibility = View.GONE
-                        binding.videoView.visibility = View.VISIBLE
-                        binding.videoView.setVideoPath(dragVideoViewInfo.videoUrl)
-                        binding.videoView.setOnPreparedListener { mediaPlayer ->
-                            mediaPlayer.start()
-                            mediaPlayer.isLooping = true
-                        }
-                    }
-                }
-
-                enter()
+        val imageView = ImageView(context).apply {
+            layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                addRule(RelativeLayout.CENTER_IN_PARENT)
             }
-        })
+            if (dragVideoViewInfo.imageResId > 0) {
+                setImageResource(dragVideoViewInfo.imageResId)
+            } else {
+                mImageLoaderUtils.display(dragVideoViewInfo.imageUrl, this)
+            }
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    enter()
+                }
+            })
+        }
+        addView(imageView)
+
+        if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
+            RxJavaUtils.timer(3000) {
+                removeAllViews()
+                addView(VideoView(context).apply {
+                    layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                        addRule(RelativeLayout.CENTER_IN_PARENT)
+                    }
+                    setVideoPath(dragVideoViewInfo.videoUrl)
+                    setOnPreparedListener { mediaPlayer ->
+                        mediaPlayer.start()
+                        mediaPlayer.isLooping = true
+                    }
+                })
+            }
+        }
+
     }
 
     fun restore() {
@@ -90,7 +93,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Fr
     override fun onDraw(canvas: Canvas?) {
         Logger.w("scale = ${mRestoreAnimationManager.canvasScale} bgAlpha = ${mRestoreAnimationManager.canvasBgAlpha} canvasTranslationX = ${mRestoreAnimationManager.canvasTranslationX} canvasTranslationY = ${mRestoreAnimationManager.canvasTranslationY}")
         mPaint.alpha = mRestoreAnimationManager.canvasBgAlpha
-        canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
+        setBackgroundColor(Color.argb(mPaint.alpha, 0, 0, 0))
         canvas?.translate(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
         canvas?.scale(mRestoreAnimationManager.canvasScale, mRestoreAnimationManager.canvasScale, mWidth / 2, mHeight / 2)
         super.onDraw(canvas)
