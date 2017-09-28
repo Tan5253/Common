@@ -24,8 +24,6 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
     private var mWidth: Float = 0f
     private var mHeight: Float = 0f
 
-    private var canFinish: Boolean = false
-
     internal val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragPhotoViewInfo) }
     private val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(this, dragPhotoViewInfo) }
     private val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(this, dragPhotoViewInfo) }
@@ -99,7 +97,6 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                 MotionEvent.ACTION_DOWN -> {
                     mDownX = event.x
                     mDownY = event.y
-                    canFinish = !canFinish
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
@@ -125,18 +122,13 @@ class DragPhotoView(context: Context, dragPhotoViewInfo: DragPhotoViewInfo) : Ph
                 MotionEvent.ACTION_UP -> {
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
+                        if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
+                            disappear()
+                        } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
                             exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
                         } else {
                             restore()
                         }
-                        // 延时判断是否可以退出
-                        postDelayed({
-                            if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f && canFinish) {
-                                disappear()
-                            }
-                            canFinish = false
-                        }, 300)
                     }
                 }
             }
