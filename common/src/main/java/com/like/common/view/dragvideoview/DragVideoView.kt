@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.ViewTreeObserver
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.VideoView
 import com.like.common.dragVideoView.dragvideodragVideoView.animation.DisappearAnimationManager
@@ -48,6 +49,12 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
                     enter()
                 }
             })
+        })
+
+        addView(ProgressBar(context, null, android.R.attr.progressBarStyleInverse).apply {
+            layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                addRule(RelativeLayout.CENTER_IN_PARENT)
+            }
         })
 
         if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
