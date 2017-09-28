@@ -59,7 +59,7 @@ class RestoreAnimationManager(dragVideoView: DragVideoView, dragVideoViewInfo: D
     }
 
     fun updateCanvasTranslationY(translationY: Float) {
-        canvasTranslationY = if (translationY < 0) 0f else translationY
+        canvasTranslationY = translationY
     }
 
     fun updateCanvasScale() {
