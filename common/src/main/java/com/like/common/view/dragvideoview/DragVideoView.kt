@@ -19,6 +19,7 @@ import com.like.common.util.RxJavaUtils
 import com.like.common.view.dragvideoview.animation.EnterAnimationManager
 import com.like.common.view.dragvideoview.animation.ExitAnimationManager
 import com.like.common.view.dragvideoview.animation.RestoreAnimationManager
+import com.like.logger.Logger
 
 class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : FrameLayout(context) {
     private val mPaint: Paint = Paint().apply { color = Color.BLACK }
@@ -87,6 +88,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Fr
     }
 
     override fun onDraw(canvas: Canvas?) {
+        Logger.w("scale = ${mRestoreAnimationManager.canvasScale} bgAlpha = ${mRestoreAnimationManager.canvasBgAlpha} canvasTranslationX = ${mRestoreAnimationManager.canvasTranslationX} canvasTranslationY = ${mRestoreAnimationManager.canvasTranslationY}")
         mPaint.alpha = mRestoreAnimationManager.canvasBgAlpha
         canvas?.drawRect(0f, 0f, screenWidth, screenHeight, mPaint)
         canvas?.translate(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
@@ -110,6 +112,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Fr
                     canFinish = !canFinish
                 }
                 MotionEvent.ACTION_MOVE -> {
+                    Logger.e("scaleX = $scaleX scaleY = $scaleY  scale = ${mRestoreAnimationManager.canvasScale} bgAlpha = ${mRestoreAnimationManager.canvasBgAlpha} canvasTranslationX = ${mRestoreAnimationManager.canvasTranslationX} canvasTranslationY = ${mRestoreAnimationManager.canvasTranslationY}")
                     // 单手指按下，并在Y方向上拖动了一段距离
                     if (mRestoreAnimationManager.canvasTranslationY >= 0f && event.pointerCount == 1) {
                         mRestoreAnimationManager.updateCanvasTranslationX(event.x - mDownX)
@@ -117,16 +120,9 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Fr
                         mRestoreAnimationManager.updateCanvasScale()
                         mRestoreAnimationManager.updateCanvasBgAlpha()
                         invalidate()
-                        return true
-                    }
-
-                    // 防止下拉的时候双手缩放
-                    if (mRestoreAnimationManager.canvasTranslationY >= 0f && mRestoreAnimationManager.canvasScale < 0.95f) {
-                        return true
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
                         if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
                             exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
@@ -144,7 +140,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Fr
                 }
             }
         }
-        return super.dispatchTouchEvent(event)
+        return true
     }
 
 }
