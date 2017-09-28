@@ -15,7 +15,6 @@ import com.like.common.util.RxJavaUtils
 import com.like.common.view.dragvideoview.animation.EnterAnimationManager
 import com.like.common.view.dragvideoview.animation.ExitAnimationManager
 import com.like.common.view.dragvideoview.animation.RestoreAnimationManager
-import com.like.logger.Logger
 
 class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : RelativeLayout(context) {
     private val mPaint: Paint = Paint().apply { color = Color.BLACK }
@@ -25,8 +24,6 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
 
     private var mWidth: Float = 0f
     private var mHeight: Float = 0f
-
-    private var canFinish: Boolean = false
 
     internal val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(this, dragVideoViewInfo) }
     private val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(this, dragVideoViewInfo) }
@@ -90,7 +87,6 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
     }
 
     override fun onDraw(canvas: Canvas?) {
-        Logger.w("scale = ${mRestoreAnimationManager.canvasScale} bgAlpha = ${mRestoreAnimationManager.canvasBgAlpha} canvasTranslationX = ${mRestoreAnimationManager.canvasTranslationX} canvasTranslationY = ${mRestoreAnimationManager.canvasTranslationY}")
         mPaint.alpha = mRestoreAnimationManager.canvasBgAlpha
         setBackgroundColor(Color.argb(mPaint.alpha, 0, 0, 0))
         canvas?.translate(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
@@ -111,12 +107,10 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
                 MotionEvent.ACTION_DOWN -> {
                     mDownX = event.x
                     mDownY = event.y
-                    canFinish = !canFinish
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    Logger.e("scaleX = $scaleX scaleY = $scaleY  scale = ${mRestoreAnimationManager.canvasScale} bgAlpha = ${mRestoreAnimationManager.canvasBgAlpha} canvasTranslationX = ${mRestoreAnimationManager.canvasTranslationX} canvasTranslationY = ${mRestoreAnimationManager.canvasTranslationY}")
                     // 单手指按下，并在Y方向上拖动了一段距离
-                    if (mRestoreAnimationManager.canvasTranslationY >= 0f && event.pointerCount == 1) {
+                    if (event.pointerCount == 1) {
                         mRestoreAnimationManager.updateCanvasTranslationX(event.x - mDownX)
                         mRestoreAnimationManager.updateCanvasTranslationY(event.y - mDownY)
                         mRestoreAnimationManager.updateCanvasScale()
@@ -126,18 +120,13 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
                 }
                 MotionEvent.ACTION_UP -> {
                     if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
+                        if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
+                            disappear()
+                        } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
                             exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
                         } else {
                             restore()
                         }
-                        // 延时判断是否可以退出
-                        postDelayed({
-                            if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f && canFinish) {
-                                disappear()
-                            }
-                            canFinish = false
-                        }, 300)
                     }
                 }
             }
