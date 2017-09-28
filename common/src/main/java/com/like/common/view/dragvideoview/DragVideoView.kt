@@ -57,15 +57,15 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
 
         if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
             RxJavaUtils.timer(2000) {
-                removeAllViews()
                 addView(VideoView(context).apply {
                     layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
                         addRule(RelativeLayout.CENTER_IN_PARENT)
                     }
+                    setZOrderOnTop(true)// 避免闪屏
                     setVideoPath(dragVideoViewInfo.videoUrl)
                     setOnPreparedListener { mediaPlayer ->
-                        mediaPlayer.start()
                         mediaPlayer.isLooping = true
+                        mediaPlayer.start()
                     }
                 })
             }
