@@ -1,30 +1,22 @@
 package com.like.common.view.dragvideoview
 
-import android.databinding.DataBindingUtil
 import android.os.Build
 import android.support.v4.content.ContextCompat
-import android.view.View
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
-import com.like.common.databinding.ActivityDragVideoViewBinding
-import com.like.common.util.ImageLoaderUtils
-import com.like.common.util.RxJavaUtils
 
 class DragVideoViewActivity : BaseActivity() {
     companion object {
         const val KEY_DATA = "dragVideoViewInfo"
     }
 
-    private val mBinding: ActivityDragVideoViewBinding by lazy {
-        DataBindingUtil.setContentView<ActivityDragVideoViewBinding>(this, R.layout.activity_drag_video_view)
-    }
-
-    private val mImageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(this) }
-
     private lateinit var dragVideoViewInfo: DragVideoViewInfo
+
+    private val dragVideoView: DragVideoView by lazy {
+        DragVideoView(this, dragVideoViewInfo)
+    }
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -39,35 +31,12 @@ class DragVideoViewActivity : BaseActivity() {
 
         dragVideoViewInfo = intent.getParcelableExtra(KEY_DATA)
 
-        if (dragVideoViewInfo.imageResId > 0) {
-            mBinding.iv.setImageResource(dragVideoViewInfo.imageResId)
-        } else {
-            mImageLoaderUtils.display(dragVideoViewInfo.imageUrl, mBinding.iv)
-        }
+        setContentView(dragVideoView)
 
-        mBinding.rlVideo.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                mBinding.rlVideo.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//                mPhotoViews[curClickedIndex].enter()
-            }
-        })
-
-        if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
-            RxJavaUtils.timer(1000) {
-                mBinding.iv.visibility = View.GONE
-                mBinding.progressbar.visibility = View.GONE
-                mBinding.videoView.visibility = View.VISIBLE
-                mBinding.videoView.setVideoPath(dragVideoViewInfo.videoUrl)
-                mBinding.videoView.setOnPreparedListener { mediaPlayer ->
-                    mediaPlayer.start()
-                    mediaPlayer.isLooping = true
-                }
-            }
-        }
         return null
     }
 
-//    override fun onBackPressed() {
-//        mPhotoViews[mViewPager.currentItem].disappear()
-//    }
+    override fun onBackPressed() {
+        dragVideoView.disappear()
+    }
 }
