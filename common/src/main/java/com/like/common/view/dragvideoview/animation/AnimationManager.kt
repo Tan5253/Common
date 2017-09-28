@@ -8,7 +8,7 @@ import com.like.common.view.dragvideoview.DragVideoViewInfo
 
 abstract class AnimationManager(val dragVideoView: DragVideoView, val dragVideoViewInfo: DragVideoViewInfo) {
     companion object {
-        const val DURATION = 300L
+        const val DURATION = 200L
     }
 
     private var isStart: Boolean = false
