@@ -36,9 +36,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
         setBackgroundColor(Color.BLACK)
 
         addView(ImageView(context).apply {
-            layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                addRule(RelativeLayout.CENTER_IN_PARENT)
-            }
+            layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
             if (dragVideoViewInfo.imageResId > 0) {
                 setImageResource(dragVideoViewInfo.imageResId)
             } else {
@@ -55,7 +53,7 @@ class DragVideoView(context: Context, dragVideoViewInfo: DragVideoViewInfo) : Re
         if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
             RxJavaUtils.timer(2000) {
                 addView(VideoView(context).apply {
-                    layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                    layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
                         addRule(RelativeLayout.CENTER_IN_PARENT)
                     }
                     setZOrderOnTop(true)// 避免闪屏
