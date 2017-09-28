@@ -3,6 +3,7 @@ package com.like.common.view.dragvideoview
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.support.v4.content.ContextCompat
+import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import com.like.base.context.BaseActivity
@@ -10,6 +11,7 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
 import com.like.common.databinding.ActivityDragVideoViewBinding
 import com.like.common.util.ImageLoaderUtils
+import com.like.common.util.RxJavaUtils
 
 class DragVideoViewActivity : BaseActivity() {
     companion object {
@@ -49,6 +51,19 @@ class DragVideoViewActivity : BaseActivity() {
 //                mPhotoViews[curClickedIndex].enter()
             }
         })
+
+        if (dragVideoViewInfo.videoUrl.isNotEmpty()) {
+            RxJavaUtils.timer(1000) {
+                mBinding.iv.visibility = View.GONE
+                mBinding.progressbar.visibility = View.GONE
+                mBinding.videoView.visibility = View.VISIBLE
+                mBinding.videoView.setVideoPath(dragVideoViewInfo.videoUrl)
+                mBinding.videoView.setOnPreparedListener { mediaPlayer ->
+                    mediaPlayer.start()
+                    mediaPlayer.isLooping = true
+                }
+            }
+        }
         return null
     }
 

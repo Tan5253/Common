@@ -7,6 +7,8 @@ import android.view.WindowManager
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityDragphotoviewBinding
+import com.like.common.util.ResourceUtils
+import com.like.common.util.StorageUtils
 import com.like.common.view.dragphotoview.DragPhotoViewActivity
 import com.like.common.view.dragphotoview.DragPhotoViewInfo
 import com.like.common.view.dragvideoview.DragVideoViewActivity
@@ -56,8 +58,11 @@ class DragViewTestActivity : BaseActivity() {
             R.id.rl_video -> {
                 val location0 = IntArray(2)
                 mBinding.rlVideo.getLocationOnScreen(location0)
+
+                val sdPath = "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/video_0.mp4"
+                ResourceUtils.Assets2Sd(this, "video_0.mp4", sdPath)
                 val intent = Intent(this, DragVideoViewActivity::class.java)
-                intent.putExtra(DragVideoViewActivity.KEY_DATA, DragVideoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.wugeng, "file:///android_asset/video_0.mp4"))
+                intent.putExtra(DragVideoViewActivity.KEY_DATA, DragVideoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.wugeng, sdPath))
                 startActivity(intent)
             }
         }
