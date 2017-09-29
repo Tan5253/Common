@@ -10,12 +10,11 @@ import com.like.common.view.dragview.view.BaseDragView
 /**
  * 在Activity中，view从缩放状态还原的动画管理
  */
-class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
+class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view) {
     val MAX_CANVAS_TRANSLATION_Y = view.height.toFloat() / 4
     var minCanvasScale = info.originWidth / view.width
 
     fun setCurData(info: DragInfo) {
-        this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         view.mAnimationConfig.init()
         minCanvasScale = info.originWidth / view.width

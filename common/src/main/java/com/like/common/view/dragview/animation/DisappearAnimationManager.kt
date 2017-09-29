@@ -8,14 +8,13 @@ import com.like.common.view.dragview.view.BaseDragView
 /**
  * Activity消失的动画
  */
-class DisappearAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
+class DisappearAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view) {
     private var pendingScaleX = info.originWidth / view.width.toFloat()
     private var pendingScaleY = info.originHeight / view.height.toFloat()
     private var pendingLeft = info.originLeft
     private var pendingTop = info.originTop
 
     fun setCurData(info: DragInfo) {
-        this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         pendingScaleX = info.originWidth / view.width.toFloat()
         pendingScaleY = info.originHeight / view.height.toFloat()

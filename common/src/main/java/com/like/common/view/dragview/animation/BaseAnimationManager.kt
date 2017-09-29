@@ -4,10 +4,9 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.app.Activity
-import com.like.common.view.dragview.entity.DragInfo
 import com.like.common.view.dragview.view.BaseDragView
 
-abstract class BaseAnimationManager(val view: BaseDragView, var info: DragInfo) {
+abstract class BaseAnimationManager(val view: BaseDragView) {
     companion object {
         const val DURATION = 200L
     }

@@ -10,7 +10,7 @@ import com.like.common.view.dragview.view.BaseDragView
 /**
  * 进入Activity的动画
  */
-class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
+class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view) {
     private val initScaleX = info.originWidth / view.width
     private val initScaleY = info.originHeight / view.height
     private val initTranslationX = info.originCenterX - view.width.toFloat() / 2
@@ -19,7 +19,6 @@ class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationM
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         // 当进入动画后，放大了就会填满。所以不需要translation动画
         animatorSet.play(ValueAnimator.ofFloat(initScaleX, 1f).apply {
-            duration = DURATION
             addUpdateListener {
                 view.mAnimationConfig.canvasScale = it.animatedValue as Float
             }

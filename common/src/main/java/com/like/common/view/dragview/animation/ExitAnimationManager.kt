@@ -8,7 +8,7 @@ import com.like.common.view.dragview.view.BaseDragView
 /**
  * 从缩放状态到退出Activity的动画
  */
-class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
+class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view) {
     private val halfDragPhotoViewWidth = view.width / 2
     private val halfDragPhotoViewHeight = view.height / 2
     private var halfScaleDragPhotoViewWidth = view.width * view.mAnimationConfig.canvasScale / 2
@@ -20,7 +20,6 @@ class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationMa
     private var pendingTop = info.originTop
 
     fun setCurData(info: DragInfo) {
-        this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         halfScaleDragPhotoViewWidth = view.width * view.mAnimationConfig.canvasScale / 2
         halfScaleDragPhotoViewHeight = view.height * view.mAnimationConfig.canvasScale / 2
