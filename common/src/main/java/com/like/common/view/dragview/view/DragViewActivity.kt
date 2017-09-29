@@ -15,7 +15,7 @@ class DragViewActivity : BaseActivity() {
         const val KEY_DATA = "DragInfo"
     }
 
-    private lateinit var view: BaseDragView
+    private var view: BaseDragView? = null
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -28,32 +28,28 @@ class DragViewActivity : BaseActivity() {
             window.statusBarColor = ContextCompat.getColor(this, R.color.common_transparent)
         }
 
-        var infos: List<DragInfo>? = null
-        var info: DragInfo? = null
         try {
-            infos = intent.getParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA)
+            val infos: List<DragInfo>? = intent.getParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA)
+            infos?.let {
+                view = DragPhotoView(this, it)
+            }
+
+            val info: DragInfo? = intent.getParcelableExtra(KEY_DATA)
+            info?.let {
+                view = DragVideoView(this, it)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            try {
-                info = intent.getParcelableExtra(KEY_DATA)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
 
-        infos?.let {
-            view = DragPhotoView(this, it)
-            setContentView(view)
+        view?.let {
+            setContentView(it)
         }
 
-        info?.let {
-            view = DragVideoView(this, it)
-            setContentView(view)
-        }
         return null
     }
 
     override fun onBackPressed() {
-        view.disappear()
+        view?.disappear()
     }
 }

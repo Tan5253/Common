@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.widget.RelativeLayout
 import com.like.common.util.ImageLoaderUtils
 import com.like.common.view.dragview.animation.DisappearAnimationManager
@@ -46,6 +47,24 @@ open class BaseDragView(context: Context, val info: DragInfo) : RelativeLayout(c
 
     fun exit(curTranslationX: Float, curTranslationY: Float) {
         mExitAnimationManager.setTranslationData(curTranslationX, curTranslationY).start()
+    }
+
+    fun onActionDown(event: MotionEvent) {
+        mDownX = event.x
+        mDownY = event.y
+    }
+
+    fun onActionUp(event: MotionEvent) {
+        // 防止下拉的时候双手缩放
+        if (event.pointerCount == 1) {
+            if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
+                disappear()
+            } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
+                exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
+            } else {
+                restore()
+            }
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {

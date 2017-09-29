@@ -81,8 +81,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
         if (scaleX == 1f && scaleY == 1f) {
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    mDownX = event.x
-                    mDownY = event.y
+                    onActionDown(event)
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
@@ -106,16 +105,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    // 防止下拉的时候双手缩放
-                    if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
-                            disappear()
-                        } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
-                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
-                        } else {
-                            restore()
-                        }
-                    }
+                    onActionUp(event)
                 }
             }
         }

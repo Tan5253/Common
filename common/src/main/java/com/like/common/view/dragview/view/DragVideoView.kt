@@ -57,8 +57,7 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
         if (scaleX == 1f && scaleY == 1f) {
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    mDownX = event.x
-                    mDownY = event.y
+                    onActionDown(event)
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // 单手指按下，并在Y方向上拖动了一段距离
@@ -71,15 +70,7 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (event.pointerCount == 1) {
-                        if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
-                            disappear()
-                        } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
-                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
-                        } else {
-                            restore()
-                        }
-                    }
+                    onActionUp(event)
                 }
             }
         }
