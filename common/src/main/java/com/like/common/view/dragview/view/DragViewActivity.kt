@@ -16,8 +16,6 @@ class DragViewActivity : BaseActivity() {
     }
 
     private lateinit var view: BaseDragView
-    private var infos: List<DragInfo>? = null
-    private var info: DragInfo? = null
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -30,20 +28,26 @@ class DragViewActivity : BaseActivity() {
             window.statusBarColor = ContextCompat.getColor(this, R.color.common_transparent)
         }
 
+        var infos: List<DragInfo>? = null
+        var info: DragInfo? = null
         try {
             infos = intent.getParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA)
-            info = intent.getParcelableExtra(KEY_DATA)
         } catch (e: Exception) {
             e.printStackTrace()
+            try {
+                info = intent.getParcelableExtra(KEY_DATA)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         infos?.let {
-            view = DragPhotoView(this, infos!!)
+            view = DragPhotoView(this, it)
             setContentView(view)
         }
 
         info?.let {
-            view = DragVideoView(this, info!!)
+            view = DragVideoView(this, it)
             setContentView(view)
         }
         return null
