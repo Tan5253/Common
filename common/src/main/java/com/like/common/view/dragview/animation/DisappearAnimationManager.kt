@@ -14,13 +14,12 @@ class DisappearAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimat
     private var pendingLeft = info.originLeft
     private var pendingTop = info.originTop
 
-    fun setCurData(info: DragInfo): DisappearAnimationManager {
+    fun setCurData(info: DragInfo) {
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         pendingScaleX = info.originWidth / view.width.toFloat()
         pendingScaleY = info.originHeight / view.height.toFloat()
         pendingLeft = info.originLeft
         pendingTop = info.originTop
-        return this
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {

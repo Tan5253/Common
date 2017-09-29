@@ -50,21 +50,6 @@ class DragViewActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        infos?.let {
-            view.disappear(infos!![getCurClickedIndex()])
-        }
-
-        info?.let {
-            view.disappear(info!!)
-        }
-    }
-
-    private fun getCurClickedIndex(): Int {
-        infos?.forEachIndexed { index, dragPhotoViewInfo ->
-            if (dragPhotoViewInfo.isClicked) {
-                return index
-            }
-        }
-        return -1
+        view.disappear()
     }
 }

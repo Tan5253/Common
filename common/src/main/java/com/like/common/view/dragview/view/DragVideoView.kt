@@ -73,9 +73,9 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                 MotionEvent.ACTION_UP -> {
                     if (event.pointerCount == 1) {
                         if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
-                            disappear(info)
+                            disappear()
                         } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
-                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY, info)
+                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
                         } else {
                             restore()
                         }

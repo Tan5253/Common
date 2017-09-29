@@ -52,6 +52,8 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 override fun onPageSelected(position: Int) {
                     curClickedIndex = position
                     mRestoreAnimationManager.setCurData(infos[curClickedIndex])
+                    mDisappearAnimationManager.setCurData(infos[curClickedIndex])
+                    mExitAnimationManager.setCurData(infos[curClickedIndex])
                 }
             })
 
@@ -107,9 +109,9 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
                         if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
-                            disappear(infos[curClickedIndex])
+                            disappear()
                         } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
-                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY, infos[curClickedIndex])
+                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
                         } else {
                             restore()
                         }

@@ -18,14 +18,13 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
     var minCanvasScale = info.originWidth / view.width
     val MAX_CANVAS_TRANSLATION_Y = view.height.toFloat() / 4
 
-    fun setCurData(info: DragInfo): RestoreAnimationManager {
+    fun setCurData(info: DragInfo) {
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         canvasBgAlpha = 255
         canvasTranslationX = 0f
         canvasTranslationY = 0f
         canvasScale = 1f
         minCanvasScale = info.originWidth / view.width
-        return this
     }
 
     override
