@@ -17,10 +17,7 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
     fun setCurData(info: DragInfo) {
         this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
-        view.mAnimationConfig.canvasBgAlpha = 255
-        view.mAnimationConfig.canvasTranslationX = 0f
-        view.mAnimationConfig.canvasTranslationY = 0f
-        view.mAnimationConfig.canvasScale = 1f
+        view.mAnimationConfig.init()
         minCanvasScale = info.originWidth / view.width
     }
 
