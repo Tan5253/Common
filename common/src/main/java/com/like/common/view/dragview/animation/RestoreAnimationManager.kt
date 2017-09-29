@@ -11,47 +11,39 @@ import com.like.common.view.dragview.view.BaseDragView
  * 在Activity中，view从缩放状态还原的动画管理
  */
 class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
-    var canvasBgAlpha = 255
-    var canvasTranslationX = 0f
-    var canvasTranslationY = 0f
-    var canvasScale = 1f
-    var minCanvasScale = info.originWidth / view.width
     val MAX_CANVAS_TRANSLATION_Y = view.height.toFloat() / 4
+    var minCanvasScale = info.originWidth / view.width
 
     fun setCurData(info: DragInfo) {
         this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
-        canvasBgAlpha = 255
-        canvasTranslationX = 0f
-        canvasTranslationY = 0f
-        canvasScale = 1f
+        view.mAnimationConfig.canvasBgAlpha = 255
+        view.mAnimationConfig.canvasTranslationX = 0f
+        view.mAnimationConfig.canvasTranslationY = 0f
+        view.mAnimationConfig.canvasScale = 1f
         minCanvasScale = info.originWidth / view.width
     }
 
     override
     fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ValueAnimator.ofFloat(canvasScale, 1f).apply {
-            duration = DURATION
+        animatorSet.play(ValueAnimator.ofFloat(view.mAnimationConfig.canvasScale, 1f).apply {
             addUpdateListener {
-                canvasScale = it.animatedValue as Float
+                view.mAnimationConfig.canvasScale = it.animatedValue as Float
             }
         })
-                .with(ValueAnimator.ofFloat(canvasTranslationX, 0f).apply {
-                    duration = DURATION
+                .with(ValueAnimator.ofFloat(view.mAnimationConfig.canvasTranslationX, 0f).apply {
                     addUpdateListener {
-                        canvasTranslationX = it.animatedValue as Float
+                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofFloat(canvasTranslationY, 0f).apply {
-                    duration = DURATION
+                .with(ValueAnimator.ofFloat(view.mAnimationConfig.canvasTranslationY, 0f).apply {
                     addUpdateListener {
-                        canvasTranslationY = it.animatedValue as Float
+                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofInt(canvasBgAlpha, 255).apply {
-                    duration = DURATION
+                .with(ValueAnimator.ofInt(view.mAnimationConfig.canvasBgAlpha, 255).apply {
                     addUpdateListener {
-                        canvasBgAlpha = it.animatedValue as Int
+                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
                     addListener(object : AnimatorListenerAdapter() {
@@ -64,17 +56,17 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
     }
 
     fun updateCanvasTranslationX(translationX: Float) {
-        canvasTranslationX = translationX
+        view.mAnimationConfig.canvasTranslationX = translationX
     }
 
     fun updateCanvasTranslationY(translationY: Float) {
-        canvasTranslationY = translationY
+        view.mAnimationConfig.canvasTranslationY = translationY
     }
 
     fun updateCanvasScale() {
-        val translateYPercent = Math.abs(canvasTranslationY) / view.height
+        val translateYPercent = Math.abs(view.mAnimationConfig.canvasTranslationY) / view.height
         val scale = 1 - translateYPercent
-        canvasScale = when {
+        view.mAnimationConfig.canvasScale = when {
             scale < minCanvasScale -> minCanvasScale
             scale > 1f -> 1f
             else -> scale
@@ -82,9 +74,9 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
     }
 
     fun updateCanvasBgAlpha() {
-        val translateYPercent = Math.abs(canvasTranslationY) / view.height
+        val translateYPercent = Math.abs(view.mAnimationConfig.canvasTranslationY) / view.height
         val alpha = (255 * (1 - translateYPercent)).toInt()
-        canvasBgAlpha = when {
+        view.mAnimationConfig.canvasBgAlpha = when {
             alpha > 255 -> 255
             alpha < 0 -> 0
             else -> alpha

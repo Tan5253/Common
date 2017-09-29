@@ -11,21 +11,21 @@ import com.like.common.view.dragview.view.BaseDragView
 class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
     private val halfDragPhotoViewWidth = view.width / 2
     private val halfDragPhotoViewHeight = view.height / 2
-    private var halfScaleDragPhotoViewWidth = view.width * view.mRestoreAnimationManager.canvasScale / 2
-    private var halfScaleDragPhotoViewHeight = view.height * view.mRestoreAnimationManager.canvasScale / 2
+    private var halfScaleDragPhotoViewWidth = view.width * view.mAnimationConfig.canvasScale / 2
+    private var halfScaleDragPhotoViewHeight = view.height * view.mAnimationConfig.canvasScale / 2
     // 注意：这里是以缩放后的视图为初始情况
-    private var pendingScaleX = info.originWidth / (view.width.toFloat() * view.mRestoreAnimationManager.canvasScale)
-    private var pendingScaleY = info.originHeight / (view.height.toFloat() * view.mRestoreAnimationManager.canvasScale)
+    private var pendingScaleX = info.originWidth / (view.width.toFloat() * view.mAnimationConfig.canvasScale)
+    private var pendingScaleY = info.originHeight / (view.height.toFloat() * view.mAnimationConfig.canvasScale)
     private var pendingLeft = info.originLeft
     private var pendingTop = info.originTop
 
     fun setCurData(info: DragInfo) {
         this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
-        halfScaleDragPhotoViewWidth = view.width * view.mRestoreAnimationManager.canvasScale / 2
-        halfScaleDragPhotoViewHeight = view.height * view.mRestoreAnimationManager.canvasScale / 2
-        pendingScaleX = info.originWidth / (view.width.toFloat() * view.mRestoreAnimationManager.canvasScale)
-        pendingScaleY = info.originHeight / (view.height.toFloat() * view.mRestoreAnimationManager.canvasScale)
+        halfScaleDragPhotoViewWidth = view.width * view.mAnimationConfig.canvasScale / 2
+        halfScaleDragPhotoViewHeight = view.height * view.mAnimationConfig.canvasScale / 2
+        pendingScaleX = info.originWidth / (view.width.toFloat() * view.mAnimationConfig.canvasScale)
+        pendingScaleY = info.originHeight / (view.height.toFloat() * view.mAnimationConfig.canvasScale)
         pendingLeft = info.originLeft
         pendingTop = info.originTop
     }
@@ -37,9 +37,9 @@ class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationMa
 //        val newViewY = halfDragPhotoViewHeight + curTranslationY - halfScaleDragPhotoViewHeight
 //        val translateXAnimator = ValueAnimator.ofFloat(0f, info.originLeft.toFloat() - newViewX)
 //        val translateYAnimator = ValueAnimator.ofFloat(0f, info.originTop.toFloat() - newViewY)
-        view.mRestoreAnimationManager.canvasTranslationX = -halfDragPhotoViewWidth + halfScaleDragPhotoViewWidth
-        view.mRestoreAnimationManager.canvasTranslationY = -halfDragPhotoViewHeight + halfScaleDragPhotoViewHeight
-        view.mRestoreAnimationManager.canvasBgAlpha = 0
+        view.mAnimationConfig.canvasTranslationX = -halfDragPhotoViewWidth + halfScaleDragPhotoViewWidth
+        view.mAnimationConfig.canvasTranslationY = -halfDragPhotoViewHeight + halfScaleDragPhotoViewHeight
+        view.mAnimationConfig.canvasBgAlpha = 0
         view.invalidate()
         // 把缩放后的view移动到手指释放时的位置，准备开始动画。
         view.x = halfDragPhotoViewWidth + curTranslationX - halfScaleDragPhotoViewWidth

@@ -123,7 +123,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
-                    if (mRestoreAnimationManager.canvasTranslationY == 0f && mRestoreAnimationManager.canvasTranslationX != 0f) {
+                    if (mAnimationConfig.canvasTranslationY == 0f && mAnimationConfig.canvasTranslationX != 0f) {
                         return super.dispatchTouchEvent(event)
                     }
 
@@ -138,7 +138,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     }
 
                     // 防止下拉的时候双手缩放
-                    if (mRestoreAnimationManager.canvasTranslationY >= 0f && mRestoreAnimationManager.canvasScale < 0.95f) {
+                    if (mAnimationConfig.canvasTranslationY >= 0f && mAnimationConfig.canvasScale < 0.95f) {
                         return true
                     }
                 }

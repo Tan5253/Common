@@ -1,7 +1,9 @@
 package com.like.common.view.dragview.animation
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import com.like.common.view.dragview.entity.DragInfo
 import com.like.common.view.dragview.view.BaseDragView
 
@@ -14,21 +16,36 @@ class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationM
     private val initTranslationX = info.originCenterX - view.width.toFloat() / 2
     private val initTranslationY = info.originCenterY - view.height.toFloat() / 2
 
-    init {
-        // 移动到原始位置，并缩放到原始大小。开始动画前的准备工作
-        view.scaleX = initScaleX
-        view.scaleY = initScaleY
-
-        view.translationX = initTranslationX
-        view.translationY = initTranslationY
-    }
-
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         // 当进入动画后，放大了就会填满。所以不需要translation动画
-        animatorSet.play(ObjectAnimator.ofFloat(view, "x", view.x, 0f))
-                .with(ObjectAnimator.ofFloat(view, "y", view.y, 0f))
-                .with(ObjectAnimator.ofFloat(view, "scaleX", initScaleX, 1f))
-                .with(ObjectAnimator.ofFloat(view, "scaleY", initScaleY, 1f))
+        animatorSet.play(ValueAnimator.ofFloat(initScaleX, 1f).apply {
+            duration = DURATION
+            addUpdateListener {
+                view.mAnimationConfig.canvasScale = it.animatedValue as Float
+            }
+        })
+                .with(ValueAnimator.ofFloat(initTranslationX, 0f).apply {
+                    addUpdateListener {
+                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
+                    }
+                })
+                .with(ValueAnimator.ofFloat(initTranslationY, 0f).apply {
+                    addUpdateListener {
+                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
+                    }
+                })
+                .with(ValueAnimator.ofInt(0, 255).apply {
+                    addUpdateListener {
+                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
+                        view.invalidate()
+                    }
+                    addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            super.onAnimationEnd(animation)
+                            animation?.removeAllListeners()
+                        }
+                    })
+                })
     }
 
 }
