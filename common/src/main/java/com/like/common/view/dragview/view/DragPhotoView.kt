@@ -62,10 +62,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 override fun getCount() = mViews.size
                 override fun instantiateItem(container: ViewGroup?, position: Int): Any {
                     container?.addView(mViews[position])
-                    RxJavaUtils.timer(1000) {
-                        mViews[position].removeAllViews()
-                        mViews[position].addView(mPhotoViews[position])
-                    }
                     return mViews[position]
                 }
 
@@ -74,8 +70,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 }
             }
 
-            mViewPager.offscreenPageLimit = 0
-            mViewPager.currentItem = curClickedIndex
             mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -88,8 +82,17 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     mRestoreAnimationManager.setCurData(infos[curClickedIndex])
                     mDisappearAnimationManager.setCurData(infos[curClickedIndex])
                     mExitAnimationManager.setCurData(infos[curClickedIndex])
+                    RxJavaUtils.timer(1000) {
+                        mViews[position].removeAllViews()
+                        mViews[position].addView(mPhotoViews[position])
+                    }
                 }
             })
+            mViewPager.currentItem = curClickedIndex
+            RxJavaUtils.timer(1000) {
+                mViews[curClickedIndex].removeAllViews()
+                mViews[curClickedIndex].addView(mPhotoViews[curClickedIndex])
+            }
 
             addView(mViewPager.apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
