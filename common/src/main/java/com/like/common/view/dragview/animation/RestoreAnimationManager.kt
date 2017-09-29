@@ -1,7 +1,5 @@
 package com.like.common.view.dragview.animation
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import com.like.common.view.dragview.entity.DragInfo
@@ -42,12 +40,6 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
                         view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
-                    addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            super.onAnimationEnd(animation)
-                            animation?.removeAllListeners()
-                        }
-                    })
                 })
     }
 
