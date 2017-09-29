@@ -1,7 +1,7 @@
 package com.like.common.view.dragview.animation
 
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import com.like.common.view.dragview.entity.DragInfo
 import com.like.common.view.dragview.view.BaseDragView
 
@@ -11,24 +11,39 @@ import com.like.common.view.dragview.view.BaseDragView
 class DisappearAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view) {
     private var pendingScaleX = info.originWidth / view.width.toFloat()
     private var pendingScaleY = info.originHeight / view.height.toFloat()
-    private var pendingLeft = info.originLeft
-    private var pendingTop = info.originTop
+    private var pendingTranslationX = info.originCenterX - view.width / 2
+    private var pendingTranslationY = info.originCenterY - view.height / 2
 
     fun setCurData(info: DragInfo) {
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         pendingScaleX = info.originWidth / view.width.toFloat()
         pendingScaleY = info.originHeight / view.height.toFloat()
-        pendingLeft = info.originLeft
-        pendingTop = info.originTop
+        pendingTranslationX = info.originCenterX - view.width / 2
+        pendingTranslationY = info.originCenterY - view.height / 2
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        view.pivotX = 0f
-        view.pivotY = 0f
-        animatorSet.play(ObjectAnimator.ofFloat(view, "x", 0f, pendingLeft))
-                .with(ObjectAnimator.ofFloat(view, "y", 0f, pendingTop))
-                .with(ObjectAnimator.ofFloat(view, "scaleX", 1f, pendingScaleX))
-                .with(ObjectAnimator.ofFloat(view, "scaleY", 1f, pendingScaleY))
+        animatorSet.play(ValueAnimator.ofFloat(1f, pendingScaleX).apply {
+            addUpdateListener {
+                view.mAnimationConfig.canvasScale = it.animatedValue as Float
+            }
+        })
+                .with(ValueAnimator.ofFloat(0f, pendingTranslationX).apply {
+                    addUpdateListener {
+                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
+                    }
+                })
+                .with(ValueAnimator.ofFloat(0f, pendingTranslationY).apply {
+                    addUpdateListener {
+                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
+                    }
+                })
+                .with(ValueAnimator.ofInt(255, 0).apply {
+                    addUpdateListener {
+                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
+                        view.invalidate()
+                    }
+                })
     }
 
     override fun onEnd() {

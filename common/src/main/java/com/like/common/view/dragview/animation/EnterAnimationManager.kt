@@ -1,7 +1,5 @@
 package com.like.common.view.dragview.animation
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import com.like.common.view.dragview.entity.DragInfo
@@ -17,7 +15,6 @@ class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationM
     private val initTranslationY = info.originCenterY - view.height.toFloat() / 2
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        // 当进入动画后，放大了就会填满。所以不需要translation动画
         animatorSet.play(ValueAnimator.ofFloat(initScaleX, 1f).apply {
             addUpdateListener {
                 view.mAnimationConfig.canvasScale = it.animatedValue as Float
@@ -38,12 +35,6 @@ class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationM
                         view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
-                    addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            super.onAnimationEnd(animation)
-                            animation?.removeAllListeners()
-                        }
-                    })
                 })
     }
 
