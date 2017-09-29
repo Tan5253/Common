@@ -19,6 +19,7 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
     val MAX_CANVAS_TRANSLATION_Y = view.height.toFloat() / 4
 
     fun setCurData(info: DragInfo) {
+        this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         canvasBgAlpha = 255
         canvasTranslationX = 0f

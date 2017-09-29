@@ -20,6 +20,7 @@ class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationMa
     private var pendingTop = info.originTop
 
     fun setCurData(info: DragInfo) {
+        this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         halfScaleDragPhotoViewWidth = view.width * view.mRestoreAnimationManager.canvasScale / 2
         halfScaleDragPhotoViewHeight = view.height * view.mRestoreAnimationManager.canvasScale / 2

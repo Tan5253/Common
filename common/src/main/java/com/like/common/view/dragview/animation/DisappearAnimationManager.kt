@@ -15,6 +15,7 @@ class DisappearAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimat
     private var pendingTop = info.originTop
 
     fun setCurData(info: DragInfo) {
+        this.info = info
         // 根据DragInfo重新计算数据，因为有ViewPager的影响
         pendingScaleX = info.originWidth / view.width.toFloat()
         pendingScaleY = info.originHeight / view.height.toFloat()

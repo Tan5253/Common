@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.github.chrisbanes.photoview.PhotoView
+import com.like.common.util.RxJavaUtils
 import com.like.common.view.dragview.entity.DragInfo
 
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
@@ -56,7 +57,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 mProgressBars.add(progressBar)
             }
 
-            mViewPager.offscreenPageLimit = mViews.size
             mViewPager.adapter = object : PagerAdapter() {
                 override fun isViewFromObject(view: View?, `object`: Any?) = view === `object`
                 override fun getCount() = mViews.size
@@ -68,6 +68,12 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
                     container?.removeView(mViews[position])
                 }
+            }
+
+            mViewPager.currentItem = curClickedIndex
+            RxJavaUtils.timer(1000) {
+                mViews[curClickedIndex].removeAllViews()
+                mViews[curClickedIndex].addView(mPhotoViews[curClickedIndex])
             }
 
             mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -82,17 +88,12 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     mRestoreAnimationManager.setCurData(infos[curClickedIndex])
                     mDisappearAnimationManager.setCurData(infos[curClickedIndex])
                     mExitAnimationManager.setCurData(infos[curClickedIndex])
-//                    RxJavaUtils.timer(1000) {
-//                        mViews[position].removeAllViews()
-//                        mViews[position].addView(mPhotoViews[position])
-//                    }
+                    RxJavaUtils.timer(1000) {
+                        mViews[position].removeAllViews()
+                        mViews[position].addView(mPhotoViews[position])
+                    }
                 }
             })
-            mViewPager.currentItem = curClickedIndex
-//            RxJavaUtils.timer(1000) {
-//                mViews[curClickedIndex].removeAllViews()
-//                mViews[curClickedIndex].addView(mPhotoViews[curClickedIndex])
-//            }
 
             addView(mViewPager.apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
