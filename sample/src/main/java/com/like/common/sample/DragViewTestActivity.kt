@@ -41,15 +41,15 @@ class DragViewTestActivity : BaseActivity() {
                  */
                 val location0 = IntArray(2)
                 mBinding.iv0.getLocationOnScreen(location0)
-                list.add(DragInfo(location0[0].toFloat(), location0[1].toFloat(), mBinding.iv0.width.toFloat(), mBinding.iv0.height.toFloat(), "", R.drawable.video_image_1, "", "", view.id == R.id.iv_0))
+                list.add(DragInfo(location0[0].toFloat(), location0[1].toFloat(), mBinding.iv0.width.toFloat(), mBinding.iv0.height.toFloat(), thumbImageResId = R.drawable.video_image_1, imageResId = R.drawable.video_image_1, isClicked = view.id == R.id.iv_0))
 
                 val location1 = IntArray(2)
                 mBinding.iv1.getLocationOnScreen(location1)
-                list.add(DragInfo(location1[0].toFloat(), location1[1].toFloat(), mBinding.iv1.width.toFloat(), mBinding.iv1.height.toFloat(), "", R.drawable.wugeng1, "", "", view.id == R.id.iv_1))
+                list.add(DragInfo(location1[0].toFloat(), location1[1].toFloat(), mBinding.iv1.width.toFloat(), mBinding.iv1.height.toFloat(), thumbImageResId = R.drawable.wugeng1, imageResId = R.drawable.wugeng1, isClicked = view.id == R.id.iv_1))
 
                 val location2 = IntArray(2)
                 mBinding.iv2.getLocationOnScreen(location2)
-                list.add(DragInfo(location2[0].toFloat(), location2[1].toFloat(), mBinding.iv2.width.toFloat(), mBinding.iv2.height.toFloat(), "", R.drawable.wugeng2, "", "", view.id == R.id.iv_2))
+                list.add(DragInfo(location2[0].toFloat(), location2[1].toFloat(), mBinding.iv2.width.toFloat(), mBinding.iv2.height.toFloat(), thumbImageResId = R.drawable.wugeng2, imageResId = R.drawable.wugeng2, isClicked = view.id == R.id.iv_2))
 
                 intent.putParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA, list)
             }
@@ -64,10 +64,8 @@ class DragViewTestActivity : BaseActivity() {
                                 location0[1].toFloat(),
                                 mBinding.rlVideo.width.toFloat(),
                                 mBinding.rlVideo.height.toFloat(),
-                                "",
-                                R.drawable.video_image_1,
-                                "",
-                                sdPath))
+                                thumbImageResId = R.drawable.video_image_1,
+                                videoUrl = sdPath))
             }
         }
         startActivity(intent)
