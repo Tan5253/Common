@@ -16,6 +16,8 @@ class DragViewActivity : BaseActivity() {
     }
 
     private lateinit var view: BaseDragView
+    private var infos: List<DragInfo>? = null
+    private var info: DragInfo? = null
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -29,23 +31,40 @@ class DragViewActivity : BaseActivity() {
         }
 
         try {
-            val infos: List<DragInfo> = intent.getParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA)
-            view = DragPhotoView(this, infos)
+            infos = intent.getParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA)
+            info = intent.getParcelableExtra(KEY_DATA)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        try {
-            val info: DragInfo = intent.getParcelableExtra(KEY_DATA)
-            view = DragVideoView(this, info)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        setContentView(view)
 
+        infos?.let {
+            view = DragPhotoView(this, infos!!)
+            setContentView(view)
+        }
+
+        info?.let {
+            view = DragVideoView(this, info!!)
+            setContentView(view)
+        }
         return null
     }
 
     override fun onBackPressed() {
-        view.disappear()
+        infos?.let {
+            view.disappear(infos!![getCurClickedIndex()])
+        }
+
+        info?.let {
+            view.disappear(info!!)
+        }
+    }
+
+    private fun getCurClickedIndex(): Int {
+        infos?.forEachIndexed { index, dragPhotoViewInfo ->
+            if (dragPhotoViewInfo.isClicked) {
+                return index
+            }
+        }
+        return -1
     }
 }

@@ -11,13 +11,23 @@ import com.like.common.view.dragview.view.BaseDragView
 class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
     private val halfDragPhotoViewWidth = view.width / 2
     private val halfDragPhotoViewHeight = view.height / 2
-    private val halfScaleDragPhotoViewWidth = view.width * view.mRestoreAnimationManager.canvasScale / 2
-    private val halfScaleDragPhotoViewHeight = view.height * view.mRestoreAnimationManager.canvasScale / 2
+    private var halfScaleDragPhotoViewWidth = view.width * view.mRestoreAnimationManager.canvasScale / 2
+    private var halfScaleDragPhotoViewHeight = view.height * view.mRestoreAnimationManager.canvasScale / 2
     // 注意：这里是以缩放后的视图为初始情况
-    private val pendingScaleX = info.originWidth / (view.width.toFloat() * view.mRestoreAnimationManager.canvasScale)
-    private val pendingScaleY = info.originHeight / (view.height.toFloat() * view.mRestoreAnimationManager.canvasScale)
+    private var pendingScaleX = info.originWidth / (view.width.toFloat() * view.mRestoreAnimationManager.canvasScale)
+    private var pendingScaleY = info.originHeight / (view.height.toFloat() * view.mRestoreAnimationManager.canvasScale)
+    private var pendingLeft = info.originLeft
+    private var pendingTop = info.originTop
 
-    fun setData(curTranslationX: Float, curTranslationY: Float): ExitAnimationManager {
+    fun setCurData(info: DragInfo, curTranslationX: Float, curTranslationY: Float): ExitAnimationManager {
+        // 根据DragInfo重新计算数据，因为有ViewPager的影响
+        halfScaleDragPhotoViewWidth = view.width * view.mRestoreAnimationManager.canvasScale / 2
+        halfScaleDragPhotoViewHeight = view.height * view.mRestoreAnimationManager.canvasScale / 2
+        pendingScaleX = info.originWidth / (view.width.toFloat() * view.mRestoreAnimationManager.canvasScale)
+        pendingScaleY = info.originHeight / (view.height.toFloat() * view.mRestoreAnimationManager.canvasScale)
+        pendingLeft = info.originLeft
+        pendingTop = info.originTop
+
         // 把缩放后的view移动到屏幕左上角的位置，这样能保证不管是否缩放，都能显示完整的图片，并刷新。这一步是为了解决拖拽时有可能导致view显示的图片不完整（被屏幕边缘剪切了）。
         // 如果不做处理，只需要下面的代码
 //        val newViewX = halfDragPhotoViewWidth + curTranslationX - halfScaleDragPhotoViewWidth
@@ -37,8 +47,8 @@ class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationMa
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         view.pivotX = 0f
         view.pivotY = 0f
-        animatorSet.play(ObjectAnimator.ofFloat(view, "x", view.x, info.originLeft))
-                .with(ObjectAnimator.ofFloat(view, "y", view.y, info.originTop))
+        animatorSet.play(ObjectAnimator.ofFloat(view, "x", view.x, pendingLeft))
+                .with(ObjectAnimator.ofFloat(view, "y", view.y, pendingTop))
                 .with(ObjectAnimator.ofFloat(view, "scaleX", 1f, pendingScaleX))// 注意：这里是以缩放后的视图为初始情况，所以开始为1f
                 .with(ObjectAnimator.ofFloat(view, "scaleY", 1f, pendingScaleY))
     }

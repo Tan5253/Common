@@ -2,6 +2,7 @@ package com.like.common.view.dragview.view
 
 import android.content.Context
 import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,10 @@ import com.like.common.view.dragview.entity.DragInfo
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
     private val mViewPager: DragViewPager by lazy { DragViewPager(context) }
     private val mPhotoViews = ArrayList<PhotoView>()
+    private var curClickedIndex = -1
 
     init {
-        val curClickedIndex = getCurClickedIndex()
+        curClickedIndex = getCurClickedIndex()
         if (curClickedIndex != -1) {
             infos.mapTo(mPhotoViews) {
                 PhotoView(context).apply {
@@ -44,6 +46,12 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 override fun onGlobalLayout() {
                     mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     enter()
+                }
+            })
+            mViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    curClickedIndex = position
+                    mRestoreAnimationManager.setCurData(infos[curClickedIndex])
                 }
             })
 
@@ -99,9 +107,9 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     // 防止下拉的时候双手缩放
                     if (event.pointerCount == 1) {
                         if (mRestoreAnimationManager.canvasTranslationX == 0f && mRestoreAnimationManager.canvasTranslationY == 0f) {
-                            disappear()
+                            disappear(infos[curClickedIndex])
                         } else if (mRestoreAnimationManager.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
-                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY)
+                            exit(mRestoreAnimationManager.canvasTranslationX, mRestoreAnimationManager.canvasTranslationY, infos[curClickedIndex])
                         } else {
                             restore()
                         }

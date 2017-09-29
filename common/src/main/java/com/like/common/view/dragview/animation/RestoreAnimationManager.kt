@@ -11,12 +11,22 @@ import com.like.common.view.dragview.view.BaseDragView
  * 在Activity中，view从缩放状态还原的动画管理
  */
 class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view, info) {
-    var canvasBgAlpha: Int = 255
-    var canvasTranslationX: Float = 0f
-    var canvasTranslationY: Float = 0f
-    var canvasScale: Float = 1f
-    val MIN_CANVAS_SCALE: Float = info.originWidth / view.width
-    val MAX_CANVAS_TRANSLATION_Y: Float = view.height.toFloat() / 4
+    var canvasBgAlpha = 255
+    var canvasTranslationX = 0f
+    var canvasTranslationY = 0f
+    var canvasScale = 1f
+    var minCanvasScale = info.originWidth / view.width
+    val MAX_CANVAS_TRANSLATION_Y = view.height.toFloat() / 4
+
+    fun setCurData(info: DragInfo): RestoreAnimationManager {
+        // 根据DragInfo重新计算数据，因为有ViewPager的影响
+        canvasBgAlpha = 255
+        canvasTranslationX = 0f
+        canvasTranslationY = 0f
+        canvasScale = 1f
+        minCanvasScale = info.originWidth / view.width
+        return this
+    }
 
     override
     fun fillAnimatorSet(animatorSet: AnimatorSet) {
@@ -65,7 +75,7 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
         val translateYPercent = Math.abs(canvasTranslationY) / view.height
         val scale = 1 - translateYPercent
         canvasScale = when {
-            scale < MIN_CANVAS_SCALE -> MIN_CANVAS_SCALE
+            scale < minCanvasScale -> minCanvasScale
             scale > 1f -> 1f
             else -> scale
         }

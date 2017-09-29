@@ -36,16 +36,16 @@ open class BaseDragView(context: Context, val info: DragInfo) : RelativeLayout(c
         mRestoreAnimationManager.start()
     }
 
-    fun disappear() {
-        mDisappearAnimationManager.start()
+    fun disappear(info: DragInfo) {
+        mDisappearAnimationManager.setCurData(info).start()
     }
 
     fun enter() {
         mEnterAnimationManager.start()
     }
 
-    fun exit(curTranslationX: Float, curTranslationY: Float) {
-        mExitAnimationManager.setData(curTranslationX, curTranslationY).start()
+    fun exit(curTranslationX: Float, curTranslationY: Float, info: DragInfo) {
+        mExitAnimationManager.setCurData(info, curTranslationX, curTranslationY).start()
     }
 
     override fun onDraw(canvas: Canvas?) {
