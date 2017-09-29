@@ -24,24 +24,24 @@ class ExitAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationMa
     }
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ValueAnimator.ofFloat(view.mAnimationConfig.canvasScale, pendingScaleX).apply {
+        animatorSet.play(ValueAnimator.ofFloat(view.mAnimationConfig.curCanvasScale, pendingScaleX).apply {
             addUpdateListener {
-                view.mAnimationConfig.canvasScale = it.animatedValue as Float
+                view.mAnimationConfig.curCanvasScale = it.animatedValue as Float
             }
         })
-                .with(ValueAnimator.ofFloat(view.mAnimationConfig.canvasTranslationX, pendingTranslationX).apply {
+                .with(ValueAnimator.ofFloat(view.mAnimationConfig.curCanvasTranslationX, pendingTranslationX).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationX = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofFloat(view.mAnimationConfig.canvasTranslationY, pendingTranslationY).apply {
+                .with(ValueAnimator.ofFloat(view.mAnimationConfig.curCanvasTranslationY, pendingTranslationY).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationY = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofInt(view.mAnimationConfig.canvasBgAlpha, 0).apply {
+                .with(ValueAnimator.ofInt(view.mAnimationConfig.curCanvasBgAlpha, 0).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
+                        view.mAnimationConfig.curCanvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
                 })

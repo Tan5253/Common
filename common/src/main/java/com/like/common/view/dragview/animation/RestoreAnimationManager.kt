@@ -20,41 +20,41 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
 
     override
     fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ValueAnimator.ofFloat(view.mAnimationConfig.canvasScale, 1f).apply {
+        animatorSet.play(ValueAnimator.ofFloat(view.mAnimationConfig.curCanvasScale, 1f).apply {
             addUpdateListener {
-                view.mAnimationConfig.canvasScale = it.animatedValue as Float
+                view.mAnimationConfig.curCanvasScale = it.animatedValue as Float
             }
         })
-                .with(ValueAnimator.ofFloat(view.mAnimationConfig.canvasTranslationX, 0f).apply {
+                .with(ValueAnimator.ofFloat(view.mAnimationConfig.curCanvasTranslationX, 0f).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationX = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofFloat(view.mAnimationConfig.canvasTranslationY, 0f).apply {
+                .with(ValueAnimator.ofFloat(view.mAnimationConfig.curCanvasTranslationY, 0f).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationY = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofInt(view.mAnimationConfig.canvasBgAlpha, 255).apply {
+                .with(ValueAnimator.ofInt(view.mAnimationConfig.curCanvasBgAlpha, 255).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
+                        view.mAnimationConfig.curCanvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
                 })
     }
 
     fun updateCanvasTranslationX(translationX: Float) {
-        view.mAnimationConfig.canvasTranslationX = translationX
+        view.mAnimationConfig.curCanvasTranslationX = translationX
     }
 
     fun updateCanvasTranslationY(translationY: Float) {
-        view.mAnimationConfig.canvasTranslationY = translationY
+        view.mAnimationConfig.curCanvasTranslationY = translationY
     }
 
     fun updateCanvasScale() {
-        val translateYPercent = Math.abs(view.mAnimationConfig.canvasTranslationY) / view.height
+        val translateYPercent = Math.abs(view.mAnimationConfig.curCanvasTranslationY) / view.height
         val scale = 1 - translateYPercent
-        view.mAnimationConfig.canvasScale = when {
+        view.mAnimationConfig.curCanvasScale = when {
             scale < minCanvasScale -> minCanvasScale
             scale > 1f -> 1f
             else -> scale
@@ -62,9 +62,9 @@ class RestoreAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimatio
     }
 
     fun updateCanvasBgAlpha() {
-        val translateYPercent = Math.abs(view.mAnimationConfig.canvasTranslationY) / view.height
+        val translateYPercent = Math.abs(view.mAnimationConfig.curCanvasTranslationY) / view.height
         val alpha = (255 * (1 - translateYPercent)).toInt()
-        view.mAnimationConfig.canvasBgAlpha = when {
+        view.mAnimationConfig.curCanvasBgAlpha = when {
             alpha > 255 -> 255
             alpha < 0 -> 0
             else -> alpha

@@ -56,9 +56,9 @@ open class BaseDragView(context: Context, val info: DragInfo) : RelativeLayout(c
     fun onActionUp(event: MotionEvent) {
         // 防止下拉的时候双手缩放
         if (event.pointerCount == 1) {
-            if (mAnimationConfig.canvasTranslationX == 0f && mAnimationConfig.canvasTranslationY == 0f) {
+            if (mAnimationConfig.curCanvasTranslationX == 0f && mAnimationConfig.curCanvasTranslationY == 0f) {
                 disappear()
-            } else if (mAnimationConfig.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
+            } else if (mAnimationConfig.curCanvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
                 exit()
             } else {
                 restore()
@@ -67,10 +67,10 @@ open class BaseDragView(context: Context, val info: DragInfo) : RelativeLayout(c
     }
 
     override fun onDraw(canvas: Canvas?) {
-        mPaint.alpha = mAnimationConfig.canvasBgAlpha
+        mPaint.alpha = mAnimationConfig.curCanvasBgAlpha
         setBackgroundColor(Color.argb(mPaint.alpha, 0, 0, 0))
-        canvas?.translate(mAnimationConfig.canvasTranslationX, mAnimationConfig.canvasTranslationY)
-        canvas?.scale(mAnimationConfig.canvasScale, mAnimationConfig.canvasScale, mWidth / 2, mHeight / 2)
+        canvas?.translate(mAnimationConfig.curCanvasTranslationX, mAnimationConfig.curCanvasTranslationY)
+        canvas?.scale(mAnimationConfig.curCanvasScale, mAnimationConfig.curCanvasScale, mWidth / 2, mHeight / 2)
         super.onDraw(canvas)
     }
 

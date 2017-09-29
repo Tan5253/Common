@@ -17,22 +17,22 @@ class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationM
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         animatorSet.play(ValueAnimator.ofFloat(initScaleX, 1f).apply {
             addUpdateListener {
-                view.mAnimationConfig.canvasScale = it.animatedValue as Float
+                view.mAnimationConfig.curCanvasScale = it.animatedValue as Float
             }
         })
                 .with(ValueAnimator.ofFloat(initTranslationX, 0f).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationX = it.animatedValue as Float
                     }
                 })
                 .with(ValueAnimator.ofFloat(initTranslationY, 0f).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationY = it.animatedValue as Float
                     }
                 })
                 .with(ValueAnimator.ofInt(0, 255).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
+                        view.mAnimationConfig.curCanvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
                 })

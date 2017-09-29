@@ -25,22 +25,22 @@ class DisappearAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimat
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
         animatorSet.play(ValueAnimator.ofFloat(1f, pendingScaleX).apply {
             addUpdateListener {
-                view.mAnimationConfig.canvasScale = it.animatedValue as Float
+                view.mAnimationConfig.curCanvasScale = it.animatedValue as Float
             }
         })
                 .with(ValueAnimator.ofFloat(0f, pendingTranslationX).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationX = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationX = it.animatedValue as Float
                     }
                 })
                 .with(ValueAnimator.ofFloat(0f, pendingTranslationY).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasTranslationY = it.animatedValue as Float
+                        view.mAnimationConfig.curCanvasTranslationY = it.animatedValue as Float
                     }
                 })
                 .with(ValueAnimator.ofInt(255, 0).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.canvasBgAlpha = it.animatedValue as Int
+                        view.mAnimationConfig.curCanvasBgAlpha = it.animatedValue as Int
                         view.invalidate()
                     }
                 })
