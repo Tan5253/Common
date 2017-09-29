@@ -6,7 +6,6 @@ import android.view.WindowManager
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
-import com.like.common.view.dragphotoview.DragPhotoViewActivity
 import com.like.common.view.dragview.entity.DragInfo
 import java.lang.Exception
 
@@ -29,7 +28,7 @@ class DragViewActivity : BaseActivity() {
         }
 
         try {
-            val infos: List<DragInfo>? = intent.getParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA)
+            val infos: List<DragInfo>? = intent.getParcelableArrayListExtra(KEY_DATA)
             infos?.let {
                 view = DragPhotoView(this, it)
             }

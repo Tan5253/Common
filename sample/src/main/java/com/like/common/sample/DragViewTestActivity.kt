@@ -9,7 +9,6 @@ import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityDragphotoviewBinding
 import com.like.common.util.ResourceUtils
 import com.like.common.util.StorageUtils
-import com.like.common.view.dragphotoview.DragPhotoViewActivity
 import com.like.common.view.dragview.entity.DragInfo
 import com.like.common.view.dragview.view.DragViewActivity
 import java.util.*
@@ -51,7 +50,7 @@ class DragViewTestActivity : BaseActivity() {
                 mBinding.iv2.getLocationOnScreen(location2)
                 list.add(DragInfo(location2[0].toFloat(), location2[1].toFloat(), mBinding.iv2.width.toFloat(), mBinding.iv2.height.toFloat(), thumbImageResId = R.drawable.wugeng2, imageResId = R.drawable.wugeng2, isClicked = view.id == R.id.iv_2))
 
-                intent.putParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA, list)
+                intent.putParcelableArrayListExtra(DragViewActivity.KEY_DATA, list)
             }
             R.id.rl_video -> {
                 val location0 = IntArray(2)
