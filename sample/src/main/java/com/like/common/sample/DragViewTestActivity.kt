@@ -10,9 +10,8 @@ import com.like.common.sample.databinding.ActivityDragphotoviewBinding
 import com.like.common.util.ResourceUtils
 import com.like.common.util.StorageUtils
 import com.like.common.view.dragphotoview.DragPhotoViewActivity
-import com.like.common.view.dragphotoview.DragPhotoViewInfo
-import com.like.common.view.dragvideoview.DragVideoViewActivity
-import com.like.common.view.dragvideoview.DragVideoViewInfo
+import com.like.common.view.dragview.entity.DragInfo
+import com.like.common.view.dragview.view.DragViewActivity
 import java.util.*
 
 class DragViewTestActivity : BaseActivity() {
@@ -28,9 +27,10 @@ class DragViewTestActivity : BaseActivity() {
     }
 
     fun onClick(view: View) {
+        val intent = Intent(this, DragViewActivity::class.java)
         when (view.id) {
             R.id.iv_0, R.id.iv_1, R.id.iv_2 -> {
-                val list = ArrayList<DragPhotoViewInfo>()
+                val list = ArrayList<DragInfo>()
                 /**
                  * view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
                  * dragPhotoView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
@@ -41,19 +41,17 @@ class DragViewTestActivity : BaseActivity() {
                  */
                 val location0 = IntArray(2)
                 mBinding.iv0.getLocationOnScreen(location0)
-                list.add(DragPhotoViewInfo(location0[0], location0[1], mBinding.iv0.width, mBinding.iv0.height, "", R.drawable.video_image_1, view.id == R.id.iv_0))
+                list.add(DragInfo(location0[0].toFloat(), location0[1].toFloat(), mBinding.iv0.width.toFloat(), mBinding.iv0.height.toFloat(), "", R.drawable.video_image_1, "", "", view.id == R.id.iv_0))
 
                 val location1 = IntArray(2)
                 mBinding.iv1.getLocationOnScreen(location1)
-                list.add(DragPhotoViewInfo(location1[0], location1[1], mBinding.iv1.width, mBinding.iv1.height, "", R.drawable.wugeng1, view.id == R.id.iv_1))
+                list.add(DragInfo(location1[0].toFloat(), location1[1].toFloat(), mBinding.iv1.width.toFloat(), mBinding.iv1.height.toFloat(), "", R.drawable.wugeng1, "", "", view.id == R.id.iv_1))
 
                 val location2 = IntArray(2)
                 mBinding.iv2.getLocationOnScreen(location2)
-                list.add(DragPhotoViewInfo(location2[0], location2[1], mBinding.iv2.width, mBinding.iv2.height, "", R.drawable.wugeng2, view.id == R.id.iv_2))
+                list.add(DragInfo(location2[0].toFloat(), location2[1].toFloat(), mBinding.iv2.width.toFloat(), mBinding.iv2.height.toFloat(), "", R.drawable.wugeng2, "", "", view.id == R.id.iv_2))
 
-                val intent = Intent(this, DragPhotoViewActivity::class.java)
                 intent.putParcelableArrayListExtra(DragPhotoViewActivity.KEY_DATA, list)
-                startActivity(intent)
             }
             R.id.rl_video -> {
                 val location0 = IntArray(2)
@@ -61,11 +59,18 @@ class DragViewTestActivity : BaseActivity() {
 
                 val sdPath = "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/video_1.mp4"
                 ResourceUtils.Assets2Sd(this, "video_1.mp4", sdPath)
-                val intent = Intent(this, DragVideoViewActivity::class.java)
-                intent.putExtra(DragVideoViewActivity.KEY_DATA, DragVideoViewInfo(location0[0], location0[1], mBinding.rlVideo.width, mBinding.rlVideo.height, "", R.drawable.video_image_1, sdPath))
-                startActivity(intent)
+                intent.putExtra(DragViewActivity.KEY_DATA,
+                        DragInfo(location0[0].toFloat(),
+                                location0[1].toFloat(),
+                                mBinding.rlVideo.width.toFloat(),
+                                mBinding.rlVideo.height.toFloat(),
+                                "",
+                                R.drawable.video_image_1,
+                                "",
+                                sdPath))
             }
         }
+        startActivity(intent)
         overridePendingTransition(0, 0)
     }
 
