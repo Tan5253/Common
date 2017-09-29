@@ -85,9 +85,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             mViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     curClickedIndex = position
-                    mRestoreAnimationManager.setCurData(infos[curClickedIndex])
-                    mDisappearAnimationManager.setCurData(infos[curClickedIndex])
-                    mExitAnimationManager.setCurData(infos[curClickedIndex])
+                    mConfig.setData(infos[curClickedIndex])
                     RxJavaUtils.timer(1000) {
                         mViews[position].removeAllViews()
                         mViews[position].addView(mPhotoViews[position])
@@ -123,22 +121,22 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
-                    if (mAnimationConfig.curCanvasTranslationY == 0f && mAnimationConfig.curCanvasTranslationX != 0f) {
+                    if (mConfig.curCanvasTranslationY == 0f && mConfig.curCanvasTranslationX != 0f) {
                         return super.dispatchTouchEvent(event)
                     }
 
                     // 单手指按下，并在Y方向上拖动了一段距离
                     if (event.pointerCount == 1) {
-                        mRestoreAnimationManager.updateCanvasTranslationX(event.x - mDownX)
-                        mRestoreAnimationManager.updateCanvasTranslationY(event.y - mDownY)
-                        mRestoreAnimationManager.updateCanvasScale()
-                        mRestoreAnimationManager.updateCanvasBgAlpha()
+                        mConfig.updateCanvasTranslationX(event.x - mDownX)
+                        mConfig.updateCanvasTranslationY(event.y - mDownY)
+                        mConfig.updateCanvasScale()
+                        mConfig.updateCanvasBgAlpha()
                         invalidate()
                         return true
                     }
 
                     // 防止下拉的时候双手缩放
-                    if (mAnimationConfig.curCanvasTranslationY >= 0f && mAnimationConfig.curCanvasScale < 0.95f) {
+                    if (mConfig.curCanvasTranslationY >= 0f && mConfig.curCanvasScale < 0.95f) {
                         return true
                     }
                 }

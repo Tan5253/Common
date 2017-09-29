@@ -2,38 +2,32 @@ package com.like.common.view.dragview.animation
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import com.like.common.view.dragview.entity.DragInfo
-import com.like.common.view.dragview.view.BaseDragView
 
 /**
  * 进入Activity的动画
  */
-class EnterAnimationManager(view: BaseDragView, info: DragInfo) : BaseAnimationManager(view) {
-    private val initScaleX = info.originWidth / view.width
-    private val initScaleY = info.originHeight / view.height
-    private val initTranslationX = info.originCenterX - view.width.toFloat() / 2
-    private val initTranslationY = info.originCenterY - view.height.toFloat() / 2
+class EnterAnimationManager(config: AnimationConfig) : BaseAnimationManager(config) {
 
     override fun fillAnimatorSet(animatorSet: AnimatorSet) {
-        animatorSet.play(ValueAnimator.ofFloat(initScaleX, 1f).apply {
+        animatorSet.play(ValueAnimator.ofFloat(config.originScaleX, 1f).apply {
             addUpdateListener {
-                view.mAnimationConfig.curCanvasScale = it.animatedValue as Float
+                config.curCanvasScale = it.animatedValue as Float
             }
         })
-                .with(ValueAnimator.ofFloat(initTranslationX, 0f).apply {
+                .with(ValueAnimator.ofFloat(config.originTranslationX, 0f).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.curCanvasTranslationX = it.animatedValue as Float
+                        config.curCanvasTranslationX = it.animatedValue as Float
                     }
                 })
-                .with(ValueAnimator.ofFloat(initTranslationY, 0f).apply {
+                .with(ValueAnimator.ofFloat(config.originTranslationY, 0f).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.curCanvasTranslationY = it.animatedValue as Float
+                        config.curCanvasTranslationY = it.animatedValue as Float
                     }
                 })
                 .with(ValueAnimator.ofInt(0, 255).apply {
                     addUpdateListener {
-                        view.mAnimationConfig.curCanvasBgAlpha = it.animatedValue as Int
-                        view.invalidate()
+                        config.curCanvasBgAlpha = it.animatedValue as Int
+                        config.view.invalidate()
                     }
                 })
     }
