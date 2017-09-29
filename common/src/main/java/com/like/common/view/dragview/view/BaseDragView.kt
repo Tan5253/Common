@@ -19,6 +19,8 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
     protected var mWidth: Float = 0f
     protected var mHeight: Float = 0f
 
+    private var canFinish: Boolean = false
+
     protected val mConfig: AnimationConfig by lazy { AnimationConfig(info, this) }
 
     protected val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(mConfig) }
@@ -51,18 +53,24 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
     fun onActionDown(event: MotionEvent) {
         mDownX = event.x
         mDownY = event.y
+        canFinish = !canFinish
     }
 
     fun onActionUp(event: MotionEvent) {
         // 防止下拉的时候双手缩放
         if (event.pointerCount == 1) {
-            if (mConfig.curCanvasTranslationX == 0f && mConfig.curCanvasTranslationY == 0f) {
-                disappear()
-            } else if (mConfig.curCanvasTranslationY > mConfig.MAX_CANVAS_TRANSLATION_Y) {
+            if (mConfig.curCanvasTranslationY > mConfig.MAX_CANVAS_TRANSLATION_Y) {
                 exit()
             } else {
                 restore()
             }
+            // 延时判断是否可以退出，避免双击和单击冲突，造成PhotoView不能放大图片
+            postDelayed({
+                if (mConfig.curCanvasTranslationX == 0f && mConfig.curCanvasTranslationY == 0f && canFinish) {
+                    disappear()
+                }
+                canFinish = false
+            }, 200)
         }
     }
 
