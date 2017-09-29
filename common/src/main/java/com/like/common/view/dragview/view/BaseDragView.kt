@@ -44,8 +44,8 @@ open class BaseDragView(context: Context, val info: DragInfo) : RelativeLayout(c
         mEnterAnimationManager.start()
     }
 
-    fun exit(curTranslationX: Float, curTranslationY: Float) {
-        mExitAnimationManager.setTranslationData(curTranslationX, curTranslationY).start()
+    fun exit() {
+        mExitAnimationManager.start()
     }
 
     fun onActionDown(event: MotionEvent) {
@@ -59,7 +59,7 @@ open class BaseDragView(context: Context, val info: DragInfo) : RelativeLayout(c
             if (mAnimationConfig.canvasTranslationX == 0f && mAnimationConfig.canvasTranslationY == 0f) {
                 disappear()
             } else if (mAnimationConfig.canvasTranslationY > mRestoreAnimationManager.MAX_CANVAS_TRANSLATION_Y) {
-                exit(mAnimationConfig.canvasTranslationX, mAnimationConfig.canvasTranslationY)
+                exit()
             } else {
                 restore()
             }

@@ -8,7 +8,7 @@ import com.like.common.view.dragview.view.BaseDragView
 
 abstract class BaseAnimationManager(val view: BaseDragView) {
     companion object {
-        const val DURATION = 3000L
+        const val DURATION = 1000L
     }
 
     private var isStart: Boolean = false
