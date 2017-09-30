@@ -13,7 +13,6 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
@@ -204,9 +203,7 @@ public class ImageLoaderUtils {
                 .skipMemoryCache(true)// 跳过内存缓存
                 .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
                 .listener(listener)
-                .into(new GlideDrawableImageViewTarget(imageView){
-
-                });
+                .into(imageView);
     }
 
 }
