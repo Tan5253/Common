@@ -7,13 +7,12 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.VideoView
-import com.like.common.util.RxJavaUtils
 import com.like.common.view.dragview.entity.DragInfo
 
 class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, info) {
 
     init {
-        addView(ImageView(context).apply {
+        val imageView = ImageView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             if (info.thumbImageResId > 0) {
                 setImageResource(info.thumbImageResId)
@@ -26,28 +25,34 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                     enter()
                 }
             })
-        })
+        }
+        addView(imageView)
 
-        addView(ProgressBar(context, null, R.attr.progressBarStyleInverse).apply {
+        val progressBar = ProgressBar(context, null, R.attr.progressBarStyleInverse).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                 addRule(CENTER_IN_PARENT)
             }
-        })
+        }
+        addView(progressBar)
 
         if (info.videoUrl.isNotEmpty()) {
-            RxJavaUtils.timer(2000) {
-                addView(VideoView(context).apply {
-                    layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
-                        addRule(CENTER_IN_PARENT)
-                    }
-                    setZOrderOnTop(true)// 避免闪屏
-                    setVideoPath(info.videoUrl)
-                    setOnPreparedListener { mediaPlayer ->
+            addView(VideoView(context).apply {
+                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
+                    addRule(CENTER_IN_PARENT)
+                }
+                setZOrderOnTop(true)// 避免闪屏
+                setVideoPath(info.videoUrl)
+                setOnPreparedListener { mediaPlayer ->
+                    postDelayed({
                         mediaPlayer.isLooping = true
                         mediaPlayer.start()
-                    }
-                })
-            }
+                        postDelayed({
+                            removeView(imageView)
+                            removeView(progressBar)
+                        }, 200)// 防闪烁
+                    }, 2000)// 模拟加载视频数据
+                }
+            })
         }
 
     }
