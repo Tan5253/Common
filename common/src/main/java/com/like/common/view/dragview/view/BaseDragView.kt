@@ -9,24 +9,30 @@ import android.widget.RelativeLayout
 import com.like.common.util.ImageLoaderUtils
 import com.like.common.view.dragview.animation.*
 import com.like.common.view.dragview.entity.DragInfo
+import com.like.logger.Logger
+
 
 open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(context) {
-    protected val mPaint: Paint = Paint().apply { color = Color.BLACK }
+    private val mPaint: Paint = Paint().apply { color = Color.BLACK }
 
-    protected var mDownX: Float = 0f
-    protected var mDownY: Float = 0f
+    protected var mDownX = 0f
+    protected var mDownY = 0f
+    // 辅助判断单击、双击、长按事件
+    private val DOUBLE_CLICK_INTERVAL = 300L
+    private var firstClickTime = 0L
+    private var secondClickTime = 0L
+    private var isUp = false
+    private var isDoubleClick = false
 
-    protected var mWidth: Float = 0f
-    protected var mHeight: Float = 0f
-
-    private var canFinish: Boolean = false
+    private var mWidth = 0f
+    private var mHeight = 0f
 
     protected val mConfig: AnimationConfig by lazy { AnimationConfig(info, this) }
 
-    protected val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(mConfig) }
-    protected val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(mConfig) }
-    protected val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(mConfig) }
-    protected val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(mConfig) }
+    private val mRestoreAnimationManager: RestoreAnimationManager by lazy { RestoreAnimationManager(mConfig) }
+    private val mEnterAnimationManager: EnterAnimationManager by lazy { EnterAnimationManager(mConfig) }
+    private val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(mConfig) }
+    private val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(mConfig) }
 
     protected val mImageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(context) }
 
@@ -53,7 +59,31 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
     fun onActionDown(event: MotionEvent) {
         mDownX = event.x
         mDownY = event.y
-        canFinish = !canFinish
+        isUp = false
+        if (firstClickTime == 0L && secondClickTime == 0L) {//第一次点击
+            firstClickTime = System.currentTimeMillis()
+            postDelayed({
+                if (!isUp) {
+                    Logger.v("长按")
+                } else if (!isDoubleClick) {
+                    Logger.v("单击")
+                    if (mConfig.curCanvasTranslationX == 0f && mConfig.curCanvasTranslationY == 0f) {
+                        disappear()
+                    }
+                }
+                isDoubleClick = false
+                firstClickTime = 0L
+                secondClickTime = 0L
+            }, DOUBLE_CLICK_INTERVAL)
+        } else {
+            secondClickTime = System.currentTimeMillis()
+            if (secondClickTime - firstClickTime < DOUBLE_CLICK_INTERVAL) {//两次点击小于DOUBLE_CLICK_INTERVAL
+                Logger.v("双击")
+                isDoubleClick = true
+            }
+            firstClickTime = 0L
+            secondClickTime = 0L
+        }
     }
 
     fun onActionUp(event: MotionEvent) {
@@ -64,14 +94,8 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
             } else {
                 restore()
             }
-            // 延时判断是否可以退出，避免双击和单击冲突，造成PhotoView不能放大图片
-            postDelayed({
-                if (mConfig.curCanvasTranslationX == 0f && mConfig.curCanvasTranslationY == 0f && canFinish) {
-                    disappear()
-                }
-                canFinish = false
-            }, 200)
         }
+        isUp = true
     }
 
     override fun onDraw(canvas: Canvas?) {
