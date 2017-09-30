@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.github.chrisbanes.photoview.PhotoView
-import com.like.common.util.RxJavaUtils
 import com.like.common.view.dragview.entity.DragInfo
 
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
@@ -71,10 +70,10 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             }
 
             mViewPager.currentItem = curClickedIndex
-            RxJavaUtils.timer(1000) {
+            postDelayed({
                 mViews[curClickedIndex].removeAllViews()
                 mViews[curClickedIndex].addView(mPhotoViews[curClickedIndex])
-            }
+            }, 1000)// 模拟加载原图数据
 
             mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -86,10 +85,10 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 override fun onPageSelected(position: Int) {
                     curClickedIndex = position
                     mConfig.setData(infos[curClickedIndex])
-                    RxJavaUtils.timer(1000) {
+                    postDelayed({
                         mViews[position].removeAllViews()
                         mViews[position].addView(mPhotoViews[position])
-                    }
+                    }, 1000)// 模拟加载原图数据
                 }
             })
 
