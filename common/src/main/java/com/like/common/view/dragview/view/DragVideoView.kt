@@ -49,7 +49,7 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                         postDelayed({
                             removeView(imageView)
                             removeView(progressBar)
-                        }, 200)// 防闪烁
+                        }, 100)// 防闪烁
                     }, 2000)// 模拟加载视频数据
                 }
             })
