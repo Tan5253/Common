@@ -12,10 +12,10 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Toast
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
-import com.like.common.util.ImageLoaderUtils
 import com.like.common.view.dragview.entity.DragInfo
 import java.lang.Exception
 
@@ -46,6 +46,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     }
                 }
                 mViews.add(RelativeLayout(context).apply {
+                    addView(photoView)
                     addView(imageView)
                     addView(progressBar)
                 })
@@ -70,12 +71,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             mViewPager.currentItem = curClickedIndex
             showOriginImage(curClickedIndex)
 
-            mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    mViewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    enter()
-                }
-            })
             mViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     curClickedIndex = position
@@ -90,30 +85,38 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 }
             })
 
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    enter()
+                }
+            })
         }
-
     }
 
     private fun showOriginImage(index: Int) {
         val info = infos[index]
         val photoView = mPhotoViews[index]
         val progressBar = mProgressBars[index]
+        val imageView = mImageViews[index]
         if (info.imageUrl.isNotEmpty()) {
-            mImageLoaderUtils.display(info.imageUrl, photoView, object : ImageLoaderUtils.RequestListenerAdapter {
-                override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean) {
+            mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
+                override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
                     postDelayed({
                         mViews[index].removeView(progressBar)
+                        mViews[index].removeView(photoView)
                         Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
                     }, 1000)
+                    return false
                 }
 
-                override fun onSuccess(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean) {
+                override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                     postDelayed({
-                        mViews[index].addView(photoView)
-                        mViews[index].removeAllViews()
+                        mViews[index].removeView(progressBar)
+                        mViews[index].removeView(imageView)
                     }, 1000)
+                    return false
                 }
-
             })
         }
     }

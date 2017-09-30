@@ -6,7 +6,7 @@ import com.like.common.view.dragview.view.BaseDragView
 
 class AnimationConfig(info: DragInfo, val view: BaseDragView) {
     companion object {
-        const val DURATION = 200L
+        const val DURATION = 300L
     }
 
     val MAX_CANVAS_TRANSLATION_Y = view.height.toFloat() / 4

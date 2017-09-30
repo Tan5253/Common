@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -174,7 +173,7 @@ public class ImageLoaderUtils {
         display(url, imageView, -1);
     }
 
-    public void display(String url, ImageView imageView, RequestListenerAdapter listener) {
+    public void display(String url, ImageView imageView, RequestListener listener) {
         display(url, imageView, -1, -1, listener);
     }
 
@@ -194,8 +193,8 @@ public class ImageLoaderUtils {
         display(url, imageView, loadingImageResId, loadErrorImageResId, null);
     }
 
-    public void display(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId, final RequestListenerAdapter listener) {
-        DrawableRequestBuilder<String> stringDrawableRequestBuilder = requestManager
+    public void display(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId, RequestListener listener) {
+        DrawableRequestBuilder<String> builder = requestManager
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
@@ -203,29 +202,9 @@ public class ImageLoaderUtils {
                 .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
                 .skipMemoryCache(true)// 跳过内存缓存
                 .diskCacheStrategy(DiskCacheStrategy.NONE);// 跳过硬盘缓存
-        if (listener != null) {
-            stringDrawableRequestBuilder.listener(new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    listener.onException(e, model, target, isFirstResource);
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    listener.onSuccess(resource, model, target, isFromMemoryCache, isFirstResource);
-                    return false;
-                }
-            });
-        }
-        stringDrawableRequestBuilder.into(imageView);
-
-    }
-
-    public interface RequestListenerAdapter {
-        void onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource);
-
-        void onSuccess(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource);
+        if (listener != null)
+            builder.listener(listener);
+        builder.into(imageView);
     }
 
 }

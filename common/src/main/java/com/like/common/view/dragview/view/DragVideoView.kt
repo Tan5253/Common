@@ -18,12 +18,6 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
             if (info.thumbImageUrl.isNotEmpty()) {
                 mImageLoaderUtils.display(info.thumbImageUrl, this)
             }
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    enter()
-                }
-            })
         }
         addView(imageView)
 
@@ -61,6 +55,12 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
             })
         }
 
+        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+                enter()
+            }
+        })
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
