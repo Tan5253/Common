@@ -46,6 +46,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     }
                 }
                 mViews.add(RelativeLayout(context).apply {
+                    photoView.visibility = View.INVISIBLE
                     addView(photoView)
                     addView(imageView)
                     addView(progressBar)
@@ -112,6 +113,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
 
                 override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                     postDelayed({
+                        photoView.visibility = View.VISIBLE
                         mViews[index].removeView(progressBar)
                         mViews[index].removeView(imageView)
                     }, 1000)
