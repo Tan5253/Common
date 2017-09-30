@@ -9,9 +9,7 @@ import android.os.Parcelable
  * @param originWidth       原始imageview的width
  * @param originHeight      原始imageview的height
  * @param thumbImageUrl     缩略图的url
- * @param thumbImageResId   缩略图的资源id
  * @param imageUrl          原图url
- * @param imageResId        原图的资源id
  * @param videoUrl          视频url
  * @param isClicked         是否当前点击的那张图片
  */
@@ -20,9 +18,7 @@ class DragInfo(val originLeft: Float,
                val originWidth: Float,
                val originHeight: Float,
                val thumbImageUrl: String = "",
-               val thumbImageResId: Int = 0,
                val imageUrl: String = "",
-               val imageResId: Int = 0,
                val videoUrl: String = "",
                val isClicked: Boolean = false) : Parcelable {
     // 下面是根据原始尺寸计算出来的辅助尺寸
@@ -35,9 +31,7 @@ class DragInfo(val originLeft: Float,
             parcel.readFloat(),
             parcel.readFloat(),
             parcel.readString(),
-            parcel.readInt(),
             parcel.readString(),
-            parcel.readInt(),
             parcel.readString(),
             parcel.readByte() != 0.toByte()) {
         originCenterX = parcel.readFloat()
@@ -50,9 +44,7 @@ class DragInfo(val originLeft: Float,
         parcel.writeFloat(originWidth)
         parcel.writeFloat(originHeight)
         parcel.writeString(thumbImageUrl)
-        parcel.writeInt(thumbImageResId)
         parcel.writeString(imageUrl)
-        parcel.writeInt(imageResId)
         parcel.writeString(videoUrl)
         parcel.writeByte(if (isClicked) 1 else 0)
         parcel.writeFloat(originCenterX)
@@ -72,6 +64,5 @@ class DragInfo(val originLeft: Float,
             return arrayOfNulls(size)
         }
     }
-
 
 }

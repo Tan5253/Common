@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/bg" />
+                android:src="@drawable/image_bg" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/avatar" />
+                    android:src="@drawable/image_top" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                     android:layout_weight="1"
                     android:onClick="onClick"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/video_image_1"
+                    android:src="@drawable/image_0"
                     app:layout_heightPercent="33.33%w" />
 
                 <ImageView
@@ -82,7 +82,7 @@
                     android:layout_weight="1"
                     android:onClick="onClick"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/wugeng1"
+                    android:src="@drawable/image_1"
                     app:layout_heightPercent="33.33%w" />
 
                 <ImageView
@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:onClick="onClick"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/wugeng2"
+                    android:src="@drawable/image_2"
                     app:layout_heightPercent="33.33%w" />
 
             </com.zhy.android.percent.support.PercentLinearLayout>
@@ -115,7 +115,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/avatar" />
+                    android:src="@drawable/image_top" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/video_image_1" />
+                    android:src="@drawable/image_0" />
 
                 <ImageView
                     android:layout_width="wrap_content"

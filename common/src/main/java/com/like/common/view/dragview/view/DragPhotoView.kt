@@ -11,8 +11,13 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.Toast
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.view.dragview.entity.DragInfo
+import java.lang.Exception
 
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
     private val mViewPager: DragViewPager by lazy { DragViewPager(context) }
@@ -28,17 +33,10 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             infos.forEach {
                 val photoView = PhotoView(context).apply {
                     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-                    if (it.imageResId > 0) {
-                        setImageResource(it.imageResId)
-                    } else {
-                        mImageLoaderUtils.display(it.imageUrl, this)
-                    }
                 }
                 val imageView = ImageView(context).apply {
                     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-                    if (it.thumbImageResId > 0) {
-                        setImageResource(it.thumbImageResId)
-                    } else {
+                    if (it.thumbImageUrl.isNotEmpty()) {
                         mImageLoaderUtils.display(it.thumbImageUrl, this)
                     }
                 }
@@ -70,10 +68,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             }
 
             mViewPager.currentItem = curClickedIndex
-            postDelayed({
-                mViews[curClickedIndex].removeAllViews()
-                mViews[curClickedIndex].addView(mPhotoViews[curClickedIndex])
-            }, 1000)// 模拟加载原图数据
+            showOriginImage(curClickedIndex)
 
             mViewPager.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -85,10 +80,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 override fun onPageSelected(position: Int) {
                     curClickedIndex = position
                     mConfig.setData(infos[curClickedIndex])
-                    postDelayed({
-                        mViews[position].removeAllViews()
-                        mViews[position].addView(mPhotoViews[position])
-                    }, 1000)// 模拟加载原图数据
+                    showOriginImage(curClickedIndex)
                 }
             })
 
@@ -100,6 +92,31 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
 
         }
 
+    }
+
+    private fun showOriginImage(index: Int) {
+        val info = infos[index]
+        val photoView = mPhotoViews[index]
+        val progressBar = mProgressBars[index]
+        if (info.imageUrl.isNotEmpty()) {
+            mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideDrawable> {
+                override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
+                    postDelayed({
+                        mViews[index].removeView(progressBar)
+                        Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                    }, 1000)
+                    return true
+                }
+
+                override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                    postDelayed({
+                        mViews[index].addView(photoView)
+                        mViews[index].removeAllViews()
+                    }, 1000)
+                    return true
+                }
+            })
+        }
     }
 
     private fun getCurClickedIndex(): Int {

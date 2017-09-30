@@ -11,6 +11,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
@@ -171,6 +174,10 @@ public class ImageLoaderUtils {
         display(url, imageView, -1);
     }
 
+    public void display(String url, ImageView imageView, RequestListener<String, GlideDrawable> listener) {
+        display(url, imageView, -1, -1, listener);
+    }
+
     public void display(String url, ImageView imageView, int loadingImageResId) {
         display(url, imageView, loadingImageResId, -1);
     }
@@ -184,6 +191,10 @@ public class ImageLoaderUtils {
      * @param loadErrorImageResId 加载失败的图片
      */
     public void display(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId) {
+        display(url, imageView, loadingImageResId, loadErrorImageResId, null);
+    }
+
+    public void display(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId, RequestListener<String, GlideDrawable> listener) {
         requestManager
                 .load(url)
                 .placeholder(loadingImageResId)
@@ -192,7 +203,10 @@ public class ImageLoaderUtils {
                 .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
                 .skipMemoryCache(true)// 跳过内存缓存
                 .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
-                .into(imageView);
+                .listener(listener)
+                .into(new GlideDrawableImageViewTarget(imageView){
+
+                });
     }
 
 }

@@ -14,6 +14,15 @@ import com.like.common.view.dragview.view.DragViewActivity
 import java.util.*
 
 class DragViewTestActivity : BaseActivity() {
+    private val originImageUrl0: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/image_0_origin.jpg" }
+    private val originImageUrl1: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/image_1_origin.jpg" }
+    private val originImageUrl2: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/image_2_origin.jpg" }
+    private val imageUrl0: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/image_0.jpg" }
+    private val imageUrl1: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/image_1.jpg" }
+    private val imageUrl2: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/image_2.jpg" }
+    private val videoUrl: String by lazy { "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/video_1.mp4" }
+    private val videoImageUrl: String by lazy { imageUrl0 }
+
     private val mBinding: ActivityDragphotoviewBinding by lazy {
         DataBindingUtil.setContentView<ActivityDragphotoviewBinding>(this, R.layout.activity_dragphotoview)
     }
@@ -22,6 +31,14 @@ class DragViewTestActivity : BaseActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mBinding
         findViewById(R.id.iv_0)
+
+        ResourceUtils.Assets2Sd(this, "video_1.mp4", videoUrl)
+        ResourceUtils.Assets2Sd(this, "image_0_origin.jpg", originImageUrl0)
+        ResourceUtils.Assets2Sd(this, "image_1_origin.jpg", originImageUrl1)
+        ResourceUtils.Assets2Sd(this, "image_2_origin.jpg", originImageUrl2)
+        ResourceUtils.Assets2Sd(this, "image_0.jpg", imageUrl0)
+        ResourceUtils.Assets2Sd(this, "image_1.jpg", imageUrl1)
+        ResourceUtils.Assets2Sd(this, "image_2.jpg", imageUrl2)
         return null
     }
 
@@ -40,31 +57,28 @@ class DragViewTestActivity : BaseActivity() {
                  */
                 val location0 = IntArray(2)
                 mBinding.iv0.getLocationOnScreen(location0)
-                list.add(DragInfo(location0[0].toFloat(), location0[1].toFloat(), mBinding.iv0.width.toFloat(), mBinding.iv0.height.toFloat(), thumbImageResId = R.drawable.video_image_1, imageResId = R.drawable.video_image_1, isClicked = view.id == R.id.iv_0))
+                list.add(DragInfo(location0[0].toFloat(), location0[1].toFloat(), mBinding.iv0.width.toFloat(), mBinding.iv0.height.toFloat(), thumbImageUrl = imageUrl0, imageUrl = originImageUrl0, isClicked = view.id == R.id.iv_0))
 
                 val location1 = IntArray(2)
                 mBinding.iv1.getLocationOnScreen(location1)
-                list.add(DragInfo(location1[0].toFloat(), location1[1].toFloat(), mBinding.iv1.width.toFloat(), mBinding.iv1.height.toFloat(), thumbImageResId = R.drawable.wugeng1, imageResId = R.drawable.wugeng1, isClicked = view.id == R.id.iv_1))
+                list.add(DragInfo(location1[0].toFloat(), location1[1].toFloat(), mBinding.iv1.width.toFloat(), mBinding.iv1.height.toFloat(), thumbImageUrl = imageUrl1, imageUrl = originImageUrl1, isClicked = view.id == R.id.iv_1))
 
                 val location2 = IntArray(2)
                 mBinding.iv2.getLocationOnScreen(location2)
-                list.add(DragInfo(location2[0].toFloat(), location2[1].toFloat(), mBinding.iv2.width.toFloat(), mBinding.iv2.height.toFloat(), thumbImageResId = R.drawable.wugeng2, imageResId = R.drawable.wugeng2, isClicked = view.id == R.id.iv_2))
+                list.add(DragInfo(location2[0].toFloat(), location2[1].toFloat(), mBinding.iv2.width.toFloat(), mBinding.iv2.height.toFloat(), thumbImageUrl = imageUrl2, imageUrl = originImageUrl2, isClicked = view.id == R.id.iv_2))
 
                 intent.putParcelableArrayListExtra(DragViewActivity.KEY_DATA, list)
             }
             R.id.rl_video -> {
                 val location0 = IntArray(2)
                 mBinding.rlVideo.getLocationOnScreen(location0)
-
-                val sdPath = "${StorageUtils.InternalStorageHelper.getBaseDir(this)}/video_1.mp4"
-                ResourceUtils.Assets2Sd(this, "video_1.mp4", sdPath)
                 intent.putExtra(DragViewActivity.KEY_DATA,
                         DragInfo(location0[0].toFloat(),
                                 location0[1].toFloat(),
                                 mBinding.rlVideo.width.toFloat(),
                                 mBinding.rlVideo.height.toFloat(),
-                                thumbImageResId = R.drawable.video_image_1,
-                                videoUrl = sdPath))
+                                thumbImageUrl = videoImageUrl,
+                                videoUrl = videoUrl))
             }
         }
         startActivity(intent)

@@ -15,9 +15,7 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
     init {
         val imageView = ImageView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            if (info.thumbImageResId > 0) {
-                setImageResource(info.thumbImageResId)
-            } else {
+            if (info.thumbImageUrl.isNotEmpty()) {
                 mImageLoaderUtils.display(info.thumbImageUrl, this)
             }
             viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
