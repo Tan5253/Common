@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import android.widget.VideoView
 import com.like.common.view.dragview.entity.DragInfo
 
@@ -51,6 +52,13 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                             removeView(progressBar)
                         }, 100)// 防闪烁
                     }, 2000)// 模拟加载视频数据
+                }
+                setOnErrorListener { _, _, _ ->
+                    postDelayed({
+                        removeView(progressBar)
+                        Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
+                    }, 2000)// 模拟加载视频数据
+                    true
                 }
             })
         }
