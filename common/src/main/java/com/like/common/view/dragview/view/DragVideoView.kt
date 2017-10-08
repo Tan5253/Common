@@ -32,7 +32,7 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
             mImageLoaderUtils.display(info.thumbImageUrl, imageView, object : RequestListener<String, GlideBitmapDrawable> {
                 override fun onException(e: java.lang.Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
                     removeView(progressBar)
-                    Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
                     return false
                 }
 
