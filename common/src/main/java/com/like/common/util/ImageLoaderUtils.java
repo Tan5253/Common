@@ -11,7 +11,6 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -98,7 +97,6 @@ public class ImageLoaderUtils {
                 Bitmap bitmap = requestManager
                         .load(url)
                         .asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
                         .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                         .get();
                 observableEmitter.onNext(bitmap);
@@ -133,9 +131,9 @@ public class ImageLoaderUtils {
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
                 .fitCenter()// 缩放图像让图像都测量出来等于或小于 ImageView 的边界范围,该图像将会完全显示，但可能不会填满整个ImageView。
-                .skipMemoryCache(true)// 跳过内存缓存
                 .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
-                .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
+//                .skipMemoryCache(true)// 跳过内存缓存
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
                 .bitmapTransform(new RoundedCornersTransformation(mContext, radius, 0))
                 .into(imageView);
     }
@@ -162,9 +160,9 @@ public class ImageLoaderUtils {
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
                 .fitCenter()// 缩放图像让图像都测量出来等于或小于 ImageView 的边界范围,该图像将会完全显示，但可能不会填满整个ImageView。
-                .skipMemoryCache(true)// 跳过内存缓存
                 .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
-                .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
+//                .skipMemoryCache(true)// 跳过内存缓存
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
                 .bitmapTransform(new CropCircleTransformation(mContext))
                 .into(imageView);
     }
@@ -198,10 +196,10 @@ public class ImageLoaderUtils {
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
+//                .skipMemoryCache(true)// 跳过内存缓存
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
                 .fitCenter()// 缩放图像让图像都测量出来等于或小于 ImageView 的边界范围,该图像将会完全显示，但可能不会填满整个ImageView。
-                .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
-                .skipMemoryCache(true)// 跳过内存缓存
-                .diskCacheStrategy(DiskCacheStrategy.NONE);// 跳过硬盘缓存
+                .priority(Priority.HIGH);// 优先级，设置图片加载的顺序
         if (listener != null)
             builder.listener(listener);
         builder.into(imageView);

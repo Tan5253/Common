@@ -8,6 +8,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.VideoView
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.like.common.view.dragview.entity.DragInfo
 
 class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, info) {
@@ -15,9 +18,6 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
     init {
         val imageView = ImageView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            if (info.thumbImageUrl.isNotEmpty()) {
-                mImageLoaderUtils.display(info.thumbImageUrl, this)
-            }
         }
         addView(imageView)
 
@@ -28,31 +28,44 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
         }
         addView(progressBar)
 
-        if (info.videoUrl.isNotEmpty()) {
-            addView(VideoView(context).apply {
-                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
-                    addRule(CENTER_IN_PARENT)
-                }
-                setZOrderOnTop(true)// 避免闪屏
-                setVideoPath(info.videoUrl)
-                setOnPreparedListener { mediaPlayer ->
-                    try {
-                        mediaPlayer?.let {
-                            mediaPlayer.isLooping = true
-                            mediaPlayer.start()
-                            postDelayed({
-                                removeView(imageView)
-                                removeView(progressBar)
-                            }, 100)// 防闪烁
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                setOnErrorListener { _, _, _ ->
+        if (info.thumbImageUrl.isNotEmpty()) {
+            mImageLoaderUtils.display(info.thumbImageUrl, imageView, object : RequestListener<String, GlideBitmapDrawable> {
+                override fun onException(e: java.lang.Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
                     removeView(progressBar)
-                    Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
-                    true
+                    Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+                override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                    if (info.videoUrl.isNotEmpty()) {
+                        addView(VideoView(context).apply {
+                            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
+                                addRule(CENTER_IN_PARENT)
+                            }
+                            setZOrderOnTop(true)// 避免闪屏
+                            setVideoPath(info.videoUrl)
+                            setOnPreparedListener { mediaPlayer ->
+                                try {
+                                    mediaPlayer?.let {
+                                        mediaPlayer.isLooping = true
+                                        mediaPlayer.start()
+                                        postDelayed({
+                                            removeView(imageView)
+                                            removeView(progressBar)
+                                        }, 100)// 防闪烁
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            }
+                            setOnErrorListener { _, _, _ ->
+                                removeView(progressBar)
+                                Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
+                                true
+                            }
+                        })
+                    }
+                    return false
                 }
             })
         }
