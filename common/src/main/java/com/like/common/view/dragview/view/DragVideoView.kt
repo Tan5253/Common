@@ -11,6 +11,8 @@ import android.widget.VideoView
 import com.like.common.view.dragview.entity.DragInfo
 
 class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, info) {
+    private var loadVideoFailureCallBack: (() -> Unit)? = null
+    private var loadVideoSuccessCallBack: (() -> Unit)? = null
 
     init {
         val imageView = ImageView(context).apply {
@@ -36,20 +38,28 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                 setZOrderOnTop(true)// 避免闪屏
                 setVideoPath(info.videoUrl)
                 setOnPreparedListener { mediaPlayer ->
-                    postDelayed({
-                        mediaPlayer.isLooping = true
-                        mediaPlayer.start()
-                        postDelayed({
-                            removeView(imageView)
-                            removeView(progressBar)
-                        }, 100)// 防闪烁
-                    }, 2000)// 模拟加载视频数据
+                    loadVideoSuccessCallBack = {
+                        try {
+                            mediaPlayer?.let {
+                                mediaPlayer.isLooping = true
+                                mediaPlayer.start()
+                                postDelayed({
+                                    removeView(imageView)
+                                    removeView(progressBar)
+                                }, 100)// 防闪烁
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                    postDelayed(loadVideoSuccessCallBack, 2000)// 模拟加载视频数据
                 }
                 setOnErrorListener { _, _, _ ->
-                    postDelayed({
+                    loadVideoFailureCallBack = {
                         removeView(progressBar)
                         Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
-                    }, 2000)// 模拟加载视频数据
+                    }
+                    postDelayed(loadVideoFailureCallBack, 2000)// 模拟加载视频数据
                     true
                 }
             })
@@ -61,6 +71,12 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                 enter()
             }
         })
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        removeCallbacks(loadVideoSuccessCallBack)
+        removeCallbacks(loadVideoFailureCallBack)
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {

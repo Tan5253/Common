@@ -27,6 +27,10 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
     private val mProgressBars = ArrayList<ProgressBar>()
     private var curClickedIndex = -1
 
+    private var showOriginImageCallBack: (() -> Unit)? = null
+    private var loadImageSuccessCallBack: (() -> Unit)? = null
+    private var loadImageFailureCallBack: (() -> Unit)? = null
+
     init {
         curClickedIndex = getCurClickedIndex()
         if (curClickedIndex != -1) {
@@ -95,32 +99,46 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
     }
 
     private fun showOriginImage(index: Int) {
-        postDelayed({
+        showOriginImageCallBack = {
+            // 延迟加载原始图片，避免闪烁
             val info = infos[index]
             val photoView = mPhotoViews[index]
             val progressBar = mProgressBars[index]
             val imageView = mImageViews[index]
+
+            loadImageFailureCallBack = {
+                mViews[index].removeView(progressBar)
+                mViews[index].removeView(photoView)
+                Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+            }
+
+            loadImageSuccessCallBack = {
+                mViews[index].removeView(progressBar)
+                mViews[index].removeView(imageView)
+            }
+
             if (info.imageUrl.isNotEmpty()) {
                 mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
                     override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                        postDelayed({
-                            mViews[index].removeView(progressBar)
-                            mViews[index].removeView(photoView)
-                            Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                        }, 1000)
+                        postDelayed(loadImageFailureCallBack, 1000)
                         return false
                     }
 
                     override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                        postDelayed({
-                            mViews[index].removeView(progressBar)
-                            mViews[index].removeView(imageView)
-                        }, 1000)
+                        postDelayed(loadImageSuccessCallBack, 1000)
                         return false
                     }
                 })
             }
-        }, 200)
+        }
+        postDelayed(showOriginImageCallBack, 100)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        removeCallbacks(showOriginImageCallBack)
+        removeCallbacks(loadImageSuccessCallBack)
+        removeCallbacks(loadImageFailureCallBack)
     }
 
     private fun getCurClickedIndex(): Int {

@@ -34,6 +34,8 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
     private val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(mConfig) }
     private val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(mConfig) }
 
+    private var loadActionDownCallBack: (() -> Unit)? = null
+
     protected val mImageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(context) }
 
     init {
@@ -62,7 +64,7 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
         isUp = false
         if (firstClickTime == 0L && secondClickTime == 0L) {//第一次点击
             firstClickTime = System.currentTimeMillis()
-            postDelayed({
+            loadActionDownCallBack = {
                 if (!isUp) {
                     Logger.v("长按")
                 } else if (!isDoubleClick) {
@@ -74,7 +76,8 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
                 isDoubleClick = false
                 firstClickTime = 0L
                 secondClickTime = 0L
-            }, DOUBLE_CLICK_INTERVAL)
+            }
+            postDelayed(loadActionDownCallBack, DOUBLE_CLICK_INTERVAL)
         } else {
             secondClickTime = System.currentTimeMillis()
             if (secondClickTime - firstClickTime < DOUBLE_CLICK_INTERVAL) {//两次点击小于DOUBLE_CLICK_INTERVAL
@@ -84,6 +87,11 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
             firstClickTime = 0L
             secondClickTime = 0L
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        removeCallbacks(loadActionDownCallBack)
     }
 
     fun onActionUp(event: MotionEvent) {
