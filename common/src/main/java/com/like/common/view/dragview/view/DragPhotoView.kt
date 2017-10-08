@@ -46,7 +46,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     }
                 }
                 mViews.add(RelativeLayout(context).apply {
-                    photoView.visibility = View.INVISIBLE
                     addView(photoView)
                     addView(imageView)
                     addView(progressBar)
@@ -96,31 +95,32 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
     }
 
     private fun showOriginImage(index: Int) {
-        val info = infos[index]
-        val photoView = mPhotoViews[index]
-        val progressBar = mProgressBars[index]
-        val imageView = mImageViews[index]
-        if (info.imageUrl.isNotEmpty()) {
-            mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
-                override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                    postDelayed({
-                        mViews[index].removeView(progressBar)
-                        mViews[index].removeView(photoView)
-                        Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                    }, 1000)
-                    return false
-                }
+        postDelayed({
+            val info = infos[index]
+            val photoView = mPhotoViews[index]
+            val progressBar = mProgressBars[index]
+            val imageView = mImageViews[index]
+            if (info.imageUrl.isNotEmpty()) {
+                mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
+                    override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
+                        postDelayed({
+                            mViews[index].removeView(progressBar)
+                            mViews[index].removeView(photoView)
+                            Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                        }, 1000)
+                        return false
+                    }
 
-                override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                    postDelayed({
-                        photoView.visibility = View.VISIBLE
-                        mViews[index].removeView(progressBar)
-                        mViews[index].removeView(imageView)
-                    }, 1000)
-                    return false
-                }
-            })
-        }
+                    override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        postDelayed({
+                            mViews[index].removeView(progressBar)
+                            mViews[index].removeView(imageView)
+                        }, 1000)
+                        return false
+                    }
+                })
+            }
+        }, 200)
     }
 
     private fun getCurClickedIndex(): Int {
