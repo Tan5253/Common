@@ -91,6 +91,10 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
     }
 
     private fun showOriginImage(index: Int) {
+        if (mViews[index].childCount == 1 && mViews[index].getChildAt(0) is PhotoView) {
+            // 说明已经加载原图成功了
+            return
+        }
         // 延迟加载原始图片，避免闪烁
         val info = infos[index]
         val photoView = mPhotoViews[index]
