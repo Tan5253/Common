@@ -9,7 +9,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -129,6 +131,10 @@ public class ImageLoaderUtils {
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
+                .fitCenter()// 缩放图像让图像都测量出来等于或小于 ImageView 的边界范围,该图像将会完全显示，但可能不会填满整个ImageView。
+                .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
+                .skipMemoryCache(true)// 跳过内存缓存
+                .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
                 .bitmapTransform(new RoundedCornersTransformation(mContext, radius, 0))
                 .into(imageView);
     }
@@ -186,6 +192,7 @@ public class ImageLoaderUtils {
         DrawableRequestBuilder<String> builder = requestManager
                 .load(url)
                 .placeholder(loadingImageResId)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(loadErrorImageResId);
         if (listener != null)
             builder.listener(listener);
