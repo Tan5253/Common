@@ -17,7 +17,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.view.dragview.entity.DragInfo
-import com.like.logger.Logger
 import java.lang.Exception
 
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
@@ -120,7 +119,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                                 }
 
                                 override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                                    Logger.e("photoView width = ${photoView.width} height = ${photoView.height}")
                                     postDelayed({
                                         mViews[index].removeView(mProgressBar)
                                         mViews[index].removeView(imageView)
