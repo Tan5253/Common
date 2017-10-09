@@ -70,8 +70,8 @@
                     android:layout_weight="1"
                     android:onClick="onClick"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image_0"
-                    app:layout_heightPercent="33.33%w" />
+                    app:layout_heightPercent="33.33%w"
+                    tools:src="@drawable/image_0" />
 
                 <ImageView
                     android:id="@+id/iv_1"
@@ -82,8 +82,8 @@
                     android:layout_weight="1"
                     android:onClick="onClick"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image_1"
-                    app:layout_heightPercent="33.33%w" />
+                    app:layout_heightPercent="33.33%w"
+                    tools:src="@drawable/image_1" />
 
                 <ImageView
                     android:id="@+id/iv_2"
@@ -92,8 +92,8 @@
                     android:layout_weight="1"
                     android:onClick="onClick"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image_2"
-                    app:layout_heightPercent="33.33%w" />
+                    app:layout_heightPercent="33.33%w"
+                    tools:src="@drawable/image_2" />
 
             </com.zhy.android.percent.support.PercentLinearLayout>
 
@@ -152,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/image_0" />
+                    tools:src="@drawable/image_0" />
 
                 <ImageView
                     android:layout_width="wrap_content"
