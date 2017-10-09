@@ -60,6 +60,7 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                             }
                             setOnErrorListener { _, _, _ ->
                                 removeView(progressBar)
+                                removeView(this)
                                 Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
                                 true
                             }

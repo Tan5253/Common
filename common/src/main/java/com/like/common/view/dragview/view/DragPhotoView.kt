@@ -111,6 +111,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                         mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
                             override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
                                 mViews[index].removeView(progressBar)
+                                mViews[index].removeView(photoView)
                                 Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
                                 return false
                             }
