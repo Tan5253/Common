@@ -37,35 +37,37 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                 }
 
                 override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                    if (info.videoUrl.isNotEmpty()) {
-                        addView(VideoView(context).apply {
-                            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
-                                addRule(CENTER_IN_PARENT)
-                            }
-                            setZOrderOnTop(true)// 避免闪屏
-                            setVideoPath(info.videoUrl)
-                            setOnPreparedListener { mediaPlayer ->
-                                try {
-                                    mediaPlayer?.let {
-                                        mediaPlayer.isLooping = true
-                                        mediaPlayer.start()
-                                        postDelayed({
-                                            removeView(imageView)
-                                            removeView(progressBar)
-                                        }, 100)// 防闪烁
-                                    }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
+                    postDelayed({
+                        if (info.videoUrl.isNotEmpty()) {
+                            addView(VideoView(context).apply {
+                                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT).apply {
+                                    addRule(CENTER_IN_PARENT)
                                 }
-                            }
-                            setOnErrorListener { _, _, _ ->
-                                removeView(progressBar)
-                                removeView(this)
-                                Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
-                                true
-                            }
-                        })
-                    }
+                                setZOrderOnTop(true)// 避免闪屏
+                                setVideoPath(info.videoUrl)
+                                setOnPreparedListener { mediaPlayer ->
+                                    try {
+                                        mediaPlayer?.let {
+                                            mediaPlayer.isLooping = true
+                                            mediaPlayer.start()
+                                            postDelayed({
+                                                removeView(imageView)
+                                                removeView(progressBar)
+                                            }, 100)// 防闪烁
+                                        }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                                setOnErrorListener { _, _, _ ->
+                                    removeView(progressBar)
+                                    removeView(this)
+                                    Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
+                                    true
+                                }
+                            })
+                        }
+                    }, 1000)
                     return false
                 }
             })

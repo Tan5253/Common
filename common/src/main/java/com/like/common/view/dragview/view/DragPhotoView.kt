@@ -107,25 +107,27 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 }
 
                 override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                    if (info.imageUrl.isNotEmpty()) {
-                        mViews[index].addView(photoView)
-                        mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
-                            override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                                mViews[index].removeView(mProgressBar)
-                                mViews[index].removeView(photoView)
-                                Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                                return false
-                            }
-
-                            override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                                postDelayed({
+                    postDelayed({
+                        if (info.imageUrl.isNotEmpty()) {
+                            mViews[index].addView(photoView)
+                            mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
+                                override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
                                     mViews[index].removeView(mProgressBar)
-                                    mViews[index].removeView(imageView)
-                                }, 100)// 防闪烁
-                                return false
-                            }
-                        })
-                    }
+                                    mViews[index].removeView(photoView)
+                                    Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                                    return false
+                                }
+
+                                override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                                    postDelayed({
+                                        mViews[index].removeView(mProgressBar)
+                                        mViews[index].removeView(imageView)
+                                    }, 100)// 防闪烁
+                                    return false
+                                }
+                            })
+                        }
+                    }, 1000)
                     return false
                 }
             })
