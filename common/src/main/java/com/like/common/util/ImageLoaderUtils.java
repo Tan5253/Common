@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
@@ -11,10 +12,16 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.stream.StreamModelLoader;
+import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -197,6 +204,63 @@ public class ImageLoaderUtils {
         if (listener != null)
             builder.listener(listener);
         builder.into(imageView);
+    }
+
+    public void isCached(String url, int width, int height, CheckCachedListener listener) {
+        new AsyncTask<Void, Void, File>() {
+            @Override
+            protected File doInBackground(Void... voids) {
+                File cacheFile = null;
+                if (!url.isEmpty()) {
+                    try {
+                        FutureTarget<File> future = requestManager
+                                .using(new StreamModelLoader<String>() {
+                                    @Override
+                                    public DataFetcher<InputStream> getResourceFetcher(String model, int width, int height) {
+                                        return new DataFetcher<InputStream>() {
+                                            @Override
+                                            public InputStream loadData(Priority priority) throws Exception {
+                                                throw new IOException();
+                                            }
+
+                                            @Override
+                                            public void cleanup() {
+
+                                            }
+
+                                            @Override
+                                            public String getId() {
+                                                return model;
+                                            }
+
+                                            @Override
+                                            public void cancel() {
+
+                                            }
+                                        };
+                                    }
+                                })
+                                .load(url)
+                                .downloadOnly(width, height);
+                        cacheFile = future.get();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();  //exception thrown if image not in cache
+                    }
+                }
+                return cacheFile;
+            }
+
+            @Override
+            protected void onPostExecute(File file) {
+                if (listener != null) {
+                    listener.onChecked(file != null && file.length() > 0);
+                }
+            }
+        }.execute();
+    }
+
+    public interface CheckCachedListener {
+        void onChecked(boolean isCached);
     }
 
 }
