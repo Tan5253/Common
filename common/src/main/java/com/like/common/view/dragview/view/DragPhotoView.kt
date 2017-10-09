@@ -31,18 +31,28 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
         curClickedIndex = getCurClickedIndex()
         if (curClickedIndex != -1) {
             infos.forEach {
+                val progressBar = ProgressBar(context, null, R.attr.progressBarStyleInverse).apply {
+                    layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+                        addRule(CENTER_IN_PARENT)
+                    }
+                }
                 val photoView = PhotoView(context).apply {
                     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
                 }
                 val imageView = ImageView(context).apply {
                     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
                 }
-                val progressBar = ProgressBar(context, null, R.attr.progressBarStyleInverse).apply {
-                    layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                        addRule(CENTER_IN_PARENT)
+                mViews.add(RelativeLayout(context).apply {
+                    mImageLoaderUtils.isCached(it.imageUrl, Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) { isCached ->
+                        if (isCached) {// 如果有原图缓存
+                            addView(photoView)
+                            mImageLoaderUtils.display(it.imageUrl, photoView)
+                        } else {
+                            addView(imageView)
+                            mImageLoaderUtils.display(it.thumbImageUrl, imageView)
+                        }
                     }
-                }
-                mViews.add(RelativeLayout(context))
+                })
                 mPhotoViews.add(photoView)
                 mImageViews.add(imageView)
                 mProgressBars.add(progressBar)
@@ -62,7 +72,6 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             }
 
             mViewPager.currentItem = curClickedIndex
-            showOriginImage(curClickedIndex)
 
             mViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
@@ -81,6 +90,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    showOriginImage(curClickedIndex)
                     enter()
                 }
             })
@@ -88,7 +98,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
     }
 
     private fun showOriginImage(index: Int) {
-        if (mViews[index].childCount == 1 && mViews[index].getChildAt(0) is PhotoView) {
+        if (hasPhotoView(index)) {
             // 说明已经加载原图成功了
             return
         }
@@ -96,63 +106,58 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
         mImageLoaderUtils.isCached(infos[index].imageUrl, Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) { isCached ->
             val info = infos[index]
             val photoView = mPhotoViews[index]
-            val imageView = mImageViews[index]
             if (isCached) {
+                removeProgressBar(index)
+                removeImageView(index)
                 addPhotoView(index)
                 mImageLoaderUtils.display(info.imageUrl, photoView)
-            } else if (info.thumbImageUrl.isNotEmpty()) {
-                addImageView(index)
+            } else {
                 addProgressBar(index)
-                mImageLoaderUtils.display(info.thumbImageUrl, imageView, object : RequestListener<String, GlideBitmapDrawable> {
-                    override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                        removeProgressBar(index)
-                        Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
-
-                    override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                        postDelayed({
-                            if (info.imageUrl.isNotEmpty()) {
-                                addPhotoView(index)
-                                mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
-                                    override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                                        removeProgressBar(index)
-                                        removePhotoView(index)
-                                        Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                                        return false
-                                    }
-
-                                    override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                                        postDelayed({
-                                            removeProgressBar(index)
-                                            removeImageView(index)
-                                        }, 100)// 防闪烁
-                                        return false
-                                    }
-                                })
+                postDelayed({
+                    if (info.imageUrl.isNotEmpty()) {
+                        addPhotoView(index)
+                        mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
+                            override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
+                                removeProgressBar(index)
+                                removePhotoView(index)
+                                Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                                return false
                             }
-                        }, 1000)
-                        return false
+
+                            override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                                postDelayed({
+                                    removeProgressBar(index)
+                                    removeImageView(index)
+                                }, 100)// 防闪烁
+                                return false
+                            }
+                        })
                     }
-                })
+                }, 1000)
             }
         }
     }
 
+    private fun hasPhotoView(index: Int) = (0 until mViews[index].childCount).any { mViews[index].getChildAt(it) is PhotoView }
+
+    private fun hasImageView(index: Int) = (0 until mViews[index].childCount).any { mViews[index].getChildAt(it) is ImageView }
+
+    private fun hasProgressBar(index: Int) = (0 until mViews[index].childCount).any { mViews[index].getChildAt(it) is ProgressBar }
+
     private fun addPhotoView(index: Int) {
-        if ((0 until mViews[index].childCount).all { mViews[index].getChildAt(it) !is PhotoView }) {
+        if (!hasPhotoView(index)) {
             mViews[index].addView(mPhotoViews[index])
         }
     }
 
     private fun addImageView(index: Int) {
-        if ((0 until mViews[index].childCount).all { mViews[index].getChildAt(it) !is ImageView }) {
+        if (!hasImageView(index)) {
             mViews[index].addView(mImageViews[index])
         }
     }
 
     private fun addProgressBar(index: Int) {
-        if ((0 until mViews[index].childCount).all { mViews[index].getChildAt(it) !is ProgressBar }) {
+        if (!hasProgressBar(index)) {
             mViews[index].addView(mProgressBars[index])
         }
     }
