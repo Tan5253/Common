@@ -23,6 +23,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
     private val mImageViews = ArrayList<ImageView>()
     private val mProgressBars = ArrayList<ProgressBar>()
     private var curClickedIndex = -1
+    private var isFirstMove = true
 
     init {
         curClickedIndex = getCurClickedIndex()
@@ -188,17 +189,23 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
                     onActionDown(event)
+                    isFirstMove = true
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // ViewPager的事件
-                    if (mConfig.curCanvasTranslationY == 0f && mConfig.curCanvasTranslationX != 0f) {
+                    if (isFirstMove && event.y - mDownY <= 0 && mConfig.curCanvasTranslationY == 0f && mConfig.curCanvasTranslationX != 0f) {
                         return super.dispatchTouchEvent(event)
                     }
 
-                    // 单手指按下，并在Y方向上拖动了一段距离
+                    // 单手指按下
                     if (event.pointerCount == 1) {
+                        if (isFirstMove && event.y - mDownY <= 0) {
+                            mConfig.updateCanvasTranslationY(0f)
+                        } else {
+                            mConfig.updateCanvasTranslationY(event.y - mDownY)
+                            isFirstMove = false
+                        }
                         mConfig.updateCanvasTranslationX(event.x - mDownX)
-                        mConfig.updateCanvasTranslationY(event.y - mDownY)
                         mConfig.updateCanvasScale()
                         mConfig.updateCanvasBgAlpha()
                         invalidate()
@@ -212,6 +219,7 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 }
                 MotionEvent.ACTION_UP -> {
                     onActionUp(event)
+                    isFirstMove = true
                 }
             }
         }
