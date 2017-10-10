@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.view.MotionEvent
 import android.widget.RelativeLayout
-import com.like.common.util.ImageLoaderUtils
+import com.like.common.util.GlideUtils
 import com.like.common.view.dragview.animation.*
 import com.like.common.view.dragview.entity.DragInfo
 import com.like.logger.Logger
@@ -34,7 +34,7 @@ open class BaseDragView(context: Context, info: DragInfo) : RelativeLayout(conte
     private val mExitAnimationManager: ExitAnimationManager by lazy { ExitAnimationManager(mConfig) }
     private val mDisappearAnimationManager: DisappearAnimationManager by lazy { DisappearAnimationManager(mConfig) }
 
-    protected val mImageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(context) }
+    protected val mGlideUtils: GlideUtils by lazy { GlideUtils(context) }
 
     init {
         setBackgroundColor(Color.BLACK)

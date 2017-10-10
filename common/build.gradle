@@ -53,7 +53,7 @@ dependencies {
 
     compile 'com.github.bumptech.glide:glide:4.2.0'// glide图片加载库
     kapt 'com.github.bumptech.glide:compiler:4.2.0'
-    compile 'jp.wasabeef:glide-transformations:2.0.1'// glide对应的图片处理库，可以转换图片为圆形、圆角矩形、高斯模糊等等效果
+    compile 'jp.wasabeef:glide-transformations:3.0.1'// glide对应的图片处理库，可以转换图片为圆形、圆角矩形、高斯模糊等等效果
 
     compile 'com.github.chrisbanes:PhotoView:2.1.3'
 

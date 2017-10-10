@@ -15,7 +15,7 @@ import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
 import com.like.common.util.ClickUtils;
-import com.like.common.util.ImageLoaderUtils;
+import com.like.common.util.GlideUtils;
 import com.like.common.util.ObjectSerializeUtils;
 import com.like.common.util.RxJavaUtils;
 import com.like.common.util.Verify;
@@ -24,6 +24,8 @@ import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
 import com.like.toast.ToastUtilsKt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -68,7 +70,15 @@ public class MainActivity extends BasePermissionActivity {
             }
         });
 
-        new ImageLoaderUtils(this).displayCircle("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", mBinding.iv);
+        List<String> urlList = new ArrayList<>();
+        urlList.add("http://www.114la.com/static/upd/201708/1515155610347f55.jpg");
+        urlList.add("https://www.114la.com/static/upd/201710/32f350101b780039d292c4a4f25f82f0.jpg");
+        new GlideUtils(this).downloadImages(urlList).subscribe(stringBitmapPair -> {
+            if (stringBitmapPair.first.equals("http://www.114la.com/static/upd/201708/1515155610347f55.jpg"))
+                mBinding.iv.setImageBitmap(stringBitmapPair.second);
+            else
+                mBinding.iv1.setImageBitmap(stringBitmapPair.second);
+        });
         return null;
     }
 

@@ -2,7 +2,6 @@ package com.like.common.view.dragview.view
 
 import android.R
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.MotionEvent
@@ -13,11 +12,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Toast
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
+import com.like.common.util.GlideUtils
 import com.like.common.view.dragview.entity.DragInfo
 
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
@@ -44,15 +40,17 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
                 }
                 mViews.add(RelativeLayout(context).apply {
-                    mImageLoaderUtils.isCached(it.imageUrl, Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) { isCached ->
-                        if (isCached) {// 如果有原图缓存
-                            addView(photoView)
-                            mImageLoaderUtils.display(it.imageUrl, photoView)
-                        } else {
-                            addView(imageView)
-                            mImageLoaderUtils.display(it.thumbImageUrl, imageView)
+                    mGlideUtils.isCached(it.imageUrl, listener = object : GlideUtils.CheckCachedListener {
+                        override fun onChecked(isCached: Boolean) {
+                            if (isCached) {// 如果有原图缓存
+                                addView(photoView)
+                                mGlideUtils.display(it.imageUrl, photoView)
+                            } else {
+                                addView(imageView)
+                                mGlideUtils.display(it.thumbImageUrl, imageView)
+                            }
                         }
-                    }
+                    })
                 })
                 mPhotoViews.add(photoView)
                 mImageViews.add(imageView)
@@ -104,39 +102,39 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
             return
         }
 
-        mImageLoaderUtils.isCached(infos[index].imageUrl, Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) { isCached ->
-            val info = infos[index]
-            val photoView = mPhotoViews[index]
-            if (isCached) {
-                removeProgressBar(index)
-                removeImageView(index)
-                addPhotoView(index)
-                mImageLoaderUtils.display(info.imageUrl, photoView)
-            } else {
-                addProgressBar(index)
-                postDelayed({
-                    if (info.imageUrl.isNotEmpty()) {
-                        addPhotoView(index)
-                        mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<BitmapDrawable> {
-                            override fun onResourceReady(resource: BitmapDrawable?, model: Any?, target: Target<BitmapDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                postDelayed({
-                                    removeProgressBar(index)
-                                    removeImageView(index)
-                                }, 100)// 防闪烁
-                                return false
-                            }
+        mGlideUtils.isCached(infos[index].imageUrl, listener = object : GlideUtils.CheckCachedListener {
+            override fun onChecked(isCached: Boolean) {
+                val info = infos[index]
+                val photoView = mPhotoViews[index]
+                if (isCached) {
+                    removeProgressBar(index)
+                    removeImageView(index)
+                    addPhotoView(index)
+                    mGlideUtils.display(info.imageUrl, photoView)
+                } else {
+                    addProgressBar(index)
+                    postDelayed({
+                        if (info.imageUrl.isNotEmpty()) {
+                            addPhotoView(index)
+                            mGlideUtils.display(info.imageUrl, photoView, listener = object : GlideUtils.DisplayListener {
+                                override fun onSuccess() {
+                                    postDelayed({
+                                        removeProgressBar(index)
+                                        removeImageView(index)
+                                    }, 100)// 防闪烁
+                                }
 
-                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<BitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                                removeProgressBar(index)
-                                removePhotoView(index)
-                                Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                                return false
-                            }
-                        })
-                    }
-                }, 1000)
+                                override fun onFailure() {
+                                    removeProgressBar(index)
+                                    removePhotoView(index)
+                                    Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        }
+                    }, 1000)
+                }
             }
-        }
+        })
     }
 
     private fun hasPhotoView(index: Int) = (0 until mViews[index].childCount).any { mViews[index].getChildAt(it) is PhotoView }

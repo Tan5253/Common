@@ -7,7 +7,7 @@ import android.view.WindowManager
 import com.like.base.context.BaseActivity
 import com.like.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityDragphotoviewBinding
-import com.like.common.util.ImageLoaderUtils
+import com.like.common.util.GlideUtils
 import com.like.common.util.ResourceUtils
 import com.like.common.view.dragview.entity.DragInfo
 import com.like.common.view.dragview.view.DragViewActivity
@@ -36,7 +36,7 @@ class DragViewTestActivity : BaseActivity() {
         DataBindingUtil.setContentView<ActivityDragphotoviewBinding>(this, R.layout.activity_dragphotoview)
     }
 
-    private val imageLoaderUtils: ImageLoaderUtils by lazy { ImageLoaderUtils(this) }
+    private val glideUtils: GlideUtils by lazy { GlideUtils(this) }
 
     override fun getViewModel(): BaseViewModel? {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -51,10 +51,10 @@ class DragViewTestActivity : BaseActivity() {
         ResourceUtils.Assets2Sd(this, "image_1.jpg", imageUrl1)
         ResourceUtils.Assets2Sd(this, "image_2.jpg", imageUrl2)
 
-        imageLoaderUtils.display(imageUrl0, mBinding.iv0)
-        imageLoaderUtils.display(imageUrl1, mBinding.iv1)
-        imageLoaderUtils.display(imageUrl2, mBinding.iv2)
-        imageLoaderUtils.display(videoImageUrl, mBinding.iv3)
+        glideUtils.display(imageUrl0, mBinding.iv0)
+        glideUtils.display(imageUrl1, mBinding.iv1)
+        glideUtils.display(imageUrl2, mBinding.iv2)
+        glideUtils.display(videoImageUrl, mBinding.iv3)
         return null
     }
 

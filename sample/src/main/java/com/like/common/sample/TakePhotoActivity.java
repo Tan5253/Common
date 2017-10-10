@@ -8,7 +8,7 @@ import android.view.View;
 import com.like.base.context.BasePermissionActivity;
 import com.like.base.viewmodel.BaseViewModel;
 import com.like.common.sample.databinding.ActivityTakePhotoBinding;
-import com.like.common.util.ImageLoaderUtils;
+import com.like.common.util.GlideUtils;
 import com.like.common.util.RxBusTag;
 import com.like.common.util.TakePhotoUtils;
 import com.like.rxbus.annotations.RxBusSubscribe;
@@ -48,7 +48,7 @@ public class TakePhotoActivity extends BasePermissionActivity {
     // 照相成功、从相册选择图片成功、裁剪成功
     @RxBusSubscribe(RxBusTag.TAG_CROP_PHOTO_SUCCESS)
     public void onTakePhotoSuccess(String filePath) {
-        new ImageLoaderUtils(this).displayCircle(filePath, mBinding.ivTakePhoto);
+        new GlideUtils(this).displayCircle(filePath, mBinding.ivTakePhoto);
     }
 
     @Override
