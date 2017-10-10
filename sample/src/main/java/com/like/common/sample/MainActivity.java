@@ -68,7 +68,7 @@ public class MainActivity extends BasePermissionActivity {
             }
         });
 
-        new ImageLoaderUtils(this).display("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", mBinding.iv);
+        new ImageLoaderUtils(this).displayCircle("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", mBinding.iv);
         return null;
     }
 
