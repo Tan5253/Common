@@ -126,13 +126,13 @@ class GlideUtils {
                 .onlyRetrieveFromCache(true)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
-                        Logger.e("没有缓存")
+                        Logger.e("没有缓存：$string")
                         listener?.onChecked(false)
                         return false
                     }
 
                     override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                        Logger.w("有缓存")
+                        Logger.w("有缓存：$string")
                         listener?.onChecked(true)
                         return false
                     }
