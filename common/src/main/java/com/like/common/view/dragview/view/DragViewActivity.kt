@@ -32,7 +32,11 @@ class DragViewActivity : BaseActivity() {
             infos?.let {
                 view = DragPhotoView(this, it)
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
+        try {
             val info: DragInfo? = intent.getParcelableExtra(KEY_DATA)
             info?.let {
                 view = DragVideoView(this, it)
