@@ -140,11 +140,13 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
             }
 
             override fun onPostExecute(result: String) {
-                if (result.isNotEmpty()) {
-                    downLoadListener.onSuccess(result)
-                } else {
-                    downLoadListener.onFailure()
-                }
+                postDelayed({
+                    if (result.isNotEmpty()) {
+                        downLoadListener.onSuccess(result)
+                    } else {
+                        downLoadListener.onFailure()
+                    }
+                }, 1000)
             }
 
         }.execute()
