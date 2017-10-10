@@ -4,24 +4,19 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
-import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.data.DataFetcher;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.model.stream.StreamModelLoader;
-import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.like.logger.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -35,30 +30,30 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
  */
 public class ImageLoaderUtils {
     private Context mContext;
-    private RequestManager requestManager;
+    private GlideRequests glideRequests;
 
     public ImageLoaderUtils(Context context) {
-        requestManager = Glide.with(context);
+        glideRequests = GlideApp.with(context);
         mContext = context;
     }
 
     public ImageLoaderUtils(Fragment fragment) {
-        requestManager = Glide.with(fragment);
+        glideRequests = GlideApp.with(fragment);
         mContext = fragment.getActivity();
     }
 
     public ImageLoaderUtils(android.support.v4.app.Fragment fragment) {
-        requestManager = Glide.with(fragment);
+        glideRequests = GlideApp.with(fragment);
         mContext = fragment.getActivity();
     }
 
     public ImageLoaderUtils(Activity activity) {
-        requestManager = Glide.with(activity);
+        glideRequests = GlideApp.with(activity);
         mContext = activity;
     }
 
     public ImageLoaderUtils(FragmentActivity activity) {
-        requestManager = Glide.with(activity);
+        glideRequests = GlideApp.with(activity);
         mContext = activity;
     }
 
@@ -102,10 +97,10 @@ public class ImageLoaderUtils {
     public Observable<Bitmap> downloadImage(String url) {
         return Observable.create(observableEmitter -> {
             try {
-                Bitmap bitmap = requestManager
-                        .load(url)
+                Bitmap bitmap = glideRequests
                         .asBitmap()
-                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .load(url)
+                        .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                         .get();
                 observableEmitter.onNext(bitmap);
                 observableEmitter.onComplete();
@@ -134,7 +129,7 @@ public class ImageLoaderUtils {
      * @param loadErrorImageResId 加载失败的图片
      */
     public void displayRoundRect(String url, ImageView imageView, int radius, int loadingImageResId, int loadErrorImageResId) {
-        requestManager
+        glideRequests
                 .load(url)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
@@ -142,7 +137,7 @@ public class ImageLoaderUtils {
                 .priority(Priority.HIGH)// 优先级，设置图片加载的顺序
                 .skipMemoryCache(true)// 跳过内存缓存
                 .diskCacheStrategy(DiskCacheStrategy.NONE)// 跳过硬盘缓存
-                .bitmapTransform(new RoundedCornersTransformation(mContext, radius, 0))
+                .transform(new RoundedCornersTransformation(mContext, radius, 0))
                 .into(imageView);
     }
 
@@ -163,11 +158,11 @@ public class ImageLoaderUtils {
      * @param loadErrorImageResId 加载失败的图片
      */
     public void displayCircle(String string, ImageView imageView, int loadingImageResId, int loadErrorImageResId) {
-        requestManager
+        glideRequests
                 .load(string)
                 .placeholder(loadingImageResId)
                 .error(loadErrorImageResId)
-                .bitmapTransform(new CropCircleTransformation(mContext))
+                .transform(new CropCircleTransformation(mContext))
                 .into(imageView);
     }
 
@@ -196,67 +191,39 @@ public class ImageLoaderUtils {
     }
 
     public void display(String url, ImageView imageView, int loadingImageResId, int loadErrorImageResId, RequestListener listener) {
-        DrawableRequestBuilder<String> builder = requestManager
+        GlideRequest<Drawable> glideRequest = glideRequests
                 .load(url)
                 .placeholder(loadingImageResId)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(loadErrorImageResId);
         if (listener != null)
-            builder.listener(listener);
-        builder.into(imageView);
+            glideRequest.listener(listener);
+        glideRequest.into(imageView);
     }
 
     public void isCached(String url, int width, int height, CheckCachedListener listener) {
-        new AsyncTask<Void, Void, File>() {
-            @Override
-            protected File doInBackground(Void... voids) {
-                File cacheFile = null;
-                if (!url.isEmpty()) {
-                    try {
-                        FutureTarget<File> future = requestManager
-                                .using(new StreamModelLoader<String>() {
-                                    @Override
-                                    public DataFetcher<InputStream> getResourceFetcher(String model, int width, int height) {
-                                        return new DataFetcher<InputStream>() {
-                                            @Override
-                                            public InputStream loadData(Priority priority) throws Exception {
-                                                throw new IOException();
-                                            }
-
-                                            @Override
-                                            public void cleanup() {
-
-                                            }
-
-                                            @Override
-                                            public String getId() {
-                                                return model;
-                                            }
-
-                                            @Override
-                                            public void cancel() {
-
-                                            }
-                                        };
-                                    }
-                                })
-                                .load(url)
-                                .downloadOnly(width, height);
-                        cacheFile = future.get();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();  //exception thrown if image not in cache
+        glideRequests.load(url)
+                .onlyRetrieveFromCache(true)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        Logger.e("没有缓存");
+                        if (listener != null) {
+                            listener.onChecked(false);
+                        }
+                        return false;
                     }
-                }
-                return cacheFile;
-            }
 
-            @Override
-            protected void onPostExecute(File file) {
-                if (listener != null) {
-                    listener.onChecked(file != null && file.length() > 0);
-                }
-            }
-        }.execute();
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        Logger.w("有缓存");
+                        if (listener != null) {
+                            listener.onChecked(true);
+                        }
+                        return false;
+                    }
+                })
+                .submit(width, height);
     }
 
     public interface CheckCachedListener {

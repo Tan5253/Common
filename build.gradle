@@ -21,6 +21,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
         maven { url "http://objectbox.net/beta-repo/" }
         maven { url 'https://jitpack.io' }
     }

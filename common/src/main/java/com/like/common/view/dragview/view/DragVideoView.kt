@@ -2,13 +2,15 @@ package com.like.common.view.dragview.view
 
 import android.R
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.view.MotionEvent
 import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.VideoView
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.like.common.view.dragview.entity.DragInfo
@@ -29,14 +31,8 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
         addView(progressBar)
 
         if (info.thumbImageUrl.isNotEmpty()) {
-            mImageLoaderUtils.display(info.thumbImageUrl, imageView, object : RequestListener<String, GlideBitmapDrawable> {
-                override fun onException(e: java.lang.Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                    removeView(progressBar)
-                    Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
-                    return false
-                }
-
-                override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+            mImageLoaderUtils.display(info.thumbImageUrl, imageView, object : RequestListener<BitmapDrawable> {
+                override fun onResourceReady(resource: BitmapDrawable?, model: Any?, target: Target<BitmapDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
                     postDelayed({
                         if (info.videoUrl.isNotEmpty()) {
                             addView(VideoView(context).apply {
@@ -70,6 +66,13 @@ class DragVideoView(context: Context, info: DragInfo) : BaseDragView(context, in
                     }, 1000)
                     return false
                 }
+
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<BitmapDrawable>?, isFirstResource: Boolean): Boolean {
+                    removeView(progressBar)
+                    Toast.makeText(context, "获取视频数据失败！", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
             })
         }
 

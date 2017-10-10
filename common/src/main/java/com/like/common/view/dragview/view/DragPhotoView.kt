@@ -2,6 +2,7 @@ package com.like.common.view.dragview.view
 
 import android.R
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.MotionEvent
@@ -12,12 +13,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Toast
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.like.common.view.dragview.entity.DragInfo
-import java.lang.Exception
 
 class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(context, infos.filter { it.isClicked }[0]) {
     private val mViewPager: DragViewPager by lazy { DragViewPager(context) }
@@ -116,19 +117,19 @@ class DragPhotoView(context: Context, val infos: List<DragInfo>) : BaseDragView(
                 postDelayed({
                     if (info.imageUrl.isNotEmpty()) {
                         addPhotoView(index)
-                        mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<String, GlideBitmapDrawable> {
-                            override fun onException(e: Exception?, model: String?, target: Target<GlideBitmapDrawable>?, isFirstResource: Boolean): Boolean {
-                                removeProgressBar(index)
-                                removePhotoView(index)
-                                Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
-                                return false
-                            }
-
-                            override fun onResourceReady(resource: GlideBitmapDrawable?, model: String?, target: Target<GlideBitmapDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        mImageLoaderUtils.display(info.imageUrl, photoView, object : RequestListener<BitmapDrawable> {
+                            override fun onResourceReady(resource: BitmapDrawable?, model: Any?, target: Target<BitmapDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
                                 postDelayed({
                                     removeProgressBar(index)
                                     removeImageView(index)
                                 }, 100)// 防闪烁
+                                return false
+                            }
+
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<BitmapDrawable>?, isFirstResource: Boolean): Boolean {
+                                removeProgressBar(index)
+                                removePhotoView(index)
+                                Toast.makeText(context, "获取图片数据失败！", Toast.LENGTH_SHORT).show()
                                 return false
                             }
                         })
