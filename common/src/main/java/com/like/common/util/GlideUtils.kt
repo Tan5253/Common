@@ -80,6 +80,38 @@ class GlideUtils {
     }
 
     /**
+     * 显示高斯模糊图片
+     */
+    @JvmOverloads
+    fun displayBlurNoCache(string: String, imageView: ImageView, radius: Int, loadingImageResId: Int = -1, loadErrorImageResId: Int = -1, listener: DisplayListener? = null) {
+        createGlideRequest(string, diskCacheStrategy = DiskCacheStrategy.NONE, loadingImageResId = loadingImageResId, loadErrorImageResId = loadErrorImageResId, listener = listener)?.transform(BlurTransformation(radius))?.into(imageView)
+    }
+
+    /**
+     * 显示圆角矩形图片
+     */
+    @JvmOverloads
+    fun displayRoundRectNoCache(string: String, imageView: ImageView, radius: Int, cornerType: RoundedCornersTransformation.CornerType = RoundedCornersTransformation.CornerType.ALL, loadingImageResId: Int = -1, loadErrorImageResId: Int = -1, listener: DisplayListener? = null) {
+        createGlideRequest(string, diskCacheStrategy = DiskCacheStrategy.NONE, loadingImageResId = loadingImageResId, loadErrorImageResId = loadErrorImageResId, listener = listener)?.transform(RoundedCornersTransformation(radius, 0, cornerType))?.into(imageView)
+    }
+
+    /**
+     * 显示圆形图片
+     */
+    @JvmOverloads
+    fun displayCircleNoCache(string: String, imageView: ImageView, loadingImageResId: Int = -1, loadErrorImageResId: Int = -1, listener: DisplayListener? = null) {
+        createGlideRequest(string, diskCacheStrategy = DiskCacheStrategy.NONE, loadingImageResId = loadingImageResId, loadErrorImageResId = loadErrorImageResId, listener = listener)?.circleCrop()?.into(imageView)
+    }
+
+    /**
+     * 显示图片
+     */
+    @JvmOverloads
+    fun displayNoCache(string: String, imageView: ImageView, loadingImageResId: Int = -1, loadErrorImageResId: Int = -1, listener: DisplayListener? = null) {
+        createGlideRequest(string, diskCacheStrategy = DiskCacheStrategy.NONE, loadingImageResId = loadingImageResId, loadErrorImageResId = loadErrorImageResId, listener = listener)?.into(imageView)
+    }
+
+    /**
      * 显示图片
      *
      * @param string                A file path, or a uri or url handled by [com.bumptech.glide.load.model.UriLoader].
@@ -95,6 +127,9 @@ class GlideUtils {
         val glideRequest = glideRequests
                 .load(string)
                 .diskCacheStrategy(diskCacheStrategy)
+        if (diskCacheStrategy == DiskCacheStrategy.NONE) {
+            glideRequest.skipMemoryCache(true)
+        }
         if (loadingImageResId > 0) {
             glideRequest.placeholder(loadingImageResId)
         }
