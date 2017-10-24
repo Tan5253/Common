@@ -55,7 +55,7 @@ public class TakePhotoUtils {
         this.activity = activity;
         String packageName = AppUtils.getInstance(activity).mAppStatus.packageName;
         FILE_CONTENT_FILEPROVIDER = packageName + ".fileprovider";
-        PICTURE_DIR = StorageUtils.InternalStorageHelper.getCacheDir(activity) + "/pictures/";
+        PICTURE_DIR = StorageUtils.ExternalStorageHelper.getBaseDir() + "/" + packageName + "/pictures/";
     }
 
     /**
@@ -100,42 +100,50 @@ public class TakePhotoUtils {
      * 从相册中取图片
      */
     public void pickPhoto() {
-        DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
-        Intent intent;
-        if (Build.VERSION.SDK_INT < 19) {
-            intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
+        if (StorageUtils.ExternalStorageHelper.isMounted()) {
+            DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
+            Intent intent;
+            if (Build.VERSION.SDK_INT < 19) {
+                intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+            } else {
+                intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            }
+            activity.startActivityForResult(intent, REQUEST_CODE_SELECT_PICTURE);
         } else {
-            intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            ToastUtilsKt.shortToastCenter(activity, "SD卡不存在");
         }
-        activity.startActivityForResult(intent, REQUEST_CODE_SELECT_PICTURE);
     }
 
     /**
      * 照相
      */
     public void takePhoto() {
-        DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
-        photo_image = createImagePath("_takephoto_" + DATE);
-        File file = new File(photo_image);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //Android7.0以上URI
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            //通过FileProvider创建一个content类型的Uri
-            Uri uri = FileProvider.getUriForFile(activity, FILE_CONTENT_FILEPROVIDER, file);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        if (StorageUtils.ExternalStorageHelper.isMounted()) {
+            DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
+            photo_image = createImagePath("_takephoto_" + DATE);
+            File file = new File(photo_image);
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            //Android7.0以上URI
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                //添加这一句表示对目标应用临时授权该Uri所代表的文件
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                //通过FileProvider创建一个content类型的Uri
+                Uri uri = FileProvider.getUriForFile(activity, FILE_CONTENT_FILEPROVIDER, file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            } else {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+            }
+            try {
+                activity.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+            } catch (ActivityNotFoundException anf) {
+                ToastUtilsKt.shortToastCenter(activity, "摄像头尚未准备好");
+            }
         } else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        }
-        try {
-            activity.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
-        } catch (ActivityNotFoundException anf) {
-            ToastUtilsKt.shortToastCenter(activity, "摄像头尚未准备好");
+            ToastUtilsKt.shortToastCenter(activity, "SD卡不存在");
         }
     }
 
