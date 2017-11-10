@@ -96,9 +96,7 @@ public class BottomNavigationBarsHelper {
 
             tabInfo.setName(names[i]);
 
-            mBinding.llTabContainer.addView(tabInfo.getView());
-
-            mTabInfoList.add(tabInfo);
+            addTabInfo(tabInfo);
         }
         selectByPos(mCurPosition);
     }
@@ -150,13 +148,22 @@ public class BottomNavigationBarsHelper {
         tabInfo.setImageNormal(normalImage);
         tabInfo.setImagePress(pressImage);
 
+        replaceTabInfo(index, tabInfo);
+
+        selectByPos(mCurPosition);
+    }
+
+    private void addTabInfo(BottomTabInfo tabInfo) {
+        mBinding.llTabContainer.addView(tabInfo.getView());
+        mTabInfoList.add(tabInfo);
+    }
+
+    private void replaceTabInfo(int index, BottomTabInfo tabInfo) {
         mBinding.llTabContainer.removeViewAt(index);
         mBinding.llTabContainer.addView(tabInfo.getView(), index);
 
         mTabInfoList.remove(index);
         mTabInfoList.add(index, tabInfo);
-
-        selectByPos(mCurPosition);
     }
 
     /**
