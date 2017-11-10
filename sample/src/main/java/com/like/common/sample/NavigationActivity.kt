@@ -35,13 +35,10 @@ class NavigationActivity : BaseActivity() {
         helper.initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor)
 
         // 添加活动的
-//        helper.setNew(1, R.drawable.main_bottom_tab1_new)
-//
-//        helper.setDividerColor(R.color.common_text_red_0)
-//        helper.setDividerHeight(30)
+        helper.setNew(1, R.drawable.main_bottom_tab1_new)
 
         // 设置消息数
-        helper.setMessageCount(1, 99)
+        helper.setMessageCount(0, 99)
 
         mBinding.flBottomTabContainer.addView(helper.view)
     }
