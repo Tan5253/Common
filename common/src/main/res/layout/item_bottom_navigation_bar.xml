@@ -1,14 +1,13 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/bottom_height">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/messageContainer"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
             android:orientation="vertical"

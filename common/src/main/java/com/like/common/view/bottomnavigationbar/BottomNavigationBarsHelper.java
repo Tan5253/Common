@@ -239,4 +239,11 @@ public class BottomNavigationBarsHelper {
         mBinding.divider.getLayoutParams().height = height;
     }
 
+    public void setBottomHeight(int height) {
+        mBinding.llTabContainer.getLayoutParams().height = height;
+    }
+
+    public int getBottomHeight() {
+        return mBinding.getRoot().getHeight();
+    }
 }
