@@ -32,7 +32,8 @@ class NavigationActivity : BaseActivity() {
         val originPressImageResIds = intArrayOf(R.drawable.main_bottom_tab0_press, R.drawable.main_bottom_tab1_press, R.drawable.main_bottom_tab2_press)
         val normalTextColor = R.color.common_text_black_1
         val pressTextColor = R.color.common_text_blue_1
-        helper.initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor)
+//        helper.initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor)
+        helper.initOriginView(originNormalImageResIds, originPressImageResIds)
 
         // 添加活动的
         helper.setNew(1, R.drawable.main_bottom_tab1_new)

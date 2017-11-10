@@ -66,9 +66,7 @@ public class BottomNavigationBarsHelper {
             tabInfo.setImageNormal(mResources.getDrawable(normalImageResIds[i]));
             tabInfo.setImagePress(mResources.getDrawable(pressImageResIds[i]));
 
-            mBinding.llTabContainer.addView(tabInfo.getView());
-
-            mTabInfoList.add(tabInfo);
+            addTabInfo(tabInfo);
         }
         selectByPos(mCurPosition);
     }
