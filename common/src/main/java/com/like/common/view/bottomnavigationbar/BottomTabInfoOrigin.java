@@ -46,6 +46,7 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
     public void setName(String name) {
         this.name = name;
         if (!TextUtils.isEmpty(name)) {
+            mBinding.title.setVisibility(View.VISIBLE);
             mBinding.title.setText(name);
         } else {
             mBinding.title.setVisibility(View.GONE);
