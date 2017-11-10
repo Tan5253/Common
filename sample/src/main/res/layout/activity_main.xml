@@ -45,6 +45,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:onClick="clickNavigation"
+                    android:text="底部导航栏测试" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:onClick="clickDragPhoto"
                     android:text="DragPhotoView测试" />
 
@@ -142,11 +149,6 @@
             </LinearLayout>
         </ScrollView>
 
-        <FrameLayout
-            android:id="@+id/fl_bottom_tab_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
 

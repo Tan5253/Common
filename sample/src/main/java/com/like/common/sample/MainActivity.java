@@ -19,7 +19,6 @@ import com.like.common.util.GlideUtils;
 import com.like.common.util.ObjectSerializeUtils;
 import com.like.common.util.RxJavaUtils;
 import com.like.common.util.Verify;
-import com.like.common.view.bottomNavigationBars.BottomNavigationBarsHelper;
 import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
 import com.like.toast.ToastUtilsKt;
@@ -46,7 +45,6 @@ public class MainActivity extends BasePermissionActivity {
     protected BaseViewModel getViewModel() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initToolBar();
-        initNavigationBars();
         ClickUtils.addOnClickListener(5, mBinding.btnClicktimes, v -> {
 
         });
@@ -117,39 +115,11 @@ public class MainActivity extends BasePermissionActivity {
                 .setCustomNavigationViewMessageCount("88")
                 .setNavigationViewLeftMargin(100)
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
-                .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.main_bottom_tab1_normal_new, "消息", v -> {
+                .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.main_bottom_tab1_new, "消息", v -> {
                 })
                 .setRightMenuTextColor(R.id.action_right_message, getResources().getColor(R.color.common_text_white_0))
                 .setRightMenuMessageCount(R.id.action_right_message, "1").setDividerColor(Color.RED);
 
-    }
-
-    /**
-     * 添加底部tab导航栏视图
-     */
-    private void initNavigationBars() {
-        BottomNavigationBarsHelper helper = new BottomNavigationBarsHelper(this);
-
-        // 设置bottom的背景
-        helper.setBottomBgColor(getResources().getColor(R.color.common_text_white_0));
-
-        // 添加原始的
-        String[] names = {"电费缴纳", "服务公告", "个人中心"};
-        int[] originNormalImageResIds = {R.drawable.main_bottom_tab0_normal, R.drawable.main_bottom_tab1_normal, R.drawable.main_bottom_tab2_normal};
-        int[] originPressImageResIds = {R.drawable.main_bottom_tab0_press, R.drawable.main_bottom_tab1_press, R.drawable.main_bottom_tab2_press};
-        int normalTextColor = R.color.common_text_black_1;
-        int pressTextColor = R.color.common_text_blue_1;
-        helper.initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor);
-
-        // 模拟添加活动的
-//        int[] newNormalImageResIds = {R.drawable.main_bottom_tab0_normal_new, R.drawable.main_bottom_tab1_normal_new, R.drawable.main_bottom_tab2_normal_new};
-//        int[] newPressImageResIds = {R.drawable.main_bottom_tab0_press_new, R.drawable.main_bottom_tab1_press_new, R.drawable.main_bottom_tab2_press_new};
-//        helper.initNewView(newNormalImageResIds, newPressImageResIds);
-
-        // 设置消息数
-        helper.setMessageCount(1, 99);
-
-        mBinding.flBottomTabContainer.addView(helper.getView());
     }
 
     @Override
@@ -203,6 +173,10 @@ public class MainActivity extends BasePermissionActivity {
 
     public void clickDragPhoto(View view) {
         startActivity(new Intent(this, DragViewTestActivity.class));
+    }
+
+    public void clickNavigation(View view) {
+        startActivity(new Intent(this, NavigationActivity.class));
     }
 
     private Disposable subscribe;

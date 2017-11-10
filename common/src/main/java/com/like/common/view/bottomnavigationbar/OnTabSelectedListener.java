@@ -1,4 +1,4 @@
-package com.like.common.view.bottomNavigationBars;
+package com.like.common.view.bottomnavigationbar;
 
 /**
  * tab被选中监听

@@ -1,0 +1,48 @@
+package com.like.common.sample
+
+import android.databinding.DataBindingUtil
+import com.like.base.context.BaseActivity
+import com.like.base.viewmodel.BaseViewModel
+import com.like.common.sample.databinding.ActivityNavigationBinding
+import com.like.common.view.bottomnavigationbar.BottomNavigationBarsHelper
+
+class NavigationActivity : BaseActivity() {
+    private val mBinding: ActivityNavigationBinding by lazy {
+        DataBindingUtil.setContentView<ActivityNavigationBinding>(this, R.layout.activity_navigation)
+    }
+
+    override fun getViewModel(): BaseViewModel? {
+        mBinding
+        initNavigationBars()
+        return null
+    }
+
+    /**
+     * 添加底部tab导航栏视图
+     */
+    private fun initNavigationBars() {
+        val helper = BottomNavigationBarsHelper(this)
+
+        // 设置bottom的背景
+        helper.setBottomBgColor(R.color.common_text_white_0)
+
+        // 添加原始的
+        val names = arrayOf("电费缴纳", "服务公告", "个人中心")
+        val originNormalImageResIds = intArrayOf(R.drawable.main_bottom_tab0_normal, R.drawable.main_bottom_tab1_normal, R.drawable.main_bottom_tab2_normal)
+        val originPressImageResIds = intArrayOf(R.drawable.main_bottom_tab0_press, R.drawable.main_bottom_tab1_press, R.drawable.main_bottom_tab2_press)
+        val normalTextColor = R.color.common_text_black_1
+        val pressTextColor = R.color.common_text_blue_1
+        helper.initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor)
+
+        // 添加活动的
+//        helper.setNew(1, R.drawable.main_bottom_tab1_new)
+//
+//        helper.setDividerColor(R.color.common_text_red_0)
+//        helper.setDividerHeight(30)
+
+        // 设置消息数
+        helper.setMessageCount(1, 99)
+
+        mBinding.flBottomTabContainer.addView(helper.view)
+    }
+}
