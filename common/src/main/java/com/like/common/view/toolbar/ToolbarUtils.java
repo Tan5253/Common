@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.like.common.R;
 import com.like.common.databinding.ToolbarBinding;
+import com.like.common.util.BadgeViewHelper;
 
 /**
  * Toolbar相关工具类

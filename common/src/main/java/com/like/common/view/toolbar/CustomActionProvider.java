@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.like.common.R;
 import com.like.common.databinding.ToolbarCustomViewBinding;
-import com.like.common.view.BadgeView;
+import com.like.common.util.BadgeViewHelper;
 
 /**
  * 替换Toolbar的menu为message视图

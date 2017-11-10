@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.like.common.R;
 import com.like.common.databinding.ItemBottomNavigationBarBinding;
-import com.like.common.view.BadgeView;
+import com.like.common.util.BadgeViewHelper;
 
 /**
  * 原始的Tab
@@ -29,17 +29,15 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
     private @ColorInt
     int mTextColorPress;
 
-    private BadgeView badgeView;
+    private BadgeViewHelper mBadgeViewHelper;
 
     public BottomTabInfoOrigin(Context context, int index, OnTabSelectedListener tabSelectedListener) {
         super(context, index, tabSelectedListener);
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.item_bottom_navigation_bar, null, false);
         mBinding.getRoot().setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
-        if (badgeView == null) {
-            badgeView = new BadgeView(mContext);
-            badgeView.setTargetView(mBinding.messageContainer);
-        }
+        mBadgeViewHelper = new BadgeViewHelper(mContext, mBinding.messageContainer);
+
         super.init(mBinding.getRoot(), mBinding.icon);
     }
 
@@ -65,7 +63,7 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
         } else if (count > 99) {
             countStr = "99+";
         }
-        badgeView.setBadgeCount(countStr);
+        mBadgeViewHelper.setMessageCount(countStr);
     }
 
     public void setTextColorNormal(@ColorInt int textColorNormal) {
