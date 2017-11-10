@@ -38,7 +38,7 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
 
         if (badgeView == null) {
             badgeView = new BadgeView(mContext);
-            badgeView.setTargetView(mBinding.getRoot());
+            badgeView.setTargetView(mBinding.messageContainer);
         }
         super.init(mBinding.getRoot(), mBinding.icon);
     }
