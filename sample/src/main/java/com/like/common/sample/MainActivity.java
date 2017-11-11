@@ -105,7 +105,7 @@ public class MainActivity extends BasePermissionActivity {
     private void initToolBar() {
         new ToolbarUtils(this, mBinding.flToolbarContainer)
                 .showTitle("sample", R.color.common_text_white_0)
-                .showCustomNavigationView(R.drawable.icon_take_photo, "", new View.OnClickListener() {
+                .showCustomNavigationView(R.drawable.icon_take_photo, "拍照", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ToastUtilsKt.shortToastCenter(MainActivity.this, "拍照啦！");
@@ -113,11 +113,10 @@ public class MainActivity extends BasePermissionActivity {
                 })
                 .setCustomNavigationViewTextColor(R.color.common_text_white_0)
                 .setCustomNavigationViewMessageCount("88")
-                .setNavigationViewLeftMargin(100)
-                .setDividerHeight(30)
-                .setToolbarHeight(500)
+//                .setDividerHeight(30)
+//                .setToolbarHeight(300)
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
-                .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.main_bottom_tab1_new, "消息", v -> {
+                .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.icon_0, "", v -> {
                 })
                 .setRightMenuTextColor(R.id.action_right_message, getResources().getColor(R.color.common_text_white_0))
                 .setRightMenuMessageCount(R.id.action_right_message, "1").setDividerColor(Color.RED);

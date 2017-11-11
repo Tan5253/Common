@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_height"
             android:background="?attr/colorPrimary"
+            android:gravity="center_vertical"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:theme="@style/ToolbarTheme"
             app:title="">
@@ -20,14 +21,13 @@
                 android:id="@+id/toolbar_navigation_custom_view"
                 layout="@layout/toolbar_custom_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textSize="18sp" />

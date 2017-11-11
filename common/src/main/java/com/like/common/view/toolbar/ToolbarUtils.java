@@ -36,6 +36,7 @@ public class ToolbarUtils {
 
     public ToolbarUtils setToolbarHeight(int height) {
         mBinding.toolbar.getLayoutParams().height = height;
+        mBinding.toolbar.setMinimumHeight(height);// 设置最小高度才能使自定义的menu视图居中
         return this;
     }
 
