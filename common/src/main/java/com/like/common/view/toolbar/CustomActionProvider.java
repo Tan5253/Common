@@ -13,17 +13,15 @@ import com.like.common.databinding.ToolbarCustomViewBinding;
 import com.like.common.util.BadgeViewHelper;
 
 /**
- * 替换Toolbar的menu为message视图
+ * 替换Toolbar的menu为自定义视图
  */
 public class CustomActionProvider extends ActionProvider {
-    private Context mContext;
     private ToolbarCustomViewBinding mBinding;
     private BadgeViewHelper badgeViewHelper;
 
     public CustomActionProvider(Context context) {
         super(context);
-        mContext = context;
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.toolbar_custom_view, null, false);
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.toolbar_custom_view, null, false);
         badgeViewHelper = new BadgeViewHelper(context, mBinding.messageContainer);
     }
 

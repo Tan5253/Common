@@ -34,10 +34,17 @@ public class ToolbarUtils {
         }
     }
 
+    public ToolbarUtils setToolbarHeight(int height) {
+        mBinding.toolbar.getLayoutParams().height = height;
+        return this;
+    }
+
+    public int getToolbarHeight() {
+        return mBinding.getRoot().getHeight();
+    }
+
     /**
      * 显示标题栏底部的分割线，默认是显示的
-     *
-     * @return
      */
     public ToolbarUtils showDivider() {
         mBinding.divider.setVisibility(View.VISIBLE);
@@ -46,19 +53,20 @@ public class ToolbarUtils {
 
     /**
      * 隐藏标题栏底部的分割线
-     *
-     * @return
      */
     public ToolbarUtils hideDivider() {
         mBinding.divider.setVisibility(View.GONE);
         return this;
     }
 
+    public ToolbarUtils setDividerHeight(int height) {
+        mBinding.divider.getLayoutParams().height = height;
+        return this;
+    }
+
+
     /**
      * 设置标题栏底部的分割线的颜色
-     *
-     * @param corlor
-     * @return
      */
     public ToolbarUtils setDividerColor(@ColorInt int corlor) {
         mBinding.divider.setBackgroundColor(corlor);
@@ -101,7 +109,7 @@ public class ToolbarUtils {
     public ToolbarUtils showBackButton(@DrawableRes int iconResId) {
         if (iconResId > 0)
             mBinding.toolbar.setNavigationIcon(iconResId);
-        mBinding.toolbar.setNavigationOnClickListener(view -> mActivity.finish());
+        showBackButton();
         return this;
     }
 
@@ -361,9 +369,7 @@ public class ToolbarUtils {
      */
     private CustomActionProvider getCustomActionProvider(int menuId) {
         MenuItem item = mBinding.toolbar.getMenu().findItem(menuId);
-        CustomActionProvider customActionProvider = (CustomActionProvider) MenuItemCompat.getActionProvider(item);
-        return customActionProvider;
+        return (CustomActionProvider) MenuItemCompat.getActionProvider(item);
     }
-
 
 }
