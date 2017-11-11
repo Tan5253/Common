@@ -48,7 +48,7 @@ public class BottomNavigationBarsHelper {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.view_bottom_navigation_bar, null, false);
     }
 
-    public void initOriginView(@DrawableRes int[] normalImageResIds, @DrawableRes int[] pressImageResIds) {
+    public BottomNavigationBarsHelper initOriginView(@DrawableRes int[] normalImageResIds, @DrawableRes int[] pressImageResIds) {
         if (normalImageResIds == null || pressImageResIds == null) {
             throw new IllegalArgumentException("参数错误");
         }
@@ -69,9 +69,10 @@ public class BottomNavigationBarsHelper {
             addTabInfo(tabInfo);
         }
         selectByPos(mCurPosition);
+        return this;
     }
 
-    public void initOriginView(String[] names, @DrawableRes int[] normalImageResIds, @DrawableRes int[] pressImageResIds, @ColorRes int normalTextColorResId, @ColorRes int pressTextColorResId) {
+    public BottomNavigationBarsHelper initOriginView(String[] names, @DrawableRes int[] normalImageResIds, @DrawableRes int[] pressImageResIds, @ColorRes int normalTextColorResId, @ColorRes int pressTextColorResId) {
         if (names == null || normalImageResIds == null || pressImageResIds == null || normalTextColorResId < 0 || pressTextColorResId < 0) {
             throw new IllegalArgumentException("参数错误");
         }
@@ -97,6 +98,7 @@ public class BottomNavigationBarsHelper {
             addTabInfo(tabInfo);
         }
         selectByPos(mCurPosition);
+        return this;
     }
 
     /**
@@ -105,8 +107,9 @@ public class BottomNavigationBarsHelper {
      * @param index
      * @param imageResId 正常和按下状态都是它
      */
-    public void setNew(int index, @DrawableRes int imageResId) {
+    public BottomNavigationBarsHelper setNew(int index, @DrawableRes int imageResId) {
         setNew(index, imageResId, imageResId);
+        return this;
     }
 
     /**
@@ -116,8 +119,9 @@ public class BottomNavigationBarsHelper {
      * @param normalImageResId
      * @param pressImageResId
      */
-    public void setNew(int index, @DrawableRes int normalImageResId, @DrawableRes int pressImageResId) {
+    public BottomNavigationBarsHelper setNew(int index, @DrawableRes int normalImageResId, @DrawableRes int pressImageResId) {
         setNew(index, mResources.getDrawable(normalImageResId), mResources.getDrawable(pressImageResId));
+        return this;
     }
 
     /**
@@ -126,8 +130,9 @@ public class BottomNavigationBarsHelper {
      * @param index
      * @param image 正常和按下状态都是它
      */
-    public void setNew(int index, Drawable image) {
+    public BottomNavigationBarsHelper setNew(int index, Drawable image) {
         setNew(index, image, image);
+        return this;
     }
 
     /**
@@ -137,7 +142,7 @@ public class BottomNavigationBarsHelper {
      * @param normalImage
      * @param pressImage
      */
-    public void setNew(int index, Drawable normalImage, Drawable pressImage) {
+    public BottomNavigationBarsHelper setNew(int index, Drawable normalImage, Drawable pressImage) {
         if (index > mTabInfoList.size() - 1) {
             throw new IllegalArgumentException("index参数错误");
         }
@@ -149,6 +154,7 @@ public class BottomNavigationBarsHelper {
         replaceTabInfo(index, tabInfo);
 
         selectByPos(mCurPosition);
+        return this;
     }
 
     private void addTabInfo(BottomTabInfo tabInfo) {
@@ -206,8 +212,9 @@ public class BottomNavigationBarsHelper {
         }
     }
 
-    public void setTabSelectedListener(OnTabSelectedListener listener) {
+    public BottomNavigationBarsHelper setTabSelectedListener(OnTabSelectedListener listener) {
         mTabSelectedForViewPager = listener;
+        return this;
     }
 
     /**
@@ -225,22 +232,26 @@ public class BottomNavigationBarsHelper {
      * @param index tab的索引，从0开始
      * @param count 消息数量 小于等于0时隐藏
      */
-    public void setMessageCount(int index, int count) {
+    public BottomNavigationBarsHelper setMessageCount(int index, int count) {
         if (index < mTabInfoList.size() && mTabInfoList.get(index) instanceof BottomTabInfoOrigin) {
             ((BottomTabInfoOrigin) mTabInfoList.get(index)).setMessageCount(count);
         }
+        return this;
     }
 
-    public void setDividerColor(@ColorRes int color) {
+    public BottomNavigationBarsHelper setDividerColor(@ColorRes int color) {
         mBinding.divider.setBackgroundColor(mResources.getColor(color));
+        return this;
     }
 
-    public void setDividerHeight(int height) {
+    public BottomNavigationBarsHelper setDividerHeight(int height) {
         mBinding.divider.getLayoutParams().height = height;
+        return this;
     }
 
-    public void setBottomHeight(int height) {
+    public BottomNavigationBarsHelper setBottomHeight(int height) {
         mBinding.llTabContainer.getLayoutParams().height = height;
+        return this;
     }
 
     public int getBottomHeight() {
