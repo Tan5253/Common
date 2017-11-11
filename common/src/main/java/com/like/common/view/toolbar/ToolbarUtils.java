@@ -27,8 +27,8 @@ public class ToolbarUtils {
     private BadgeViewHelper navigationBadgeViewHelper;
 
     public ToolbarUtils(Activity activity, ViewGroup toolbarContainer) {
-        mActivity = activity;
         if (activity != null && toolbarContainer != null) {
+            mActivity = activity;
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.toolbar, toolbarContainer, true);
             mBinding.toolbar.setTitle("");// 屏蔽掉原来的标题
         }

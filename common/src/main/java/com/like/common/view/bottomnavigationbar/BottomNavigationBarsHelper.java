@@ -9,6 +9,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.like.common.R;
 import com.like.common.databinding.ViewBottomNavigationBarBinding;
@@ -43,10 +44,12 @@ public class BottomNavigationBarsHelper {
         }
     };
 
-    public BottomNavigationBarsHelper(Activity activity) {
-        mActivity = activity;
-        mResources = activity.getResources();
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.view_bottom_navigation_bar, null, false);
+    public BottomNavigationBarsHelper(Activity activity, ViewGroup navigationbarContainer) {
+        if (activity != null && navigationbarContainer != null) {
+            mActivity = activity;
+            mResources = activity.getResources();
+            mBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.view_bottom_navigation_bar, navigationbarContainer, true);
+        }
     }
 
     public BottomNavigationBarsHelper initOriginView(@DrawableRes int[] normalImageResIds, @DrawableRes int[] pressImageResIds) {
