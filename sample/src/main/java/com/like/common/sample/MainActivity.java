@@ -113,13 +113,19 @@ public class MainActivity extends BasePermissionActivity {
                 })
                 .setCustomNavigationViewTextColor(R.color.common_text_white_0)
                 .setCustomNavigationViewMessageCount("88")
-//                .setDividerHeight(30)
-//                .setToolbarHeight(300)
+                .setDividerHeight(30)
+                .setToolbarHeight(300)
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
-                .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.icon_0, "", v -> {
+                .setRightMenuMargin(R.id.action_right_message, 10, 0)
+                .setRightMenuMessageMargin(R.id.action_right_message, 0, 5, 5, 0)
+                .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.icon_0, "消息", v -> {
                 })
                 .setRightMenuTextColor(R.id.action_right_message, getResources().getColor(R.color.common_text_white_0))
-                .setRightMenuMessageCount(R.id.action_right_message, "1").setDividerColor(Color.RED);
+                .setRightMenuMessageCount(R.id.action_right_message, "1").setDividerColor(Color.RED)
+
+                .replaceMenuWithCustomView(R.id.action_right_hahaha, R.drawable.icon_0, "消息", v -> {
+                })
+                .setRightMenuMessageCount(R.id.action_right_hahaha, "1").setDividerColor(Color.RED);
 
     }
 

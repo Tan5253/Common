@@ -8,4 +8,10 @@
         app:actionProviderClass="com.like.common.view.toolbar.CustomActionProvider"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_right_hahaha"
+        android:title="消息"
+        app:actionProviderClass="com.like.common.view.toolbar.CustomActionProvider"
+        app:showAsAction="always" />
+
 </menu>

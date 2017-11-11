@@ -324,6 +324,28 @@ public class ToolbarUtils {
     }
 
     /**
+     * 设置右边指定菜单按钮的左右margin
+     */
+    public ToolbarUtils setRightMenuMargin(int menuId, int leftAndRightMargin, int topAndBottomMargin) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.setMargin(leftAndRightMargin, topAndBottomMargin);
+        }
+        return this;
+    }
+
+    /**
+     * 设置右边指定菜单按钮的消息视图距离图标的距离
+     */
+    public ToolbarUtils setRightMenuMessageMargin(int menuId, int left, int top, int right, int bottom) {
+        CustomActionProvider customActionProvider = getCustomActionProvider(menuId);
+        if (customActionProvider != null) {
+            customActionProvider.setMessageMargin(left, top, right, bottom);
+        }
+        return this;
+    }
+
+    /**
      * 获取右边指定菜单按钮的文本
      *
      * @param menuId
