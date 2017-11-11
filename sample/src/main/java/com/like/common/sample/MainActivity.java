@@ -15,9 +15,11 @@ import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
 import com.like.common.util.ClickUtils;
+import com.like.common.util.DimensionUtils;
 import com.like.common.util.GlideUtils;
 import com.like.common.util.ObjectSerializeUtils;
 import com.like.common.util.RxJavaUtils;
+import com.like.common.util.StatusBarUtils;
 import com.like.common.util.Verify;
 import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
@@ -114,10 +116,9 @@ public class MainActivity extends BasePermissionActivity {
                 .setCustomNavigationViewTextColor(R.color.common_text_white_0)
                 .setCustomNavigationViewMessageCount("88")
                 .setDividerHeight(30)
-                .setToolbarHeight(300)
+                .setToolbarHeight(DimensionUtils.dp2px(this, 52f))
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
                 .setRightMenuMargin(R.id.action_right_message, 10, 0)
-                .setRightMenuMessageMargin(R.id.action_right_message, 0, 5, 5, 0)
                 .replaceMenuWithCustomView(R.id.action_right_message, R.drawable.icon_0, "消息", v -> {
                 })
                 .setRightMenuTextColor(R.id.action_right_message, getResources().getColor(R.color.common_text_white_0))
@@ -126,7 +127,7 @@ public class MainActivity extends BasePermissionActivity {
                 .replaceMenuWithCustomView(R.id.action_right_hahaha, R.drawable.icon_0, "消息", v -> {
                 })
                 .setRightMenuMessageCount(R.id.action_right_hahaha, "1").setDividerColor(Color.RED);
-
+        Logger.e(DimensionUtils.dp2px(this, 52f) + " , " + StatusBarUtils.getStatusBarHeight(this));
     }
 
     @Override

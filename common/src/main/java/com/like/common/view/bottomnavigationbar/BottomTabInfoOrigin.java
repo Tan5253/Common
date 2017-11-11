@@ -66,6 +66,18 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
         mBadgeViewHelper.setMessageCount(countStr);
     }
 
+    public void setMessageTextColor(@ColorInt int color) {
+        mBadgeViewHelper.setTextColor(color);
+    }
+
+    public void setMessageTextSize(float size) {
+        mBadgeViewHelper.setTextSize(size);
+    }
+
+    public void setMessageBackgroundColor(@ColorInt int color) {
+        mBadgeViewHelper.setBackgroundColor(color);
+    }
+
     public void setTextColorNormal(@ColorInt int textColorNormal) {
         mTextColorNormal = textColorNormal;
     }

@@ -2,7 +2,6 @@ package com.like.common.view.toolbar;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.ActionProvider;
@@ -62,7 +61,6 @@ public class CustomActionProvider extends ActionProvider {
                 ActionMenuView.LayoutParams lp = (ActionMenuView.LayoutParams) mBinding.getRoot().getLayoutParams();
                 lp.width = mBinding.getRoot().getWidth() + leftAndRightMargin * 2;
                 lp.height = mBinding.getRoot().getHeight() + topAndBottomMargin * 2;
-                mBinding.getRoot().setBackgroundColor(Color.WHITE);
             }
         });
     }

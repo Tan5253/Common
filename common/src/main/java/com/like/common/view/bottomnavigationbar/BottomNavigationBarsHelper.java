@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.view.LayoutInflater;
@@ -235,6 +236,28 @@ public class BottomNavigationBarsHelper {
     public BottomNavigationBarsHelper setMessageCount(int index, int count) {
         if (index < mTabInfoList.size() && mTabInfoList.get(index) instanceof BottomTabInfoOrigin) {
             ((BottomTabInfoOrigin) mTabInfoList.get(index)).setMessageCount(count);
+        }
+        return this;
+    }
+
+
+    public BottomNavigationBarsHelper setMessageTextColor(int index, @ColorInt int color) {
+        if (index < mTabInfoList.size() && mTabInfoList.get(index) instanceof BottomTabInfoOrigin) {
+            ((BottomTabInfoOrigin) mTabInfoList.get(index)).setMessageTextColor(color);
+        }
+        return this;
+    }
+
+    public BottomNavigationBarsHelper setMessageTextSize(int index, float size) {
+        if (index < mTabInfoList.size() && mTabInfoList.get(index) instanceof BottomTabInfoOrigin) {
+            ((BottomTabInfoOrigin) mTabInfoList.get(index)).setMessageTextSize(size);
+        }
+        return this;
+    }
+
+    public BottomNavigationBarsHelper setMessageBackgroundColor(int index, @ColorInt int color) {
+        if (index < mTabInfoList.size() && mTabInfoList.get(index) instanceof BottomTabInfoOrigin) {
+            ((BottomTabInfoOrigin) mTabInfoList.get(index)).setMessageBackgroundColor(color);
         }
         return this;
     }

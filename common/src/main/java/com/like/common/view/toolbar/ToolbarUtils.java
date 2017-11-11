@@ -157,7 +157,6 @@ public class ToolbarUtils {
         return this;
     }
 
-
     /**
      * 设置自定义视图的导航按钮右上角显示的消息数
      */
@@ -166,6 +165,24 @@ public class ToolbarUtils {
         return this;
     }
 
+    /**
+     * 设置自定义视图的导航按钮右上角显示的消息数的文本颜色
+     */
+    public ToolbarUtils setCustomNavigationViewMessageTextColor(@ColorInt int color) {
+        navigationBadgeViewHelper.setTextColor(color);
+        return this;
+    }
+
+    public ToolbarUtils setCustomNavigationViewMessageTextSize(float size) {
+        navigationBadgeViewHelper.setTextSize(size);
+        return this;
+
+    }
+
+    public ToolbarUtils setCustomNavigationViewMessageBackgroundColor(@ColorInt int color) {
+        navigationBadgeViewHelper.setBackgroundColor(color);
+        return this;
+    }
 
     /**
      * 设置导航按钮
