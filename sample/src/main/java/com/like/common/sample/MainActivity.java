@@ -3,6 +3,7 @@ package com.like.common.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Message;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.like.common.util.Verify;
 import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
 import com.like.toast.ToastUtilsKt;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +81,13 @@ public class MainActivity extends BasePermissionActivity {
                 mBinding.iv.setImageBitmap(stringBitmapPair.second);
             else
                 mBinding.iv1.setImageBitmap(stringBitmapPair.second);
+        });
+
+        new GlideUtils(this).getBitmapSize("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", new GlideUtils.onGetSizeListener() {
+            @Override
+            public void getSize(@Nullable Bitmap bitmap, int width, int height) {
+                Logger.e("width = " + width + " , height = " + height);
+            }
         });
         return null;
     }

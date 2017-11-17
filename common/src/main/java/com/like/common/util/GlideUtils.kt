@@ -10,7 +10,9 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.like.logger.Logger
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,6 +47,18 @@ class GlideUtils {
     constructor(activity: android.support.v4.app.FragmentActivity) {
         glideRequests = GlideApp.with(activity)
         mContext = activity
+    }
+
+    interface onGetSizeListener {
+        fun getSize(bitmap: Bitmap?, width: Int, height: Int)
+    }
+
+    fun getBitmapSize(string: String, listener: onGetSizeListener) {
+        glideRequests.asBitmap().load(string).into(object : SimpleTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                listener.getSize(resource, resource?.width ?: 0, resource?.height ?: 0)
+            }
+        })
     }
 
     /**
