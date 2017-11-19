@@ -127,6 +127,17 @@ public class DateUtils {
      * 获取日期时间字符串。
      *
      * @param time
+     * @return "yyyy-MM-dd HH:mm:ss"
+     */
+    public static String getDateString7(long time) {
+        Date date = new Date(time);
+        return sdf6.format(date);
+    }
+
+    /**
+     * 获取日期时间字符串。
+     *
+     * @param time
      * @return HH:mm:ss
      */
     public static String getDateString6(long time) {
