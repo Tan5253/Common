@@ -84,7 +84,7 @@ public class MainActivity extends BasePermissionActivity {
 //                Logger.e("width = " + width + " , height = " + height);
 //            }
 //        });
-        new GlideUtils(this).displayCircleNoCache("", mBinding.iv);
+        new GlideUtils(this).displayCircleNoCache("", mBinding.iv, -1, R.drawable.image_0);
         return null;
     }
 
