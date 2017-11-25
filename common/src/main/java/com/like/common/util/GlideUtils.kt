@@ -135,9 +135,6 @@ class GlideUtils {
      * @param listener              加载成功失败监听
      */
     private fun createGlideRequest(string: String, diskCacheStrategy: DiskCacheStrategy = DiskCacheStrategy.ALL, loadingImageResId: Int = -1, loadErrorImageResId: Int = -1, listener: DisplayListener? = null): GlideRequest<Drawable>? {
-        if (string.isEmpty()) {
-            return null
-        }
         val glideRequest = glideRequests
                 .load(string)
                 .diskCacheStrategy(diskCacheStrategy)

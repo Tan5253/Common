@@ -3,7 +3,6 @@ package com.like.common.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Message;
 import android.view.View;
@@ -26,10 +25,6 @@ import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
 import com.like.toast.ToastUtilsKt;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -73,22 +68,23 @@ public class MainActivity extends BasePermissionActivity {
             }
         });
 
-        List<String> urlList = new ArrayList<>();
-        urlList.add("http://www.114la.com/static/upd/201708/1515155610347f55.jpg");
-        urlList.add("https://www.114la.com/static/upd/201710/32f350101b780039d292c4a4f25f82f0.jpg");
-        new GlideUtils(this).downloadImages(urlList).subscribe(stringBitmapPair -> {
-            if (stringBitmapPair.first.equals("http://www.114la.com/static/upd/201708/1515155610347f55.jpg"))
-                mBinding.iv.setImageBitmap(stringBitmapPair.second);
-            else
-                mBinding.iv1.setImageBitmap(stringBitmapPair.second);
-        });
+//        List<String> urlList = new ArrayList<>();
+//        urlList.add("http://www.114la.com/static/upd/201708/1515155610347f55.jpg");
+//        urlList.add("https://www.114la.com/static/upd/201710/32f350101b780039d292c4a4f25f82f0.jpg");
+//        new GlideUtils(this).downloadImages(urlList).subscribe(stringBitmapPair -> {
+//            if (stringBitmapPair.first.equals("http://www.114la.com/static/upd/201708/1515155610347f55.jpg"))
+//                mBinding.iv.setImageBitmap(stringBitmapPair.second);
+//            else
+//                mBinding.iv1.setImageBitmap(stringBitmapPair.second);
+//        });
 
-        new GlideUtils(this).getBitmapSize("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", new GlideUtils.onGetSizeListener() {
-            @Override
-            public void getSize(@Nullable Bitmap bitmap, int width, int height) {
-                Logger.e("width = " + width + " , height = " + height);
-            }
-        });
+//        new GlideUtils(this).getBitmapSize("http://www.114la.com/static/upd/201708/1515155610347f55.jpg", new GlideUtils.onGetSizeListener() {
+//            @Override
+//            public void getSize(@Nullable Bitmap bitmap, int width, int height) {
+//                Logger.e("width = " + width + " , height = " + height);
+//            }
+//        });
+        new GlideUtils(this).displayCircleNoCache("", mBinding.iv, -1, R.drawable.image_0);
         return null;
     }
 
