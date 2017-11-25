@@ -131,7 +131,7 @@ public class DateUtils {
      */
     public static String getDateString7(long time) {
         Date date = new Date(time);
-        return sdf6.format(date);
+        return sdf7.format(date);
     }
 
     /**
