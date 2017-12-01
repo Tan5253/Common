@@ -235,7 +235,7 @@ public class Verify {
      */
     public static boolean verifyAccountNo(Context context, String accountNo) {
         if (TextUtils.isEmpty(accountNo)) {
-            ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "请输入账号编号");
+            ToastUtilsKt.shortToastCenter(context.getApplicationContext(), "请输入账户编号");
             return false;
         }
         String reg = "^\\d{1,10}$";
