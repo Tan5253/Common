@@ -78,13 +78,22 @@ public class AppUtils {
          * 平台类型
          */
         public int platformType;
+        /**
+         * 签名信息
+         */
+        public String sign;
 
         @Override
         public String toString() {
-            return "AppStatus [versionCode=" + versionCode + ", versionName=" + versionName + ", downSource=" + downSource + ", packageName="
-                    + packageName + ", platformType=" + platformType + "]";
+            return "AppStatus{" +
+                    "versionCode=" + versionCode +
+                    ", versionName='" + versionName + '\'' +
+                    ", downSource='" + downSource + '\'' +
+                    ", packageName='" + packageName + '\'' +
+                    ", platformType=" + platformType +
+                    ", sign='" + sign + '\'' +
+                    '}';
         }
-
     }
 
     /**
@@ -95,12 +104,15 @@ public class AppUtils {
         try {
             ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
             PackageManager pm = mContext.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(mContext.getPackageName(), 0);
+            String packageName = mContext.getPackageName();
+
+            PackageInfo pi = pm.getPackageInfo(packageName, 0);
             mAppStatus.downSource = appInfo.metaData == null ? "" : appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
             mAppStatus.packageName = pi.packageName;
-            mAppStatus.platformType = PLATFORM_TYPE;
             mAppStatus.versionCode = pi.versionCode;
             mAppStatus.versionName = pi.versionName;
+            mAppStatus.platformType = PLATFORM_TYPE;
+            mAppStatus.sign = pm.getPackageInfo(mContext.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0].toCharsString();
             Logger.i(mAppStatus);
         } catch (NameNotFoundException e) {
             mAppStatus = null;
