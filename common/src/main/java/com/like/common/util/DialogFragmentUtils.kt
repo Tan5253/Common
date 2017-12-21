@@ -5,6 +5,7 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,9 @@ object DialogFragmentUtils {
      * @param dialogFragmentClass   目标DialogFragment
      * @param args                  参数列表
      */
-    @JvmStatic @JvmOverloads fun showDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>, args: Bundle? = null): DialogFragment? {
+    @JvmStatic
+    @JvmOverloads
+    fun showDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>, args: Bundle? = null): DialogFragment? {
         val fm = getFragmentManager(host) ?: return null
         val dialogFragment = dialogFragmentClass.newInstance() ?: return null
         // 放入参数
@@ -77,7 +80,8 @@ object DialogFragmentUtils {
      * @param host                  [BaseActivity]或者[BaseFragment]或者[Host]
      * @param dialogFragmentClass   目标DialogFragment
      */
-    @JvmStatic fun hideDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>) {
+    @JvmStatic
+    fun hideDialog(host: Any, dialogFragmentClass: Class<out DialogFragment>) {
         val fm = getFragmentManager(host) ?: return
         val dialog = fm.findFragmentByTag(dialogFragmentClass.simpleName)
         if (dialog != null && !dialog.isHidden && dialog is DialogFragment) {
@@ -107,12 +111,25 @@ abstract class BaseDialogFragment<in T : ViewDataBinding> : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<T>(inflater, getDialogFragmentLayoutResId(), container, false) ?: return null
         initView(binding, arguments)
+        if (!cancelableOnKeyBackPressed()) {
+            dialog.setOnKeyListener { dialog, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    return@setOnKeyListener true
+                }
+                return@setOnKeyListener false
+            }
+        }
         return binding.root
     }
 
     fun hide() {
         this.dismissAllowingStateLoss()
     }
+
+    /**
+     * 按返回键时退出对话框
+     */
+    open fun cancelableOnKeyBackPressed() = true
 
     open fun cancelable() = true
 
