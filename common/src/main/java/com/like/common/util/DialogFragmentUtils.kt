@@ -5,7 +5,6 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,25 +110,12 @@ abstract class BaseDialogFragment<in T : ViewDataBinding> : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<T>(inflater, getDialogFragmentLayoutResId(), container, false) ?: return null
         initView(binding, arguments)
-        if (!cancelableOnKeyBackPressed()) {
-            dialog.setOnKeyListener { dialog, keyCode, event ->
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    return@setOnKeyListener true
-                }
-                return@setOnKeyListener false
-            }
-        }
         return binding.root
     }
 
     fun hide() {
         this.dismissAllowingStateLoss()
     }
-
-    /**
-     * 按返回键时退出对话框
-     */
-    open fun cancelableOnKeyBackPressed() = true
 
     open fun cancelable() = true
 
