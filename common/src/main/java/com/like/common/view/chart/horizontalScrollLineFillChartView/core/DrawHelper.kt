@@ -52,7 +52,7 @@ class DrawHelper(val canvas: Canvas, val config: LineFillChartConfig) {
     }
 
     inline fun drawPointText(index: Int, paint: Paint) {
-        val text = "${MoneyFormatUtils.formatTwoDecimals(config.lineDataList[index].yData.toDouble())}度"
+        val text = "${MoneyFormatUtils.formatOneDecimals(config.lineDataList[index].yData.toDouble())}度"
         canvas.drawText(
                 text,
                 config.pointList[index].x - DrawTextUtils.getTextlength(paint, text) / 2,
