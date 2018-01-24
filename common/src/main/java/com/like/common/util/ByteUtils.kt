@@ -1,6 +1,30 @@
 package com.like.common.util
 
+import java.util.*
+
 object ByteUtils {
+
+    fun bytes2String(bytes: ByteArray?) = Arrays.toString(bytes)
+
+    fun bytes2HexString(bytes: ByteArray?): String {
+        bytes ?: return "null"
+        if (bytes.isEmpty()) return "[]"
+
+        val b = StringBuilder()
+        b.append('[')
+        bytes.forEachIndexed { index, byte ->
+            b.append(byte2HexString(byte))
+            if (index == bytes.size - 1) {
+                b.append(']')
+            } else {
+                b.append(", ")
+            }
+        }
+        return b.toString()
+    }
+
+    fun byte2HexString(byte: Byte) = Integer.toHexString(byte2Int(byte))
+
     /**
      * 将int数值转换为byte数组。(低位在前，高位在后)
      *
