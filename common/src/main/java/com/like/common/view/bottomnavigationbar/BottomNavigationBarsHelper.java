@@ -19,7 +19,7 @@ import java.util.List;
 
 public class BottomNavigationBarsHelper {
     private Activity mActivity;
-    private ViewBottomNavigationBarBinding mBinding;
+    public ViewBottomNavigationBarBinding mBinding;
     private List<BottomTabInfo> mTabInfoList;
     private OnTabSelectedListener mTabSelectedForViewPager;
     private int mCurPosition;
