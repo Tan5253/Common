@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.Window;
@@ -103,24 +102,28 @@ public class AppUtils {
         mAppStatus = new AppStatus();
         mAppStatus.platformType = PLATFORM_TYPE;
         PackageManager pm = mContext.getPackageManager();
-        String packageName = mContext.getPackageName();
-        try {
-            PackageInfo pi = pm.getPackageInfo(packageName, 0);
-            mAppStatus.packageName = pi.packageName;
-            mAppStatus.versionCode = pi.versionCode;
-            mAppStatus.versionName = pi.versionName;
-        } catch (NameNotFoundException e) {
-            Logger.e("获得应用packageName、versionCode、versionName失败 " + e.getMessage());
-        }
-        try {
-            mAppStatus.sign = pm.getPackageInfo(mContext.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0].toCharsString();
-        } catch (NameNotFoundException e) {
-            Logger.e("获得应用sign失败 " + e.getMessage());
+        if (pm != null) {
+            try {
+                String packageName = mContext.getPackageName();
+                PackageInfo pi = pm.getPackageInfo(packageName, 0);
+                mAppStatus.packageName = pi.packageName;
+                mAppStatus.versionCode = pi.versionCode;
+                mAppStatus.versionName = pi.versionName;
+            } catch (Exception e) {
+                Logger.e("获得应用packageName、versionCode、versionName失败 " + e.getMessage());
+            }
+            try {
+                mAppStatus.sign = pm.getPackageInfo(mContext.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0].toCharsString();
+            } catch (Exception e) {
+                Logger.e("获得应用sign失败 " + e.getMessage());
+            }
         }
         try {
             ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
-            mAppStatus.downSource = appInfo.metaData == null ? "" : appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
-        } catch (NameNotFoundException e) {
+            if (appInfo != null && appInfo.metaData != null) {
+                mAppStatus.downSource = appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
+            }
+        } catch (Exception e) {
             Logger.e("获得应用downSource信息失败 " + e.getMessage());
         }
         Logger.i(mAppStatus);

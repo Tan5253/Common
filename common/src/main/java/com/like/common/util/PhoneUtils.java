@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -15,6 +14,8 @@ import com.like.logger.Logger;
 
 /**
  * 手机相关的工具类
+ * <p>
+ * android.Manifest.permission.READ_PHONE_STATE,android.Manifest.permission.READ_SMS
  */
 public class PhoneUtils {
     public PhoneStatus mPhoneStatus;
@@ -103,31 +104,29 @@ public class PhoneUtils {
     /**
      * 获取手机相关的状态信息 需要请求电话状态信息的权限 READ_PHONE_STATE
      */
-    @RequiresPermission(anyOf = {
-            android.Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.READ_SMS
-    })
-    public void initPhoneStatus() {
+    private void initPhoneStatus() {
         mPhoneStatus = new PhoneStatus();
         mPhoneStatus.model = Build.MODEL;
         mPhoneStatus.sdkVersion = Build.VERSION.SDK_INT;
 
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        if (tm != null && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             mPhoneStatus.imei = tm.getDeviceId();
             mPhoneStatus.phoneNumber = tm.getLine1Number();
             return;
         }
 
-        DisplayMetrics metric = new DisplayMetrics();
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metric);
-        mPhoneStatus.screenWidth = metric.widthPixels;
-        mPhoneStatus.screenWidthDpi = DimensionUtils.px2dp(mContext, metric.widthPixels);
-        mPhoneStatus.screenHeight = metric.heightPixels;
-        mPhoneStatus.screenHeightDpi = DimensionUtils.px2dp(mContext, metric.heightPixels);
-        mPhoneStatus.density = metric.density;
-        mPhoneStatus.densityDpi = metric.densityDpi;
+        if (wm != null) {
+            DisplayMetrics metric = new DisplayMetrics();
+            wm.getDefaultDisplay().getMetrics(metric);
+            mPhoneStatus.screenWidth = metric.widthPixels;
+            mPhoneStatus.screenWidthDpi = DimensionUtils.px2dp(mContext, metric.widthPixels);
+            mPhoneStatus.screenHeight = metric.heightPixels;
+            mPhoneStatus.screenHeightDpi = DimensionUtils.px2dp(mContext, metric.heightPixels);
+            mPhoneStatus.density = metric.density;
+            mPhoneStatus.densityDpi = metric.densityDpi;
+        }
         Logger.i(mPhoneStatus);
     }
 
