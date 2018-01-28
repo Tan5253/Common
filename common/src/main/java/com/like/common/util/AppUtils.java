@@ -101,23 +101,29 @@ public class AppUtils {
      */
     private void initAppStatus() {
         mAppStatus = new AppStatus();
+        mAppStatus.platformType = PLATFORM_TYPE;
+        PackageManager pm = mContext.getPackageManager();
+        String packageName = mContext.getPackageName();
         try {
-            ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
-            PackageManager pm = mContext.getPackageManager();
-            String packageName = mContext.getPackageName();
-
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
-            mAppStatus.downSource = appInfo.metaData == null ? "" : appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
             mAppStatus.packageName = pi.packageName;
             mAppStatus.versionCode = pi.versionCode;
             mAppStatus.versionName = pi.versionName;
-            mAppStatus.platformType = PLATFORM_TYPE;
-            mAppStatus.sign = pm.getPackageInfo(mContext.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0].toCharsString();
-            Logger.i(mAppStatus);
         } catch (NameNotFoundException e) {
-            mAppStatus = null;
-            Logger.e("获得应用相关状态信息失败 " + e.getMessage());
+            Logger.e("获得应用packageName、versionCode、versionName失败 " + e.getMessage());
         }
+        try {
+            mAppStatus.sign = pm.getPackageInfo(mContext.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0].toCharsString();
+        } catch (NameNotFoundException e) {
+            Logger.e("获得应用sign失败 " + e.getMessage());
+        }
+        try {
+            ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
+            mAppStatus.downSource = appInfo.metaData == null ? "" : appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
+        } catch (NameNotFoundException e) {
+            Logger.e("获得应用downSource信息失败 " + e.getMessage());
+        }
+        Logger.i(mAppStatus);
     }
 
     /**
