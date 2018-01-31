@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TabWidget;
-import android.widget.TextView;
 
 public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     private int backgroundColor;
     private boolean mHideOnNull = true;
     private String text;
+    private int dpRadius;
 
     public BadgeView(Context context) {
         this(context, null);
@@ -58,6 +58,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
     }
 
     private void setBadgeBackground(int dpRadius) {
+        this.dpRadius = dpRadius;
         int radius = dp2Px(dpRadius);
         float[] radiusArray = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
 
@@ -88,6 +89,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
     public void setBadgeBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
+        setBadgeBackground(dpRadius);
     }
 
     /**

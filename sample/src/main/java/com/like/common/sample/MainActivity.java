@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.like.base.context.BasePermissionActivity;
@@ -120,7 +121,9 @@ public class MainActivity extends BasePermissionActivity {
                     }
                 })
                 .setCustomNavigationViewTextColor(R.color.common_text_white_0)
-                .setCustomNavigationViewMessageCount("88")
+                .setCustomNavigationViewMessageCount("99+")
+                .setCustomNavigationViewMessageBackgroundColor(ContextCompat.getColor(this, R.color.common_divider_gray))
+                .setCustomNavigationViewMessageTextSize(10)
                 .setDividerHeight(30)
                 .setToolbarHeight(DimensionUtils.dp2px(this, 52f))
                 .setRightMenu(R.menu.toolbar_right_menu_main, item -> true)
@@ -132,7 +135,7 @@ public class MainActivity extends BasePermissionActivity {
 
                 .replaceMenuWithCustomView(R.id.action_right_hahaha, R.drawable.icon_0, "消息", v -> {
                 })
-                .setRightMenuMessageCount(R.id.action_right_hahaha, "1").setDividerColor(Color.RED);
+                .setRightMenuMessageCount(R.id.action_right_hahaha, "2").setDividerColor(Color.RED);
         Logger.e(DimensionUtils.dp2px(this, 52f) + " , " + StatusBarUtils.getStatusBarHeight(this));
     }
 

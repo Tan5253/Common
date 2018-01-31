@@ -18,15 +18,16 @@ public class BadgeViewHelper {
     }
 
     public void setTextColor(@ColorInt int color) {
-        badgeView.setTextColor(color);
+        badgeView.setBadgeTextColor(color);
     }
 
-    public void setTextSize(float size) {
-        badgeView.setTextSize(size);
+    // sp
+    public void setTextSize(int size) {
+        badgeView.setBadgeTextSize(size);
     }
 
     public void setBackgroundColor(@ColorInt int color) {
-        badgeView.setBackgroundColor(color);
+        badgeView.setBadgeBackgroundColor(color);
     }
 
     public void setMessageCount(String messageCount) {

@@ -70,7 +70,7 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
         mBadgeViewHelper.setTextColor(color);
     }
 
-    public void setMessageTextSize(float size) {
+    public void setMessageTextSize(int size) {
         mBadgeViewHelper.setTextSize(size);
     }
 

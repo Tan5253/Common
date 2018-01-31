@@ -251,7 +251,7 @@ public class BottomNavigationBarsHelper {
         return this;
     }
 
-    public BottomNavigationBarsHelper setMessageTextSize(int index, float size) {
+    public BottomNavigationBarsHelper setMessageTextSize(int index, int size) {
         if (index < mTabInfoList.size() && mTabInfoList.get(index) instanceof BottomTabInfoOrigin) {
             ((BottomTabInfoOrigin) mTabInfoList.get(index)).setMessageTextSize(size);
         }

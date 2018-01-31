@@ -173,7 +173,7 @@ public class ToolbarUtils {
         return this;
     }
 
-    public ToolbarUtils setCustomNavigationViewMessageTextSize(float size) {
+    public ToolbarUtils setCustomNavigationViewMessageTextSize(int size) {
         navigationBadgeViewHelper.setTextSize(size);
         return this;
 
