@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.signature.ObjectKey
 import com.like.logger.Logger
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -139,7 +140,7 @@ class GlideUtils {
                 .load(string)
                 .diskCacheStrategy(diskCacheStrategy)
         if (diskCacheStrategy == DiskCacheStrategy.NONE) {
-            glideRequest.skipMemoryCache(true)
+            glideRequest.skipMemoryCache(true).signature(ObjectKey(System.currentTimeMillis()))
         }
         if (loadingImageResId > 0) {
             glideRequest.placeholder(loadingImageResId)
