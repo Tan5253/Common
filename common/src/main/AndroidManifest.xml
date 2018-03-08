@@ -26,18 +26,22 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity
-            android:name="com.like.common.view.dragphotoview.DragPhotoViewActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-        <activity
-            android:name="com.like.common.view.dragvideoview.DragVideoViewActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
+        <!--安装apk文件需要-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/downLoadFilePaths" />
+        </provider>
+
         <activity
             android:name="com.like.common.view.dragview.view.DragViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />
+
     </application>
 
 </manifest>

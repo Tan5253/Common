@@ -10,6 +10,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.Window;
 
@@ -241,9 +243,16 @@ public class AppUtils {
         Context applicationContext = context.getApplicationContext();
         try {
             Intent installIntent = new Intent();
-            installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            installIntent.setAction(Intent.ACTION_VIEW);
-            installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+            //判断是否是AndroidN以及更高的版本
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Uri contentUri = FileProvider.getUriForFile(applicationContext, AppUtils.getInstance(applicationContext).mAppStatus.packageName + ".fileProvider", file);
+                installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+            } else {
+                installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                installIntent.setAction(Intent.ACTION_VIEW);
+                installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+            }
             applicationContext.startActivity(installIntent);
         } catch (Exception e) {
             e.printStackTrace();
