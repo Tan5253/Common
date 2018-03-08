@@ -235,7 +235,7 @@ public class AppUtils {
     }
 
     /**
-     * 安装文件，如果直接传入Uri进行setDataAndType，在6.0及其以上会报错
+     * 安装文件
      *
      * @param file
      */
@@ -243,16 +243,38 @@ public class AppUtils {
         Context applicationContext = context.getApplicationContext();
         try {
             Intent installIntent = new Intent();
+            Uri uri;
             //判断是否是AndroidN以及更高的版本
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri contentUri = FileProvider.getUriForFile(applicationContext, AppUtils.getInstance(applicationContext).mAppStatus.packageName + ".fileprovider", file);
-                installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                uri = FileProvider.getUriForFile(applicationContext, AppUtils.getInstance(applicationContext).mAppStatus.packageName + ".fileprovider", file);
             } else {
-                installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 installIntent.setAction(Intent.ACTION_VIEW);
-                installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                uri = Uri.fromFile(file);
             }
+            installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
+            applicationContext.startActivity(installIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 安装文件
+     */
+    public static void installFile(Context context, Uri uri) {
+        Context applicationContext = context.getApplicationContext();
+        try {
+            Intent installIntent = new Intent();
+            //判断是否是AndroidN以及更高的版本
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } else {
+                installIntent.setAction(Intent.ACTION_VIEW);
+                installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
             applicationContext.startActivity(installIntent);
         } catch (Exception e) {
             e.printStackTrace();
