@@ -49,6 +49,7 @@ public class MainActivity extends BasePermissionActivity {
         initToolBar();
 
         Logger.e(PhoneUtils.getInstance(this).mPhoneStatus);
+        PhoneUtils.getInstance(this).getUuid();
 
         ClickUtils.addOnClickListener(5, mBinding.btnClicktimes, v -> {
 

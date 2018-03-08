@@ -3,9 +3,8 @@ package com.like.common.util;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -15,12 +14,24 @@ import android.view.WindowManager;
 
 import com.like.logger.Logger;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * 手机相关的工具类
  * <p>
- * android.Manifest.permission.READ_PHONE_STATE,android.Manifest.permission.READ_SMS
+ * android.Manifest.permission.READ_PHONE_STATE，android.Manifest.permission.READ_SMS，android.Manifest.permission.READ_PHONE_NUMBERS
  */
 public class PhoneUtils {
+    private final static String DEFAULT_FILE_NAME = ".phoneutils_device_id";
+    private final static String FILE_DOWNLOADS = StorageUtils.ExternalStorageHelper.getPublicDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + DEFAULT_FILE_NAME;
+    private final static String FILE_DCIM = StorageUtils.ExternalStorageHelper.getPublicDir(Environment.DIRECTORY_DCIM) + File.separator + DEFAULT_FILE_NAME;
+    private final static String KEY_UUID = "PHONEUTILS_KEY_UUID";
     public PhoneStatus mPhoneStatus;
 
     private Context mContext;
@@ -47,19 +58,21 @@ public class PhoneUtils {
      */
     public static class PhoneStatus {
         /**
-         * AndroidId
-         * 在设备首次启动时，系统会随机生成一个64位的数字，并把这个数字以16进制字符串的形式保存下来。不需要权限，平板设备通用。获取成功率也较高，缺点是设备恢复出厂设置会重置。另外就是某些厂商的低版本系统会有bug，返回的都是相同的AndroidId。
+         * deviceId
+         * getDeviceId()需要android.permission.READ_PHONE_STATE权限，它在6.0+系统中是需要动态申请的。如果需求要求App启动时上报设备标识符的话，那么第一会影响初始化速度，第二还有可能被用户拒绝授权。
+         * android系统碎片化严重，有的手机可能拿不到DeviceId，会返回null或者000000。
+         * 这个方法是只对有电话功能的设备有效的，在pad上不起作用。 可以看下方法注释
          */
-        public String androidId;
-        /**
-         * serialNumber
-         * Android系统2.3版本以上可以通过下面的方法得到Serial Number，且非手机设备也可以通过该接口获取。不需要权限，通用性也较高，但我测试发现红米手机返回的是 0123456789ABCDEF 明显是一个顺序的非随机字符串。也不一定靠谱。
-         */
-        public String serialNumber;
+        public String imei;
         /**
          * MAC地址
          */
         public String mac;
+        /**
+         * AndroidId
+         * 在设备首次启动时，系统会随机生成一个64位的数字，并把这个数字以16进制字符串的形式保存下来。不需要权限，平板设备通用。获取成功率也较高，缺点是设备恢复出厂设置会重置。另外就是某些厂商的低版本系统会有bug，返回的都是相同的AndroidId。
+         */
+        public String androidId;
         /**
          * android系统版本
          */
@@ -80,13 +93,6 @@ public class PhoneUtils {
          * SDK版本号
          */
         public int sdkVersion;
-        /**
-         * IMEI号
-         * getDeviceId()需要android.permission.READ_PHONE_STATE权限，它在6.0+系统中是需要动态申请的。如果需求要求App启动时上报设备标识符的话，那么第一会影响初始化速度，第二还有可能被用户拒绝授权。
-         * android系统碎片化严重，有的手机可能拿不到DeviceId，会返回null或者000000。
-         * 这个方法是只对有电话功能的设备有效的，在pad上不起作用。 可以看下方法注释
-         */
-        public String imei;
         /**
          * 屏幕宽度（像素）
          */
@@ -115,15 +121,14 @@ public class PhoneUtils {
         @Override
         public String toString() {
             return "PhoneStatus{" +
-                    "androidId='" + androidId + '\'' +
-                    ", serialNumber='" + serialNumber + '\'' +
+                    "imei='" + imei + '\'' +
                     ", mac='" + mac + '\'' +
+                    ", androidId='" + androidId + '\'' +
                     ", releaseVersion='" + releaseVersion + '\'' +
                     ", phoneNumber='" + phoneNumber + '\'' +
                     ", brand='" + brand + '\'' +
                     ", model='" + model + '\'' +
                     ", sdkVersion=" + sdkVersion +
-                    ", imei='" + imei + '\'' +
                     ", screenWidth=" + screenWidth +
                     ", screenWidthDpi=" + screenWidthDpi +
                     ", screenHeight=" + screenHeight +
@@ -143,22 +148,19 @@ public class PhoneUtils {
         mPhoneStatus.brand = Build.BRAND;
         mPhoneStatus.model = Build.MODEL;
         mPhoneStatus.sdkVersion = Build.VERSION.SDK_INT;
-        mPhoneStatus.serialNumber = Build.SERIAL;
         mPhoneStatus.androidId = Settings.System.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        if (tm != null && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            mPhoneStatus.imei = tm.getDeviceId();
-            mPhoneStatus.phoneNumber = tm.getLine1Number();
-            return;
-        }
+        mPhoneStatus.mac = getMacAddress();
 
-        WifiManager wifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager != null) {
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if (wifiInfo != null) {
-                mPhoneStatus.mac = wifiInfo.getMacAddress();
-            }
+        TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm != null && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            mPhoneStatus.imei = tm.getDeviceId();
+        }
+        if (tm != null &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            mPhoneStatus.phoneNumber = tm.getLine1Number();
         }
 
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -189,11 +191,133 @@ public class PhoneUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
                 return pm.isInteractive();
             } else {
-                // noinspection all
                 return pm.isScreenOn();
             }
         }
         return false;
     }
 
+    public String getUuid() {
+        String uuid = SPUtils.getInstance(mContext).get(KEY_UUID, "");
+        Logger.d("从sp中获取uuid：" + uuid);
+        if (uuid.isEmpty()) {
+            uuid = readUuidFromFile(FILE_DCIM);
+            Logger.d("从FILE_DCIM中获取uuid：" + uuid);
+            if (uuid.isEmpty()) {
+                uuid = readUuidFromFile(FILE_DOWNLOADS);
+                Logger.d("从FILE_DOWNLOADS中获取uuid：" + uuid);
+            }
+        }
+        if (uuid.isEmpty()) {
+            uuid = createUuid();
+            Logger.d("新创建了一个uuid：" + uuid);
+        }
+        return uuid;
+    }
+
+    /**
+     * 创建设备唯一标识
+     *
+     * @return
+     */
+    private String createUuid() {
+        String uuid;
+        if (mPhoneStatus.imei != null && !mPhoneStatus.imei.isEmpty()) {
+            uuid = mPhoneStatus.imei;
+            Logger.d("imei为uuid");
+        } else if (mPhoneStatus.mac != null && !mPhoneStatus.mac.isEmpty()) {
+            uuid = mPhoneStatus.mac;
+            Logger.d("mac为uuid");
+        } else if (mPhoneStatus.androidId != null && !mPhoneStatus.androidId.isEmpty()) {
+            uuid = mPhoneStatus.androidId;
+            Logger.d("androidId为uuid");
+        } else {
+            uuid = UUID.randomUUID().toString();
+            Logger.d("randomUUID为uuid");
+        }
+        if (uuid != null && !uuid.isEmpty()) {
+            saveUuidToFile(FILE_DCIM, uuid);
+            saveUuidToFile(FILE_DOWNLOADS, uuid);
+            SPUtils.getInstance(mContext).put(KEY_UUID, uuid);
+        }
+        return uuid;
+    }
+
+    private String readUuidFromFile(String fileName) {
+        BufferedReader reader = null;
+        try {
+            File file = new File(fileName);
+            reader = new BufferedReader(new FileReader(file));
+            return reader.readLine();
+        } catch (Exception e) {
+            return "";
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveUuidToFile(String fileName, String uuid) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(new File(fileName));
+            writer.write(uuid);
+            writer.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String getMacAddress() {
+        String mac = null;
+        FileReader fstream = null;
+        try {
+            fstream = new FileReader("/sys/class/net/wlan0/address");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            try {
+                fstream = new FileReader("/sys/class/net/eth0/address");
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        }
+        if (fstream != null) {
+            BufferedReader in = null;
+            try {
+                in = new BufferedReader(fstream, 1024);
+                mac = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fstream != null) {
+                    try {
+                        fstream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return mac;
+    }
 }
