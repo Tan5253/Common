@@ -20,16 +20,12 @@
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <!--拍照需要-->
+            <!--拍照、获取apk文件进行安装时需要-->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-
-            <!--安装apk文件需要-->
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/downloadfilepaths" />
         </provider>
+
 
         <activity
             android:name="com.like.common.view.dragview.view.DragViewActivity"
