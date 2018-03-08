@@ -44,9 +44,17 @@ public class PhoneUtils {
      */
     public static class PhoneStatus {
         /**
+         * android系统版本
+         */
+        public String releaseVersion;
+        /**
          * 本机电话号码
          */
         public String phoneNumber;
+        /**
+         * 手机品牌
+         */
+        public String brand;
         /**
          * 手机型号
          */
@@ -87,7 +95,9 @@ public class PhoneUtils {
         @Override
         public String toString() {
             return "PhoneStatus{" +
-                    "phoneNumber='" + phoneNumber + '\'' +
+                    "releaseVersion='" + releaseVersion + '\'' +
+                    ", phoneNumber='" + phoneNumber + '\'' +
+                    ", brand='" + brand + '\'' +
                     ", model='" + model + '\'' +
                     ", sdkVersion=" + sdkVersion +
                     ", imei='" + imei + '\'' +
@@ -106,6 +116,8 @@ public class PhoneUtils {
      */
     private void initPhoneStatus() {
         mPhoneStatus = new PhoneStatus();
+        mPhoneStatus.releaseVersion = Build.VERSION.RELEASE;
+        mPhoneStatus.brand = Build.BRAND;
         mPhoneStatus.model = Build.MODEL;
         mPhoneStatus.sdkVersion = Build.VERSION.SDK_INT;
 
@@ -140,12 +152,15 @@ public class PhoneUtils {
         Context appContext = context.getApplicationContext();
         PowerManager pm = (PowerManager) appContext.getSystemService(Context.POWER_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            return pm.isInteractive();
-        } else {
-            // noinspection all
-            return pm.isScreenOn();
+        if (pm != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                return pm.isInteractive();
+            } else {
+                // noinspection all
+                return pm.isScreenOn();
+            }
         }
+        return false;
     }
 
 }

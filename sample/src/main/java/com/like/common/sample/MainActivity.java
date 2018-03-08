@@ -19,6 +19,7 @@ import com.like.common.util.ClickUtils;
 import com.like.common.util.DimensionUtils;
 import com.like.common.util.GlideUtils;
 import com.like.common.util.ObjectSerializeUtils;
+import com.like.common.util.PhoneUtils;
 import com.like.common.util.RxJavaUtils;
 import com.like.common.util.StatusBarUtils;
 import com.like.common.util.Verify;
@@ -46,6 +47,9 @@ public class MainActivity extends BasePermissionActivity {
     protected BaseViewModel getViewModel() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initToolBar();
+
+        Logger.e(PhoneUtils.getInstance(this).mPhoneStatus);
+
         ClickUtils.addOnClickListener(5, mBinding.btnClicktimes, v -> {
 
         });
