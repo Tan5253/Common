@@ -18,7 +18,7 @@
 在Module的gradle中加入：
 ```groovy
     dependencies {
-        compile 'com.github.like5188:Common:2.2.6'
+        compile 'com.github.like5188:Common:2.2.7'
     }
 ```
 2、包含的工具类

@@ -3,8 +3,11 @@ package com.like.common.util;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -44,6 +47,20 @@ public class PhoneUtils {
      */
     public static class PhoneStatus {
         /**
+         * AndroidId
+         * 在设备首次启动时，系统会随机生成一个64位的数字，并把这个数字以16进制字符串的形式保存下来。不需要权限，平板设备通用。获取成功率也较高，缺点是设备恢复出厂设置会重置。另外就是某些厂商的低版本系统会有bug，返回的都是相同的AndroidId。
+         */
+        public String androidId;
+        /**
+         * serialNumber
+         * Android系统2.3版本以上可以通过下面的方法得到Serial Number，且非手机设备也可以通过该接口获取。不需要权限，通用性也较高，但我测试发现红米手机返回的是 0123456789ABCDEF 明显是一个顺序的非随机字符串。也不一定靠谱。
+         */
+        public String serialNumber;
+        /**
+         * MAC地址
+         */
+        public String mac;
+        /**
          * android系统版本
          */
         public String releaseVersion;
@@ -65,6 +82,9 @@ public class PhoneUtils {
         public int sdkVersion;
         /**
          * IMEI号
+         * getDeviceId()需要android.permission.READ_PHONE_STATE权限，它在6.0+系统中是需要动态申请的。如果需求要求App启动时上报设备标识符的话，那么第一会影响初始化速度，第二还有可能被用户拒绝授权。
+         * android系统碎片化严重，有的手机可能拿不到DeviceId，会返回null或者000000。
+         * 这个方法是只对有电话功能的设备有效的，在pad上不起作用。 可以看下方法注释
          */
         public String imei;
         /**
@@ -95,7 +115,10 @@ public class PhoneUtils {
         @Override
         public String toString() {
             return "PhoneStatus{" +
-                    "releaseVersion='" + releaseVersion + '\'' +
+                    "androidId='" + androidId + '\'' +
+                    ", serialNumber='" + serialNumber + '\'' +
+                    ", mac='" + mac + '\'' +
+                    ", releaseVersion='" + releaseVersion + '\'' +
                     ", phoneNumber='" + phoneNumber + '\'' +
                     ", brand='" + brand + '\'' +
                     ", model='" + model + '\'' +
@@ -120,12 +143,22 @@ public class PhoneUtils {
         mPhoneStatus.brand = Build.BRAND;
         mPhoneStatus.model = Build.MODEL;
         mPhoneStatus.sdkVersion = Build.VERSION.SDK_INT;
+        mPhoneStatus.serialNumber = Build.SERIAL;
+        mPhoneStatus.androidId = Settings.System.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         if (tm != null && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             mPhoneStatus.imei = tm.getDeviceId();
             mPhoneStatus.phoneNumber = tm.getLine1Number();
             return;
+        }
+
+        WifiManager wifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo != null) {
+                mPhoneStatus.mac = wifiInfo.getMacAddress();
+            }
         }
 
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
