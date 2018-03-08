@@ -246,7 +246,7 @@ public class AppUtils {
             //判断是否是AndroidN以及更高的版本
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri contentUri = FileProvider.getUriForFile(applicationContext, AppUtils.getInstance(applicationContext).mAppStatus.packageName + ".fileProvider", file);
+                Uri contentUri = FileProvider.getUriForFile(applicationContext, AppUtils.getInstance(applicationContext).mAppStatus.packageName + ".fileprovider", file);
                 installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
             } else {
                 installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
