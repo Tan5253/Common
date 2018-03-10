@@ -15,6 +15,7 @@ import com.like.common.sample.csv.CsvActivity;
 import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
 import com.like.common.sample.databinding.ActivityMainBinding;
 import com.like.common.sample.objectbox.ObjectBoxActivity;
+import com.like.common.util.AppUtils;
 import com.like.common.util.ClickUtils;
 import com.like.common.util.DimensionUtils;
 import com.like.common.util.GlideUtils;
@@ -48,8 +49,8 @@ public class MainActivity extends BasePermissionActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initToolBar();
 
-        Logger.e(PhoneUtils.getInstance(this).mPhoneStatus);
         PhoneUtils.getInstance(this).getUuid();
+        AppUtils.getInstance(this);
 
         ClickUtils.addOnClickListener(5, mBinding.btnClicktimes, v -> {
 

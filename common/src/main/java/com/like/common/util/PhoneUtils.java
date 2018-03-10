@@ -1,14 +1,16 @@
 package com.like.common.util;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -16,10 +18,11 @@ import com.like.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -150,16 +153,16 @@ public class PhoneUtils {
         mPhoneStatus.sdkVersion = Build.VERSION.SDK_INT;
         mPhoneStatus.androidId = Settings.System.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        mPhoneStatus.mac = getMacAddress();
+        mPhoneStatus.mac = getMac();
 
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        if (tm != null && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+        if (tm != null && PermissionUtils.checkPermission(mContext, Manifest.permission.READ_PHONE_STATE)) {
             mPhoneStatus.imei = tm.getDeviceId();
         }
         if (tm != null &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                PermissionUtils.checkPermission(mContext, Manifest.permission.READ_SMS) &&
+                PermissionUtils.checkPermission(mContext, Manifest.permission.READ_PHONE_NUMBERS) &&
+                PermissionUtils.checkPermission(mContext, Manifest.permission.READ_PHONE_STATE)) {
             mPhoneStatus.phoneNumber = tm.getLine1Number();
         }
 
@@ -281,43 +284,60 @@ public class PhoneUtils {
         }
     }
 
-    private String getMacAddress() {
-        String mac = null;
-        FileReader fstream = null;
-        try {
-            fstream = new FileReader("/sys/class/net/wlan0/address");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            try {
-                fstream = new FileReader("/sys/class/net/eth0/address");
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        }
-        if (fstream != null) {
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(fstream, 1024);
-                mac = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fstream != null) {
-                    try {
-                        fstream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+    private String getMac() {
+        String mac = "";
+        if (Build.VERSION.SDK_INT < 23) {
+            mac = getMacBySystemInterface();
+        } else {
+            mac = getMacByJavaAPI();
+            if (TextUtils.isEmpty(mac)) {
+                mac = getMacBySystemInterface();
             }
         }
         return mac;
+
+    }
+
+    @TargetApi(9)
+    private String getMacByJavaAPI() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface netInterface = interfaces.nextElement();
+                if ("wlan0".equals(netInterface.getName()) || "eth0".equals(netInterface.getName())) {
+                    byte[] addr = netInterface.getHardwareAddress();
+                    if (addr == null || addr.length == 0) {
+                        return null;
+                    }
+                    StringBuilder buf = new StringBuilder();
+                    for (byte b : addr) {
+                        buf.append(String.format("%02X:", b));
+                    }
+                    if (buf.length() > 0) {
+                        buf.deleteCharAt(buf.length() - 1);
+                    }
+                    return buf.toString().toLowerCase(Locale.getDefault());
+                }
+            }
+        } catch (Throwable e) {
+        }
+        return null;
+    }
+
+    private String getMacBySystemInterface() {
+        if (mContext == null) {
+            return "";
+        }
+        try {
+            WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+            if (PermissionUtils.checkPermission(mContext, Manifest.permission.ACCESS_WIFI_STATE)) {
+                WifiInfo info = wifi.getConnectionInfo();
+                return info.getMacAddress();
+            } else {
+                return "";
+            }
+        } catch (Throwable e) {
+            return "";
+        }
     }
 }
