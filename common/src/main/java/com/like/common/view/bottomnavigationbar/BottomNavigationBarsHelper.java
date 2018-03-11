@@ -203,8 +203,18 @@ public class BottomNavigationBarsHelper {
      *
      * @param bottomBgColor
      */
-    public BottomNavigationBarsHelper setBgColor(@ColorRes int bottomBgColor) {
+    public BottomNavigationBarsHelper setBgColorRes(@ColorRes int bottomBgColor) {
         mBinding.rlNavigationBar.setBackgroundColor(mResources.getColor(bottomBgColor));
+        return this;
+    }
+
+    /**
+     * 设置底部导航栏的背景色，包含divider
+     *
+     * @param bottomBgColor
+     */
+    public BottomNavigationBarsHelper setBgColor(@ColorInt int bottomBgColor) {
+        mBinding.rlNavigationBar.setBackgroundColor(bottomBgColor);
         return this;
     }
 
