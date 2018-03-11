@@ -27,13 +27,9 @@ import java.util.List;
  */
 public class AppUtils {
     /**
-     * 获取渠道来源的key
-     */
-    public static final String KEY_DOWNLOAD_CHANNEL = "CHANNEL";
-    /**
      * 平台类型
      */
-    public static final int PLATFORM_TYPE = 0;
+    private static final int PLATFORM_TYPE = 0;
     public AppStatus mAppStatus;
     private Context mContext;
 
@@ -123,7 +119,7 @@ public class AppUtils {
         try {
             ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
             if (appInfo != null && appInfo.metaData != null) {
-                mAppStatus.downSource = appInfo.metaData.getString(KEY_DOWNLOAD_CHANNEL);
+                mAppStatus.downSource = appInfo.metaData.getString("UMENG_CHANNEL");
             }
         } catch (Exception e) {
             Logger.e("获得应用downSource信息失败 " + e.getMessage());

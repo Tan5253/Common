@@ -2,18 +2,14 @@ package com.like.common.sample.chenjin;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.like.base.context.BaseActivity;
 import com.like.base.entity.Host;
 import com.like.base.viewmodel.BaseViewModel;
 import com.like.common.sample.R;
 import com.like.common.sample.databinding.ActivityChenjinBinding;
-import com.like.common.util.ResourceUtils;
 import com.like.common.util.StatusBarUtils;
-import com.like.common.view.bottomNavigationBars.BottomNavigationBarsHelper;
-
-import java.util.List;
+import com.like.common.view.bottomnavigationbar.BottomNavigationBarsHelper;
 
 public class ChenJinActivity extends BaseActivity {
     private ActivityChenjinBinding mBinding;
@@ -56,10 +52,7 @@ public class ChenJinActivity extends BaseActivity {
      * 添加底部tab导航栏视图
      */
     private void addBottomTabView() {
-        mBottomNavigationBarsHelper = new BottomNavigationBarsHelper(this);
-
-        // 设置bottom的背景
-        mBottomNavigationBarsHelper.setBottomBgColor(ResourceUtils.getColor(this, R.color.main_bottom_tab_bg));
+        mBottomNavigationBarsHelper = new BottomNavigationBarsHelper(this, mBinding.flBottomTabContainer);
 
         // 添加原始的
         String[] names = {"Tab0", "Tab1", "Tab2"};
@@ -67,17 +60,13 @@ public class ChenJinActivity extends BaseActivity {
         int[] originPressImageResIds = {R.drawable.main_bottom_tab0_press, R.drawable.main_bottom_tab1_press, R.drawable.main_bottom_tab2_press};
         int normalTextColor = R.color.main_bottom_tab_bg_normal;
         int pressTextColor = R.color.main_bottom_tab_bg_press;
-        mBottomNavigationBarsHelper.initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor);
-        mBinding.flBottomTabContainer.addView(mBottomNavigationBarsHelper.getView());
 
-        mBottomNavigationBarsHelper.setTabSelectedListener(selectedIndex -> {
-            mCurPagerIndex = selectedIndex;
-            mBinding.vp.setCurrentItem(selectedIndex, false);
-        });
-    }
-
-    public List<Fragment> getAllFragment() {
-        return mViewModel.getAllFragment();
+        mBottomNavigationBarsHelper.setBottomBgColor(R.color.main_bottom_tab_bg)
+                .initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor)
+                .setTabSelectedListener(selectedIndex -> {
+                    mCurPagerIndex = selectedIndex;
+                    mBinding.vp.setCurrentItem(selectedIndex, false);
+                });
     }
 
 }

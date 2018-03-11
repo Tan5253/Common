@@ -19,7 +19,7 @@ import java.util.List;
 
 public class BottomNavigationBarsHelper {
     private Activity mActivity;
-    public ViewBottomNavigationBarBinding mBinding;
+    private ViewBottomNavigationBarBinding mBinding;
     private List<BottomTabInfo> mTabInfoList;
     private OnTabSelectedListener mTabSelectedForViewPager;
     private int mCurPosition;
@@ -50,6 +50,10 @@ public class BottomNavigationBarsHelper {
             mResources = activity.getResources();
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.view_bottom_navigation_bar, navigationbarContainer, true);
         }
+    }
+
+    public ViewBottomNavigationBarBinding getBinding() {
+        return mBinding;
     }
 
     public BottomNavigationBarsHelper initOriginView(@DrawableRes int[] normalImageResIds, @DrawableRes int[] pressImageResIds) {

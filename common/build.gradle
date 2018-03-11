@@ -62,7 +62,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 
-    compile 'com.github.like5188:Base:2.0.2'
+    compile 'com.github.like5188:Base:2.3.0'
     compile 'com.github.like5188:Toast:2.0.0'
     compile 'com.github.like5188:Logger:2.0.0'
     compile 'com.github.like5188.RxBus:rxbus:2.0.1'

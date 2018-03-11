@@ -70,6 +70,8 @@
         <activity
             android:name="com.like.common.sample.NavigationActivity"
             android:screenOrientation="portrait" />
+
+        <meta-data android:value="origin" android:name="UMENG_CHANNEL"/>
     </application>
 
 </manifest>
