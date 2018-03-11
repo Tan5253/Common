@@ -189,12 +189,38 @@ public class BottomNavigationBarsHelper {
     }
 
     /**
-     * 设置底部导航栏的背景色
+     * 设置底部导航栏的背景色，不包含divider
      *
      * @param bottomBgColor
      */
     public BottomNavigationBarsHelper setBottomBgColor(@ColorRes int bottomBgColor) {
         mBinding.llTabContainer.setBackgroundColor(mResources.getColor(bottomBgColor));
+        return this;
+    }
+
+    /**
+     * 设置底部导航栏的背景色，包含divider
+     *
+     * @param bottomBgColor
+     */
+    public BottomNavigationBarsHelper setBgColor(@ColorRes int bottomBgColor) {
+        mBinding.rlNavigationBar.setBackgroundColor(mResources.getColor(bottomBgColor));
+        return this;
+    }
+
+    /**
+     * 显示隐藏divider
+     */
+    public BottomNavigationBarsHelper setDividerVisibility(int visibility) {
+        mBinding.divider.setVisibility(visibility);
+        return this;
+    }
+
+    /**
+     * 显示隐藏所有按钮
+     */
+    public BottomNavigationBarsHelper setAllButtonVisibility(int visibility) {
+        mBinding.llTabContainer.setVisibility(visibility);
         return this;
     }
 
