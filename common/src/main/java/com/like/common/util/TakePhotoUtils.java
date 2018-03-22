@@ -1,5 +1,6 @@
 package com.like.common.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresPermission;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
@@ -99,6 +101,7 @@ public class TakePhotoUtils {
     /***
      * 从相册中取图片
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void pickPhoto() {
         if (StorageUtils.ExternalStorageHelper.isMounted()) {
             DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
@@ -118,6 +121,7 @@ public class TakePhotoUtils {
     /**
      * 照相
      */
+    @RequiresPermission(allOf = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
     public void takePhoto() {
         if (StorageUtils.ExternalStorageHelper.isMounted()) {
             DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());

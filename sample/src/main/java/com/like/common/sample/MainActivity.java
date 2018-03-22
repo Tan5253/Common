@@ -1,6 +1,5 @@
 package com.like.common.sample;
 
-import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -8,7 +7,7 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.like.base.context.BasePermissionActivity;
+import com.like.base.context.BaseActivity;
 import com.like.base.viewmodel.BaseViewModel;
 import com.like.common.sample.chenjin.ChenJinActivity;
 import com.like.common.sample.csv.CsvActivity;
@@ -19,7 +18,6 @@ import com.like.common.util.AppUtils;
 import com.like.common.util.ClickUtils;
 import com.like.common.util.DimensionUtils;
 import com.like.common.util.GlideUtils;
-import com.like.common.util.ObjectSerializeUtils;
 import com.like.common.util.PhoneUtils;
 import com.like.common.util.RxJavaUtils;
 import com.like.common.util.StatusBarUtils;
@@ -34,7 +32,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends BasePermissionActivity {
+public class MainActivity extends BaseActivity {
     private ActivityMainBinding mBinding;
     private android.os.Handler mHandler = new android.os.Handler(new android.os.Handler.Callback() {
         @Override
@@ -95,27 +93,25 @@ public class MainActivity extends BasePermissionActivity {
         return null;
     }
 
-    @Override
-    protected String[] getPermissions() {
-        return new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.CAMERA
-        };
-    }
-
-    @Override
-    protected String getRationale() {
-        return "必需权限";
-    }
-
-    @Override
-    protected void hasPermissions() {
-        // 序列化测试，看是否在杀死进程后，序列化的对象是否也被清除了。
-        Logger.e(ObjectSerializeUtils.getObject(this, "111"));
-        ObjectSerializeUtils.saveObject(this, "111", new SerializeInfo("like"));
-    }
+//    @Override
+//    protected String[] getPermissions() {
+//        return new String[]{
+//                Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.READ_PHONE_STATE
+//        };
+//    }
+//
+//    @Override
+//    protected String getRationale() {
+//        return "必需权限";
+//    }
+//
+//    @Override
+//    protected void hasPermissions() {
+//        // 序列化测试，看是否在杀死进程后，序列化的对象是否也被清除了。
+//        Logger.e(ObjectSerializeUtils.getObject(this, "111"));
+//        ObjectSerializeUtils.saveObject(this, "111", new SerializeInfo("like"));
+//    }
 
     private void initToolBar() {
         new ToolbarUtils(this, mBinding.flToolbarContainer)
