@@ -1,6 +1,7 @@
 package com.like.common.util;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
@@ -24,6 +25,8 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.UUID;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * 手机相关的工具类
@@ -145,6 +148,7 @@ public class PhoneUtils {
     /**
      * 获取手机相关的状态信息 需要请求电话状态信息的权限 READ_PHONE_STATE
      */
+    @SuppressLint("MissingPermission")
     private void initPhoneStatus() {
         mPhoneStatus = new PhoneStatus();
         mPhoneStatus.releaseVersion = Build.VERSION.RELEASE;
@@ -156,13 +160,13 @@ public class PhoneUtils {
         mPhoneStatus.mac = getMac();
 
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        if (tm != null && PermissionUtils.checkPermission(mContext, Manifest.permission.READ_PHONE_STATE)) {
+        if (tm != null && EasyPermissions.hasPermissions(mContext, Manifest.permission.READ_PHONE_STATE)) {
             mPhoneStatus.imei = tm.getDeviceId();
         }
         if (tm != null &&
-                PermissionUtils.checkPermission(mContext, Manifest.permission.READ_SMS) &&
-                PermissionUtils.checkPermission(mContext, Manifest.permission.READ_PHONE_NUMBERS) &&
-                PermissionUtils.checkPermission(mContext, Manifest.permission.READ_PHONE_STATE)) {
+                EasyPermissions.hasPermissions(mContext, Manifest.permission.READ_SMS) &&
+                EasyPermissions.hasPermissions(mContext, Manifest.permission.READ_PHONE_NUMBERS) &&
+                EasyPermissions.hasPermissions(mContext, Manifest.permission.READ_PHONE_STATE)) {
             mPhoneStatus.phoneNumber = tm.getLine1Number();
         }
 
@@ -330,7 +334,7 @@ public class PhoneUtils {
         }
         try {
             WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-            if (PermissionUtils.checkPermission(mContext, Manifest.permission.ACCESS_WIFI_STATE)) {
+            if (EasyPermissions.hasPermissions(mContext, Manifest.permission.ACCESS_WIFI_STATE)) {
                 WifiInfo info = wifi.getConnectionInfo();
                 return info.getMacAddress();
             } else {
