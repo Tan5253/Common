@@ -27,12 +27,13 @@ public class BottomNavigationBarsHelper {
     /**
      * 当某个tab被选中的监听，用于本类中处理反选问题
      */
-    private OnTabSelectedListener mTabSelectedListener = new OnTabSelectedListener() {
+    private OnTabClickListener mTabSelectedListener = new OnTabClickListener() {
         @Override
-        public void onSelected(int selectedIndex) {
+        public void onClick(int selectedIndex) {
             // 通知Activity改变ViewPager页面
             if (mTabSelectedForViewPager != null) {
                 mTabSelectedForViewPager.onSelected(selectedIndex);
+                mTabSelectedForViewPager.onClick(selectedIndex);
             }
             // 取消前一次选中的tab
             for (int i = 0; i < mTabInfoList.size(); i++) {

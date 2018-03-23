@@ -31,8 +31,8 @@ public class BottomTabInfoOrigin extends BottomTabInfo {
 
     private BadgeViewHelper mBadgeViewHelper;
 
-    public BottomTabInfoOrigin(Context context, int index, OnTabSelectedListener tabSelectedListener) {
-        super(context, index, tabSelectedListener);
+    public BottomTabInfoOrigin(Context context, int index, OnTabClickListener tabClickListener) {
+        super(context, index, tabClickListener);
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.item_bottom_navigation_bar, null, false);
         mBinding.getRoot().setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 

@@ -40,15 +40,15 @@ public abstract class BottomTabInfo {
     /**
      * 每个tab的选中监听
      */
-    private OnTabSelectedListener mTabSelectedListener;
+    private OnTabClickListener mTabClickListener;
 
-    BottomTabInfo(Context context, int index, OnTabSelectedListener tabSelectedListener) {
-        if (context == null || index < 0 || tabSelectedListener == null) {
+    BottomTabInfo(Context context, int index, OnTabClickListener tabClickListener) {
+        if (context == null || index < 0 || tabClickListener == null) {
             throw new IllegalArgumentException("BottomTabInfo的构造函数中存在无效参数");
         }
         this.mContext = context;
         this.mIndex = index;
-        this.mTabSelectedListener = tabSelectedListener;
+        this.mTabClickListener = tabClickListener;
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class BottomTabInfo {
         this.mImageView = icon;
         tabView.setOnClickListener(v -> {
             select();
-            mTabSelectedListener.onSelected(mIndex);
+            mTabClickListener.onClick(mIndex);
         });
     }
 
