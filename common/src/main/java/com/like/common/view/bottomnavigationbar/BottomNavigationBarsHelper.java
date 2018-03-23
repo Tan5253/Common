@@ -32,8 +32,8 @@ public class BottomNavigationBarsHelper {
         public void onClick(int selectedIndex) {
             // 通知Activity改变ViewPager页面
             if (mTabSelectedForViewPager != null) {
-                mTabSelectedForViewPager.onSelected(selectedIndex);
                 mTabSelectedForViewPager.onClick(selectedIndex);
+                mTabSelectedForViewPager.onSelected(selectedIndex);
             }
             // 取消前一次选中的tab
             for (int i = 0; i < mTabInfoList.size(); i++) {
