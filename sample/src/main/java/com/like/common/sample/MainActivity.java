@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
             return false;
         }
     });
+    private Disposable mDisposable = null;
 
     @Override
     protected BaseViewModel getViewModel() {
@@ -50,35 +51,30 @@ public class MainActivity extends BaseActivity {
         PhoneUtils.getInstance(this).getUuid();
         AppUtils.getInstance(this);
 
-        RxJavaUtils.polling(new RxJavaUtils.OnSubscribe() {
-            @Override
-            protected void onSubscribeCall2() {
-                Logger.e("asdfasd");
-            }
-        }, 1000, 4000);
+        mDisposable = RxJavaUtils.polling(() -> Logger.e("asdf"), 1000, 4000);
 
         ClickUtils.addOnClickListener(5, mBinding.btnClicktimes, v -> {
 
         });
-        RxJavaUtils.addTextChangedListener(mBinding.etSearch, new RxJavaUtils.OnSubscribe<String>() {
-            @Override
-            protected Observable<String> onSubscribeCall1(CharSequence searchStr) {
-                Logger.e("onSubscribeCall1----" + searchStr + "-----" + Thread.currentThread().getName());
-                return Observable.just("dddd");
-            }
-
-            @Override
-            protected void onNextCall(String s) {
-                super.onNextCall(s);
-                Logger.e("onNextCall----------" + s + "-----" + Thread.currentThread().getName());
-            }
-
-            @Override
-            protected void onErrorCall(Throwable throwable) {
-                super.onErrorCall(throwable);
-                Logger.e("onErrorCall---------" + Thread.currentThread().getName());
-            }
-        });
+//        RxJavaUtils.addTextChangedListener(mBinding.etSearch, new RxJavaUtils.OnSubscribe<String>() {
+//            @Override
+//            protected Observable<String> onSubscribeCall1(CharSequence searchStr) {
+//                Logger.e("onSubscribeCall1----" + searchStr + "-----" + Thread.currentThread().getName());
+//                return Observable.just("dddd");
+//            }
+//
+//            @Override
+//            protected void onNextCall(String s) {
+//                super.onNextCall(s);
+//                Logger.e("onNextCall----------" + s + "-----" + Thread.currentThread().getName());
+//            }
+//
+//            @Override
+//            protected void onErrorCall(Throwable throwable) {
+//                super.onErrorCall(throwable);
+//                Logger.e("onErrorCall---------" + Thread.currentThread().getName());
+//            }
+//        });
 
 //        List<String> urlList = new ArrayList<>();
 //        urlList.add("http://www.114la.com/static/upd/201708/1515155610347f55.jpg");
@@ -232,4 +228,11 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+    }
 }

@@ -13,6 +13,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -54,21 +55,17 @@ public class RxJavaUtils {
     /**
      * 延迟一段时间，然后以固定周期循环执行某一任务
      *
-     * @param onSubscribe  固定周期执行的任务，在IO线程
+     * @param run          固定周期执行的任务，在IO线程
      * @param initialDelay 延迟一段时间，毫秒
      * @param period       周期，毫秒
      */
-    public static void polling(final OnSubscribe onSubscribe, final long initialDelay, final long period) {
-        Observable.create(
-                observableEmitter -> Schedulers.newThread().createWorker().schedulePeriodically(onSubscribe::onSubscribeCall2, initialDelay, period, TimeUnit.MILLISECONDS)
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+    public static Disposable polling(final @NonNull Runnable run, final long initialDelay, final long period) {
+        return Schedulers.io().createWorker().schedulePeriodically(run, initialDelay, period, TimeUnit.MILLISECONDS);
     }
 
     /**
      * 延迟一段时间，然后以固定周期循环执行某一任务
+     * 注意：不要直接使用此方法，因为没有持有Disposable的引用，无法终止循环。所以可以复制代码来用，其中disposable = Schedulers.io().createWorker()……
      *
      * @param onSubscribe  固定周期执行的任务，在IO线程
      * @param consumer     任务返回的结果
@@ -76,10 +73,10 @@ public class RxJavaUtils {
      * @param period       周期，毫秒
      * @param <T>
      */
-    public static <T> void polling(final OnSubscribe<T> onSubscribe, final Consumer<T> consumer, final long initialDelay, final long period) {
+    private static <T> void polling(final OnSubscribe<T> onSubscribe, final Consumer<T> consumer, final long initialDelay, final long period) {
         Observable.create(
                 (ObservableOnSubscribe<T>) observableEmitter ->
-                        Schedulers.newThread().createWorker()
+                        Schedulers.io().createWorker()
                                 .schedulePeriodically(() ->
                                                 observableEmitter.onNext(onSubscribe.onSubscribeCall0()),
                                         initialDelay,
@@ -209,13 +206,6 @@ public class RxJavaUtils {
      * @param <T>
      */
     public static class OnSubscribe<T> {
-        /**
-         * 执行任务无返回结果
-         *
-         * @return
-         */
-        protected void onSubscribeCall2() {
-        }
 
         /**
          * 执行任务有返回结果
