@@ -10,6 +10,7 @@ import com.like.common.sample.R;
 import com.like.common.sample.databinding.ActivityChenjinBinding;
 import com.like.common.util.StatusBarUtils;
 import com.like.common.view.bottomnavigationbar.BottomNavigationBarsHelper;
+import com.like.common.view.bottomnavigationbar.OnTabSelectedListener;
 
 public class ChenJinActivity extends BaseActivity {
     private ActivityChenjinBinding mBinding;
@@ -63,9 +64,17 @@ public class ChenJinActivity extends BaseActivity {
 
         mBottomNavigationBarsHelper.setBottomBgColor(R.color.main_bottom_tab_bg)
                 .initOriginView(names, originNormalImageResIds, originPressImageResIds, normalTextColor, pressTextColor)
-                .setTabSelectedListener(selectedIndex -> {
-                    mCurPagerIndex = selectedIndex;
-                    mBinding.vp.setCurrentItem(selectedIndex, false);
+                .setTabSelectedListener(new OnTabSelectedListener() {
+                    @Override
+                    public void onClick(int selectedIndex) {
+
+                    }
+
+                    @Override
+                    public void onSelected(int selectedIndex) {
+                        mCurPagerIndex = selectedIndex;
+                        mBinding.vp.setCurrentItem(selectedIndex, false);
+                    }
                 });
     }
 

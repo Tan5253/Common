@@ -50,6 +50,13 @@ public class MainActivity extends BaseActivity {
         PhoneUtils.getInstance(this).getUuid();
         AppUtils.getInstance(this);
 
+        RxJavaUtils.polling(new RxJavaUtils.OnSubscribe() {
+            @Override
+            protected void onSubscribeCall2() {
+                Logger.e("asdfasd");
+            }
+        }, 1000, 4000);
+
         ClickUtils.addOnClickListener(5, mBinding.btnClicktimes, v -> {
 
         });

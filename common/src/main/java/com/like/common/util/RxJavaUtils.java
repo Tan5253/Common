@@ -13,6 +13,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -44,10 +45,26 @@ public class RxJavaUtils {
      * @param interval 延时，单位毫秒
      * @param consumer 回调，在UI线程执行
      */
-    public static void interval(long interval, Consumer<Long> consumer) {
-        Observable.interval(interval, TimeUnit.MILLISECONDS)// 隔一段时间产生一个数字，然后就结束，可以理解为延迟产生数字
+    public static Disposable interval(long interval, Consumer<Long> consumer) {
+        return Observable.interval(interval, TimeUnit.MILLISECONDS)// 隔一段时间产生一个数字，然后就结束，可以理解为延迟产生数字
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(consumer);
+    }
+
+    /**
+     * 延迟一段时间，然后以固定周期循环执行某一任务
+     *
+     * @param onSubscribe  固定周期执行的任务，在IO线程
+     * @param initialDelay 延迟一段时间，毫秒
+     * @param period       周期，毫秒
+     */
+    public static void polling(final OnSubscribe onSubscribe, final long initialDelay, final long period) {
+        Observable.create(
+                observableEmitter -> Schedulers.newThread().createWorker().schedulePeriodically(onSubscribe::onSubscribeCall2, initialDelay, period, TimeUnit.MILLISECONDS)
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     /**
@@ -193,7 +210,15 @@ public class RxJavaUtils {
      */
     public static class OnSubscribe<T> {
         /**
-         * 执行任务
+         * 执行任务无返回结果
+         *
+         * @return
+         */
+        protected void onSubscribeCall2() {
+        }
+
+        /**
+         * 执行任务有返回结果
          *
          * @return
          */
