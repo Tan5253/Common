@@ -41,7 +41,19 @@ public class RxJavaUtils {
     }
 
     /**
-     * 周期性执行某任务（默认在computation线程）
+     * 延时执行某任务
+     *
+     * @param interval 延时，单位毫秒
+     * @param consumer 回调，在scheduler线程执行
+     */
+    public static void timer(long interval, Consumer<Long> consumer, Scheduler scheduler) {
+        Observable.timer(interval, TimeUnit.MILLISECONDS)
+                .observeOn(scheduler)
+                .subscribe(consumer);
+    }
+
+    /**
+     * 周期性执行某任务
      *
      * @param interval 延时，单位毫秒
      * @param consumer 回调，在UI线程执行
@@ -49,6 +61,18 @@ public class RxJavaUtils {
     public static Disposable interval(long interval, Consumer<Long> consumer) {
         return Observable.interval(interval, TimeUnit.MILLISECONDS)// 隔一段时间产生一个数字，然后就结束，可以理解为延迟产生数字
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer);
+    }
+
+    /**
+     * 周期性执行某任务
+     *
+     * @param interval 延时，单位毫秒
+     * @param consumer 回调，在scheduler线程执行
+     */
+    public static Disposable interval(long interval, Consumer<Long> consumer, Scheduler scheduler) {
+        return Observable.interval(interval, TimeUnit.MILLISECONDS)// 隔一段时间产生一个数字，然后就结束，可以理解为延迟产生数字
+                .observeOn(scheduler)
                 .subscribe(consumer);
     }
 
