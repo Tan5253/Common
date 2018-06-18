@@ -10,6 +10,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <com.like.common.sample.banner.BannerView
+            android:id="@+id/bannerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

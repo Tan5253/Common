@@ -1,12 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.objectbox'// objectbox配置
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.like.common.sample"
@@ -54,6 +52,5 @@ dependencies {
     // Error:Conflict with dependency 'com.google.code.findbugs:jsr305' in project ':app'. Resolved versions for app (3.0.1) and test app (2.0.1) differ. See http://g.co/androidstudio/app-test-app-conflict for details.
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.2'
 
-    compile 'com.github.like5188:Base:2.0.2'
-    kapt 'com.github.like5188.RxBus:rxbus-compiler:2.0.1'
+    kapt 'com.github.like5188.RxBus:rxbus-compiler:3.0.0'
 }

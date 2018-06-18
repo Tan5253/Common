@@ -1,11 +1,9 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 16
@@ -62,10 +60,10 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 
-    compile 'com.github.like5188:Base:2.3.0'
+    compile 'com.github.like5188:Base:3.0.1'
     compile 'com.github.like5188:Toast:2.0.0'
     compile 'com.github.like5188:Logger:2.0.0'
-    compile 'com.github.like5188.RxBus:rxbus:2.0.1'
+    compile 'com.github.like5188.RxBus:rxbus:3.0.0'
 }
 
 apply from: rootProject.file('./gradle-mvn-push.gradle')

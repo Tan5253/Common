@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.like.base.context.BaseActivity;
 import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.sample.banner.BannerInfo;
 import com.like.common.sample.chenjin.ChenJinActivity;
 import com.like.common.sample.csv.CsvActivity;
 import com.like.common.sample.customRadioAndCheck.CustomRadioAndCheckActivity;
@@ -26,6 +27,8 @@ import com.like.common.view.toolbar.ToolbarUtils;
 import com.like.logger.Logger;
 import com.like.toast.ToastUtilsKt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -47,6 +50,21 @@ public class MainActivity extends BaseActivity {
     protected BaseViewModel getViewModel() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initToolBar();
+
+        List<BannerInfo> bannerInfoList = new ArrayList<>();
+        BannerInfo bannerInfo = new BannerInfo();
+        bannerInfo.imageUrl = "https://www.114la.com/static/upd/201710/311040041f91ccea.jpg";
+        bannerInfoList.add(bannerInfo);
+        BannerInfo bannerInfo1 = new BannerInfo();
+        bannerInfo1.imageUrl = "https://www.114la.com/static/upd/201710/31105918a5901eac.jpg";
+        bannerInfoList.add(bannerInfo1);
+        BannerInfo bannerInfo2 = new BannerInfo();
+        bannerInfo2.imageUrl = "https://123p0.sogoucdn.com/imgu/2018/01/20180122151534_866.jpg";
+        bannerInfoList.add(bannerInfo2);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(R.drawable.store_point2);
+        mBinding.bannerView.initParamsAndStartPlay(0.4f, 2000L, bannerInfoList, R.drawable.store_point1, list, 10);
 
         PhoneUtils.getInstance(this).getUuid();
         AppUtils.getInstance(this);
