@@ -8,9 +8,9 @@ import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.like.base.context.BaseActivity
-import com.like.base.context.BaseFragment
-import com.like.base.entity.Host
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.context.BaseFragment
+import com.like.common.base.entity.Host
 
 /**
  * 显示DialogFragment对话框

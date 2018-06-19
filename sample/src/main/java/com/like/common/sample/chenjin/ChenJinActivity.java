@@ -3,9 +3,9 @@ package com.like.common.sample.chenjin;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
-import com.like.base.context.BaseActivity;
-import com.like.base.entity.Host;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.context.BaseActivity;
+import com.like.common.base.entity.Host;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.common.sample.R;
 import com.like.common.sample.databinding.ActivityChenjinBinding;
 import com.like.common.util.StatusBarUtils;

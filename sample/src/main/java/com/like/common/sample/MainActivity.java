@@ -7,8 +7,8 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.like.base.context.BaseActivity;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.context.BaseActivity;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.common.sample.banner.BannerInfo;
 import com.like.common.sample.chenjin.ChenJinActivity;
 import com.like.common.sample.csv.CsvActivity;

@@ -2,8 +2,8 @@ package com.like.common.sample
 
 import android.databinding.DataBindingUtil
 import android.view.View
-import com.like.base.context.BaseActivity
-import com.like.base.viewmodel.BaseViewModel
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityTwoLineChartBinding
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.core.OnClickListener
 import com.like.common.view.chart.horizontalScrollTwoLineChartView.entity.TwoLineData

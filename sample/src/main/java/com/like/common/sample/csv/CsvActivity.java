@@ -4,8 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
-import com.like.base.context.BaseActivity;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.context.BaseActivity;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.common.sample.R;
 import com.like.common.sample.databinding.ActivityCsvBinding;
 import com.like.common.util.CsvUtils;

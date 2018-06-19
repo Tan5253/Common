@@ -2,8 +2,8 @@ package com.like.common.sample
 
 import android.databinding.DataBindingUtil
 import android.view.View
-import com.like.base.context.BaseActivity
-import com.like.base.viewmodel.BaseViewModel
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityBarChartBinding
 import com.like.common.view.chart.horizontalScrollBarChartView.entity.BarData
 

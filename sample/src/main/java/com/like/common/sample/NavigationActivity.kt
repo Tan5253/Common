@@ -1,8 +1,8 @@
 package com.like.common.sample
 
 import android.databinding.DataBindingUtil
-import com.like.base.context.BaseActivity
-import com.like.base.viewmodel.BaseViewModel
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityNavigationBinding
 import com.like.common.view.bottomnavigationbar.BottomNavigationBarsHelper
 

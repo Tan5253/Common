@@ -2,8 +2,8 @@ package com.like.common.sample.objectbox;
 
 import android.support.annotation.NonNull;
 
-import com.like.base.entity.Host;
-import com.like.base.presenter.BasePresenter;
+import com.like.common.base.entity.Host;
+import com.like.common.base.presenter.BasePresenter;
 
 import java.util.ArrayList;
 import java.util.List;

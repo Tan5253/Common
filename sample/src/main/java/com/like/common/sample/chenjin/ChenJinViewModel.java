@@ -3,8 +3,8 @@ package com.like.common.sample.chenjin;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import com.like.base.entity.Host;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.entity.Host;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.common.sample.databinding.ActivityChenjinBinding;
 
 import java.util.ArrayList;

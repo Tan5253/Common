@@ -1,6 +1,6 @@
 # Common
 
-自己用的工具库。包括一些工具类和自定义View。
+自己用的工具库。包括一些基类、工具类和自定义View。
 
 ## 使用方法：
 
@@ -21,7 +21,27 @@
         compile 'com.github.like5188:Common:版本号'
     }
 ```
-2、包含的工具类
+2、包含的基类
+```java
+    BaseActivity
+    BaseApplication
+    BaseFragment
+    BasePermissionActivity
+
+    BaseParseInfo
+    Host
+
+    BasePresenter
+
+    BaseViewModel
+```
+    如果需要使用友盟统计功能，需要在AndroidManifest.xml文件的application标签内添加以下代码，并且在Application中将openUMeng标签设置为true。
+```java
+    <meta-data
+        android:name="UMENG_APPKEY"
+        android:value="你应用的appKey" />
+```
+3、包含的工具类
 ```java
     AppUtils
     ArrayUtils
@@ -65,7 +85,7 @@
     Verify
     ViewHolder
 ```
-3、包含的自定义View
+4、包含的自定义View
 ```java
     bottomNavigationBars            // 底部导航栏
     check                           // 复选框控制器

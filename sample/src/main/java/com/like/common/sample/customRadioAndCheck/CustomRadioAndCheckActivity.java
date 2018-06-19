@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
-import com.like.base.context.BaseActivity;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.context.BaseActivity;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.common.sample.R;
 import com.like.common.sample.databinding.ActivityCustomRadioAndCheckBinding;
 import com.like.common.util.StatusBarUtils;

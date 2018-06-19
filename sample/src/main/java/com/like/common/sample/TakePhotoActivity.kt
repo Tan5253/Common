@@ -5,8 +5,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.view.View
-import com.like.base.context.BaseActivity
-import com.like.base.viewmodel.BaseViewModel
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityTakePhotoBinding
 import com.like.common.util.GlideUtils
 import com.like.common.util.PermissionUtils

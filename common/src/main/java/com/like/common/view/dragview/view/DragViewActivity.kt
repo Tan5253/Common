@@ -3,9 +3,9 @@ package com.like.common.view.dragview.view
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.view.WindowManager
-import com.like.base.context.BaseActivity
-import com.like.base.viewmodel.BaseViewModel
 import com.like.common.R
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.viewmodel.BaseViewModel
 import com.like.common.view.dragview.entity.DragInfo
 import java.lang.Exception
 

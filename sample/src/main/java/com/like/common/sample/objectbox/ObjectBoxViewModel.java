@@ -3,8 +3,8 @@ package com.like.common.sample.objectbox;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.like.base.entity.Host;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.entity.Host;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.logger.Logger;
 
 import java.util.List;

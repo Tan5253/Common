@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.like.base.context.BaseFragment;
-import com.like.base.viewmodel.BaseViewModel;
+import com.like.common.base.context.BaseFragment;
+import com.like.common.base.viewmodel.BaseViewModel;
 import com.like.common.sample.R;
 import com.like.common.sample.databinding.FragmentTab1Binding;
 import com.like.common.util.StatusBarUtils;

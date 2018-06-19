@@ -2,8 +2,8 @@ package com.like.common.sample
 
 import android.databinding.DataBindingUtil
 import android.view.View
-import com.like.base.context.BaseActivity
-import com.like.base.viewmodel.BaseViewModel
+import com.like.common.base.context.BaseActivity
+import com.like.common.base.viewmodel.BaseViewModel
 import com.like.common.sample.databinding.ActivityPieChartBinding
 import com.like.common.view.chart.pieChartView.entity.MonthData
 import com.like.common.view.chart.pieChartView.entity.PieData
